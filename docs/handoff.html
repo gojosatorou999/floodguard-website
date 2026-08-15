@@ -1,0 +1,354 @@
+<title>FloodGuard Rebuild Handoff</title>
+<style>
+:root {
+  --blue-950:#012a4a; --blue-900:#013a63; --blue-800:#01497c; --blue-700:#014f86;
+  --blue-600:#2a6f97; --blue-500:#2c7da0; --blue-400:#468faf; --blue-300:#61a5c2;
+  --blue-200:#89c2d9; --blue-100:#a9d6e5;
+  --alert:#c1121f;
+
+  --bg:#f6f9fb;
+  --surface:#ffffff;
+  --sunk:#eef4f8;
+  --border:#d7e3ea;
+  --border-strong:#b9cdd9;
+  --text:#04212f;
+  --muted:#4d6675;
+  --faint:#7a94a3;
+  --link:var(--blue-700);
+  --rule:var(--blue-800);
+
+  --sans: ui-sans-serif, "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#01111f; --surface:#021c2e; --sunk:#01161f;
+    --border:#0d3050; --border-strong:#17486f;
+    --text:#e2eef5; --muted:#9fbccd; --faint:#6d8fa3;
+    --link:var(--blue-200); --rule:var(--blue-300);
+    --alert:#e8505c;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#01111f; --surface:#021c2e; --sunk:#01161f;
+  --border:#0d3050; --border-strong:#17486f;
+  --text:#e2eef5; --muted:#9fbccd; --faint:#6d8fa3;
+  --link:var(--blue-200); --rule:var(--blue-300);
+  --alert:#e8505c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 860px; margin-inline: auto; padding: clamp(2rem,5vw,4rem) clamp(1.15rem,4vw,2.5rem) 6rem; }
+
+.masthead { border-bottom: 2px solid var(--rule); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+.kicker {
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--faint); margin: 0 0 .7rem;
+}
+h1 { font-size: clamp(1.9rem,1.3rem+2.4vw,2.7rem); line-height: 1.08; letter-spacing: -.022em; margin: 0 0 .85rem; font-weight: 750; text-wrap: balance; }
+.standfirst { margin: 0; font-size: 1.075rem; color: var(--muted); max-width: 62ch; }
+
+h2 {
+  font-size: 1.32rem; letter-spacing: -.012em; font-weight: 700;
+  margin: 3.2rem 0 .3rem; padding-top: 1.1rem; border-top: 1px solid var(--border);
+  text-wrap: balance;
+}
+h2:first-of-type { margin-top: 2.4rem; }
+h2 + .sub { margin: 0 0 1.4rem; color: var(--faint); font-size: .93rem; }
+
+h3 { font-size: 1rem; font-weight: 680; margin: 1.9rem 0 .45rem; letter-spacing: -.005em; }
+
+p { margin: 0 0 1rem; max-width: 68ch; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--link); text-underline-offset: 2px; }
+
+code {
+  font-family: var(--mono); font-size: .855em;
+  background: var(--sunk); border: 1px solid var(--border);
+  border-radius: 3px; padding: .08em .34em; color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+pre {
+  font-family: var(--mono); font-size: .82rem; line-height: 1.6;
+  background: var(--sunk); border: 1px solid var(--border);
+  border-radius: 5px; padding: .95rem 1.1rem; margin: 0 0 1.2rem;
+  overflow-x: auto;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin-bottom: 1.3rem; }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; min-width: 520px; }
+th, td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--faint); font-weight: 500;
+  border-bottom: 1px solid var(--border-strong);
+}
+td code { white-space: nowrap; }
+
+.pill {
+  display: inline-block; font-family: var(--mono); font-size: .68rem;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .16em .5em; border-radius: 3px; border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.pill--done { color: var(--blue-500); }
+.pill--part { color: var(--blue-400); }
+.pill--block { color: var(--alert); }
+
+ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+ol.steps > li {
+  counter-increment: s; position: relative;
+  padding: 0 0 1.35rem 2.6rem; margin: 0;
+}
+ol.steps > li::before {
+  content: counter(s,decimal-leading-zero);
+  position: absolute; left: 0; top: .08em;
+  font-family: var(--mono); font-size: .78rem; color: var(--blue-400);
+  border: 1px solid var(--border-strong); border-radius: 3px;
+  padding: .1em .38em; line-height: 1.3;
+}
+ol.steps h3 { margin: 0 0 .25rem; }
+ol.steps p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+ul.plain { margin: 0 0 1.2rem; padding-left: 1.15rem; }
+ul.plain li { margin-bottom: .45rem; }
+ul.plain li::marker { color: var(--blue-400); }
+
+.rule {
+  border-left: 2px solid var(--blue-500);
+  padding: .15rem 0 .15rem 1rem; margin: 0 0 1.35rem;
+}
+.rule strong { display: block; margin-bottom: .15rem; }
+.rule p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+.callout {
+  border: 1px solid var(--alert); border-radius: 5px;
+  padding: 1.05rem 1.2rem; margin: 0 0 1.3rem;
+  background: var(--surface);
+}
+.callout .kicker { color: var(--alert); margin-bottom: .5rem; }
+.callout p { margin-bottom: .7rem; }
+.callout p:last-child { margin-bottom: 0; }
+
+.linkcard {
+  display: block; border: 1px solid var(--border); border-radius: 5px;
+  padding: .85rem 1rem; margin-bottom: .6rem; background: var(--surface);
+  text-decoration: none; color: inherit;
+}
+.linkcard:hover { border-color: var(--border-strong); }
+.linkcard strong { display: block; font-size: .97rem; }
+.linkcard span { font-family: var(--mono); font-size: .78rem; color: var(--faint); overflow-wrap: anywhere; }
+
+footer.end {
+  margin-top: 3.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+  font-size: .85rem; color: var(--faint);
+}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="kicker">Developer handoff · 13 Aug 2026</p>
+  <h1>FloodGuard website rebuild</h1>
+  <p class="standfirst">
+    Planning, a motion prototype, and a component scaffold are done. Implementation
+    hasn't started — the scaffold is deliberately empty. Everything below is what
+    exists, what it enforces, and where to pick up.
+  </p>
+</header>
+
+<h2>Where things stand</h2>
+<p class="sub">Three workstreams, three different stages.</p>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>Workstream</th><th>State</th><th>Lives in</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Audit + rebuild plan</td>
+      <td><span class="pill pill--done">Complete</span></td>
+      <td><code>README.md</code></td>
+    </tr>
+    <tr>
+      <td>Hero motion experiment</td>
+      <td><span class="pill pill--done">Working prototype</span></td>
+      <td><code>prototypes/dither-helix.html</code></td>
+    </tr>
+    <tr>
+      <td>Homepage scaffold</td>
+      <td><span class="pill pill--part">Stubs only</span></td>
+      <td><code>src/</code>, <code>STRUCTURE.md</code></td>
+    </tr>
+    <tr>
+      <td>Reference assets</td>
+      <td><span class="pill pill--block">Missing</span></td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Run it</h2>
+<p class="sub">Node 24 / npm 11. Dependencies are already installed.</p>
+
+<pre><code>npm install     # already done once
+npm run dev     # → http://localhost:5173</code></pre>
+
+<p>
+  It compiles clean, but <strong>it renders as near-blank text with "TODO" placeholders.</strong>
+  That is correct, not broken. There is no styling and no real copy yet — the point
+  of the scaffold is structure. The maps render an empty state because no geometry
+  is wired.
+</p>
+
+<h2>What's in the repo</h2>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>Path</th><th>What it is</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>README.md</code></td><td>Full rebuild plan — audit of the current live site, stack decisions, IA, theming architecture, build phases, open decisions</td></tr>
+    <tr><td><code>STRUCTURE.md</code></td><td>Scaffold map. Section-order table, file tree, enforced rules. <strong>Read this first.</strong></td></tr>
+    <tr><td><code>src/styles/tokens.css</code></td><td>The only complete file. Full palette, type, spacing, three theme states</td></tr>
+    <tr><td><code>src/theme/tokens.ts</code></td><td>TS mirror, for canvas/chart code that can't read CSS vars</td></tr>
+    <tr><td><code>src/routes/Home.tsx</code></td><td>Composes the 8 sections in order</td></tr>
+    <tr><td><code>src/components/</code></td><td>18 stubs across <code>layout/ sections/ maps/ timeline/ product/ motion/ ui/</code></td></tr>
+    <tr><td><code>src/content/</code></td><td>Placeholder copy + real nav structure</td></tr>
+    <tr><td><code>src/data/geo/</code></td><td>Map types, loader stub, and a README on producing the asset</td></tr>
+    <tr><td><code>prototypes/dither-helix.html</code></td><td>Standalone motion experiment, vanilla JS, fully working</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Rules the scaffold enforces</h2>
+<p class="sub">These are structural, not stylistic. Breaking them means reworking later.</p>
+
+<div class="rule">
+  <strong>No hex literals outside <code>tokens.css</code></strong>
+  <p>The old site hardcoded one navy roughly 60 times and forced a white body background, which is exactly why it can't have a dark mode. Everything goes through semantic tokens. Worth adding a lint rule before real work starts.</p>
+</div>
+
+<div class="rule">
+  <strong><code>#C1121F</code> appears in exactly one component</strong>
+  <p>The alert chip in <code>LivePreview</code>. It signals live flood state. It is never an accent, a hover, or a highlight.</p>
+</div>
+
+<div class="rule">
+  <strong>Map geometry is a data asset, never code</strong>
+  <p><code>IndiaChoropleth</code> takes <code>RegionMapAsset</code> + <code>RegionValues</code> as props and knows nothing about India or where the data came from. One component serves the hero, the timeline's state map, and the Explorer preview. Real risk values wire in without touching any component.</p>
+</div>
+
+<div class="rule">
+  <strong>Components stay presentational</strong>
+  <p>No fetching inside components. Timeline state lives in <code>FloodStoryTimeline</code> so the bar chart and state map stay in sync while both children stay dumb.</p>
+</div>
+
+<h2>Suggested order to start</h2>
+<p class="sub">Steps 1–3 aren't blocked by the missing assets. Step 4 onward is.</p>
+
+<ol class="steps">
+  <li>
+    <h3>Read <code>STRUCTURE.md</code>, then <code>tokens.css</code></h3>
+    <p>Twenty minutes. The token layer is the thing everything else hangs off, and it's the one file that's finished.</p>
+  </li>
+  <li>
+    <h3>Self-host the three fonts</h3>
+    <p>Manrope (600–800), Inter (400–600), JetBrains Mono. As woff2 with <code>@font-face</code> — not a Google Fonts link. Subset to Latin. The stacks are already declared in <code>tokens.css</code>.</p>
+  </li>
+  <li>
+    <h3>Produce the India map asset</h3>
+    <p>Longest lead time, and nothing visual can happen without it. Spec and recommended approach are in <code>src/data/geo/README.md</code>. Pre-project and simplify offline — full-resolution district boundaries run to several MB; target under 300KB gzipped.</p>
+  </li>
+  <li>
+    <h3>Build Header and Footer</h3>
+    <p>Lowest risk, and they frame every other section. Dropdowns need click as well as hover, plus Escape-to-close — hover-only is an accessibility failure.</p>
+  </li>
+  <li>
+    <h3>Hero, then the rest in section order</h3>
+    <p>Hero is the highest-value section and exercises the choropleth, the stat bar, and the type scale in one go.</p>
+  </li>
+</ol>
+
+<h2>Blocked — assets that never arrived</h2>
+
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>Asset</th><th>Blocks</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>floodguard-homepage.html</code></td><td>Section-internal layout, interaction detail, all real copy</td></tr>
+    <tr><td><code>floodguard-final-homepage-design.png</code></td><td>Spacing, hierarchy, every styling decision</td></tr>
+    <tr><td><code>Logo.jpg</code></td><td>Header and footer brand mark. Needs SVG conversion and light/dark variants either way</td></tr>
+    <tr><td>India district + state geometry</td><td>Every map on the page</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>
+  The scaffold was built from the written spec alone. Section <em>order</em> and
+  <em>composition</em> are solid and shouldn't change. Everything inside each
+  section needs reconciling against the mockup once it exists.
+</p>
+
+<h2>Decisions still open</h2>
+
+<ul class="plain">
+  <li><strong>Neutrals are derived.</strong> The supplied palette is ten blues plus the alert red — no greys. The <code>--n-*</code> and <code>--ink-*</code> values in <code>tokens.css</code> were derived with a blue bias to sit with the scale. Replace them if there are real ones.</li>
+  <li><strong>The dark-mode choropleth ramp inverts.</strong> On a dark ground, high exposure has to read <em>light</em> or the worst districts vanish into the background. This is a behavioural change, not a colour swap — confirm it's wanted.</li>
+  <li><strong>Where the helix goes.</strong> Built as <code>components/motion/DitherHelix.tsx</code> but deliberately not placed. The hero already has the choropleth, and two competing visuals in one hero is one too many. Three candidate slots are listed in the file; the strongest is replacing the static Explorer/Live product previews.</li>
+  <li><strong>Form backend, real social accounts, and whether <code>thefloodguard@gmail.com</code> becomes <code>hello@floodguard.in</code>.</strong> All in <code>README.md</code> §12.</li>
+</ul>
+
+<h2>Separate and urgent</h2>
+
+<div class="callout">
+  <p class="kicker">Live site — unrelated to the rebuild</p>
+  <p>
+    <strong>floodguard.in is serving a Vite dev server in production.</strong>
+    <code>/@vite/client</code>, react-refresh, and inline source maps are all
+    publicly reachable, which means the complete unminified source is readable
+    by anyone. That is how the current site's content was recovered for the audit.
+  </p>
+  <p>
+    Fix is roughly 30 minutes and doesn't wait on the rebuild: run
+    <code>npm run build</code> and serve <code>dist/</code> behind nginx, or move
+    it to Vercel/Netlify. Worth doing this week.
+  </p>
+</div>
+
+<h2>Links</h2>
+
+<a class="linkcard" href="https://claude.ai/code/artifact/81d94b42-ef49-4556-a6b2-183a154329b6">
+  <strong>Dither Helix — motion prototype</strong>
+  <span>claude.ai/code/artifact/81d94b42</span>
+</a>
+<a class="linkcard" href="https://www.floodguard.in/">
+  <strong>Current live site — the thing being replaced</strong>
+  <span>www.floodguard.in</span>
+</a>
+
+<footer class="end">
+  Scaffold verified running on Vite 6.4.3 with React 19 · Node 24.14 · no build errors.
+</footer>
+
+</div>

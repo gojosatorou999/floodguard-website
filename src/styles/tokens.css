@@ -1,0 +1,172 @@
+/* ============================================================
+   FLOODGUARD — DESIGN TOKENS
+   Three layers (README §7):
+     1. Primitives  — raw scale. Never referenced by components.
+     2. Semantic    — role names. The ONLY layer components touch.
+     3. Component   — optional aliases.
+   Rule: no hex literals anywhere outside this file.
+   ============================================================ */
+
+:root {
+  /* ---------- 1. PRIMITIVES ---------- */
+
+  /* Monochrome blue scale — supplied brand palette, base → light. */
+  --blue-950: #012a4a;
+  --blue-900: #013a63;
+  --blue-800: #01497c;
+  --blue-700: #014f86;
+  --blue-600: #2a6f97;
+  --blue-500: #2c7da0;
+  --blue-400: #468faf;
+  --blue-300: #61a5c2;
+  --blue-200: #89c2d9;
+  --blue-100: #a9d6e5;
+
+  /* Alert. Reserved for live / flood-alert states. NEVER decorative. */
+  --alert-600: #c1121f;
+
+  /* DERIVED — not in the supplied palette. Needs sign-off.
+     Neutrals carry a blue bias so they sit with the scale. */
+  --ink-990: #01111f;
+  --ink-970: #011c31;
+  --n-50:  #f5f8fa;
+  --n-100: #e9eff3;
+  --n-200: #d5e0e7;
+  --n-300: #b4c5d0;
+  --n-400: #8ba0ae;
+  --n-500: #647a88;
+  --n-600: #4a5f6c;
+  --n-700: #33454f;
+
+  /* ---------- 2. SEMANTIC ---------- */
+  --color-bg:            var(--n-50);
+  --color-surface:       #ffffff;
+  --color-surface-sunk:  var(--n-100);
+  --color-border:        var(--n-200);
+  --color-border-strong: var(--n-300);
+
+  --color-text:          var(--blue-950);
+  --color-text-muted:    var(--n-500);
+  --color-text-faint:    var(--n-400);
+
+  --color-brand:         var(--blue-800);
+  --color-brand-hover:   var(--blue-700);
+  --color-on-brand:      #ffffff;
+  --color-accent:        var(--blue-500);
+
+  /* Live/alert only. Bound to product state, not styling. */
+  --color-alert:         var(--alert-600);
+  --color-on-alert:      #ffffff;
+
+  --color-focus:         var(--blue-600);
+
+  /* Choropleth ramp — light (low exposure) → dark (high).
+     Sequential single-hue: safe for all CVD types. */
+  --map-1: var(--blue-100);
+  --map-2: var(--blue-200);
+  --map-3: var(--blue-300);
+  --map-4: var(--blue-400);
+  --map-5: var(--blue-600);
+  --map-6: var(--blue-800);
+  --map-7: var(--blue-950);
+  --map-null: var(--n-200);
+
+  --gradient-band: linear-gradient(135deg, var(--blue-950), var(--blue-700));
+
+  /* ---------- TYPE ---------- */
+  /* TODO: self-host all three as woff2 + @font-face. Do NOT link a CDN. */
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;   /* 600–800 */
+  --font-body:    "Inter", ui-sans-serif, system-ui, sans-serif;     /* 400–600 */
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;         /* labels, stats */
+
+  --step--1: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
+  --step-0:  clamp(0.9375rem, 0.91rem + 0.14vw, 1rem);
+  --step-1:  clamp(1.0625rem, 1.01rem + 0.28vw, 1.1875rem);
+  --step-2:  clamp(1.35rem, 1.24rem + 0.55vw, 1.65rem);
+  --step-3:  clamp(1.9rem, 1.6rem + 1.5vw, 2.9rem);
+  --step-4:  clamp(2.4rem, 1.85rem + 2.7vw, 4.1rem);
+
+  /* ---------- SPACE / RADIUS / SHADOW ---------- */
+  --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;
+  --space-4: 1rem;     --space-6: 1.5rem;   --space-8: 2rem;
+  --space-12: 3rem;    --space-16: 4rem;    --space-24: 6rem;
+
+  --radius-sm: 4px;  --radius-md: 8px;  --radius-lg: 14px;  --radius-full: 999px;
+
+  --shadow-card: 0 1px 2px rgb(1 42 74 / 0.06), 0 12px 28px -12px rgb(1 42 74 / 0.2);
+  --shadow-lift: 0 1px 2px rgb(1 42 74 / 0.08), 0 22px 44px -16px rgb(1 42 74 / 0.28);
+
+  --container: 1180px;
+  --header-h: 68px;
+}
+
+/* ---------- DARK: system default (no data-theme stamped) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg:            var(--ink-990);
+    --color-surface:       var(--ink-970);
+    --color-surface-sunk:  #01161f;
+    --color-border:        #0d3050;
+    --color-border-strong: #16456d;
+
+    --color-text:          #e3eef5;
+    --color-text-muted:    var(--blue-200);
+    --color-text-faint:    var(--blue-400);
+
+    --color-brand:         var(--blue-200);
+    --color-brand-hover:   var(--blue-100);
+    --color-on-brand:      var(--blue-950);
+    --color-accent:        var(--blue-300);
+
+    --color-alert:         #e34450; /* lifted for contrast on dark ground */
+    --color-focus:         var(--blue-300);
+
+    /* Ramp inverts direction: dark ground means low → dark, high → light. */
+    --map-1: #04263f;
+    --map-2: var(--blue-900);
+    --map-3: var(--blue-700);
+    --map-4: var(--blue-500);
+    --map-5: var(--blue-400);
+    --map-6: var(--blue-200);
+    --map-7: var(--blue-100);
+    --map-null: #0d2338;
+
+    --gradient-band: linear-gradient(135deg, var(--ink-970), var(--blue-900));
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 28px -12px rgb(0 0 0 / 0.7);
+    --shadow-lift: 0 1px 2px rgb(0 0 0 / 0.55), 0 22px 44px -16px rgb(0 0 0 / 0.8);
+  }
+}
+
+/* ---------- DARK: explicit toggle ---------- */
+:root[data-theme="dark"] {
+  --color-bg:            var(--ink-990);
+  --color-surface:       var(--ink-970);
+  --color-surface-sunk:  #01161f;
+  --color-border:        #0d3050;
+  --color-border-strong: #16456d;
+
+  --color-text:          #e3eef5;
+  --color-text-muted:    var(--blue-200);
+  --color-text-faint:    var(--blue-400);
+
+  --color-brand:         var(--blue-200);
+  --color-brand-hover:   var(--blue-100);
+  --color-on-brand:      var(--blue-950);
+  --color-accent:        var(--blue-300);
+
+  --color-alert:         #e34450;
+  --color-focus:         var(--blue-300);
+
+  --map-1: #04263f;
+  --map-2: var(--blue-900);
+  --map-3: var(--blue-700);
+  --map-4: var(--blue-500);
+  --map-5: var(--blue-400);
+  --map-6: var(--blue-200);
+  --map-7: var(--blue-100);
+  --map-null: #0d2338;
+
+  --gradient-band: linear-gradient(135deg, var(--ink-970), var(--blue-900));
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 28px -12px rgb(0 0 0 / 0.7);
+  --shadow-lift: 0 1px 2px rgb(0 0 0 / 0.55), 0 22px 44px -16px rgb(0 0 0 / 0.8);
+}

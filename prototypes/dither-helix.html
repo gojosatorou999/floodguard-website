@@ -1,0 +1,1285 @@
+<title>Dither Helix</title>
+<style>
+/* ============================================================
+   TOKENS — Layer 1 (primitives) + Layer 2 (semantic)
+   Mirrors README §7. Every value here is a PLACEHOLDER pending
+   the palette pass. Components below reference semantic tokens
+   only — no hex literals outside this block.
+   ============================================================ */
+:root {
+  /* primitives — neutrals carry a faint cyan cast (hydrography) */
+  --n-50:  #f2f4f4;
+  --n-100: #e7ebeb;
+  --n-200: #d3dada;
+  --n-300: #b3bfc0;
+  --n-400: #8a9a9e;
+  --n-500: #64757a;
+  --n-600: #4a5a5e;
+  --n-700: #334145;
+  --n-800: #1d262a;
+  --n-900: #121a1d;
+  --n-950: #0c1113;
+
+  /* risk ramp — sand → amber → rust → deep. No red/green pairing:
+     distinguishable under deuteranopia and protanopia. */
+  --risk-1: #e4d9c2;
+  --risk-2: #d69b54;
+  --risk-3: #b0603e;
+  --risk-4: #6e3730;
+
+  /* semantic — the only layer components touch */
+  --bg:            var(--n-50);
+  --surface:       #ffffff;
+  --surface-sunk:  var(--n-100);
+  --border:        var(--n-200);
+  --border-strong: var(--n-300);
+  --text:          #101819;
+  --text-muted:    var(--n-500);
+  --text-faint:    var(--n-400);
+  --brand:         #14312c;
+  --brand-hover:   #1d443c;
+  --on-brand:      #ffffff;
+  --accent:        #c8792f;
+  --accent-rgb:    200 121 47;
+  --focus:         #1f6f8b;
+  --shadow-card:   0 1px 2px rgb(16 24 25 / .06), 0 12px 28px -12px rgb(16 24 25 / .22);
+  --shadow-lift:   0 1px 2px rgb(16 24 25 / .08), 0 22px 44px -16px rgb(16 24 25 / .3);
+  --stage-ground:  #eef1f1;
+  --stage-grid:    rgb(16 24 25 / .055);
+
+  /* type */
+  --font-display: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --font-body: ui-sans-serif, "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Roboto Mono", Consolas, "Liberation Mono", monospace;
+
+  --step--1: clamp(.75rem, .72rem + .12vw, .8125rem);
+  --step-0:  clamp(.9375rem, .91rem + .14vw, 1rem);
+  --step-1:  clamp(1.0625rem, 1.01rem + .28vw, 1.1875rem);
+  --step-2:  clamp(1.35rem, 1.24rem + .55vw, 1.65rem);
+  --step-3:  clamp(1.9rem, 1.6rem + 1.5vw, 2.9rem);
+  --step-4:  clamp(2.4rem, 1.85rem + 2.7vw, 4.1rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:            var(--n-950);
+    --surface:       #141a1d;
+    --surface-sunk:  #0f1518;
+    --border:        #263135;
+    --border-strong: #35444a;
+    --text:          #e4eaea;
+    --text-muted:    var(--n-400);
+    --text-faint:    #6d7d81;
+    --brand:         #7fd9c4;
+    --brand-hover:   #9ae6d4;
+    --on-brand:      #08201c;
+    --accent:        #e2954b;
+    --accent-rgb:    226 149 75;
+    --focus:         #57b6d6;
+    --shadow-card:   0 1px 2px rgb(0 0 0 / .5), 0 12px 28px -12px rgb(0 0 0 / .7);
+    --shadow-lift:   0 1px 2px rgb(0 0 0 / .55), 0 22px 44px -16px rgb(0 0 0 / .8);
+    --stage-ground:  #10171a;
+    --stage-grid:    rgb(228 234 234 / .05);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg:            var(--n-950);
+  --surface:       #141a1d;
+  --surface-sunk:  #0f1518;
+  --border:        #263135;
+  --border-strong: #35444a;
+  --text:          #e4eaea;
+  --text-muted:    var(--n-400);
+  --text-faint:    #6d7d81;
+  --brand:         #7fd9c4;
+  --brand-hover:   #9ae6d4;
+  --on-brand:      #08201c;
+  --accent:        #e2954b;
+  --accent-rgb:    226 149 75;
+  --focus:         #57b6d6;
+  --shadow-card:   0 1px 2px rgb(0 0 0 / .5), 0 12px 28px -12px rgb(0 0 0 / .7);
+  --shadow-lift:   0 1px 2px rgb(0 0 0 / .55), 0 22px 44px -16px rgb(0 0 0 / .8);
+  --stage-ground:  #10171a;
+  --stage-grid:    rgb(228 234 234 / .05);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:where(a) { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.wrap {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0;
+}
+
+/* ============================================================
+   PROTOTYPE CHROME — clearly separated from the hero itself
+   ============================================================ */
+.chrome {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-sunk);
+}
+.chrome__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  flex-wrap: wrap;
+}
+.chrome__label {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.chrome__dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.btn {
+  font: inherit;
+  font-size: var(--step--1);
+  font-family: var(--font-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  padding: .45rem .8rem;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.btn:hover { border-color: var(--text-muted); background: var(--bg); }
+.btn[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 6vw, 4.5rem);
+}
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .hero__grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
+}
+
+.hero__copy { display: flex; flex-direction: column; gap: 1.35rem; align-items: flex-start; }
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  line-height: 1.02;
+  letter-spacing: -.02em;
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+}
+.hero h1 em {
+  font-style: normal;
+  display: block;
+  color: var(--text-muted);
+  font-size: .58em;
+  letter-spacing: -.005em;
+  margin-top: .35em;
+  font-weight: 400;
+}
+.hero__lede {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--text-muted);
+  font-size: var(--step-1);
+  line-height: 1.62;
+}
+.hero__lede b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.hero__actions { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+
+.cta {
+  font: inherit;
+  font-weight: 600;
+  font-size: var(--step-0);
+  background: var(--brand);
+  color: var(--on-brand);
+  border: 1px solid var(--brand);
+  border-radius: 999px;
+  padding: .7rem 1.5rem;
+  cursor: pointer;
+  transition: background .18s, transform .18s;
+}
+.cta:hover { background: var(--brand-hover); transform: translateY(-1px); }
+.cta--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.cta--ghost:hover { background: var(--surface); border-color: var(--text-muted); }
+
+.incubated {
+  display: flex; align-items: center; gap: .85rem;
+  padding-top: .5rem;
+  flex-wrap: wrap;
+}
+.incubated__mark {
+  width: 34px; height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  display: grid; place-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  background: var(--surface);
+}
+
+/* ============================================================
+   STAGE — the helix lives in a bordered specimen case, not
+   full-bleed. This containment is the main "not overkill" move.
+   ============================================================ */
+.stage {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background:
+    linear-gradient(var(--stage-grid) 1px, transparent 1px) 0 0 / 100% 34px,
+    linear-gradient(90deg, var(--stage-grid) 1px, transparent 1px) 0 0 / 34px 100%,
+    var(--stage-ground);
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.stage__viewport {
+  position: relative;
+  height: clamp(400px, 52vw, 476px);
+  perspective: 1500px;
+  perspective-origin: 50% 46%;
+  cursor: grab;
+}
+.stage__viewport.is-dragging { cursor: grabbing; }
+
+.helix {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.card {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 288px;
+  margin-left: -144px;
+  margin-top: -186px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  transition: box-shadow .3s ease, border-color .3s ease;
+}
+.card.is-front {
+  box-shadow: var(--shadow-lift);
+  border-color: var(--border-strong);
+}
+.card__canvas {
+  display: block;
+  width: 288px;
+  height: 248px;
+  background: var(--surface-sunk);
+}
+.card__meta {
+  padding: .8rem .95rem 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  min-height: 122px;
+}
+.card__segment {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+.card__title {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--text);
+}
+.card__note {
+  margin: 0;
+  font-size: var(--step--1);
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+/* stage controls */
+.stage__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .55rem .7rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.dots { display: flex; gap: .4rem; align-items: center; }
+.dot {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  width: 26px; height: 3px;
+  border-radius: 2px;
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: background .2s;
+}
+.dot[aria-current="true"] { background: var(--accent); }
+.dot:hover { background: var(--text-muted); }
+
+.stage__nav { display: flex; gap: .35rem; }
+.iconbtn {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.iconbtn:hover { color: var(--text); border-color: var(--text-muted); }
+.iconbtn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ============================================================
+   LAB — utilitarian, instrument-panel register
+   ============================================================ */
+.lab {
+  border-top: 1px solid var(--border);
+  background: var(--surface-sunk);
+  padding-block: clamp(2.5rem, 5vw, 3.5rem);
+}
+.lab__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.lab__head h2 {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -.01em;
+}
+.presets { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+.panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.panel {
+  background: var(--surface);
+  padding: 1.05rem 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+}
+.panel > h3 {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0;
+  padding-bottom: .55rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ctrl { display: grid; gap: .3rem; }
+.ctrl__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+}
+.ctrl label { font-size: var(--step--1); color: var(--text-muted); }
+.ctrl output {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 16px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px; background: var(--border-strong); border-radius: 2px;
+}
+input[type="range"]::-moz-range-track {
+  height: 2px; background: var(--border-strong); border-radius: 2px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--text); border: 0; margin-top: -5px;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--text); border: 0;
+}
+
+.toggles {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-top: 1.25rem;
+}
+
+/* ============================================================
+   NOTES
+   ============================================================ */
+.notes { padding-block: clamp(2.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem); }
+.notes h2 {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+  letter-spacing: -.01em;
+}
+.notes__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.note { display: flex; flex-direction: column; gap: .5rem; }
+.note h3 {
+  font-size: var(--step-0);
+  font-weight: 650;
+  margin: 0;
+  padding-top: .7rem;
+  border-top: 2px solid var(--accent);
+  color: var(--text);
+}
+.note p { margin: 0; color: var(--text-muted); font-size: var(--step-0); line-height: 1.6; }
+.note code {
+  font-family: var(--font-mono);
+  font-size: .9em;
+  background: var(--surface-sunk);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: .05em .35em;
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .cta:hover { transform: none; }
+}
+</style>
+
+<header class="chrome">
+  <div class="wrap chrome__inner">
+    <span class="chrome__label"><span class="chrome__dot"></span>Motion experiment · hero candidate</span>
+    <button class="btn" id="themeBtn" type="button">Theme: system</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">Flood risk intelligence · India</p>
+        <h1>Stay ahead of floods<em>Predict, plan &amp; protect</em></h1>
+        <p class="hero__lede">
+          India's flood-related economic losses rose <b>1400%</b> between 1990 and 2020.
+          We map where the water goes next — street by street, decade by decade.
+        </p>
+        <div class="hero__actions">
+          <button class="cta" type="button">Book a demo</button>
+          <button class="cta cta--ghost" type="button">See how it works</button>
+        </div>
+        <div class="incubated">
+          <p class="eyebrow">Incubated in</p>
+          <span class="incubated__mark" aria-hidden="true">IN&nbsp;1</span>
+          <span class="incubated__mark" aria-hidden="true">IN&nbsp;2</span>
+          <span class="incubated__mark" aria-hidden="true">IN&nbsp;3</span>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage__viewport" id="viewport"
+             role="group" aria-roledescription="carousel"
+             aria-label="FloodGuard deliverables" tabindex="0">
+          <div class="helix" id="helix"></div>
+        </div>
+        <div class="stage__bar">
+          <div class="dots" id="dots" role="tablist" aria-label="Select deliverable"></div>
+          <div class="stage__nav">
+            <button class="iconbtn" id="pauseBtn" type="button" aria-label="Pause automatic rotation">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3v10M10 3v10"/></svg>
+            </button>
+            <button class="iconbtn" id="prevBtn" type="button" aria-label="Previous deliverable">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+            </button>
+            <button class="iconbtn" id="nextBtn" type="button" aria-label="Next deliverable">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
+            </button>
+          </div>
+        </div>
+        <p class="sr-only" id="live" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab">
+    <div class="wrap">
+      <div class="lab__head">
+        <h2>Tuning</h2>
+        <div class="presets" id="presets">
+          <button class="btn" type="button" data-preset="restrained" aria-pressed="true">Restrained</button>
+          <button class="btn" type="button" data-preset="balanced" aria-pressed="false">Balanced</button>
+          <button class="btn" type="button" data-preset="expressive" aria-pressed="false">Expressive</button>
+        </div>
+      </div>
+
+      <div class="panels" id="panels"></div>
+
+      <div class="toggles">
+        <button class="btn" id="replayBtn" type="button">Replay entry</button>
+        <button class="btn" id="rmBtn" type="button" aria-pressed="false">Force reduced motion</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div class="wrap">
+      <h2>Why this version is quiet</h2>
+      <div class="notes__grid">
+        <div class="note">
+          <h3>Dither is cartography, not nostalgia</h3>
+          <p>Ordered Bayer dithering is what quantized raster geospatial data actually looks like. Used here it reads as instrument output rather than a retro web effect — which is the whole difference between "technical" and "flashy" for a procurement audience.</p>
+        </div>
+        <div class="note">
+          <h3>Dissolve carries information</h3>
+          <p>Breakdown is mapped to focus: the centered card resolves to clean pixels, peripheral cards decay into their grid. The effect states which deliverable you're looking at instead of just decorating the scene.</p>
+        </div>
+        <div class="note">
+          <h3>The helix is a specimen case</h3>
+          <p>Contained in a bordered panel beside the headline, not a full-bleed background. Shallow arc, <code>34°</code> between cards, small vertical rise. It reads as a product showcase, and the copy still leads.</p>
+        </div>
+        <div class="note">
+          <h3>The cursor trail paints data, not colour</h3>
+          <p>Moving across a card dissolves it locally into its pixel grid, healing behind you. It's the same "this is data, not a photograph" argument as the dissolve — a rainbow smear would have said nothing.</p>
+        </div>
+        <div class="note">
+          <h3>Discrete advance, never a spin</h3>
+          <p>Cards step on a timer with eased transitions rather than rotating continuously. There's a real pause control — WCAG 2.2.2 requires auto-moving content be pausable, and public-sector procurement checks for it.</p>
+        </div>
+        <div class="note">
+          <h3>It degrades to a still</h3>
+          <p>Under <code>prefers-reduced-motion</code> the auto-advance stops, entry becomes a short fade, and the trail switches off. Card text is real DOM throughout, so it survives with no canvas at all.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ==========================================================
+     THEME
+     ========================================================== */
+  const themeBtn = document.getElementById("themeBtn");
+  const modes = ["system", "light", "dark"];
+  let modeIdx = 0;
+  function applyTheme() {
+    const m = modes[modeIdx];
+    if (m === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", m);
+    themeBtn.textContent = "Theme: " + m;
+    readAccent();
+    cards.forEach(c => { c.dirty = true; });
+  }
+  themeBtn.addEventListener("click", () => {
+    modeIdx = (modeIdx + 1) % modes.length;
+    applyTheme();
+  });
+
+  let accentRGB = [200, 121, 47];
+  function readAccent() {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue("--accent-rgb").trim();
+    const parts = raw.split(/[\s,]+/).map(Number).filter(n => !Number.isNaN(n));
+    if (parts.length === 3) accentRGB = parts;
+  }
+
+  /* ==========================================================
+     TUNABLES
+     ========================================================== */
+  const PRESETS = {
+    restrained: {
+      radius: 236, angleStep: 34, pitch: 22, depthDissolve: 0.52, depthFade: 0.5,
+      depthBlur: 0.5, pixelSize: 4, sweep: 0.5, edgeTint: 0.18, posterize: 0.5,
+      entryDuration: 900, entryStagger: 90, entryRise: 16,
+      paintStrength: 0.4, paintRadius: 24, paintDecay: 520, interval: 5200
+    },
+    balanced: {
+      radius: 264, angleStep: 40, pitch: 30, depthDissolve: 0.68, depthFade: 0.62,
+      depthBlur: 0.9, pixelSize: 5, sweep: 0.58, edgeTint: 0.3, posterize: 0.65,
+      entryDuration: 1050, entryStagger: 110, entryRise: 26,
+      paintStrength: 0.58, paintRadius: 28, paintDecay: 700, interval: 4600
+    },
+    expressive: {
+      radius: 300, angleStep: 48, pitch: 44, depthDissolve: 0.9, depthFade: 0.72,
+      depthBlur: 1.5, pixelSize: 7, sweep: 0.72, edgeTint: 0.5, posterize: 0.85,
+      entryDuration: 1400, entryStagger: 150, entryRise: 46,
+      paintStrength: 0.85, paintRadius: 34, paintDecay: 1000, interval: 3800
+    }
+  };
+
+  const T = Object.assign({}, PRESETS.restrained);
+
+  const CONTROLS = [
+    { group: "Helix", key: "radius",        label: "Radius",           min: 140, max: 360, step: 2,   unit: "px" },
+    { group: "Helix", key: "angleStep",     label: "Angle between",    min: 16,  max: 60,  step: 1,   unit: "°" },
+    { group: "Helix", key: "pitch",         label: "Vertical rise",    min: 0,   max: 70,  step: 1,   unit: "px" },
+    { group: "Helix", key: "depthFade",     label: "Depth fade",       min: 0,   max: 0.9, step: .02 },
+    { group: "Helix", key: "depthBlur",     label: "Depth blur",       min: 0,   max: 3,   step: .1,  unit: "px" },
+    { group: "Helix", key: "interval",      label: "Auto-advance",     min: 2500,max: 9000,step: 100, unit: "ms" },
+
+    { group: "Dither", key: "pixelSize",    label: "Pixel size",       min: 2,   max: 10,  step: 1,   unit: "px" },
+    { group: "Dither", key: "depthDissolve",label: "Peripheral break", min: 0,   max: 1,   step: .02 },
+    { group: "Dither", key: "sweep",        label: "Sweep vs scatter", min: 0,   max: 1,   step: .02 },
+    { group: "Dither", key: "posterize",    label: "Posterise",        min: 0,   max: 1,   step: .02 },
+    { group: "Dither", key: "edgeTint",     label: "Edge tint",        min: 0,   max: 1,   step: .02 },
+
+    { group: "Entry", key: "entryDuration", label: "Duration",         min: 200, max: 2200,step: 20,  unit: "ms" },
+    { group: "Entry", key: "entryStagger",  label: "Stagger",          min: 0,   max: 320, step: 5,   unit: "ms" },
+    { group: "Entry", key: "entryRise",     label: "Rise",             min: 0,   max: 90,  step: 1,   unit: "px" },
+
+    { group: "Cursor", key: "paintStrength",label: "Trail strength",   min: 0,   max: 1,   step: .02 },
+    { group: "Cursor", key: "paintRadius",  label: "Trail radius",     min: 8,   max: 60,  step: 1,   unit: "px" },
+    { group: "Cursor", key: "paintDecay",   label: "Trail persistence",min: 120, max: 2000,step: 20,  unit: "ms" }
+  ];
+
+  /* ==========================================================
+     CONTENT — real segments and deliverables from the site.
+     Swap the procedural art for real screenshots at build time.
+     ========================================================== */
+  const DECK = [
+    { segment: "Governments & urban planners", title: "Flood vulnerability zones",
+      note: "High-resolution exposure surfaces to guide zoning and land use.", art: "vulnerability" },
+    { segment: "Insurance & financial", title: "Future risk projection",
+      note: "Climate-model scenarios for underwriting and portfolio screening.", art: "projection" },
+    { segment: "Governments & urban planners", title: "Drainage capacity model",
+      note: "Stormwater network stress under present and projected rainfall.", art: "drainage" },
+    { segment: "Communities & individuals", title: "Property risk scorecard",
+      note: "Address-level risk profile for buyers, owners and associations.", art: "scorecard" },
+    { segment: "Businesses", title: "Site exposure assessment",
+      note: "Flood risk for current and planned sites, aligned to ESG reporting.", art: "terrain" }
+  ];
+
+  /* ==========================================================
+     PROCEDURAL MAP ART
+     ========================================================== */
+  const ART_W = 288, ART_H = 248;
+
+  function hash2(x, y, s) {
+    const n = Math.sin(x * 127.1 + y * 311.7 + s * 74.7) * 43758.5453;
+    return n - Math.floor(n);
+  }
+  function vnoise(x, y, s) {
+    const xi = Math.floor(x), yi = Math.floor(y);
+    const xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const a = hash2(xi, yi, s), b = hash2(xi + 1, yi, s);
+    const c = hash2(xi, yi + 1, s), d = hash2(xi + 1, yi + 1, s);
+    return a * (1 - u) * (1 - v) + b * u * (1 - v) + c * (1 - u) * v + d * u * v;
+  }
+  function fbm(x, y, s, oct) {
+    let t = 0, amp = 0.5, f = 1;
+    for (let i = 0; i < oct; i++) { t += amp * vnoise(x * f, y * f, s + i * 13); f *= 2; amp *= 0.5; }
+    return t;
+  }
+
+  const RAMP_RISK = [[0,[236,232,222]],[.3,[228,217,194]],[.55,[214,155,84]],[.78,[176,96,62]],[1,[110,55,48]]];
+  const RAMP_COOL = [[0,[24,32,38]],[.35,[58,80,92]],[.68,[128,150,158]],[1,[214,222,222]]];
+  const RAMP_WATER= [[0,[18,26,32]],[.45,[46,74,92]],[.75,[104,144,164]],[1,[186,208,216]]];
+
+  function ramp(stops, t) {
+    t = Math.min(1, Math.max(0, t));
+    for (let i = 1; i < stops.length; i++) {
+      if (t <= stops[i][0]) {
+        const [t0, c0] = stops[i - 1], [t1, c1] = stops[i];
+        const k = (t - t0) / (t1 - t0 || 1);
+        return [c0[0] + (c1[0] - c0[0]) * k, c0[1] + (c1[1] - c0[1]) * k, c0[2] + (c1[2] - c0[2]) * k];
+      }
+    }
+    return stops[stops.length - 1][1];
+  }
+
+  function makeArt(kind, seed) {
+    const cv = document.createElement("canvas");
+    cv.width = ART_W; cv.height = ART_H;
+    const ctx = cv.getContext("2d");
+    const id = ctx.createImageData(ART_W, ART_H);
+    const d = id.data;
+
+    for (let y = 0; y < ART_H; y++) {
+      for (let x = 0; x < ART_W; x++) {
+        const o = (y * ART_W + x) * 4;
+        const nx = x / 46, ny = y / 46;
+        let col;
+
+        if (kind === "vulnerability") {
+          const elev = fbm(nx, ny, seed, 5);
+          const wet = Math.pow(1 - elev, 2.1);
+          col = ramp(RAMP_RISK, wet);
+          const band = Math.abs((elev * 14) % 1 - .5);
+          if (band < .045) { col = [col[0] * .82, col[1] * .82, col[2] * .82]; }
+
+        } else if (kind === "projection") {
+          const base = fbm(nx * .7, ny * .7, seed, 4);
+          const drift = fbm(nx * 2.2 + 8, ny * 2.2, seed + 3, 3);
+          col = ramp(RAMP_RISK, Math.min(1, base * .55 + drift * .65));
+          if (x % 48 < 1 || y % 48 < 1) col = [col[0] * .9, col[1] * .9, col[2] * .9];
+
+        } else if (kind === "drainage") {
+          const t = fbm(nx * 1.1, ny * 1.1, seed, 4);
+          col = ramp(RAMP_WATER, t * .55 + .12);
+          const gx = Math.abs((x / 24 + fbm(nx, ny, seed + 9, 2) * .6) % 1 - .5);
+          const gy = Math.abs((y / 24 + fbm(nx, ny, seed + 4, 2) * .6) % 1 - .5);
+          if (gx < .05 || gy < .05) col = [col[0] + 58, col[1] + 62, col[2] + 60];
+          const chan = Math.abs(fbm(nx * 1.6, ny * 1.6, seed + 21, 3) - .5);
+          if (chan < .035) col = ramp(RAMP_WATER, .95);
+
+        } else if (kind === "scorecard") {
+          const cell = 16;
+          const cx = Math.floor(x / cell), cy = Math.floor(y / cell);
+          const v = fbm(cx * .42, cy * .42, seed, 3);
+          col = ramp(RAMP_RISK, Math.pow(v, 1.25));
+          if (x % cell === 0 || y % cell === 0) col = [col[0] * .86, col[1] * .86, col[2] * .86];
+
+        } else {
+          const elev = fbm(nx * .9, ny * .9, seed, 5);
+          col = ramp(RAMP_COOL, elev);
+          const iso = Math.abs((elev * 20) % 1 - .5);
+          if (iso < .05) col = [col[0] + 34, col[1] + 36, col[2] + 34];
+        }
+
+        d[o] = col[0]; d[o + 1] = col[1]; d[o + 2] = col[2]; d[o + 3] = 255;
+      }
+    }
+    ctx.putImageData(id, 0, 0);
+    return cv;
+  }
+
+  /* ==========================================================
+     BAYER 8×8
+     ========================================================== */
+  const BAYER = (() => {
+    const m = [
+       0,32, 8,40, 2,34,10,42,
+      48,16,56,24,50,18,58,26,
+      12,44, 4,36,14,46, 6,38,
+      60,28,52,20,62,30,54,22,
+       3,35,11,43, 1,33, 9,41,
+      51,19,59,27,49,17,57,25,
+      15,47, 7,39,13,45, 5,37,
+      63,31,55,23,61,29,53,21
+    ];
+    return Float32Array.from(m, v => (v + 0.5) / 64);
+  })();
+
+  /* ==========================================================
+     BUILD CARDS
+     ========================================================== */
+  const helix = document.getElementById("helix");
+  const dotsEl = document.getElementById("dots");
+  const live = document.getElementById("live");
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const cards = [];
+
+  DECK.forEach((item, i) => {
+    const el = document.createElement("article");
+    el.className = "card";
+    el.innerHTML =
+      '<canvas class="card__canvas"></canvas>' +
+      '<div class="card__meta">' +
+        '<p class="card__segment">' + item.segment + '</p>' +
+        '<h3 class="card__title">' + item.title + '</h3>' +
+        '<p class="card__note">' + item.note + '</p>' +
+      '</div>';
+    helix.appendChild(el);
+
+    const canvas = el.querySelector(".card__canvas");
+    canvas.width = Math.round(ART_W * dpr);
+    canvas.height = Math.round(ART_H * dpr);
+
+    const card = {
+      el, canvas,
+      ctx: canvas.getContext("2d"),
+      art: makeArt(item.art, i * 37 + 5),
+      small: document.createElement("canvas"),
+      sctx: null, imgData: null, srcData: null,
+      paint: null, gw: 0, gh: 0,
+      dissolve: 1, lastDissolve: -1, dirty: true,
+      entryStart: 0, painting: false
+    };
+    card.sctx = card.small.getContext("2d", { willReadFrequently: true });
+    cards.push(card);
+
+    const dot = document.createElement("button");
+    dot.className = "dot";
+    dot.type = "button";
+    dot.setAttribute("role", "tab");
+    dot.setAttribute("aria-label", item.title);
+    dot.setAttribute("aria-current", i === 0 ? "true" : "false");
+    dot.addEventListener("click", () => { goTo(i); pause(); });
+    dotsEl.appendChild(dot);
+
+    /* paintable trail — offsetX/Y stay correct through the 3D transform */
+    canvas.addEventListener("pointermove", e => {
+      if (reducedMotion() || T.paintStrength <= 0) return;
+      const rect = canvas.getBoundingClientRect();
+      const px = (e.offsetX / rect.width) * card.gw;
+      const py = (e.offsetY / rect.height) * card.gh;
+      stamp(card, px, py);
+      card.painting = true;
+      card.dirty = true;
+    });
+  });
+
+  function resizeGrids() {
+    const ps = Math.max(2, Math.round(T.pixelSize));
+    const gw = Math.max(8, Math.round(ART_W / ps));
+    const gh = Math.max(8, Math.round(ART_H / ps));
+    cards.forEach(c => {
+      if (c.gw === gw && c.gh === gh) return;
+      c.gw = gw; c.gh = gh;
+      c.small.width = gw; c.small.height = gh;
+      c.sctx.imageSmoothingEnabled = true;
+      c.sctx.clearRect(0, 0, gw, gh);
+      c.sctx.drawImage(c.art, 0, 0, ART_W, ART_H, 0, 0, gw, gh);
+      c.srcData = c.sctx.getImageData(0, 0, gw, gh).data.slice();
+      c.imgData = c.sctx.createImageData(gw, gh);
+      c.paint = new Float32Array(gw * gh);
+      c.dirty = true;
+    });
+  }
+
+  let lastStamp = new WeakMap();
+  function stamp(card, px, py) {
+    const prev = lastStamp.get(card);
+    const steps = prev ? Math.min(12, Math.ceil(Math.hypot(px - prev.x, py - prev.y))) : 1;
+    for (let s = 0; s < steps; s++) {
+      const k = steps === 1 ? 1 : s / (steps - 1);
+      const x = prev ? prev.x + (px - prev.x) * k : px;
+      const y = prev ? prev.y + (py - prev.y) * k : py;
+      blob(card, x, y);
+    }
+    lastStamp.set(card, { x: px, y: py });
+  }
+  function blob(card, cx, cy) {
+    const r = Math.max(1, T.paintRadius / Math.max(2, T.pixelSize));
+    const x0 = Math.max(0, Math.floor(cx - r)), x1 = Math.min(card.gw - 1, Math.ceil(cx + r));
+    const y0 = Math.max(0, Math.floor(cy - r)), y1 = Math.min(card.gh - 1, Math.ceil(cy + r));
+    const p = card.paint;
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        const dist = Math.hypot(x - cx, y - cy) / r;
+        if (dist > 1) continue;
+        const v = (1 - dist) * (1 - dist);
+        const i = y * card.gw + x;
+        if (v > p[i]) p[i] = v;
+      }
+    }
+  }
+
+  /* ==========================================================
+     DITHER RENDER
+     ========================================================== */
+  function renderCard(c) {
+    const { gw, gh, srcData, paint } = c;
+    const out = c.imgData.data;
+    const D = c.dissolve;
+    const sweep = T.sweep, edge = T.edgeTint, post = T.posterize;
+    const pStr = T.paintStrength;
+    const [er, eg, eb] = accentRGB;
+
+    for (let y = 0; y < gh; y++) {
+      const gy = 1 - y / gh;
+      for (let x = 0; x < gw; x++) {
+        const i = y * gw + x;
+        const o = i * 4;
+        const b = BAYER[(y & 7) * 8 + (x & 7)];
+        const grad = (x / gw) * 0.45 + gy * 0.55;
+        const jit = Math.min(1, Math.max(0, grad + (b - 0.5) * 0.4));
+        const thr = b * (1 - sweep) + jit * sweep;
+
+        let d = D;
+        const p = paint[i];
+        if (p > 0.001) d = d + (1 - d) * p * pStr;
+
+        if (d >= thr) { out[o + 3] = 0; continue; }
+
+        let r = srcData[o], g = srcData[o + 1], bl = srcData[o + 2];
+
+        const pAmt = post * d;
+        if (pAmt > 0.02) {
+          const levels = Math.max(3, Math.round(40 - 36 * Math.pow(pAmt, 0.7)));
+          const q = 255 / (levels - 1);
+          r = Math.round(r / q) * q;
+          g = Math.round(g / q) * q;
+          bl = Math.round(bl / q) * q;
+        }
+
+        const prox = thr - d;
+        if (prox < 0.14 && edge > 0) {
+          const k = (1 - prox / 0.14) * edge;
+          r += (er - r) * k; g += (eg - g) * k; bl += (eb - bl) * k;
+        }
+
+        out[o] = r; out[o + 1] = g; out[o + 2] = bl; out[o + 3] = 255;
+      }
+    }
+
+    c.sctx.putImageData(c.imgData, 0, 0);
+    const ctx = c.ctx;
+    ctx.clearRect(0, 0, c.canvas.width, c.canvas.height);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(c.small, 0, 0, gw, gh, 0, 0, c.canvas.width, c.canvas.height);
+  }
+
+  /* ==========================================================
+     CAROUSEL STATE
+     ========================================================== */
+  const viewport = document.getElementById("viewport");
+  let index = 0;
+  let t = 0;
+  let paused = false;
+  let forcedRM = false;
+  let lastAdvance = performance.now();
+  let entryBegan = 0;
+
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function reducedMotion() { return forcedRM || mq.matches; }
+
+  function goTo(i) {
+    index = ((i % cards.length) + cards.length) % cards.length;
+    lastAdvance = performance.now();
+    Array.from(dotsEl.children).forEach((d, k) =>
+      d.setAttribute("aria-current", k === index ? "true" : "false"));
+    live.textContent = DECK[index].title + " — " + (index + 1) + " of " + DECK.length;
+  }
+
+  function pause() {
+    paused = true;
+    pauseBtn.setAttribute("aria-label", "Resume automatic rotation");
+    pauseBtn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z"/></svg>';
+  }
+  function resume() {
+    paused = false;
+    lastAdvance = performance.now();
+    pauseBtn.setAttribute("aria-label", "Pause automatic rotation");
+    pauseBtn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3v10M10 3v10"/></svg>';
+  }
+
+  const pauseBtn = document.getElementById("pauseBtn");
+  pauseBtn.addEventListener("click", () => {
+    delete pauseBtn.dataset.auto;   /* an explicit click outranks hover-pause */
+    paused ? resume() : pause();
+  });
+  document.getElementById("prevBtn").addEventListener("click", () => { goTo(index - 1); pause(); });
+  document.getElementById("nextBtn").addEventListener("click", () => { goTo(index + 1); pause(); });
+
+  viewport.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft") { goTo(index - 1); pause(); e.preventDefault(); }
+    if (e.key === "ArrowRight") { goTo(index + 1); pause(); e.preventDefault(); }
+  });
+  viewport.addEventListener("mouseenter", () => {
+    if (paused) return;
+    pauseBtn.dataset.auto = "1";
+    pause();
+  });
+  viewport.addEventListener("mouseleave", () => {
+    if (pauseBtn.dataset.auto !== "1") return;
+    delete pauseBtn.dataset.auto;
+    resume();
+  });
+  viewport.addEventListener("focusin", pause);
+
+  /* drag */
+  let drag = null;
+  viewport.addEventListener("pointerdown", e => {
+    drag = { x: e.clientX, t: t };
+    viewport.classList.add("is-dragging");
+    viewport.setPointerCapture(e.pointerId);
+    pause();
+  });
+  viewport.addEventListener("pointermove", e => {
+    if (!drag) return;
+    t = drag.t - (e.clientX - drag.x) / 150;
+    cards.forEach(c => { c.dirty = true; });
+  });
+  function endDrag() {
+    if (!drag) return;
+    drag = null;
+    viewport.classList.remove("is-dragging");
+    goTo(Math.round(t));
+  }
+  viewport.addEventListener("pointerup", endDrag);
+  viewport.addEventListener("pointercancel", endDrag);
+
+  /* ==========================================================
+     ENTRY
+     ========================================================== */
+  function replay() {
+    entryBegan = performance.now();
+    cards.forEach(c => { c.dirty = true; });
+  }
+  document.getElementById("replayBtn").addEventListener("click", replay);
+
+  const easeOutCubic = x => 1 - Math.pow(1 - x, 3);
+
+  /* ==========================================================
+     LOOP
+     ========================================================== */
+  let prevTime = performance.now();
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - prevTime) / 1000);
+    prevTime = now;
+    const rm = reducedMotion();
+
+    if (!paused && !drag && !rm && now - lastAdvance > T.interval) goTo(index + 1);
+
+    if (!drag) {
+      const k = rm ? 14 : 6;
+      const next = t + (index - t) * (1 - Math.exp(-dt * k));
+      if (Math.abs(next - t) > 0.00005) { t = next; cards.forEach(c => { c.dirty = true; }); }
+      else t = index;
+    }
+
+    const vw = viewport.clientWidth;
+    const scale = Math.min(1, Math.max(0.62, vw / 620));
+    const radius = T.radius * scale;
+    const maxAngle = T.angleStep * 2.4;
+
+    cards.forEach((c, i) => {
+      const off = i - t;
+      const ang = off * T.angleStep;
+      const rad = ang * Math.PI / 180;
+      const x = Math.sin(rad) * radius;
+      const z = Math.cos(rad) * radius - radius;
+      const y = off * T.pitch * scale;
+
+      const prox = Math.min(1, Math.abs(ang) / maxAngle);
+
+      /* entry — held at zero until the stage scrolls into view */
+      let entry = 0, rise = rm ? 0 : T.entryRise;
+      if (entryBegan) {
+        const local = now - entryBegan - i * (rm ? 0 : T.entryStagger);
+        const dur = rm ? 240 : T.entryDuration;
+        const p = Math.min(1, Math.max(0, local / dur));
+        entry = easeOutCubic(p);
+        rise = (1 - entry) * (rm ? 0 : T.entryRise);
+        if (p < 1) c.dirty = true;
+      }
+
+      const depthDis = Math.pow(prox, 1.35) * T.depthDissolve;
+      const entryDis = rm && entryBegan ? 0 : (1 - entry);
+      const target = Math.max(depthDis, entryDis);
+
+      if (Math.abs(target - c.dissolve) > 0.0005) { c.dissolve = target; c.dirty = true; }
+
+      const cardScale = (0.86 + 0.14 * (1 - prox)) * (0.985 + 0.015 * entry);
+      const opacity = (1 - prox * T.depthFade) * entry;
+      const blur = prox * T.depthBlur;
+
+      c.el.style.transform =
+        "translate3d(" + x.toFixed(2) + "px," + (y + rise).toFixed(2) + "px," + z.toFixed(2) + "px)" +
+        " rotateY(" + (-ang * 0.42).toFixed(2) + "deg)" +
+        " scale(" + cardScale.toFixed(4) + ")";
+      c.el.style.opacity = opacity.toFixed(3);
+      c.el.style.filter = blur > 0.05 ? "blur(" + blur.toFixed(2) + "px)" : "none";
+      c.el.style.zIndex = String(200 + Math.round(Math.cos(rad) * 100));
+      c.el.classList.toggle("is-front", prox < 0.12);
+
+      /* paint decay */
+      if (c.painting) {
+        const half = Math.max(60, T.paintDecay);
+        const f = Math.pow(0.5, (dt * 1000) / half);
+        let any = false;
+        const p = c.paint;
+        for (let k2 = 0; k2 < p.length; k2++) {
+          if (p[k2] > 0.002) { p[k2] *= f; any = true; }
+          else if (p[k2] !== 0) p[k2] = 0;
+        }
+        c.dirty = true;
+        if (!any) c.painting = false;
+      }
+
+      if (c.dirty) { renderCard(c); c.dirty = false; }
+    });
+
+    requestAnimationFrame(frame);
+  }
+
+  /* ==========================================================
+     LAB UI
+     ========================================================== */
+  const panels = document.getElementById("panels");
+  const inputs = {};
+  const groups = [...new Set(CONTROLS.map(c => c.group))];
+
+  groups.forEach(g => {
+    const panel = document.createElement("div");
+    panel.className = "panel";
+    const h = document.createElement("h3");
+    h.textContent = g;
+    panel.appendChild(h);
+
+    CONTROLS.filter(c => c.group === g).forEach(c => {
+      const wrap = document.createElement("div");
+      wrap.className = "ctrl";
+      const id = "ctl-" + c.key;
+      wrap.innerHTML =
+        '<div class="ctrl__row"><label for="' + id + '">' + c.label + '</label>' +
+        '<output id="out-' + c.key + '"></output></div>' +
+        '<input type="range" id="' + id + '" min="' + c.min + '" max="' + c.max +
+        '" step="' + c.step + '">';
+      panel.appendChild(wrap);
+
+      const input = wrap.querySelector("input");
+      const out = wrap.querySelector("output");
+      inputs[c.key] = { input, out, cfg: c };
+      input.addEventListener("input", () => {
+        T[c.key] = parseFloat(input.value);
+        out.textContent = fmt(c, T[c.key]);
+        if (c.key === "pixelSize") resizeGrids();
+        cards.forEach(x => { x.dirty = true; });
+        setPresetActive(null);
+      });
+    });
+    panels.appendChild(panel);
+  });
+
+  function fmt(cfg, v) {
+    const s = cfg.step < 1 ? v.toFixed(2) : String(Math.round(v));
+    return s + (cfg.unit || "");
+  }
+  function syncInputs() {
+    Object.values(inputs).forEach(({ input, out, cfg }) => {
+      input.value = T[cfg.key];
+      out.textContent = fmt(cfg, T[cfg.key]);
+    });
+  }
+  function setPresetActive(name) {
+    document.querySelectorAll("#presets .btn").forEach(b =>
+      b.setAttribute("aria-pressed", String(b.dataset.preset === name)));
+  }
+  document.getElementById("presets").addEventListener("click", e => {
+    const b = e.target.closest("[data-preset]");
+    if (!b) return;
+    Object.assign(T, PRESETS[b.dataset.preset]);
+    setPresetActive(b.dataset.preset);
+    syncInputs();
+    resizeGrids();
+    replay();
+  });
+
+  const rmBtn = document.getElementById("rmBtn");
+  rmBtn.addEventListener("click", () => {
+    forcedRM = !forcedRM;
+    rmBtn.setAttribute("aria-pressed", String(forcedRM));
+    cards.forEach(c => { c.paint && c.paint.fill(0); c.dirty = true; });
+    replay();
+  });
+
+  /* ==========================================================
+     GO
+     ========================================================== */
+  readAccent();
+  resizeGrids();
+  syncInputs();
+  goTo(0);
+
+  const io = new IntersectionObserver(entries => {
+    if (entries.some(e => e.isIntersecting)) { replay(); io.disconnect(); }
+  }, { threshold: 0.25 });
+  io.observe(viewport);
+
+  requestAnimationFrame(frame);
+})();
+</script>
