@@ -1,6 +1,7 @@
 import { primaryNav, isGroup } from "@/content/nav";
 import NavDropdown from "./NavDropdown";
 import MobileNav from "./MobileNav";
+import ThemeToggle from "./ThemeToggle";
 
 /**
  * Sticky header. Logo + nav with Products/Resources dropdowns.
@@ -27,7 +28,7 @@ export default function Header() {
           )}
         </nav>
 
-        {/* TODO: primary CTA button */}
+        <ThemeToggle />
         <MobileNav />
       </div>
     </header>
