@@ -22,6 +22,11 @@
   --brand2:var(--b600);
   --onBrand:#fff;
 
+  /* Menus and dropdowns sit over busy content — they need to read as solid
+     surfaces, not frosted glass. Separate token from the decorative glass. */
+  --panelBg:#fbfdfe;
+  --panelEdge:rgba(1,42,74,.14);
+  --panelShadow:0 2px 6px rgba(1,42,74,.07),0 26px 60px -22px rgba(1,42,74,.4);
   --glassA:rgba(255,255,255,.74);
   --glassB:rgba(255,255,255,.38);
   --glassEdge:rgba(255,255,255,.85);
@@ -70,6 +75,8 @@
   --ink:#e6f1f8;--ink2:#a6c3d4;--ink3:#6f92a7;
   --line:rgba(137,194,217,.13);--line2:rgba(137,194,217,.24);
   --brand:var(--b200);--brand2:var(--b300);--onBrand:#022032;
+  --panelBg:#0a1d2b;--panelEdge:rgba(137,194,217,.22);
+  --panelShadow:0 2px 6px rgba(0,0,0,.6),0 26px 60px -22px rgba(0,0,0,.9);
   --glassA:rgba(20,52,74,.62);--glassB:rgba(10,32,48,.4);
   --glassEdge:rgba(137,194,217,.2);--glassGlow:rgba(137,194,217,.14);
   --glassShade:rgba(0,0,0,.7);
@@ -86,6 +93,8 @@
   --ink:#e6f1f8;--ink2:#a6c3d4;--ink3:#6f92a7;
   --line:rgba(137,194,217,.13);--line2:rgba(137,194,217,.24);
   --brand:var(--b200);--brand2:var(--b300);--onBrand:#022032;
+  --panelBg:#0a1d2b;--panelEdge:rgba(137,194,217,.22);
+  --panelShadow:0 2px 6px rgba(0,0,0,.6),0 26px 60px -22px rgba(0,0,0,.9);
   --glassA:rgba(20,52,74,.62);--glassB:rgba(10,32,48,.4);
   --glassEdge:rgba(137,194,217,.2);--glassGlow:rgba(137,194,217,.14);
   --glassShade:rgba(0,0,0,.7);
@@ -163,9 +172,15 @@ img{max-width:100%;display:block}
   box-shadow:inset 0 2px 8px var(--dentIn),inset 0 -1px 0 var(--dentUp);
 }
 
-/*── SMOOTH SCROLL SHELL ──*/
-#vp{position:fixed;top:0;left:0;width:100%;will-change:transform;z-index:1}
-body.native #vp{position:static;transform:none!important}
+/*── SCROLL SHELL ──*/
+/* Previously #vp was position:fixed with a per-frame transform. On a page
+   this tall that promotes everything into one giant composited layer, and
+   every backdrop-filter inside it has to re-sample its backdrop on every
+   frame — which is what made scrolling stutter. Native scroll instead:
+   sticky pinning is free, momentum works on touch, and glass is cheap. */
+#vp{position:relative;z-index:1}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 /*── PRELOADER ──*/
 #pre{position:fixed;inset:0;z-index:200;background:var(--bg);display:grid;place-items:center;gap:0}
@@ -206,9 +221,15 @@ nav.main{display:flex;align-items:center;gap:.15rem}
 .ni>a,.ni>button{display:flex;align-items:center;gap:.4rem;padding:.6rem .95rem;border-radius:999px;font-size:var(--t-sm);font-weight:500;color:var(--ink2);transition:color .25s,background .25s}
 .ni:hover>a,.ni:hover>button{color:var(--ink);background:var(--dentBg)}
 .ni svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2.2;transition:transform .3s var(--E)}
-.ni:hover svg{transform:translateY(2px)}
-.drop{position:absolute;top:calc(100% + 10px);left:0;min-width:264px;padding:.45rem;border-radius:var(--r-m);opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transition:.3s var(--E)}
-.ni:hover .drop,.ni:focus-within .drop{opacity:1;visibility:visible;transform:none}
+.drop{position:absolute;top:calc(100% + 10px);left:0;min-width:270px;z-index:96;padding:.45rem;
+  border-radius:var(--r-m);background:var(--panelBg);border:1px solid var(--panelEdge);box-shadow:var(--panelShadow);
+  opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transform-origin:top left;
+  transition:opacity .24s var(--E),transform .3s var(--E),visibility .3s}
+/* JS-driven, one at a time — :hover plus :focus-within left two panels
+   stacked over each other once a trigger had been clicked */
+.ni.open .drop{opacity:1;visibility:visible;transform:none}
+.ni.open>button{color:var(--ink);background:var(--dentBg)}
+.ni.open>button svg{transform:rotate(180deg)}
 .drop a{display:block;padding:.7rem .8rem;border-radius:var(--r-s);transition:background .22s}
 .drop a:hover{background:var(--dentBg)}
 .drop b{display:block;font-size:var(--t-sm);font-weight:600}
@@ -230,15 +251,19 @@ nav.main{display:flex;align-items:center;gap:.15rem}
 #menuPanel{position:absolute;top:calc(100% + 12px);right:0;width:min(92vw,340px);
   max-height:min(76vh,640px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
   border-radius:var(--r-l);padding:.55rem;z-index:95;
+  background:var(--panelBg);border:1px solid var(--panelEdge);box-shadow:var(--panelShadow);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
   opacity:0;visibility:hidden;transform:translateY(-10px) scale(.97);transform-origin:top right;
   transition:opacity .3s var(--E),transform .38s var(--E),visibility .38s}
 #menuPanel.on{opacity:1;visibility:visible;transform:none}
 .mSec{padding:.35rem .25rem .6rem}
 .mSec+.mSec{border-top:1px solid var(--line);margin-top:.3rem;padding-top:.75rem}
 .mLbl{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);font-weight:700;padding:0 .7rem;margin-bottom:.5rem}
-.mSec a,.mSec button{display:flex;align-items:center;justify-content:space-between;gap:.8rem;width:100%;
+/* :not(.sw) matters — without it the theme switch inherits width:100% and
+   stretches into a giant pill across the panel */
+.mSec a,.mSec button:not(.sw){display:flex;align-items:center;justify-content:space-between;gap:.8rem;width:100%;
   padding:.62rem .7rem;border-radius:var(--r-s);text-align:left;transition:background .2s,transform .25s var(--E)}
-.mSec a:hover,.mSec button:hover{background:var(--dentBg);transform:translateX(3px)}
+.mSec a:hover,.mSec button:not(.sw):hover{background:var(--dentBg);transform:translateX(3px)}
 .mSec b{display:block;font-size:var(--t-sm);font-weight:600}
 .mSec em{display:block;font-style:normal;font-size:.68rem;color:var(--ink3);margin-top:.1rem;letter-spacing:0;line-height:1.4}
 .mSec a>span:first-child,.mSec button>span:first-child{flex:1}
@@ -250,7 +275,8 @@ nav.main{display:flex;align-items:center;gap:.15rem}
 /* the theme row is the first thing in the panel, and it is unmissable */
 .mThemeSec{background:var(--swTrack);border-radius:var(--r-m);padding:.7rem .25rem .8rem}
 .mTheme{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.15rem .7rem}
-.mTheme>span{font-size:var(--t-sm);font-weight:650}
+.mTheme>span{font-size:var(--t-sm);font-weight:650;white-space:nowrap}
+.mTheme .sw{flex:0 0 auto;width:64px;height:34px;padding:0}
 @media(max-width:520px){#menuPanel{position:fixed;top:auto;right:.6rem;left:.6rem;width:auto;
   max-height:calc(100vh - 5.5rem);transform-origin:top center}
   .mWord{display:none}}
@@ -285,7 +311,7 @@ nav.main{display:flex;align-items:center;gap:.15rem}
 body.rm [data-rv],body.rm .mask>span{opacity:1;transform:none;transition:none}
 
 /*── SECTION SHELL ──*/
-section{position:relative;z-index:1;padding-block:clamp(4.5rem,11vw,9rem)}
+section{position:relative;z-index:1;padding-block:clamp(4.5rem,11vw,9rem);scroll-margin-top:86px}
 .snum{font-family:var(--fM);font-size:var(--t-xs);letter-spacing:.2em;color:var(--ink3);margin-bottom:.9rem;display:block}
 
 /*── HERO ──*/
@@ -344,7 +370,7 @@ body.rm .live i{animation:none}
 
 /*── PINNED STORY ──*/
 .pinsec{position:relative}
-.pin{height:100svh;display:flex;align-items:center;will-change:transform}
+.pin{position:sticky;top:0;height:100svh;display:flex;align-items:center}
 .story{display:grid;gap:clamp(2rem,5vw,4rem);align-items:center;width:100%}
 @media(min-width:940px){.story{grid-template-columns:.9fr 1.1fr}}
 #bigN{font-family:var(--fD);font-size:clamp(4.5rem,16vw,12rem);font-weight:600;letter-spacing:-.055em;line-height:.82;font-variant-numeric:tabular-nums;
@@ -379,7 +405,7 @@ body.rm .live i{animation:none}
 
 /*── SCROLL-DRIVEN DECK ──*/
 #deckSec{position:relative}
-#deckPin{height:100svh;display:flex;flex-direction:column;justify-content:center;gap:clamp(1.5rem,3vw,2.5rem);will-change:transform;overflow:hidden}
+#deckPin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:clamp(1.5rem,3vw,2.5rem);overflow:hidden}
 .dhead{text-align:center;max-width:34ch;margin-inline:auto;padding-inline:1rem}
 .dhead h2{font-size:var(--t-3)}
 #stage{position:relative;height:clamp(300px,44vh,420px);perspective:1700px;perspective-origin:50% 48%}
@@ -1209,8 +1235,8 @@ function readTokens(){
 
 /*── SMOOTH SCROLL ──*/
 const vp=document.getElementById("vp"),content=document.getElementById("content");
-const NATIVE=RM||TOUCH;                      /* touch keeps momentum scrolling */
-if(NATIVE)document.body.classList.add("native");
+const NATIVE=true;                           /* native scroll everywhere — see the CSS note on #vp */
+document.body.classList.add("native");
 let cur=0,vh=innerHeight,docH=0;
 
 /*── NOISE ──*/
@@ -1308,28 +1334,31 @@ const pins=[
   {sec:document.getElementById("story"),inner:document.getElementById("storyPin"),top:0,h:0,p:0},
   {sec:document.getElementById("deckSec"),inner:document.getElementById("deckPin"),top:0,h:0,p:0},
   {sec:document.getElementById("why"),inner:document.getElementById("whyPin"),top:0,h:0,p:0}
-];
+].map(P=>Object.assign(P,{lastOff:-1,vis:true}));
 function runPins(y){
   for(const P of pins){
     const span=Math.max(1,P.h-vh);
     const off=clamp(y-P.top,0,span);
     P.p=off/span;
-    P.inner.style.transform=`translate3d(0,${off}px,0)`;
+    /* CSS position:sticky does the pinning now — this only tracks progress */
+    P.vis=(y+vh>P.top-200)&&(y<P.top+P.h+200);
   }
 }
 
 /*── MEASURE ──*/
 function measure(){
   vh=innerHeight;
-  docH=content.getBoundingClientRect().height;
-  if(!NATIVE)document.body.style.height=docH+"px";
-  const base=NATIVE?scrollY:cur;
+  docH=document.documentElement.scrollHeight;
+  const base=scrollY;
   revs.forEach(r=>r.top=r.el.getBoundingClientRect().top+base);
   counters.forEach(c=>c.top=c.el.getBoundingClientRect().top+base);
   /* the inner's transform doesn't affect the section's own box, so no correction needed */
   pins.forEach(P=>{const b=P.sec.getBoundingClientRect();P.top=b.top+base;P.h=b.height;});
   buildTree();
   PRODS.forEach(P=>{P.top=P.el.getBoundingClientRect().top+base;P.last=-1;});
+  {const ps=document.getElementById("products").getBoundingClientRect();
+   prodTop=ps.top+base;prodH=ps.height;}
+  lastGp=-1;pins.forEach(P=>P.lastOff=-1);
   barsTop=document.getElementById("tl").getBoundingClientRect().top+base;
   sizeMap();drawPv();
 }
@@ -1345,18 +1374,40 @@ addEventListener("resize",()=>{
   rTimer=setTimeout(()=>{sizeWater();measure();},180);
 },{passive:true});
 addEventListener("orientationchange",()=>setTimeout(()=>{sizeWater();measure();},260));
-addEventListener("focusin",e=>{
-  if(NATIVE||!e.target.closest||!e.target.closest("#content"))return;
-  const b=e.target.getBoundingClientRect();
-  if(b.top>vh*.15&&b.bottom<vh*.85)return;
-  scrollTo(0,clamp(b.top+cur-vh*.4,0,Math.max(0,docH-vh)));
-});
 
 /*── HEADER + NAV ──*/
 const hdr=document.querySelector("header");let lastY=0;
 /* Header stays put. Auto-hiding it buried the theme switch and nav
    for anyone scrolling down, which is exactly where they're needed. */
 function runHdr(y){hdr.classList.toggle("stuck",y>30);}
+/* desktop dropdowns — single open state, hover on pointer devices, click everywhere */
+const NIS=[...document.querySelectorAll(".ni")].filter(n=>n.querySelector(".drop"));
+let openNi=null,niTimer=null;
+function closeNi(){
+  if(!openNi)return;
+  openNi.classList.remove("open");
+  openNi.querySelector("button")?.setAttribute("aria-expanded","false");
+  openNi=null;
+}
+function openNiEl(n){
+  if(openNi===n)return;
+  closeNi();
+  n.classList.add("open");
+  n.querySelector("button")?.setAttribute("aria-expanded","true");
+  openNi=n;
+}
+NIS.forEach(n=>{
+  const btn=n.querySelector("button");
+  if(!TOUCH){
+    n.addEventListener("pointerenter",()=>{clearTimeout(niTimer);openNiEl(n);});
+    n.addEventListener("pointerleave",()=>{niTimer=setTimeout(closeNi,140);});
+  }
+  btn?.addEventListener("click",e=>{
+    e.stopPropagation();
+    openNi===n?closeNi():openNiEl(n);
+  });
+});
+
 const menuBtn=document.getElementById("menuBtn"),menuPanel=document.getElementById("menuPanel");
 function setMenu(on){
   menuPanel.classList.toggle("on",on);
@@ -1366,13 +1417,14 @@ const closeMenu=()=>setMenu(false);
 menuBtn.addEventListener("click",e=>{e.stopPropagation();setMenu(!menuPanel.classList.contains("on"));});
 document.addEventListener("click",e=>{
   if(menuPanel.classList.contains("on")&&!e.target.closest(".menuWrap"))closeMenu();
+  if(openNi&&!e.target.closest(".ni"))closeNi();
 });
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
   const id=a.getAttribute("href");if(!id||id==="#")return;
   const el=document.querySelector(id);if(!el)return;
   e.preventDefault();closeMenu();
-  const t=el.getBoundingClientRect().top+(NATIVE?scrollY:cur);
-  scrollTo(NATIVE?{top:t,behavior:"smooth"}:{top:t});
+  const t=el.getBoundingClientRect().top+scrollY;
+  scrollTo({top:t,behavior:"smooth"});
 }));
 
 /*── PARALLAX ──*/
@@ -1610,9 +1662,11 @@ function renderH(c){
   q.imageSmoothingEnabled=false;
   q.drawImage(c.sm,0,0,GW,GH,0,0,c.cv.width,c.cv.height);
 }
-let hT=0;
+let hT=0,deckSettled=false;
 function runDeck(dt){
+  if(!pins[1].vis&&deckSettled)return;
   const p=pins[1].p;
+  deckSettled=Math.abs(hT-p*(HC.length-1))<.001;
   const target=p*(HC.length-1);              /* scroll position IS the carousel position */
   hT=RM?target:lerp(hT,target,1-Math.exp(-dt*9));
   const stage=document.getElementById("stage");
@@ -1656,9 +1710,11 @@ const SC=WHY.map(([p,n,l],i)=>{
   const t=document.createElement("i");stackTicks.appendChild(t);
   return{el:d,tick:t};
 });
-let stackA=0;
+let stackA=0,stackSettled=false;
 function runStack(dt){
+  if(!pins[2].vis&&stackSettled)return;
   const p=pins[2].p,N=SC.length,tgt=p*(N-1);
+  stackSettled=Math.abs(stackA-tgt)<.001;
   stackA=RM?tgt:lerp(stackA,tgt,1-Math.exp(-dt*10));
   SC.forEach((c,i)=>{
     const d=i-stackA;
@@ -1737,13 +1793,17 @@ function buildTree(){
     treeSvg.append(halo,bud,leaf);
     Object.assign(n,{branch:bp,bud,halo,leaf,sy,dx});
   });
-  treeTop=tr.top+(NATIVE?scrollY:cur);
+  treeTop=tr.top+scrollY;
   treeH=Math.max(1,TH);
 }
 
+let lastGp=-1;
 function runTree(y){
   if(!trunkPath)return;
   const gp=clamp((y+vh*.62-treeTop)/(treeH*.82),0,1);          /* trunk growth */
+  /* SVG attribute writes force a re-render, so only touch them on change */
+  if(Math.abs(gp-lastGp)<.0015)return;
+  lastGp=gp;
   trunkPath.style.strokeDasharray=trunkPath.__len;
   trunkPath.style.strokeDashoffset=trunkPath.__len*(1-gp);
   const reach=gp*TH;
@@ -1800,7 +1860,7 @@ function runToTop(y){
   if(on===lastTop)return;
   lastTop=on;toTop.classList.toggle("on",on);
 }
-toTop.onclick=()=>scrollTo(NATIVE?{top:0,behavior:"smooth"}:{top:0});
+toTop.onclick=()=>scrollTo({top:0,behavior:"smooth"});
 
 /*── FAQ accordion ──*/
 const FAQ=[
@@ -1880,7 +1940,7 @@ document.querySelectorAll(".ov").forEach(ov=>{
   ov.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeOv(ov));
 });
 addEventListener("keydown",e=>{
-  if(e.key==="Escape"){document.querySelectorAll(".ov.on").forEach(closeOv);closeMenu();}
+  if(e.key==="Escape"){document.querySelectorAll(".ov.on").forEach(closeOv);closeMenu();closeNi();}
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openOv(searchOv);}
 });
 
@@ -1913,8 +1973,8 @@ function renderSearch(){
 function go(hash){
   closeOv(searchOv);
   const el=document.querySelector(hash);if(!el)return;
-  const t=el.getBoundingClientRect().top+(NATIVE?scrollY:cur);
-  scrollTo(NATIVE?{top:t,behavior:"smooth"}:{top:t});
+  const t=el.getBoundingClientRect().top+scrollY;
+  scrollTo({top:t,behavior:"smooth"});
 }
 sInput.addEventListener("input",()=>{
   const q=sInput.value.trim().toLowerCase();
@@ -2037,22 +2097,18 @@ document.addEventListener("click",e=>{
 let prevT=performance.now();
 function loop(now){
   const dt=Math.min(.05,(now-prevT)/1000);prevT=now;
-  if(NATIVE)cur=scrollY;
-  else{
-    const t=clamp(scrollY,0,Math.max(0,docH-vh));
-    cur=lerp(cur,t,1-Math.exp(-dt*7.5));
-    if(Math.abs(cur-t)<.05)cur=t;
-    vp.style.transform=`translate3d(0,${-cur}px,0)`;
-  }
+  cur=scrollY;
   const y=cur;
   runRevs(y);runCounters(y);runPins(y);runStory();runHdr(y);runBars(y);runParallax(y,dt);
   runTree(y);runStack(dt);runProducts(y);runProg(y);runToTop(y);
   if(mapProg<1){mapProg=Math.min(1,mapProg+dt*.45);drawMap();}
   else if(hoverCell!==lastHover){lastHover=hoverCell;drawMap();}
-  drawRadar();drawWater(dt);runDeck(dt);
+  /* the radar only needs painting while its product card is on screen */
+  if(y+vh>prodTop-200&&y<prodTop+prodH+200)drawRadar();
+  drawWater(dt);runDeck(dt);
   requestAnimationFrame(loop);
 }
-let lastHover=null;
+let lastHover=null,prodTop=0,prodH=1e9;
 
 /*── BOOT ──*/
 if(TOUCH){const th=document.getElementById("tlHint");if(th)th.textContent="Tap";}
