@@ -72,14 +72,16 @@
   --fS:"Manrope","Inter",ui-sans-serif,"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
   --fM:"JetBrains Mono",ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
 
-  --t-xs:clamp(.68rem,.66rem+.08vw,.74rem);
-  --t-sm:clamp(.82rem,.8rem+.1vw,.88rem);
-  --t-0:clamp(.94rem,.91rem+.16vw,1.02rem);
-  --t-1:clamp(1.05rem,1rem+.3vw,1.22rem);
-  --t-2:clamp(1.3rem,1.14rem+.72vw,1.85rem);
-  --t-3:clamp(1.75rem,1.35rem+1.9vw,3.1rem);
-  --t-4:clamp(2.3rem,1.5rem+3.6vw,4.6rem);
-  --t-5:clamp(2.9rem,1.6rem+5.8vw,7rem);
+
+  --t-xs:clamp(.68rem, .66rem + .08vw, .74rem);
+  --t-sm:clamp(.82rem, .8rem + .1vw, .88rem);
+  --t-0:clamp(.94rem, .91rem + .16vw, 1.02rem);
+  --t-1:clamp(1.05rem, 1rem + .3vw, 1.22rem);
+  --t-2:clamp(1.3rem, 1.14rem + .72vw, 1.85rem);
+  --t-3:clamp(1.75rem, 1.35rem + 1.9vw, 3.1rem);
+  --t-4:clamp(2.3rem, 1.5rem + 3.6vw, 4.6rem);
+  --t-5:clamp(2.9rem, 1.6rem + 5.8vw, 7rem);
+
 
   --r-s:14px;--r-m:20px;--r-l:28px;--r-xl:38px;
   --wrap:1260px;
@@ -162,7 +164,7 @@ img{max-width:100%;display:block}
 .mono{font-family:var(--fM);font-size:var(--t-xs);letter-spacing:.1em}
 .tab{font-variant-numeric:tabular-nums}
 
-.eye{display:flex;align-items:center;gap:.85rem;color:var(--ink3);margin-bottom:1.5rem}
+.eye{display:flex;align-items:center;gap:.85rem;color:var(--ink3);margin-bottom:1.1rem}
 .eye i{width:5px;height:5px;border-radius:50%;background:var(--brand);flex:none;font-style:normal}
 .eye::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent);max-width:140px}
 
@@ -327,8 +329,17 @@ nav.main{display:flex;align-items:center;gap:.15rem}
 body.rm [data-rv],body.rm .mask>span{opacity:1;transform:none;transition:none}
 
 /*── SECTION SHELL ──*/
-section{position:relative;z-index:1;padding-block:clamp(4.5rem,11vw,9rem);scroll-margin-top:86px}
-.snum{font-family:var(--fM);font-size:var(--t-xs);letter-spacing:.2em;color:var(--ink3);margin-bottom:.9rem;display:block}
+section{position:relative;z-index:1;padding-block:clamp(3rem,7vw,6rem);scroll-margin-top:86px}
+.snum{
+  font-family:var(--fS);font-size:var(--t-sm);font-weight:650;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--brand);margin-bottom:1.4rem;display:flex;
+  align-items:center;gap:.65rem;
+}
+.snum::before{
+  content:"";display:inline-block;width:22px;height:2px;
+  background:var(--brand);border-radius:2px;flex:none;
+}
 
 /*── HERO ──*/
 #hero{min-height:100svh;display:flex;align-items:center;padding-top:clamp(7rem,14vw,9rem);padding-bottom:clamp(3rem,6vw,5rem)}
@@ -481,7 +492,7 @@ body.rm .achip i{animation:none}
 /*── WHY — unfolding card stack ──*/
 .stackWrap{display:grid;gap:clamp(1.6rem,4vw,3.5rem);align-items:center;width:100%}
 @media(min-width:940px){.stackWrap{grid-template-columns:.85fr 1.15fr}}
-.stackAside h2{font-size:var(--t-3);max-width:17ch;margin-bottom:1.6rem}
+.stackAside h2{font-size:var(--t-3);max-width:17ch;margin-bottom:1.4rem;line-height:1.08}
 .stackCount{display:flex;align-items:baseline;gap:.4rem;font-family:var(--fD);color:var(--ink3)}
 .stackCount b{font-size:2.6rem;font-weight:600;color:var(--brand);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .stackCount span{font-size:1rem}
@@ -700,7 +711,7 @@ textarea.inp{resize:vertical;min-height:92px}
 /*── FAQ ──*/
 .faqWrap{display:grid;gap:clamp(1.8rem,4vw,3.5rem);align-items:start;width:100%}
 @media(min-width:940px){.faqWrap{grid-template-columns:.78fr 1.22fr}}
-.faqAside h2{font-size:var(--t-3);max-width:16ch;margin-bottom:1.1rem}
+.faqAside h2{font-size:var(--t-3);max-width:16ch;margin-bottom:1.1rem;line-height:1.08}
 .faqAside p{color:var(--ink2);font-size:var(--t-sm);max-width:30ch;line-height:1.6}
 .faqAside a{color:var(--brand);font-weight:600;border-bottom:1px solid currentColor}
 .faq{display:grid;gap:.6rem;max-width:none}

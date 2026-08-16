@@ -4,6 +4,10 @@
 *::before,
 *::after { box-sizing: border-box; }
 
+/* Reset browser-injected margins so spacing is token-controlled only. */
+p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+
 body {
   margin: 0;
   background: var(--color-bg);
@@ -14,7 +18,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.15;
@@ -22,7 +26,227 @@ h1, h2, h3 {
   margin: 0;
 }
 
-/* Eyebrows, stat captions, data labels. */
+/* ── Header ─────────────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-h);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
+}
+
+header .container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+header a[aria-label="FloodGuard home"] {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--step-1);
+  color: var(--color-brand);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+header nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  flex: 1;
+}
+
+header nav a {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+header nav a:hover { color: var(--color-text); }
+
+/* ── Sections ────────────────────────────────────────── */
+section {
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+
+section .container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ── Hero layout ────────────────────────────────────── */
+section[aria-labelledby="hero-title"] .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+section[aria-labelledby="hero-title"] .mono {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+section[aria-labelledby="hero-title"] h1 {
+  font-size: var(--step-4);
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+section[aria-labelledby="hero-title"] > .container > div > p {
+  font-size: var(--step-1);
+  color: var(--color-text-muted);
+}
+
+/* ── StatBar ─────────────────────────────────────────── */
+[data-statbar] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-8);
+  margin-top: var(--space-4);
+}
+
+[data-statbar] > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+[data-statbar] dd {
+  font-family: var(--font-mono);
+  font-size: var(--step-3);
+  font-weight: 700;
+  color: var(--color-brand);
+}
+
+[data-statbar] dt {
+  font-size: var(--step--1);
+  color: var(--color-text-muted);
+}
+
+/* ── Timeline section ────────────────────────────────── */
+section[aria-labelledby="timeline-title"] .mono {
+  color: var(--color-text-muted);
+}
+
+section[aria-labelledby="timeline-title"] h2 {
+  font-size: var(--step-3);
+}
+
+/* ── Product cards ────────────────────────────────────── */
+section[aria-label="Products"] {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-block: 0;
+}
+
+article[data-reversed] ,
+article:not([data-reversed]) {
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+  border-top: 1px solid var(--color-border);
+}
+
+article:not([data-reversed]) > div:first-child,
+article[data-reversed] > div:first-child {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  align-items: center;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+article[data-reversed="true"] > div:first-child {
+  direction: rtl;
+}
+
+article h3 {
+  font-size: var(--step-2);
+  margin-bottom: var(--space-3);
+}
+
+article p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+/* ── Why FloodGuard stat row ─────────────────────────── */
+section[aria-labelledby="why-title"] h2 {
+  font-size: var(--step-3);
+}
+
+section[aria-labelledby="why-title"] ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-6);
+}
+
+section[aria-labelledby="why-title"] li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+section[aria-labelledby="why-title"] .mono.tabular {
+  font-size: var(--step-2);
+  color: var(--color-brand);
+}
+
+/* ── Industry grid ────────────────────────────────────── */
+section[aria-labelledby="industry-title"] h2 {
+  font-size: var(--step-3);
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+  background: var(--color-surface-sunk);
+}
+
+footer .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-8);
+}
+
+footer h3 {
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+footer a {
+  display: block;
+  font-size: var(--step--1);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding-block: var(--space-1);
+  transition: color 0.15s;
+}
+
+footer a:hover { color: var(--color-text); }
+
+footer li + li { margin-top: var(--space-2); }
+
+/* ── Eyebrows, stat captions, data labels. ─────────────── */
 .mono {
   font-family: var(--font-mono);
   font-size: var(--step--1);
@@ -47,6 +271,19 @@ h1, h2, h3 {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 720px) {
+  section[aria-labelledby="hero-title"] .container {
+    grid-template-columns: 1fr;
+  }
+
+  article:not([data-reversed]) > div:first-child,
+  article[data-reversed="true"] > div:first-child {
+    grid-template-columns: 1fr;
+    direction: ltr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
