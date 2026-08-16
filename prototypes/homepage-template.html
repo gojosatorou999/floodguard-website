@@ -214,10 +214,46 @@ nav.main{display:flex;align-items:center;gap:.15rem}
 .drop b{display:block;font-size:var(--t-sm);font-weight:600}
 .drop em{display:block;font-style:normal;font-size:var(--t-xs);color:var(--ink3);margin-top:.15rem;letter-spacing:0}
 .hact{display:flex;align-items:center;gap:.55rem;flex:none}
-.swBox{display:flex;align-items:center;gap:.5rem;padding:.25rem .3rem .25rem .8rem;border-radius:999px;
-  border:1px solid var(--swEdge);background:var(--swTrack)}
-.swBox>span{font-size:.56rem;letter-spacing:.18em;font-weight:700;text-transform:uppercase;color:var(--ink2);white-space:nowrap}
-@media(max-width:1120px){.swBox>span{display:none}.swBox{padding:.25rem;border-color:transparent;background:none}}
+
+/*── ONE MENU, EVERY SCREEN — nav + theme + actions live here ──*/
+.menuWrap{position:relative}
+#menuBtn{display:flex;align-items:center;gap:.6rem;padding:.6rem 1.15rem .6rem .95rem;border-radius:999px;
+  border:1px solid var(--swEdge);background:var(--swTrack);font-size:var(--t-sm);font-weight:650;color:var(--ink);
+  transition:border-color .25s,background .25s}
+#menuBtn:hover{border-color:var(--brand)}
+.mIcon{display:grid;gap:3.5px;width:17px}
+.mIcon i{display:block;height:2px;border-radius:2px;background:var(--ink);transition:transform .4s var(--E),opacity .3s}
+#menuBtn[aria-expanded="true"] .mIcon i:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
+#menuBtn[aria-expanded="true"] .mIcon i:nth-child(2){opacity:0}
+#menuBtn[aria-expanded="true"] .mIcon i:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+
+#menuPanel{position:absolute;top:calc(100% + 12px);right:0;width:min(92vw,340px);
+  max-height:min(76vh,640px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  border-radius:var(--r-l);padding:.55rem;z-index:95;
+  opacity:0;visibility:hidden;transform:translateY(-10px) scale(.97);transform-origin:top right;
+  transition:opacity .3s var(--E),transform .38s var(--E),visibility .38s}
+#menuPanel.on{opacity:1;visibility:visible;transform:none}
+.mSec{padding:.35rem .25rem .6rem}
+.mSec+.mSec{border-top:1px solid var(--line);margin-top:.3rem;padding-top:.75rem}
+.mLbl{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);font-weight:700;padding:0 .7rem;margin-bottom:.5rem}
+.mSec a,.mSec button{display:flex;align-items:center;justify-content:space-between;gap:.8rem;width:100%;
+  padding:.62rem .7rem;border-radius:var(--r-s);text-align:left;transition:background .2s,transform .25s var(--E)}
+.mSec a:hover,.mSec button:hover{background:var(--dentBg);transform:translateX(3px)}
+.mSec b{display:block;font-size:var(--t-sm);font-weight:600}
+.mSec em{display:block;font-style:normal;font-size:.68rem;color:var(--ink3);margin-top:.1rem;letter-spacing:0;line-height:1.4}
+.mSec a>span:first-child,.mSec button>span:first-child{flex:1}
+.mCta{background:var(--brand)!important;color:var(--onBrand);justify-content:center!important;
+  font-weight:650;font-size:var(--t-sm);margin-top:.45rem;padding:.8rem!important;border-radius:999px!important}
+.mCta:hover{filter:brightness(1.12);transform:none!important}
+.mCta svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2}
+
+/* the theme row is the first thing in the panel, and it is unmissable */
+.mThemeSec{background:var(--swTrack);border-radius:var(--r-m);padding:.7rem .25rem .8rem}
+.mTheme{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.15rem .7rem}
+.mTheme>span{font-size:var(--t-sm);font-weight:650}
+@media(max-width:520px){#menuPanel{position:fixed;top:auto;right:.6rem;left:.6rem;width:auto;
+  max-height:calc(100vh - 5.5rem);transform-origin:top center}
+  .mWord{display:none}}
 .cta-sm{padding:.62rem 1.25rem;border-radius:999px;background:var(--brand);color:var(--onBrand);font-size:var(--t-sm);font-weight:650;transition:filter .3s,transform .3s var(--E);white-space:nowrap}
 .cta-sm:hover{filter:brightness(1.12);transform:translateY(-1px)}
 
@@ -235,22 +271,10 @@ nav.main{display:flex;align-items:center;gap:.15rem}
 .sw[aria-checked="true"] .s1{opacity:.35}
 .sw[aria-checked="false"] .s2{opacity:.35}
 
-#burger{display:none;width:42px;height:42px;place-items:center;border-radius:50%;background:var(--dentBg)}
-#burger i{display:block;width:17px;height:1.6px;background:var(--ink);border-radius:2px;position:relative}
-#burger i::before,#burger i::after{content:"";position:absolute;left:0;width:17px;height:1.6px;background:var(--ink);border-radius:2px}
-#burger i::before{top:-5.5px}#burger i::after{top:5.5px}
-@media (max-width:960px){nav.main,.cta-sm{display:none}#burger{display:grid}}
-
-#drawer{position:fixed;inset:0;z-index:90;
-  padding:5.5rem 1.4rem calc(2rem + env(safe-area-inset-bottom));
-  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
-  background:linear-gradient(158deg,var(--glassA),var(--glassB));
-  backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);
-  transform:translateY(-100%);transition:transform .6s var(--E);overflow-y:auto}
-#drawer.on{transform:none}
-#drawer a{display:block;font-family:var(--fD);font-size:clamp(1.6rem,7vw,2.2rem);padding:.55rem 0;border-bottom:1px solid var(--line)}
-#drawerX{position:absolute;top:1.5rem;right:1.4rem;width:42px;height:42px;border-radius:50%;background:var(--dentBg);display:grid;place-items:center}
-#drawerX svg{width:15px;height:15px;stroke:var(--ink);stroke-width:2;fill:none}
+/* Inline nav is a convenience on wide screens; the Menu panel is the
+   single source of truth and carries everything, including the theme. */
+@media (max-width:1040px){nav.main{display:none}}
+@media (max-width:560px){.cta-sm{display:none}}
 
 /*── REVEAL ──*/
 [data-rv]{opacity:0;transform:translateY(30px);transition:opacity 1s var(--E),transform 1s var(--E)}
@@ -305,7 +329,8 @@ body.rm .live i{animation:none}
 .chip span{display:block;font-size:.54rem;letter-spacing:.2em;color:var(--ink3);font-weight:700;text-transform:uppercase;margin-top:.3rem}
 #chip1{top:6%;right:-3%}
 #chip2{bottom:9%;left:-5%}
-@media(max-width:640px){#chip1{right:2%;top:2%}#chip2{left:2%;bottom:3%}.chip b{font-size:1.1rem}}
+/* the chips sat on top of the map header on narrow screens */
+@media(max-width:820px){.chip{display:none}}
 
 /*── STAT RAIL ──*/
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;border-radius:var(--r-xl);overflow:hidden;padding:1px}
@@ -338,11 +363,11 @@ body.rm .live i{animation:none}
 /*── TIMELINE ──*/
 .tlhead{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:2.6rem}
 .tlhead h2{font-size:var(--t-3);max-width:16ch}
-#tl{position:relative;padding:clamp(1.2rem,3vw,2rem) clamp(1rem,2.5vw,1.7rem) 1rem;border-radius:var(--r-xl)}
-#bars{display:flex;align-items:flex-end;gap:1.5px;height:clamp(130px,24vw,250px)}
-.bar{flex:1;min-width:0;border-radius:99px 99px 2px 2px;background:var(--dotOff);transform-origin:bottom;transform:scaleY(0);transition:transform .9s var(--E),background .25s;cursor:pointer}
-.bar.hi{background:linear-gradient(180deg,var(--b400),var(--b800))}
-.bar:hover,.bar.sel{background:var(--alert)!important}
+#tl{position:relative;padding:clamp(1.2rem,3vw,2rem) clamp(1rem,2.5vw,1.7rem) 1rem;border-radius:var(--r-xl);overflow:hidden}
+#bars{display:flex;align-items:flex-end;gap:1.5px;height:clamp(130px,24vw,250px);width:100%;min-width:0}
+.ybar{flex:1 1 0;min-width:0;border-radius:99px 99px 2px 2px;background:var(--dotOff);transform-origin:bottom;transform:scaleY(0);transition:transform .9s var(--E),background .25s;cursor:pointer}
+.ybar.hi{background:linear-gradient(180deg,var(--b400),var(--b800))}
+.ybar:hover,.ybar.sel{background:var(--alert)!important}
 .tlx{display:flex;justify-content:space-between;margin-top:.9rem;font-size:.58rem;letter-spacing:.18em;color:var(--ink3);font-weight:600}
 #pop{position:absolute;z-index:6;pointer-events:none;min-width:196px;padding:.85rem .95rem;border-radius:var(--r-m);
   background:var(--ink);color:var(--bg);opacity:0;transform:translateY(8px);transition:.25s var(--E)}
@@ -659,9 +684,20 @@ textarea.inp{resize:vertical;min-height:92px}
   #story{height:190svh!important}
   #deckSec{height:290svh!important}
   #why{height:360svh!important}
-  .glass,.drop,#drawer{backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
-  #stage{height:clamp(280px,52vh,340px)}
+  .glass,.drop,#menuPanel{backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
+  #stage{height:clamp(270px,48vh,330px)}
   .stackStage{height:clamp(290px,50vh,340px)}
+  #bars{gap:1px;height:clamp(110px,30vw,150px)}
+  .tlx{font-size:.52rem}
+  /* the eyebrow rule ate a whole line next to wrapped text */
+  .eye{flex-wrap:wrap;gap:.5rem}
+  .eye::after{display:none}
+  .eye.caps{letter-spacing:.16em;line-height:1.5}
+  #hero{padding-top:6.5rem}
+  .hsub{font-size:var(--t-0)}
+  .snum{letter-spacing:.14em}
+  .mfoot,.mhead{gap:.4rem}
+  #readout{font-size:.56rem}
 }
 @media(max-width:1024px) and (min-width:761px){
   #story{height:220svh!important}#deckSec{height:350svh!important}#why{height:440svh!important}
@@ -671,7 +707,7 @@ textarea.inp{resize:vertical;min-height:92px}
 @media print{
   @page{margin:16mm}
   html,body{background:#fff!important;color:#000!important;font-size:11pt}
-  #atmos,#prog,#skip,#fabs,#cookie,#pre,#down,header,#drawer,.ov,#stage,.dprog,.dhint,
+  #atmos,#prog,#skip,#fabs,#cookie,#pre,#down,header,#menuPanel,.ov,#stage,.dprog,.dhint,
   .pv,.chip,.live,#readout,.lg,.sbars,.copy,.pwEye,.btn,.cta-sm,.sw{display:none!important}
   #vp{position:static!important;transform:none!important}
   body{height:auto!important;overflow:visible!important}
@@ -727,40 +763,48 @@ textarea.inp{resize:vertical;min-height:92px}
       <div class="ni"><a href="#close">Company</a></div>
     </nav>
     <div class="hact">
-      <button class="fab" id="sBtn" type="button" aria-label="Search (Ctrl K)" style="width:38px;height:38px;box-shadow:none">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4" stroke-linecap="round"/></svg>
-      </button>
-      <span class="swBox">
-        <span id="swLabel">Light</span>
-        <button class="sw" id="sw" role="switch" aria-checked="false" aria-label="Dark mode">
-          <svg class="s1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" stroke-linecap="round"/></svg>
-          <svg class="s2" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
-          <i></i>
-        </button>
-      </span>
-      <button class="cta-sm" id="signinBtn" type="button" style="background:transparent;color:var(--ink2);border:1px solid var(--line2)">Sign in</button>
       <a class="cta-sm" href="#demo" data-utm>Book a demo</a>
-      <button id="burger" type="button" aria-label="Open menu"><i></i></button>
+      <div class="menuWrap">
+        <button id="menuBtn" type="button" aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
+          <span class="mIcon"><i></i><i></i><i></i></span><span class="mWord">Menu</span>
+        </button>
+
+        <div id="menuPanel" class="glass" role="dialog" aria-label="Site menu" aria-modal="false">
+          <div class="mSec mThemeSec">
+            <p class="mLbl">Appearance</p>
+            <div class="mTheme">
+              <span id="swLabel">Light mode</span>
+              <button class="sw" id="sw" role="switch" aria-checked="false" aria-label="Switch to dark mode">
+                <svg class="s1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" stroke-linecap="round"/></svg>
+                <svg class="s2" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+                <i></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="mSec">
+            <p class="mLbl">Navigate</p>
+            <a href="#hero"><b>Home</b><em>Exposure map and headline figures</em></a>
+            <a href="#story"><b>Methodology</b><em>How the model works</em></a>
+            <a href="#timeline"><b>Flood record</b><em>Seventy-four monsoons, measured</em></a>
+            <a href="#products"><b>Products</b><em>Explorer &amp; Live</em></a>
+            <a href="#deckSec"><b>Deliverables</b><em>What lands on your desk</em></a>
+            <a href="#industries"><b>Sectors</b><em>Who we work with</em></a>
+            <a href="#faq"><b>FAQ</b><em>Procurement, accuracy, pricing</em></a>
+          </div>
+
+          <div class="mSec">
+            <p class="mLbl">Actions</p>
+            <button type="button" id="sBtn"><b>Search</b><span class="kbd">Ctrl K</span></button>
+            <button type="button" id="signinBtn"><b>Sign in</b></button>
+            <a class="mCta" href="#demo" data-utm>Book a demo
+              <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          </div>
+        </div>
+      </div>
     </div>
   </div></div>
 </header>
-
-<div id="drawer">
-  <button id="drawerX" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
-  <div class="wrap">
-    <a href="#hero">Home</a><a href="#story">Methodology</a><a href="#timeline">Flood record</a>
-    <a href="#products">Products</a><a href="#industries">Industries</a><a href="#faq">FAQ</a>
-    <a href="#demo" data-utm>Book a demo</a><a href="#" id="signinBtn2">Sign in</a>
-    <span class="swBox" style="margin-top:2rem;display:inline-flex;padding:.35rem .4rem .35rem .95rem;border-color:var(--swEdge);background:var(--swTrack)">
-      <span id="swLabel2" style="display:inline">Light</span>
-      <button class="sw" id="sw2" role="switch" aria-checked="false" aria-label="Dark mode">
-        <svg class="s1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" stroke-linecap="round"/></svg>
-        <svg class="s2" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
-        <i></i>
-      </button>
-    </span>
-  </div>
-</div>
 
 <div id="vp"><div id="content">
 
@@ -841,7 +885,7 @@ textarea.inp{resize:vertical;min-height:92px}
         <p class="eye caps" data-rv><i></i>Seventy-four monsoons</p>
         <h2 data-rv>Every monsoon since 1951, measured.</h2>
       </div>
-      <p class="srcline" data-rv style="max-width:24ch;margin:0">Hover any year for exposure, anomaly and event count</p>
+      <p class="srcline" data-rv style="max-width:24ch;margin:0"><span id="tlHint">Hover</span> any year for exposure, anomaly and event count</p>
     </div>
     <div id="tl" class="glass" data-rv>
       <div id="bars" role="group" aria-label="Flood exposure by year, 1951 to 2025"></div>
@@ -1132,26 +1176,23 @@ const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const easeOut=x=>1-Math.pow(1-x,3), easeIO=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 
 /*── THEME ──*/
-const sw=document.getElementById("sw"),sw2=document.getElementById("sw2");
+const sw=document.getElementById("sw");
 const sysDark=matchMedia("(prefers-color-scheme: dark)");
 function isDark(){const a=document.documentElement.getAttribute("data-theme");
   return a?a==="dark":sysDark.matches;}
-const swLabel=document.getElementById("swLabel"),swLabel2=document.getElementById("swLabel2");
+const swLabel=document.getElementById("swLabel");
 function syncSw(){
   const d=isDark();
   sw.setAttribute("aria-checked",String(d));
   sw.setAttribute("aria-label",d?"Switch to light mode":"Switch to dark mode");
-  if(swLabel)swLabel.textContent=d?"Dark":"Light";
-  if(swLabel2)swLabel2.textContent=d?"Dark":"Light";
-  if(sw2)sw2.setAttribute("aria-checked",String(d));
+  if(swLabel)swLabel.textContent=d?"Dark mode":"Light mode";
 }
 function flipTheme(){
   document.documentElement.setAttribute("data-theme",isDark()?"light":"dark");
   try{localStorage.setItem("fg_theme",document.documentElement.getAttribute("data-theme"))}catch(_){}
   syncSw();readTokens();drawPv();HC.forEach(c=>c.dirty=true);
 }
-sw.addEventListener("click",flipTheme);
-if(sw2)sw2.addEventListener("click",flipTheme);
+sw.addEventListener("click",e=>{e.stopPropagation();flipTheme();});
 try{const saved=localStorage.getItem("fg_theme");if(saved)document.documentElement.setAttribute("data-theme",saved);}catch(_){}
 sysDark.addEventListener("change",syncSw);
 syncSw();
@@ -1292,7 +1333,18 @@ function measure(){
   barsTop=document.getElementById("tl").getBoundingClientRect().top+base;
   sizeMap();drawPv();
 }
-addEventListener("resize",()=>{sizeWater();measure();},{passive:true});
+/* Mobile browsers fire resize constantly as the URL bar slides in and out.
+   Re-measuring on every one of those is what made scrolling stutter, so
+   debounce, and on touch ignore pure-height changes under the bar's size. */
+let rTimer=null,lastW=innerWidth,lastH=innerHeight;
+addEventListener("resize",()=>{
+  const dw=Math.abs(innerWidth-lastW),dh=Math.abs(innerHeight-lastH);
+  if(TOUCH&&dw===0&&dh<140){lastH=innerHeight;vh=innerHeight;return;}
+  lastW=innerWidth;lastH=innerHeight;
+  clearTimeout(rTimer);
+  rTimer=setTimeout(()=>{sizeWater();measure();},180);
+},{passive:true});
+addEventListener("orientationchange",()=>setTimeout(()=>{sizeWater();measure();},260));
 addEventListener("focusin",e=>{
   if(NATIVE||!e.target.closest||!e.target.closest("#content"))return;
   const b=e.target.getBoundingClientRect();
@@ -1305,13 +1357,20 @@ const hdr=document.querySelector("header");let lastY=0;
 /* Header stays put. Auto-hiding it buried the theme switch and nav
    for anyone scrolling down, which is exactly where they're needed. */
 function runHdr(y){hdr.classList.toggle("stuck",y>30);}
-const drawer=document.getElementById("drawer");
-document.getElementById("burger").onclick=()=>drawer.classList.add("on");
-document.getElementById("drawerX").onclick=()=>drawer.classList.remove("on");
+const menuBtn=document.getElementById("menuBtn"),menuPanel=document.getElementById("menuPanel");
+function setMenu(on){
+  menuPanel.classList.toggle("on",on);
+  menuBtn.setAttribute("aria-expanded",String(on));
+}
+const closeMenu=()=>setMenu(false);
+menuBtn.addEventListener("click",e=>{e.stopPropagation();setMenu(!menuPanel.classList.contains("on"));});
+document.addEventListener("click",e=>{
+  if(menuPanel.classList.contains("on")&&!e.target.closest(".menuWrap"))closeMenu();
+});
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
   const id=a.getAttribute("href");if(!id||id==="#")return;
   const el=document.querySelector(id);if(!el)return;
-  e.preventDefault();drawer.classList.remove("on");
+  e.preventDefault();closeMenu();
   const t=el.getBoundingClientRect().top+(NATIVE?scrollY:cur);
   scrollTo(NATIVE?{top:t,behavior:"smooth"}:{top:t});
 }));
@@ -1359,9 +1418,12 @@ let mapProg=0,hoverCell=null,geo=null;
 function sizeMap(){
   const w=mc.parentElement.clientWidth;if(!w)return;
   const h=Math.round(w*.84),d=Math.min(3,devicePixelRatio||1);   /* up to 3× for crispness */
-  mc.width=Math.round(w*d);mc.height=Math.round(h*d);
+  const nw=Math.round(w*d),nh=Math.round(h*d);
+  if(mc.width===nw&&mc.height===nh)return;
+  mc.width=nw;mc.height=nh;
   mc.style.height=h+"px";
   mx2.setTransform(d,0,0,d,0,0);
+  drawMap();     /* resizing wipes the canvas — repaint or the map shows blank */
 }
 function drawMap(){
   const d=Math.min(3,devicePixelRatio||1);
@@ -1460,7 +1522,7 @@ for(let y=1951;y<=2025;y++){
 const barsEl=document.getElementById("bars"),popEl=document.getElementById("pop");
 YEARS.forEach(d=>{
   const b=document.createElement("button");
-  b.className="bar"+(d.exposure>.62?" hi":"");b.type="button";
+  b.className="ybar"+(d.exposure>.62?" hi":"");b.type="button";
   b.style.height=(14+d.exposure*86)+"%";
   b.setAttribute("aria-label",d.year+", exposure index "+d.exposure.toFixed(2));
   const show=()=>showPop(d,b);
@@ -1469,7 +1531,7 @@ YEARS.forEach(d=>{
   barsEl.appendChild(b);d.el=b;
 });
 function showPop(d,el){
-  document.querySelectorAll(".bar.sel").forEach(x=>x.classList.remove("sel"));
+  document.querySelectorAll(".ybar.sel").forEach(x=>x.classList.remove("sel"));
   el.classList.add("sel");
   popEl.querySelector("h4").textContent=d.year;
   popEl.querySelector("dl").innerHTML=
@@ -1480,7 +1542,7 @@ function showPop(d,el){
   popEl.style.top=(eb.top-tb.top-popEl.offsetHeight-12)+"px";
   popEl.classList.add("on");
 }
-function hidePop(){popEl.classList.remove("on");document.querySelectorAll(".bar.sel").forEach(x=>x.classList.remove("sel"));}
+function hidePop(){popEl.classList.remove("on");document.querySelectorAll(".ybar.sel").forEach(x=>x.classList.remove("sel"));}
 let barsShown=false,barsTop=0;
 function runBars(y){
   if(barsShown||y+vh*.8<barsTop)return;barsShown=true;
@@ -1554,9 +1616,16 @@ function runDeck(dt){
   const target=p*(HC.length-1);              /* scroll position IS the carousel position */
   hT=RM?target:lerp(hT,target,1-Math.exp(-dt*9));
   const stage=document.getElementById("stage");
-  const w=stage.clientWidth||600,hgt=stage.clientHeight||360;
+  const w=stage.clientWidth||600;
   const sc=clamp(w/760,.55,1);
-  const R=Math.min(300,w*.42),AS=clamp(w/24,22,38),maxA=AS*2.5;
+  /* On a phone the cards are nearly as wide as the stage, so a shallow arc
+     stacks them on top of each other. Push the angle out and fade the
+     neighbours hard so only the focused card is legible. */
+  const narrow=w<620;
+  const R=narrow?w*.62:Math.min(300,w*.42);
+  const AS=narrow?58:clamp(w/24,22,38);
+  const maxA=AS*(narrow?1.5:2.5);
+  const fade=narrow?.92:.62;
   HC.forEach((c,i)=>{
     const off=i-hT,ang=off*AS,rad=ang*Math.PI/180;
     const x=Math.sin(rad)*R,z=Math.cos(rad)*R-R,y=off*18*sc;
@@ -1564,7 +1633,7 @@ function runDeck(dt){
     const tgt=Math.pow(prox,1.35)*.55;
     if(Math.abs(tgt-c.dis)>.004){c.dis=tgt;c.dirty=true}
     c.el.style.transform=`translate3d(${x.toFixed(1)}px,calc(-50% + ${y.toFixed(1)}px),${z.toFixed(1)}px) rotateY(${(-ang*.5).toFixed(1)}deg) scale(${(.84+.16*(1-prox)).toFixed(3)})`;
-    c.el.style.opacity=(1-prox*.62).toFixed(3);
+    c.el.style.opacity=Math.max(0,1-prox*fade).toFixed(3);
     c.el.style.zIndex=200+Math.round(Math.cos(rad)*100);
     if(c.dirty){renderH(c);c.dirty=false}
   });
@@ -1811,7 +1880,7 @@ document.querySelectorAll(".ov").forEach(ov=>{
   ov.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeOv(ov));
 });
 addEventListener("keydown",e=>{
-  if(e.key==="Escape"){document.querySelectorAll(".ov.on").forEach(closeOv);drawer.classList.remove("on");}
+  if(e.key==="Escape"){document.querySelectorAll(".ov.on").forEach(closeOv);closeMenu();}
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openOv(searchOv);}
 });
 
@@ -1857,14 +1926,12 @@ sInput.addEventListener("keydown",e=>{
   if(e.key==="ArrowUp"){e.preventDefault();sIdx=Math.max(0,sIdx-1);renderSearch();}
   if(e.key==="Enter"&&sHits[sIdx]){e.preventDefault();go(sHits[sIdx][2]);}
 });
-document.getElementById("sBtn").onclick=()=>{sInput.value="";sHits=INDEX.slice();sIdx=0;renderSearch();openOv(searchOv);};
+document.getElementById("sBtn").onclick=()=>{closeMenu();sInput.value="";sHits=INDEX.slice();sIdx=0;renderSearch();openOv(searchOv);};
 renderSearch();
 
 /*── sign-in modal + password visibility ──*/
 const signinOv=document.getElementById("signinWrap");
-document.getElementById("signinBtn").onclick=()=>openOv(signinOv);
-const sb2=document.getElementById("signinBtn2");
-if(sb2)sb2.onclick=e=>{e.preventDefault();drawer.classList.remove("on");openOv(signinOv);};
+document.getElementById("signinBtn").onclick=()=>{closeMenu();openOv(signinOv);};
 const pwIn=document.getElementById("siPw"),pwT=document.getElementById("pwToggle"),
       eyeOn=document.getElementById("eyeOn"),eyeOff=document.getElementById("eyeOff");
 pwT.onclick=()=>{
@@ -1988,6 +2055,7 @@ function loop(now){
 let lastHover=null;
 
 /*── BOOT ──*/
+if(TOUCH){const th=document.getElementById("tlHint");if(th)th.textContent="Tap";}
 readTokens();
 measure();          /* also caches tree-node, bar and pin offsets */
 requestAnimationFrame(loop);
