@@ -337,11 +337,8 @@ section{position:relative;z-index:1;padding-block:clamp(4.5rem,11vw,9rem);scroll
 .mcard{padding:.55rem;border-radius:var(--r-xl);overflow:hidden;transform-style:preserve-3d;will-change:transform}
 .mhead{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.55rem .85rem .75rem;flex-wrap:wrap}
 .mhead .caps{color:var(--ink3);font-size:.6rem;letter-spacing:.22em}
-.live{display:flex;align-items:center;gap:.42rem;color:var(--alert);font-size:.6rem;letter-spacing:.2em;font-weight:700;text-transform:uppercase}
-.live i{width:6px;height:6px;border-radius:50%;background:var(--alert);animation:pl 2s infinite}
 @keyframes pl{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.75)}}
-body.rm .live i{animation:none}
-.mbody{border-radius:var(--r-l);overflow:hidden;position:relative;background:var(--dentBg);box-shadow:inset 0 2px 10px var(--dentIn)}
+body.rm .mbody{border-radius:var(--r-l);overflow:hidden;position:relative;background:var(--dentBg);box-shadow:inset 0 2px 10px var(--dentIn)}
 #mapC{display:block;width:100%;height:auto}
 .mfoot{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.8rem .85rem .5rem;flex-wrap:wrap}
 .lg{display:flex;align-items:center;gap:.22rem}
@@ -373,18 +370,9 @@ body.rm .live i{animation:none}
 .pin{position:sticky;top:0;height:100svh;display:flex;align-items:center}
 .story{display:grid;gap:clamp(2rem,5vw,4rem);align-items:center;width:100%}
 @media(min-width:940px){.story{grid-template-columns:.9fr 1.1fr}}
-#bigN{font-family:var(--fD);font-size:clamp(4.5rem,16vw,12rem);font-weight:600;letter-spacing:-.055em;line-height:.82;font-variant-numeric:tabular-nums;
-  background:linear-gradient(150deg,var(--b800),var(--b400) 60%,var(--b200));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-:root[data-theme="dark"] #bigN{background:linear-gradient(150deg,var(--b100),var(--b300) 60%,var(--b500));-webkit-background-clip:text;background-clip:text}
-#bigN sup{font-size:.3em;vertical-align:super}
-.story h2{font-size:var(--t-3);margin-bottom:1.2rem}
+:root[data-theme="dark"] .story h2{font-size:var(--t-3);margin-bottom:1.2rem}
 .story p{color:var(--ink2);max-width:48ch;margin-bottom:1rem}
 .srcline{font-size:.58rem;letter-spacing:.2em;color:var(--ink3);font-weight:700;text-transform:uppercase;margin-top:1.2rem}
-.sbars{display:flex;gap:.3rem;margin-top:2rem}
-.sbars i{height:3px;flex:1;border-radius:2px;background:var(--line2);overflow:hidden;position:relative}
-.sbars i::after{content:"";position:absolute;inset:0;background:var(--brand);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--E)}
-.sbars i.on::after{transform:none}
 
 /*── TIMELINE ──*/
 .tlhead{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:2.6rem}
@@ -404,7 +392,7 @@ body.rm .live i{animation:none}
 #pop dd{margin:0;font-family:var(--fM);font-variant-numeric:tabular-nums;text-align:right}
 
 /*── SCROLL-DRIVEN DECK ──*/
-#deckSec{position:relative}
+#decision{position:relative}
 #deckPin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:clamp(1.5rem,3vw,2.5rem);overflow:hidden}
 .dhead{text-align:center;max-width:34ch;margin-inline:auto;padding-inline:1rem}
 .dhead h2{font-size:var(--t-3)}
@@ -449,19 +437,12 @@ body.rm .live i{animation:none}
   opacity:calc(.08 + var(--o,1) * .92)}
 .prod .pbody{transform:translateY(calc((1 - var(--o,1)) * 60px)) scale(calc(.82 + var(--o,1) * .18));
   opacity:calc(.1 + var(--o,1) * .9);will-change:transform}
-.prod .achip{opacity:calc((var(--o,1) - .72) * 3.6);transform:translateX(-50%) scale(calc(.7 + var(--o,1) * .3))}
-body.rm .prod,body.rm .prod .pbody{transform:none;opacity:1}
-body.rm .prod .achip{opacity:1;transform:translateX(-50%)}
-.phone{position:absolute;inset:0;display:grid;place-items:center;background:var(--band)}
+.prod body.rm .prod,body.rm .prod .pbody{transform:none;opacity:1}
+body.rm .prod .phone{position:absolute;inset:0;display:grid;place-items:center;background:var(--band)}
 .pbody{width:min(44%,180px);aspect-ratio:9/18.5;background:#02121e;border:2px solid rgba(255,255,255,.16);border-radius:26px;padding:8px;position:relative;box-shadow:0 24px 50px -18px rgba(0,0,0,.7)}
 .pscr{width:100%;height:100%;border-radius:19px;background:#02182a;position:relative;overflow:hidden}
 #radar{display:block;width:100%;height:100%}
-.achip{position:absolute;left:50%;top:12%;transform:translateX(-50%);display:flex;align-items:center;gap:.35rem;white-space:nowrap;
-  background:var(--alert);color:#fff;border-radius:999px;padding:.28rem .65rem;font-size:.48rem;letter-spacing:.14em;font-weight:700;text-transform:uppercase;
-  box-shadow:0 6px 18px -6px rgba(193,18,31,.9)}
-.achip i{width:4px;height:4px;border-radius:50%;background:#fff;animation:pl 1.5s infinite}
-body.rm .achip i{animation:none}
-
+body.rm 
 /*── WHY — unfolding card stack ──*/
 .stackWrap{display:grid;gap:clamp(1.6rem,4vw,3.5rem);align-items:center;width:100%}
 @media(min-width:940px){.stackWrap{grid-template-columns:.85fr 1.15fr}}
@@ -681,73 +662,24 @@ textarea.inp{resize:vertical;min-height:92px}
 .utmChip.on{display:flex}
 .utmChip b{color:var(--brand);font-weight:600}
 
-/*── FAQ ──*/
-.faqWrap{display:grid;gap:clamp(1.8rem,4vw,3.5rem);align-items:start;width:100%}
-@media(min-width:940px){.faqWrap{grid-template-columns:.78fr 1.22fr}}
-.faqAside h2{font-size:var(--t-3);max-width:16ch;margin-bottom:1.1rem}
-.faqAside p{color:var(--ink2);font-size:var(--t-sm);max-width:30ch;line-height:1.6}
-.faqAside a{color:var(--brand);font-weight:600;border-bottom:1px solid currentColor}
-.faq{display:grid;gap:.6rem;max-width:none}
-.qa{border-radius:var(--r-m);overflow:hidden}
-.qa>button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1.2rem;
-  padding:clamp(1rem,2.2vw,1.35rem) clamp(1.1rem,2.4vw,1.5rem);text-align:left;
-  font-family:var(--fD);font-size:var(--t-1);font-weight:600;letter-spacing:-.018em;transition:background .25s}
-.qa>button:hover{background:var(--dentBg)}
-.qa .pm{position:relative;width:18px;height:18px;flex:none}
-.qa .pm::before,.qa .pm::after{content:"";position:absolute;background:var(--brand);border-radius:2px;transition:transform .4s var(--E),opacity .3s}
-.qa .pm::before{left:0;top:8px;width:18px;height:2px}
-.qa .pm::after{left:8px;top:0;width:2px;height:18px}
-.qa[data-open="true"] .pm::after{transform:rotate(90deg);opacity:0}
-.qa .ans{max-height:0;overflow:hidden;transition:max-height .5s var(--E)}
-.qa .ans p{padding:0 clamp(1.1rem,2.4vw,1.5rem) clamp(1.1rem,2.4vw,1.4rem);color:var(--ink2);font-size:var(--t-sm);line-height:1.65;max-width:62ch}
-
-/*── PHONE/TABLET TUNING ──*/
-@media(max-width:760px){
-  /* big blurred auroras are expensive on mobile GPUs */
-  .aur{filter:blur(58px)}
-  #a3{display:none}
-  /* pinned runs that feel right on a desktop are a marathon on a phone */
-  #story{height:190svh!important}
-  #deckSec{height:290svh!important}
-  #why{height:360svh!important}
-  .glass,.drop,#menuPanel{backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
-  #stage{height:clamp(270px,48vh,330px)}
-  .stackStage{height:clamp(290px,50vh,340px)}
-  #bars{gap:1px;height:clamp(110px,30vw,150px)}
-  .tlx{font-size:.52rem}
-  /* the eyebrow rule ate a whole line next to wrapped text */
-  .eye{flex-wrap:wrap;gap:.5rem}
-  .eye::after{display:none}
-  .eye.caps{letter-spacing:.16em;line-height:1.5}
-  #hero{padding-top:6.5rem}
-  .hsub{font-size:var(--t-0)}
-  .snum{letter-spacing:.14em}
-  .mfoot,.mhead{gap:.4rem}
-  #readout{font-size:.56rem}
-}
-@media(max-width:1024px) and (min-width:761px){
-  #story{height:220svh!important}#deckSec{height:350svh!important}#why{height:440svh!important}
-}
-
 /*── PRINT ──*/
 @media print{
   @page{margin:16mm}
   html,body{background:#fff!important;color:#000!important;font-size:11pt}
   #atmos,#prog,#skip,#fabs,#cookie,#pre,#down,header,#menuPanel,.ov,#stage,.dprog,.dhint,
-  .pv,.chip,.live,#readout,.lg,.sbars,.copy,.pwEye,.btn,.cta-sm,.sw{display:none!important}
+  .pv,.chip,#readout,.lg,.copy,.pwEye,.btn,.cta-sm,.sw{display:none!important}
   #vp{position:static!important;transform:none!important}
   body{height:auto!important;overflow:visible!important}
   section{padding-block:0!important;page-break-inside:avoid;margin-bottom:14mm}
-  .pinsec,#deckSec{height:auto!important}
+  .pinsec,#decision{height:auto!important}
   .pin,#deckPin{height:auto!important;transform:none!important;display:block!important}
   .glass,.dent,.prod,.formCard,#tl{background:none!important;backdrop-filter:none!important;
     box-shadow:none!important;border:1px solid #bbb!important;border-radius:4px!important}
   [data-rv],.mask>span{opacity:1!important;transform:none!important}
-  .qa .ans{max-height:none!important}
+
   h1,h2,h3{page-break-after:avoid;color:#000!important}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#555}
-  #bigN{color:#000!important;-webkit-text-fill-color:#000!important}
-  .fbot{border-top:1px solid #999}
+    .fbot{border-top:1px solid #999}
 }
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -775,27 +707,43 @@ textarea.inp{resize:vertical;min-height:92px}
       <span style="display:block"><b style="display:block">FloodGuard</b><span>Predict · Plan · Protect</span></span>
     </a>
     <nav class="main" aria-label="Primary">
+      <div class="ni"><a href="#hero">Home</a></div>
+      <div class="ni"><a href="#about">About Us</a></div>
       <div class="ni"><button type="button" aria-expanded="false">Products <svg viewBox="0 0 12 12"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
-        <div class="drop glass">
-          <a href="#products"><b>Explorer</b><em>District risk maps and climate scenarios</em></a>
-          <a href="#products"><b>Live</b><em>Real-time flood alerting</em></a>
+        <div class="drop">
+          <a href="#explorer"><b>Explorer</b><em>Free historical district and taluka flood intelligence</em></a>
+          <a href="#atlas"><b>Atlas</b><em>Premium historical, current and future intelligence</em></a>
+          <a href="#live"><b>Live</b><em>Real-time rainfall, radar, risk and alerts</em></a>
         </div></div>
-      <div class="ni"><button type="button" aria-expanded="false">Resources <svg viewBox="0 0 12 12"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
-        <div class="drop glass">
-          <a href="#story"><b>Methodology</b><em>How the model works</em></a>
-          <a href="#timeline"><b>Flood record</b><em>Seventy-four years, measured</em></a>
+      <div class="ni"><button type="button" aria-expanded="false">Platform <svg viewBox="0 0 12 12"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="drop">
+          <a href="#platform"><b>Platform overview</b><em>Data in. Intelligence out.</em></a>
+          <a href="#platform"><b>Technology</b></a>
+          <a href="#platform"><b>Data</b></a>
+          <a href="#platform"><b>Methodology</b></a>
+          <a href="#platform"><b>Validation</b></a>
+          <a href="#platform"><b>API</b></a>
         </div></div>
-      <div class="ni"><a href="#industries">Industries</a></div>
-      <div class="ni"><a href="#close">Company</a></div>
+      <div class="ni"><button type="button" aria-expanded="false">Solutions <svg viewBox="0 0 12 12"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="drop">
+          <a href="#serve"><b>Insurance &amp; Reinsurance</b></a>
+          <a href="#serve"><b>Banking &amp; Finance</b></a>
+          <a href="#serve"><b>Government &amp; Disaster Management</b></a>
+          <a href="#serve"><b>Infrastructure &amp; Engineering</b></a>
+          <a href="#serve"><b>Agriculture &amp; Food Security</b></a>
+        </div></div>
+      <div class="ni"><a href="#insights">Insights</a></div>
+      <div class="ni"><a href="#start">Contact</a></div>
     </nav>
     <div class="hact">
-      <a class="cta-sm" href="#demo" data-utm>Book a demo</a>
+      <a class="cta-sm ghost" href="#explorer">Explore district risk</a>
+      <a class="cta-sm" href="#start" data-utm>Get started</a>
       <div class="menuWrap">
         <button id="menuBtn" type="button" aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
           <span class="mIcon"><i></i><i></i><i></i></span><span class="mWord">Menu</span>
         </button>
 
-        <div id="menuPanel" class="glass" role="dialog" aria-label="Site menu" aria-modal="false">
+        <div id="menuPanel" role="dialog" aria-label="Site menu" aria-modal="false">
           <div class="mSec mThemeSec">
             <p class="mLbl">Appearance</p>
             <div class="mTheme">
@@ -809,21 +757,28 @@ textarea.inp{resize:vertical;min-height:92px}
           </div>
 
           <div class="mSec">
+            <p class="mLbl">Products</p>
+            <a href="#explorer"><b>Explorer</b><em>Free historical district intelligence</em></a>
+            <a href="#atlas"><b>Atlas</b><em>Historical, current and future in one view</em></a>
+            <a href="#live"><b>Live</b><em>Real-time rainfall, radar and risk</em></a>
+          </div>
+
+          <div class="mSec">
             <p class="mLbl">Navigate</p>
-            <a href="#hero"><b>Home</b><em>Exposure map and headline figures</em></a>
-            <a href="#story"><b>Methodology</b><em>How the model works</em></a>
-            <a href="#timeline"><b>Flood record</b><em>Seventy-four monsoons, measured</em></a>
-            <a href="#products"><b>Products</b><em>Explorer &amp; Live</em></a>
-            <a href="#deckSec"><b>Deliverables</b><em>What lands on your desk</em></a>
-            <a href="#industries"><b>Sectors</b><em>Who we work with</em></a>
-            <a href="#faq"><b>FAQ</b><em>Procurement, accuracy, pricing</em></a>
+            <a href="#problem"><b>The flood problem</b></a>
+            <a href="#record"><b>75 years of flood record</b></a>
+            <a href="#decision"><b>Decision support</b></a>
+            <a href="#platform"><b>Platform</b></a>
+            <a href="#serve"><b>Solutions</b></a>
+            <a href="#about"><b>About us</b></a>
+            <a href="#insights"><b>Insights</b></a>
           </div>
 
           <div class="mSec">
             <p class="mLbl">Actions</p>
             <button type="button" id="sBtn"><b>Search</b><span class="kbd">Ctrl K</span></button>
             <button type="button" id="signinBtn"><b>Sign in</b></button>
-            <a class="mCta" href="#demo" data-utm>Book a demo
+            <a class="mCta" href="#start" data-utm>Get started
               <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
           </div>
         </div>
@@ -834,99 +789,164 @@ textarea.inp{resize:vertical;min-height:92px}
 
 <div id="vp"><div id="content">
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <section id="hero">
   <div class="wrap hgrid">
     <div>
-      <p class="eye caps" data-rv><i></i>Climate risk intelligence · India</p>
+      <p class="eye caps" data-rv><i></i>Enterprise flood intelligence · India · Private preview</p>
       <h1>
-        <span class="mask"><span>Stay ahead</span></span>
-        <span class="mask"><span>of <em>floods</em>.</span></span>
-        <span class="mask"><span class="q">Predict. Plan.</span></span>
-        <span class="mask"><span class="q">Protect.</span></span>
+        <span class="mask"><span>Know the flood</span></span>
+        <span class="mask"><span>before it <em>arrives</em>.</span></span>
       </h1>
-      <p class="hsub" data-rv>India's flood-related economic losses rose <b>1,400%</b> between 1990 and 2020. We map where the water goes next — district by district, decade by decade.</p>
+      <p class="hsub" data-rv>FloodGuard turns decades of observed climate and flood data into forward-looking flood intelligence — helping organizations understand risk across India's districts and talukas.</p>
       <div class="hcta" data-rv>
-        <a class="btn bp" href="#close">Book a demo <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-        <a class="btn bg2" href="#story">See the method</a>
+        <a class="btn bp" href="#explorer">Explore district risk <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+        <a class="btn bg2" href="#start" data-utm>Get started</a>
       </div>
     </div>
 
     <div class="mstack" data-rv>
       <div class="mcard glass" id="mcard">
         <div class="mhead">
-          <span class="caps">Composite flood exposure · schematic</span>
-          <span class="live"><i></i>Live model</span>
+          <span class="caps">District risk · observed record</span>
+          <span class="caps" style="color:var(--ink3)">Schematic</span>
         </div>
-        <div class="mbody"><canvas id="mapC" aria-label="Schematic dot-density map of India showing flood exposure by district cell"></canvas></div>
+        <div class="mbody"><canvas id="mapC" aria-label="Schematic dot-density map of India showing relative flood exposure by district cell"></canvas></div>
         <div class="mfoot">
-          <div class="lg"><span>Low</span>
+          <div class="lg"><span>Lower</span>
             <b style="background:var(--b100)"></b><b style="background:var(--b200)"></b><b style="background:var(--b300)"></b>
             <b style="background:var(--b400)"></b><b style="background:var(--b600)"></b><b style="background:var(--b800)"></b><b style="background:var(--b950)"></b>
-            <span style="margin-left:.3rem">High</span></div>
+            <span style="margin-left:.3rem">Higher</span></div>
           <span id="readout">hover to inspect</span>
         </div>
+        <div class="tspine" aria-hidden="true"><i>Historical</i><span></span><i>Current</i><span></span><i>Future</i></div>
       </div>
-      <div class="chip glass" id="chip1"><b class="tab" data-count="766">0</b><span>Districts live</span></div>
-      <div class="chip glass" id="chip2"><b class="tab" data-count="6" data-suffix="h">0</b><span>Refresh cadence</span></div>
     </div>
   </div>
-  <a id="down" href="#story" aria-label="Scroll to content">
+  <a id="down" href="#problem" aria-label="Scroll to content">
     <span>Scroll</span>
     <i><svg viewBox="0 0 14 14"><path d="M7 2v10M3 8l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
   </a>
 </section>
 
 <div class="wrap"><div class="stats dent" id="stats" data-rv>
-  <div><b class="tab" data-count="74">0</b><em>Years observed</em></div>
-  <div><b class="tab" data-count="766">0</b><em>Districts</em></div>
-  <div><b class="tab" data-count="6512">0</b><em>Talukas</em></div>
-  <div><b class="tab" data-count="3">0</b><em>Climate scenarios</em></div>
+  <div><b class="tab" data-count="75" data-suffix="+">0</b><em>Years observed</em></div>
+  <div><b class="tab" data-count="766">0</b><em>Districts analysed</em></div>
+  <div><b class="tab" data-count="6512">0</b><em>Talukas mapped</em></div>
 </div></div>
 
-<!-- PINNED STORY -->
-<section class="pinsec" id="story" style="height:260svh;padding:0">
-  <div class="pin" id="storyPin"><div class="wrap story">
+<!-- ══ THE FLOOD PROBLEM ══ -->
+<section class="pinsec" id="problem" style="height:280svh;padding:0">
+  <div class="pin" id="problemPin"><div class="wrap story">
     <div>
-      <span class="snum">01 — The problem</span>
-      <div id="bigN">0<sup>%</sup></div>
-      <p class="srcline">Central Water Commission · 1990 → 2020</p>
+      <span class="snum">01 — The flood problem</span>
+      <h2 data-rv>Flood risk is changing. The way we assess it hasn't.</h2>
+      <p data-rv>Flood risk is no longer defined by what happened in the past. Changing rainfall patterns, expanding exposure and evolving climate conditions are reshaping where and how losses occur. Yet many important decisions still depend on fragmented, historical or coarse risk information.</p>
+      <p data-rv class="closer">The challenge isn't a lack of data. It's turning the right data into usable intelligence when a decision needs to be made.</p>
     </div>
-    <div>
-      <h2 data-rv>The water is moving faster than the maps.</h2>
-      <p data-rv>Rapid urbanisation sealed the ground that used to absorb monsoon runoff. Climate change made that runoff heavier and less predictable. Together they drove flood losses up more than fourteenfold in three decades.</p>
-      <p data-rv>Yet risk assessment in India still runs on historical averages at state resolution — too coarse to tell a planner which ward floods, or an underwriter which street to price differently.</p>
-      <p data-rv style="color:var(--ink)">FloodGuard closes that gap: satellite observation, climate models and hydrological simulation, resolved to the district and taluka.</p>
-      <div class="sbars" id="sbars"><i></i><i></i><i></i><i></i></div>
+    <div class="probList" id="probList">
+      <article><i>01</i><h3>Backward-looking</h3><p>Past data doesn't fully describe future risk.</p></article>
+      <article><i>02</i><h3>Too coarse</h3><p>Risk gets lost between the district and the asset.</p></article>
+      <article><i>03</i><h3>Fragmented</h3><p>The data exists. The intelligence is scattered.</p></article>
     </div>
   </div></div>
 </section>
 
-<!-- TIMELINE -->
-<section id="timeline">
+<!-- ══ DECISION GAP ══ -->
+<section id="gap">
   <div class="wrap">
-    <div class="tlhead">
-      <div>
-        <span class="snum">02 — The record</span>
-        <p class="eye caps" data-rv><i></i>Seventy-four monsoons</p>
-        <h2 data-rv>Every monsoon since 1951, measured.</h2>
+    <span class="snum">02 — The decision gap</span>
+    <h2 data-rv style="font-size:var(--t-3);max-width:18ch;margin-bottom:2.6rem">Data alone doesn't answer the decision.</h2>
+    <div class="flow" data-rv>
+      <div class="flowIn" data-stag>
+        <span>Rainfall</span><span>Flood history</span><span>Terrain</span><span>Drainage</span>
+        <span>Satellite data</span><span>Climate projections</span><span>Exposure</span>
       </div>
-      <p class="srcline" data-rv style="max-width:24ch;margin:0"><span id="tlHint">Hover</span> any year for exposure, anomaly and event count</p>
-    </div>
-    <div id="tl" class="glass" data-rv>
-      <div id="bars" role="group" aria-label="Flood exposure by year, 1951 to 2025"></div>
-      <div class="tlx"><span>1951</span><span>1970</span><span>1990</span><span>2010</span><span>2025</span></div>
-      <div id="pop" role="status"><h4>—</h4><dl></dl></div>
+      <div class="flowArrow" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="flowCore glass"><b>FloodGuard</b></div>
+      <div class="flowArrow" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="flowOut"><b>Decision</b></div>
     </div>
   </div>
 </section>
 
-<!-- SCROLL-DRIVEN DECK -->
-<section id="deckSec" style="height:420svh;padding:0">
+<!-- ══ 75 YEARS ══ -->
+<section id="record">
+  <div class="wrap">
+    <div class="tlhead">
+      <div>
+        <span class="snum">03 — Observed record · 1951–2025</span>
+        <p class="eye caps" data-rv><i></i>75 years. One flood story.</p>
+        <h2 data-rv>FloodGuard reconstructs India's flood record from 1951 onward.</h2>
+        <p data-rv style="color:var(--ink2);max-width:46ch;margin-top:1rem">A consistent historical foundation for understanding how risk has evolved — across every district and taluka we cover.</p>
+      </div>
+      <p class="srcline" data-rv style="max-width:24ch;margin:0"><span id="tlHint">Hover</span> any year for exposure, anomaly and event count</p>
+    </div>
+    <div id="tl" class="glass" data-rv>
+      <div id="bars" role="group" aria-label="Relative flood exposure by year, 1951 to 2025"></div>
+      <div class="tlx"><span>1951</span><span>1970</span><span>1990</span><span>2010</span><span>2025</span></div>
+      <div id="pop" role="status"><h4>—</h4><dl></dl></div>
+    </div>
+    <div data-rv style="margin-top:1.8rem"><a class="btn bg2" href="#explorer">Explore the record <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTS ══ -->
+<section id="products">
+  <div class="wrap">
+    <span class="snum">04 — Products</span>
+    <p class="eye caps" data-rv><i></i>Three ways in</p>
+    <h2 data-rv style="font-size:var(--t-3);max-width:20ch;margin-bottom:2.5rem">Start free. Go deeper. Monitor in real time.</h2>
+
+    <div class="prod glass" id="atlas" data-rv>
+      <div>
+        <p class="pkick">Atlas · premium</p>
+        <h3>Understand flood risk across time.</h3>
+        <p class="ptag">Historical intelligence, current risk and future climate projections in one view.</p>
+        <div class="tspine flat" aria-hidden="true"><i>1951</i><span></span><i>Today</i><span></span><i>2100</i></div>
+        <div class="tiers">
+          <div class="tier"><h4>Intelligence</h4><ul><li>Historical flood records and rainfall trends</li><li>Current baseline risk and vulnerability layers</li><li>Future projections: 2030, 2050, 2100</li></ul></div>
+          <div class="tier pro"><h4>Analysis</h4><ul><li>Taluka-level intelligence</li><li>Risk scoring and return-period analysis</li><li>Portfolio and asset screening</li><li>Maps, risk reports and custom outputs</li></ul></div>
+        </div>
+        <a class="btn bg2" href="#start" data-utm>Explore Atlas <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+      <div class="pv"><canvas id="pvMap"></canvas></div>
+    </div>
+
+    <div class="prod glass rev" id="live" data-rv>
+      <div>
+        <p class="pkick">Live · operational</p>
+        <h3>Know what's happening now.</h3>
+        <p class="ptag">Real-time rainfall, flood signals and changing conditions to support faster operational decisions.</p>
+        <div class="tiers">
+          <div class="tier"><h4>Signals</h4><ul><li>Rainfall monitoring</li><li>Radar imagery and playback</li><li>Flood-risk signals and location intelligence</li></ul></div>
+          <div class="tier pro"><h4>Response</h4><ul><li>Community and field reports</li><li>Alerts and notifications</li><li>Dashboard and mobile app</li></ul></div>
+        </div>
+        <p class="disc">Advance risk signals are probabilistic intelligence — not a guarantee that every flood event can be predicted in advance.</p>
+        <a class="btn bg2" href="#start" data-utm>Explore Live <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+      <div class="pv"><div class="phone"><div class="pbody"><div class="pscr">
+        <canvas id="radar"></canvas>
+      </div></div></div></div>
+    </div>
+
+    <div class="explorerBand dent" id="explorer" data-rv>
+      <div>
+        <p class="pkick">Explorer · free</p>
+        <h3>Start with your district.</h3>
+        <p class="ptag">Explore historical flood risk across India's districts and talukas.</p>
+      </div>
+      <a class="btn bp" href="#start" data-utm>Explore district risk <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DECISION SUPPORT ══ -->
+<section id="decision" style="height:420svh;padding:0">
   <div id="deckPin">
     <div class="dhead">
-      <span class="snum">03 — What you get</span>
-      <h2 data-rv>Not a dashboard login. Decisions you can sign off.</h2>
+      <span class="snum">05 — Decision support</span>
+      <h2 data-rv>From flood risk to actionable insight.</h2>
     </div>
     <div id="stage"><div id="hx"></div></div>
     <div class="dprog" id="dprog"></div>
@@ -934,63 +954,27 @@ textarea.inp{resize:vertical;min-height:92px}
   </div>
 </section>
 
-<!-- PRODUCTS -->
-<section id="products">
+<!-- ══ PLATFORM ══ -->
+<section id="platform">
   <div class="wrap">
-    <span class="snum">04 — Products</span>
-    <p class="eye caps" data-rv><i></i>Two ways in</p>
-    <h2 data-rv style="font-size:var(--t-3);max-width:17ch;margin-bottom:2.5rem">Plan for the decade. Respond to the hour.</h2>
-
-    <div class="prod glass" data-rv>
-      <div>
-        <h3>Explorer</h3>
-        <p class="ptag">District and taluka flood risk, historical through 2100 under three climate scenarios.</p>
-        <div class="tiers">
-          <div class="tier"><h4>Free</h4><ul><li>District-level exposure maps</li><li>Historical flood record</li><li>Single-scenario projection</li></ul></div>
-          <div class="tier pro"><h4>Pro</h4><ul><li>Taluka resolution</li><li>All climate scenarios</li><li>Drainage &amp; infrastructure layers</li><li>API access and bulk export</li></ul></div>
-        </div>
-        <a class="btn bg2" href="#close">Explore the map <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-      </div>
-      <div class="pv"><canvas id="pvMap"></canvas></div>
+    <span class="snum">06 — Platform</span>
+    <p class="eye caps" data-rv><i></i>The intelligence behind FloodGuard</p>
+    <h2 data-rv style="font-size:var(--t-3);max-width:16ch;margin-bottom:2.6rem">Data in. Intelligence out.</h2>
+    <div class="pipe" data-rv data-stag>
+      <div class="glass"><i>01</i><h3>Data</h3><p>Observed climate, satellite and remote sensing, terrain, hydrological records and climate projections.</p></div>
+      <div class="glass"><i>02</i><h3>Models</h3><p>Statistical, machine-learning and climate-modelling approaches, applied where each is appropriate.</p></div>
+      <div class="glass"><i>03</i><h3>Risk</h3><p>Hazard × exposure × vulnerability, resolved from India down to site and asset level.</p></div>
+      <div class="glass"><i>04</i><h3>Decision</h3><p>Maps, reports, APIs and data services that drop into the workflows you already run.</p></div>
     </div>
-
-    <div class="prod glass rev" data-rv>
-      <div>
-        <h3>Live</h3>
-        <p class="ptag">Rainfall radar, river gauges and model nowcasts, pushed as alerts to the people who have to act.</p>
-        <div class="tiers">
-          <div class="tier"><h4>Free</h4><ul><li>District flood warnings</li><li>72-hour rainfall outlook</li><li>SMS and app alerts</li></ul></div>
-          <div class="tier pro"><h4>Pro</h4><ul><li>Asset-level thresholds</li><li>Escalation workflows</li><li>Webhook &amp; control-room feed</li><li>Post-event impact reports</li></ul></div>
-        </div>
-        <a class="btn bg2" href="#close">See Live in action <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-      </div>
-      <div class="pv"><div class="phone"><div class="pbody"><div class="pscr">
-        <canvas id="radar"></canvas><span class="achip"><i></i>Red alert · Ward 14</span>
-      </div></div></div></div>
-    </div>
+    <div data-rv style="margin-top:2.2rem"><a class="btn bg2" href="#start">Explore the platform <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
   </div>
 </section>
 
-<!-- WHY — pinned card stack that unfolds -->
-<section id="why" class="pinsec" style="height:520svh;padding:0">
-  <div class="pin" id="whyPin">
-    <div class="wrap stackWrap">
-      <div class="stackAside">
-        <span class="snum">05 — Why FloodGuard</span>
-        <h2>Built on observation, not assumption.</h2>
-        <p class="stackCount"><b id="stackI">01</b><span>/ 06</span></p>
-        <div class="stackTicks" id="stackTicks"></div>
-      </div>
-      <div class="stackStage" id="stackStage"></div>
-    </div>
-  </div>
-</section>
-
-<!-- INDUSTRIES — branching tree -->
-<section id="industries">
+<!-- ══ WHO WE SERVE ══ -->
+<section id="serve">
   <div class="wrap">
-    <span class="snum">06 — Sectors</span>
-    <h2 data-rv style="font-size:var(--t-3);max-width:15ch;margin-bottom:clamp(2.5rem,6vw,4.5rem)">Five sectors, one question: where does the water go?</h2>
+    <span class="snum">07 — Solutions</span>
+    <h2 data-rv style="font-size:var(--t-3);max-width:17ch;margin-bottom:clamp(2.5rem,6vw,4.5rem)">Flood intelligence for decisions that matter.</h2>
     <div class="tree" id="tree">
       <svg id="treeSvg" aria-hidden="true">
         <defs><linearGradient id="vineGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1001,27 +985,71 @@ textarea.inp{resize:vertical;min-height:92px}
   </div>
 </section>
 
-<!-- FAQ -->
-<section id="faq">
-  <div class="wrap faqWrap">
-    <div class="faqAside">
-      <span class="snum">07 — Questions</span>
-      <h2 data-rv>The things procurement always asks.</h2>
-      <p data-rv>Not covered here? <a href="#demo">Bring it to the demo call</a> — technical evaluation questions are the ones we most enjoy.</p>
+<!-- ══ WHY FLOODGUARD ══ -->
+<section id="why" class="pinsec" style="height:420svh;padding:0">
+  <div class="pin" id="whyPin">
+    <div class="wrap stackWrap">
+      <div class="stackAside">
+        <span class="snum">08 — Why FloodGuard</span>
+        <h2>Built on observed data. Built for better decisions.</h2>
+        <p class="stackCount"><b id="stackI">01</b><span>/ 04</span></p>
+        <div class="stackTicks" id="stackTicks"></div>
+      </div>
+      <div class="stackStage" id="stackStage"></div>
     </div>
-    <div class="faq" id="faqList" data-rv></div>
   </div>
 </section>
 
-<!-- DEMO FORM -->
-<section id="demo">
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="wrap aboutGrid">
+    <div>
+      <span class="snum">09 — About us</span>
+      <h2 data-rv style="font-size:var(--t-3);max-width:15ch;margin-bottom:1.2rem">Building India's flood intelligence layer.</h2>
+      <p data-rv style="color:var(--ink2);max-width:44ch">FloodGuard is a team working across climate science, geospatial intelligence and data systems to make flood risk more understandable, accessible and actionable.</p>
+    </div>
+    <div class="vals" data-rv data-stag>
+      <div><h4>Vision</h4><p>No decision made blind to climate risk.</p></div>
+      <div><h4>Mission</h4><p>Turning uncertainty into intelligence.</p></div>
+      <div><h4>Why we exist</h4><p>The data exists. The decision layer doesn't.</p></div>
+      <div><h4>Principles</h4><p>Science first · Built for India · Decision-ready · Honest about uncertainty</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INSIGHTS ══ -->
+<section id="insights">
+  <div class="wrap">
+    <span class="snum">10 — Insights</span>
+    <p class="eye caps" data-rv><i></i>Understanding flood risk, beyond the map</p>
+    <h2 data-rv style="font-size:var(--t-3);max-width:20ch;margin-bottom:2.4rem">Research, data stories and practical perspectives.</h2>
+    <div class="cats" data-rv data-stag>
+      <a href="#start"><b>Research</b><em>Flood risk, climate data and India's changing risk landscape</em></a>
+      <a href="#start"><b>White papers</b><em>Detailed research on exposure and decision support</em></a>
+      <a href="#start"><b>Use cases</b><em>Sector-specific applications</em></a>
+      <a href="#start"><b>Data stories</b><em>Visual explorations of flood history and rainfall</em></a>
+      <a href="#start"><b>Articles</b><em>Perspectives on flood science, technology and resilience</em></a>
+    </div>
+    <p class="pending caps" data-rv>Publication library in preparation</p>
+  </div>
+</section>
+
+<!-- ══ GET STARTED ══ -->
+<section id="start">
   <div class="wrap fgrid2">
     <div>
-      <span class="snum">08 — Book a demo</span>
-      <p class="eye caps" data-rv><i></i>Thirty minutes</p>
-      <h2 data-rv style="font-size:var(--t-3);max-width:17ch;margin-bottom:1.2rem">Your district, your data, our model.</h2>
-      <p data-rv style="color:var(--ink2);max-width:44ch;margin-bottom:1.6rem">We'll open the exposure map on a district you choose, walk the methodology end to end, and answer whatever your risk team throws at us.</p>
-      <div data-rv style="display:flex;align-items:center;gap:.7rem;flex-wrap:wrap">
+      <span class="snum">11 — Get started</span>
+      <p class="eye caps" data-rv><i></i>Let's talk flood risk</p>
+      <h2 data-rv style="font-size:var(--t-3);max-width:17ch;margin-bottom:1.2rem">Ready to understand flood risk differently?</h2>
+      <p data-rv style="color:var(--ink2);max-width:44ch;margin-bottom:1.6rem">Whether you want to explore your district, evaluate FloodGuard, book a product demonstration or collaborate with us — start here.</p>
+      <ul class="intents" data-rv data-stag>
+        <li><b>Explore flood risk</b><span>Explorer</span></li>
+        <li><b>Request early access</b><span>Atlas · Live</span></li>
+        <li><b>Book a demo</b><span>Product evaluation</span></li>
+        <li><b>Partner with us</b><span>Research · data · government</span></li>
+        <li><b>General enquiry</b><span>Anything else</span></li>
+      </ul>
+      <div data-rv style="display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem">
         <span style="font-family:var(--fM);font-size:var(--t-sm);color:var(--ink2)" id="contactMail">hello@floodguard.in</span>
         <button class="copy" type="button" data-copy="hello@floodguard.in">
           <svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5.5A2.5 2.5 0 0 1 7.5 3H15"/></svg>Copy
@@ -1034,59 +1062,85 @@ textarea.inp{resize:vertical;min-height:92px}
       <form id="demoForm" novalidate>
         <div class="f2">
           <div class="field">
-            <label for="fName">Full name</label>
+            <label for="fName">Name</label>
             <input class="inp" id="fName" name="name" type="text" placeholder="Priya Sharma" autocomplete="name">
             <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg>Please enter your name</span>
           </div>
           <div class="field">
             <label for="fMail">Work email</label>
-            <input class="inp" id="fMail" name="email" type="email" placeholder="priya@department.gov.in" autocomplete="email">
+            <input class="inp" id="fMail" name="email" type="email" placeholder="priya@organisation.in" autocomplete="email">
             <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg>Enter a valid email address</span>
           </div>
         </div>
-        <div class="field">
-          <label for="fOrg">Organisation type</label>
-          <select class="inp" id="fOrg" name="org">
-            <option value="">Select one</option>
-            <option>Government &amp; urban planning</option>
-            <option>Insurance &amp; financial institution</option>
-            <option>Business or investor</option>
-            <option>Community or individual</option>
-            <option>Research or education</option>
-          </select>
-          <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg>Please choose an option</span>
+        <div class="f2">
+          <div class="field">
+            <label for="fOrgName">Organisation</label>
+            <input class="inp" id="fOrgName" name="organisation" type="text" placeholder="Organisation name" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="fGeo">Location / geography</label>
+            <input class="inp" id="fGeo" name="geography" type="text" placeholder="State, district or region">
+          </div>
+        </div>
+        <div class="f2">
+          <div class="field">
+            <label for="fOrg">Industry</label>
+            <select class="inp" id="fOrg" name="industry">
+              <option value="">Select one</option>
+              <option>Insurance &amp; reinsurance</option>
+              <option>Banking &amp; finance</option>
+              <option>Government &amp; disaster management</option>
+              <option>Infrastructure &amp; engineering</option>
+              <option>Agriculture &amp; food security</option>
+              <option>Research &amp; education</option>
+              <option>Other</option>
+            </select>
+            <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg>Please choose an option</span>
+          </div>
+          <div class="field">
+            <label for="fIntent">Intent</label>
+            <select class="inp" id="fIntent" name="intent">
+              <option value="">Select one</option>
+              <option>Explore flood risk</option>
+              <option>Request early access</option>
+              <option>Book a demo</option>
+              <option>Partner with us</option>
+              <option>General enquiry</option>
+            </select>
+            <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg>Please choose an option</span>
+          </div>
         </div>
         <div class="field">
-          <label for="fMsg">Which district should we open? <span style="text-transform:none;letter-spacing:0;color:var(--ink3)">(optional)</span></label>
-          <textarea class="inp" id="fMsg" name="message" placeholder="Anything specific you'd like covered"></textarea>
+          <label for="fMsg">What would you like to see? <span style="text-transform:none;letter-spacing:0;color:var(--ink3)">(optional)</span></label>
+          <textarea class="inp" id="fMsg" name="message" placeholder="Product, geography, primary use case"></textarea>
         </div>
         <input type="hidden" name="utm" id="utmField">
         <button class="btn bp" type="submit" id="demoSubmit" style="width:100%;justify-content:center">
-          <span class="spin"></span><span class="lbl">Request a demo</span>
+          <span class="spin"></span><span class="lbl">Get started</span>
           <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
         </button>
-        <p style="font-size:var(--t-xs);color:var(--ink3);margin-top:.9rem;text-align:center;letter-spacing:0">We reply within one working day. No newsletter.</p>
+        <p class="next caps">We read it → the right person responds → we explore the fit</p>
       </form>
 
       <div class="okState" id="demoOk">
         <div class="okRing"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Request received</h3>
-        <p>We've sent a confirmation to <b id="okMail">your inbox</b>. Someone from the team will be in touch within one working day.</p>
-        <button class="btn bg2" type="button" id="demoReset">Send another request</button>
+        <h3>Enquiry received</h3>
+        <p>We've sent a confirmation to <b id="okMail">your inbox</b>. We aim to respond within two business days.</p>
+        <button class="btn bg2" type="button" id="demoReset">Send another enquiry</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CLOSE -->
+<!-- ══ CLOSE ══ -->
 <section id="close">
   <div class="wrap"><div class="band">
-    <p class="eye caps" data-rv><i></i>Get started</p>
-    <h2 data-rv>Find out what floods before it does.</h2>
-    <p data-rv>Thirty minutes, your district, your data. We'll show you the exposure map, walk the methodology, and answer whatever your risk team throws at us.</p>
+    <p class="eye caps" data-rv><i></i>Flood resilience is a shared problem</p>
+    <h2 data-rv>Your sector. Your risk. Your decision.</h2>
+    <p data-rv>Explore your district for free, request access to Atlas and Live, or start a conversation with the team.</p>
     <div class="hcta" data-rv>
-      <a class="btn bp" href="#">Book a demo <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-      <a class="btn bg2" href="#">Download the methodology</a>
+      <a class="btn bp" href="#start" data-utm>Get started <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a class="btn bg2" href="#explorer">Explore district risk</a>
     </div>
   </div></div>
 </section>
@@ -1097,17 +1151,18 @@ textarea.inp{resize:vertical;min-height:92px}
       <div>
         <a class="logo" href="#hero"><img src="data:image/jpeg;base64,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UUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKACiiigD/9k=" alt="FloodGuard">
           <span style="display:block"><b style="display:block">FloodGuard</b><span>Predict · Plan · Protect</span></span></a>
-        <p class="fblurb">Flood risk intelligence for India. Satellite observation, climate models and hydrological simulation, resolved to the district.</p>
+        <p class="fblurb">Flood intelligence across time — historical, current and future — translated into decision-ready intelligence for organizations exposed to flood risk.</p>
       </div>
-      <div><h4>Products</h4><ul><li><a href="#products">Explorer</a></li><li><a href="#products">Live</a></li><li><a href="#">API</a></li><li><a href="#">Pricing</a></li></ul></div>
-      <div><h4>Methodology</h4><ul><li><a href="#story">Model</a></li><li><a href="#">Data sources</a></li><li><a href="#">Validation</a></li><li><a href="#">Scenarios</a></li></ul></div>
-      <div><h4>Resources</h4><ul><li><a href="#timeline">Flood record</a></li><li><a href="#">Reports</a></li><li><a href="#">Documentation</a></li><li><a href="#">Glossary</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy</a></li></ul></div>
+      <div><h4>Products</h4><ul><li><a href="#explorer">Explorer</a></li><li><a href="#atlas">Atlas</a></li><li><a href="#live">Live</a></li></ul></div>
+      <div><h4>Platform</h4><ul><li><a href="#platform">Technology</a></li><li><a href="#platform">Data</a></li><li><a href="#platform">Methodology</a></li><li><a href="#platform">Validation</a></li><li><a href="#platform">API</a></li></ul></div>
+      <div><h4>Solutions</h4><ul><li><a href="#serve">Insurance</a></li><li><a href="#serve">Banking</a></li><li><a href="#serve">Government</a></li><li><a href="#serve">Infrastructure</a></li><li><a href="#serve">Agriculture</a></li></ul></div>
+      <div><h4>Insights</h4><ul><li><a href="#insights">Research</a></li><li><a href="#insights">White papers</a></li><li><a href="#insights">Use cases</a></li><li><a href="#insights">Data stories</a></li><li><a href="#insights">Articles</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#about">About us</a></li><li><a href="#start">Contact</a></li><li><a href="#start">Careers</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
     </div>
     <div class="fbot">
       <span>© FloodGuard Solutions Pvt. Ltd. 2026 · Hyderabad</span>
       <span>Last updated <time id="lastUpd">—</time></span>
-      <span>Template · placeholder figures</span>
+      <span>Private preview · figures pending validation</span>
     </div>
   </div>
 </footer>
@@ -1162,8 +1217,8 @@ textarea.inp{resize:vertical;min-height:92px}
 <div class="ov" id="modalWrap" role="dialog" aria-modal="true" aria-labelledby="cTitle">
   <div class="ov-panel glass mpad" style="max-width:440px;position:relative">
     <button class="ovX" type="button" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
-    <h3 class="mtitle" id="cTitle">Send this request?</h3>
-    <p class="mbodytxt" id="cBody">We'll email your demo request to the FloodGuard team and copy you in.</p>
+    <h3 class="mtitle" id="cTitle">Send this enquiry?</h3>
+    <p class="mbodytxt" id="cBody">We'll email your enquiry to the FloodGuard team and copy you in.</p>
     <div class="mfootrow">
       <button class="btn-xs bx-g" type="button" data-close>Cancel</button>
       <button class="btn-xs bx-p" type="button" id="cOk">Yes, send it</button>
@@ -1184,7 +1239,7 @@ textarea.inp{resize:vertical;min-height:92px}
     <svg viewBox="0 0 24 24"><path d="M12 19V6M6 11l6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
   <div id="fabMenu">
-    <a class="fabItem" href="#demo" data-utm><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>Book a demo</a>
+    <a class="fabItem" href="#start" data-utm><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>Get started</a>
     <a class="fabItem" href="mailto:hello@floodguard.in"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z" style="display:none"/><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2" stroke-linecap="round"/></svg>hello@floodguard.in</a>
     <button class="fabItem" type="button" data-copy="hello@floodguard.in"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5.5A2.5 2.5 0 0 1 7.5 3H15"/></svg>Copy email</button>
   </div>
@@ -1331,8 +1386,8 @@ function runCounters(y){
 
 /*── MANUAL PINNING (sticky can't work inside a transformed wrapper) ──*/
 const pins=[
-  {sec:document.getElementById("story"),inner:document.getElementById("storyPin"),top:0,h:0,p:0},
-  {sec:document.getElementById("deckSec"),inner:document.getElementById("deckPin"),top:0,h:0,p:0},
+  {sec:document.getElementById("problem"),inner:document.getElementById("problemPin"),top:0,h:0,p:0},
+  {sec:document.getElementById("decision"),inner:document.getElementById("deckPin"),top:0,h:0,p:0},
   {sec:document.getElementById("why"),inner:document.getElementById("whyPin"),top:0,h:0,p:0}
 ].map(P=>Object.assign(P,{lastOff:-1,vis:true}));
 function runPins(y){
@@ -1444,12 +1499,18 @@ function runParallax(y,dt){
 }
 
 /*── STORY SCRUB ──*/
-const bigN=document.getElementById("bigN"),sbars=[...document.getElementById("sbars").children];
+const probCards=[...document.querySelectorAll("#probList article")];
+let lastProbP=-1;
 function runStory(){
   const p=pins[0].p;
-  const v=Math.round(easeIO(clamp(p*1.5,0,1))*1400);
-  bigN.innerHTML=v.toLocaleString("en-IN")+"<sup>%</sup>";
-  sbars.forEach((b,i)=>b.classList.toggle("on",p>i*.24+.06));
+  if(Math.abs(p-lastProbP)<.002)return;
+  lastProbP=p;
+  probCards.forEach((c,i)=>{
+    const e=easeOut(clamp((p-i*.2)/.34,0,1));
+    c.style.opacity=e.toFixed(3);
+    c.style.transform="translate3d(0,"+((1-e)*34).toFixed(1)+"px,0) scale("+(.96+.04*e).toFixed(3)+")";
+    c.classList.toggle("lit",e>.55);
+  });
 }
 
 /*── INDIA DOT MAP ──*/
@@ -1605,11 +1666,10 @@ function runBars(y){
 const BAYER=(()=>{const m=[0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
   return Float32Array.from(m,v=>(v+.5)/64);})();
 const DECK=[
- {seg:"Governments & urban planners",t:"Flood vulnerability atlas",n:"Ward-level exposure surfaces for zoning, drainage and land use."},
- {seg:"Insurance & financial",t:"Portfolio exposure screen",n:"Every insured address scored against 2050 and 2100 scenarios."},
- {seg:"Governments & urban planners",t:"Drainage capacity report",n:"Where the stormwater network fails, and what it costs to fix."},
- {seg:"Communities & individuals",t:"Property risk scorecard",n:"One address, one page, one number a buyer can act on."},
- {seg:"Businesses",t:"Site exposure assessment",n:"Current and planned sites, aligned to ESG disclosure."}];
+ {seg:"Decision support",t:"Flood vulnerability atlas",n:"Where is risk concentrated?"},
+ {seg:"Decision support",t:"Portfolio exposure screening",n:"Which assets or locations are exposed?"},
+ {seg:"Decision support",t:"Drainage capacity assessment",n:"Where could drainage constraints amplify risk?"},
+ {seg:"Decision support",t:"Property & site risk analysis",n:"What does flood risk look like at a specific location?"}];
 /* coarser dither grid on phones/tablets — 5 cards re-thresholded per frame
    was the second-biggest cost after the water field */
 const AW=280,AH=224,PS=LOWPWR?6:4,GW=Math.round(AW/PS),GH=Math.round(AH/PS);
@@ -1696,12 +1756,10 @@ function runDeck(dt){
 
 /*── WHY: pinned stack that unfolds one card at a time ──*/
 const WHY=[
- ["M3 12h4l3-8 4 16 3-8h4","74 yrs","Continuous satellite and river-gauge record, not a modelled average"],
- ["M12 3v18M3 12h18","766","Districts modelled nationwide, every one of them"],
- ["M4 19V9m5 10V5m5 14v-7m5 7V8","6,512","Talukas resolved at working planning scale"],
- ["M12 3a9 9 0 1 0 9 9M12 3v9l6.4 6.4","6 hr","Model refresh through the monsoon season"],
- ["M3 17l6-6 4 4 8-8","3","Climate scenarios carried through to 2100"],
- ["M5 12h14M12 5v14","&lt;1 km","Grid resolution where the decisions get made"]];
+ ["M3 12h4l3-8 4 16 3-8h4","75+ years","Of observations — an observed foundation, not a modelled average"],
+ ["M4 19V9m5 10V5m5 14v-7m5 7V8","District → taluka","Intelligence resolved to the scale decisions are actually made at"],
+ ["M12 3a9 9 0 1 0 9 9M12 3v9l6.4 6.4","Across time","Historical, current and future in a single consistent view"],
+ ["M3 17l6-6 4 4 8-8","Decision-ready","Science-driven analysis, delivered as something you can act on"]];
 const stackStage=document.getElementById("stackStage"),stackTicks=document.getElementById("stackTicks"),stackI=document.getElementById("stackI");
 const SC=WHY.map(([p,n,l],i)=>{
   const d=document.createElement("article");d.className="scard glass";
@@ -1732,11 +1790,11 @@ function runStack(dt){
 
 /*── INDUSTRIES: branching tree ──*/
 const IND=[
- ["M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6","Government & urban planning","Zoning, drainage design and emergency coordination built on forward risk rather than last decade's averages."],
- ["M3 21h18M6 21V10m4 11V6m4 15v-8m4 8V12","Insurance & finance","Underwriting, portfolio screening and IRDAI climate disclosure, resolved to the insured address."],
- ["M4 20h16M6 20V9l6-4 6 4v11M10 20v-5h4v5","Real estate & construction","Site selection and flood-resilient design, settled before capital is committed."],
- ["M12 2 3 7v10l9 5 9-5V7Z M12 12l9-5M12 12v10M12 12 3 7","Infrastructure & utilities","Asset exposure across road, rail, power and water networks, scored line by line."],
- ["M4 19V5m0 14h16M8 15l3.5-4 3 2.5L20 8","Research & education","Validated datasets and teaching tools for climate curricula and published work."]];
+ ["M3 21h18M6 21V10m4 11V6m4 15v-8m4 8V12","Insurance & Reinsurance","Underwrite flood risk with greater confidence — portfolio screening, location risk and forward-looking analysis."],
+ ["M4 19V5m0 14h16M8 15l3.5-4 3 2.5L20 8","Banking & Finance","See flood risk inside the loan book — portfolio exposure, collateral assessment and stress-testing inputs."],
+ ["M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6","Government & Disaster Management","Plan earlier. Respond faster. District risk, preparedness, response prioritisation and post-event assessment."],
+ ["M12 2 3 7v10l9 5 9-5V7Z M12 12l9-5M12 12v10M12 12 3 7","Infrastructure & Engineering","Build for the flood risk of tomorrow — site exposure, project screening and infrastructure vulnerability."],
+ ["M3 20h18M6 20V12m0 0c0-3 2-5 5-5m-5 5c0-3-1-5-3-6m9 11V9m0 0c0-2 2-4 4-4","Agriculture & Food Security","Understand flood risk where crops are exposed — district and taluka risk, seasonal intelligence and crop exposure."]];
 const treeEl=document.getElementById("tree"),treeSvg=document.getElementById("treeSvg");
 const SVGNS="http://www.w3.org/2000/svg";
 const NODES=IND.map(([p,t,d],i)=>{
@@ -1862,30 +1920,6 @@ function runToTop(y){
 }
 toTop.onclick=()=>scrollTo({top:0,behavior:"smooth"});
 
-/*── FAQ accordion ──*/
-const FAQ=[
- ["Where does the underlying data come from?","Sentinel-1 and Sentinel-2 radar and optical imagery, Central Water Commission river-gauge records, IMD rainfall grids, SRTM and CartoDEM elevation, and CMIP6 climate projections. Every layer is versioned and the provenance ships with the report."],
- ["How accurate is a flood projection, really?","We validate against observed inundation for past events and publish the hit rate per district rather than a single headline number. Projections are scenario-based, not predictions — the honest answer is a range, and we give you the range."],
- ["Can this be procured through a government tender?","Yes. We supply on GeM and respond to standard RFP formats. Data residency stays in India, and we can provide the methodology annexe most technical evaluation committees ask for."],
- ["Do you work at ward or property level?","Explorer resolves to taluka as standard and to ward or property level on Pro. Below roughly one kilometre the confidence interval widens, and we show that rather than hiding it."],
- ["What does it cost?","Free tier covers district-level exposure and the historical record. Pro is priced per state or per portfolio size. Public-sector and academic pricing differs — the demo call is the fastest way to a real number."],
- ["How often does the model update?","Six-hourly through the monsoon, daily outside it. Live alerting runs continuously against gauge and radar feeds."]];
-const faqList=document.getElementById("faqList");
-FAQ.forEach(([q,a],i)=>{
-  const d=document.createElement("div");d.className="qa glass";d.dataset.open="false";
-  d.innerHTML='<button type="button" aria-expanded="false" id="qb'+i+'" aria-controls="qa'+i+'">'+q+'<span class="pm"></span></button>'+
-    '<div class="ans" id="qa'+i+'" role="region" aria-labelledby="qb'+i+'"><p>'+a+'</p></div>';
-  const btn=d.querySelector("button"),ans=d.querySelector(".ans");
-  btn.onclick=()=>{
-    const open=d.dataset.open==="true";
-    faqList.querySelectorAll('.qa[data-open="true"]').forEach(o=>{
-      o.dataset.open="false";o.querySelector("button").setAttribute("aria-expanded","false");o.querySelector(".ans").style.maxHeight="0px";
-    });
-    if(!open){d.dataset.open="true";btn.setAttribute("aria-expanded","true");ans.style.maxHeight=ans.scrollHeight+"px";}
-  };
-  faqList.appendChild(d);
-});
-
 /*── UTM capture → persists across the session, rides along on CTAs ──*/
 const UTM=(()=>{
   const keep=["utm_source","utm_medium","utm_campaign","utm_term","utm_content","gclid"];
@@ -1948,16 +1982,20 @@ addEventListener("keydown",e=>{
 const searchOv=document.getElementById("search"),sInput=document.getElementById("sInput"),
       sList=document.getElementById("sList"),sEmpty=document.getElementById("sEmpty");
 const INDEX=[
- ["Flood exposure map","Hero · schematic district risk","#hero","map india district exposure risk schematic dots"],
- ["The problem","Why losses rose 1400%","#story","1400 percent losses cwc urbanisation climate problem method"],
- ["Flood record 1951–2025","Seventy-four monsoons, measured","#timeline","timeline history record years anomaly events archive"],
- ["Deliverables","What lands on your desk","#deckSec","atlas scorecard report portfolio deliverable output"],
- ["Explorer","District risk maps and scenarios","#products","explorer product map scenario taluka api export pricing"],
- ["Live","Real-time flood alerting","#products","live alert radar gauge nowcast sms warning control room"],
- ["Why FloodGuard","Observation, not assumption","#why","why resolution districts talukas cadence scenarios"],
- ["Sectors we serve","Five sectors","#industries","government insurance finance real estate infrastructure research sector industry"],
- ["FAQ","Procurement, accuracy, pricing","#faq","faq question pricing cost tender gem accuracy data source procurement"],
- ["Book a demo","Thirty minutes, your district","#demo","demo contact book call request form email"]];
+ ["Home","Know the flood before it arrives","#hero","home hero map india district exposure risk"],
+ ["The flood problem","Why current assessment falls short","#problem","problem backward looking coarse fragmented assessment"],
+ ["The decision gap","Data alone doesn't answer the decision","#gap","decision gap data rainfall terrain drainage exposure"],
+ ["75 years of flood record","Observed record 1951–2025","#record","record history 1951 2025 timeline years observed districts talukas"],
+ ["Explorer","Free historical district intelligence","#explorer","explorer free district taluka historical search map"],
+ ["Atlas","Historical, current and future in one view","#atlas","atlas premium projection 2030 2050 2100 scenario portfolio taluka"],
+ ["Live","Real-time rainfall, radar and risk","#live","live radar rainfall alert monitoring operational response"],
+ ["Decision support","From flood risk to actionable insight","#decision","vulnerability atlas portfolio screening drainage capacity property site"],
+ ["Platform","Data in. Intelligence out.","#platform","platform data models risk decision technology methodology validation api cmip6"],
+ ["Solutions","Five sectors we serve","#serve","insurance banking government infrastructure agriculture reinsurance finance sector"],
+ ["Why FloodGuard","Built on observed data","#why","why observed foundation multi scale horizon decision ready"],
+ ["About us","Building India's flood intelligence layer","#about","about vision mission principles team company"],
+ ["Insights","Research, white papers and data stories","#insights","insights research white paper use case data story article"],
+ ["Get started","Let's talk flood risk","#start","get started contact demo early access partner enquiry form"]];
 let sIdx=0,sHits=INDEX.slice();
 function renderSearch(){
   sList.innerHTML="";
@@ -2034,16 +2072,18 @@ siForm.addEventListener("submit",e=>{
 /*── demo form: validate → confirm modal → loading → success ──*/
 const dForm=document.getElementById("demoForm"),dSubmit=document.getElementById("demoSubmit"),
       dOk=document.getElementById("demoOk"),modalOv=document.getElementById("modalWrap");
-const fName=document.getElementById("fName"),fMail=document.getElementById("fMail"),fOrg=document.getElementById("fOrg");
-[fName,fMail,fOrg].forEach(i=>i.addEventListener("input",()=>i.closest(".field").classList.remove("err")));
+const fName=document.getElementById("fName"),fMail=document.getElementById("fMail"),
+      fOrg=document.getElementById("fOrg"),fIntent=document.getElementById("fIntent");
+[fName,fMail,fOrg,fIntent].forEach(i=>i.addEventListener("input",()=>i.closest(".field").classList.remove("err")));
 dForm.addEventListener("submit",e=>{
   e.preventDefault();
   const a=setErr(fName,fName.value.trim().length<2);
   const b=setErr(fMail,!mailRe.test(fMail.value.trim()));
   const c=setErr(fOrg,!fOrg.value);
-  if(!(a&&b&&c)){dForm.querySelector(".field.err .inp")?.focus();return;}
+  const d=setErr(fIntent,!fIntent.value);
+  if(!(a&&b&&c&&d)){dForm.querySelector(".field.err .inp")?.focus();return;}
   document.getElementById("cBody").textContent=
-    "We'll send your demo request to the FloodGuard team and copy "+fMail.value.trim()+".";
+    "We'll send your enquiry to the FloodGuard team and copy "+fMail.value.trim()+".";
   openOv(modalOv);
 });
 document.getElementById("cOk").onclick=()=>{
@@ -2052,7 +2092,7 @@ document.getElementById("cOk").onclick=()=>{
   dSubmit.querySelector(".lbl").textContent="Sending…";
   setTimeout(()=>{
     busy(dSubmit,false);
-    dSubmit.querySelector(".lbl").textContent="Request a demo";
+    dSubmit.querySelector(".lbl").textContent="Get started";
     document.getElementById("okMail").textContent=fMail.value.trim();
     dForm.style.display="none";dOk.classList.add("on");
   },1600);
