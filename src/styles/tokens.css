@@ -11,16 +11,16 @@
   /* ---------- 1. PRIMITIVES ---------- */
 
   /* Monochrome blue scale — supplied brand palette, base → light. */
-  --blue-950: #012a4a;
-  --blue-900: #013a63;
-  --blue-800: #01497c;
-  --blue-700: #014f86;
-  --blue-600: #2a6f97;
-  --blue-500: #2c7da0;
-  --blue-400: #468faf;
-  --blue-300: #61a5c2;
-  --blue-200: #89c2d9;
-  --blue-100: #a9d6e5;
+  --blue-950: #04263d;
+  --blue-900: #073a5a;
+  --blue-800: #0a5273;
+  --blue-700: #0b5e80;
+  --blue-600: #12768f;
+  --blue-500: #1a8c9e;
+  --blue-400: #3fa6b2;
+  --blue-300: #6dc0c6;
+  --blue-200: #9edad9;
+  --blue-100: #c4ebe6;
 
   /* Alert. Reserved for live / flood-alert states. NEVER decorative. */
   --alert-600: #c1121f;
