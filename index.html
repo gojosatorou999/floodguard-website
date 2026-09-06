@@ -542,7 +542,7 @@ body.rm .prod,body.rm .prod .pbody{transform:none;opacity:1}
 .pbody{width:min(44%,180px);aspect-ratio:9/18.5;background:#02161c;border:2px solid rgba(255,255,255,.16);border-radius:26px;padding:8px;position:relative;box-shadow:0 24px 50px -18px rgba(0,0,0,.7)}
 .pscr{width:100%;height:100%;border-radius:19px;background:#031f28;position:relative;overflow:hidden}
 #radar{display:block;width:100%;height:100%}
-body.rm 
+
 /*── WHY — unfolding card stack ──*/
 .stackWrap{display:grid;gap:clamp(1.6rem, 3.4vw, 3rem);align-items:center;width:100%}
 @media(min-width:940px){.stackWrap{grid-template-columns:.85fr 1.15fr}}
@@ -553,7 +553,7 @@ body.rm
 .stackTicks{display:flex;gap:.3rem;margin-top:1.2rem;max-width:220px}
 .stackTicks i{flex:1;height:3px;border-radius:2px;background:var(--line2);position:relative;overflow:hidden}
 .stackTicks i::after{content:"";position:absolute;inset:0;background:var(--brand);transform:scaleX(var(--f,0));transform-origin:left;transition:transform .3s linear}
-.stackStage{position:relative;height:clamp(320px, 50vh, 430px);perspective:1500px}
+.stackStage{position:relative;height:clamp(430px, 62vh, 560px);perspective:1500px}
 .scard{position:absolute;left:0;right:0;top:50%;padding:clamp(1.7rem, 3.6vw, 2.6rem);border-radius:var(--r-xl);
   transform-style:preserve-3d;will-change:transform,opacity;backface-visibility:hidden}
 .scard .ic{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--dentBg);
@@ -561,6 +561,26 @@ body.rm
 .scard svg{width:22px;height:22px;stroke:var(--brand);fill:none;stroke-width:1.4}
 .scard b{display:block;font-family:var(--fD);font-size:clamp(2rem,5vw,2.8rem);font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
 .scard em{display:block;font-style:normal;font-size:var(--t-1);color:var(--ink2);margin-top:.7rem;line-height:1.5;max-width:32ch}
+.stackAside .slede{color:var(--ink2);max-width:36ch;margin-bottom:2rem;line-height:1.6}
+.stackHint{margin-top:1.1rem;font-size:var(--t-xs);color:var(--ink3);letter-spacing:.02em}
+.shead{display:flex;align-items:center;gap:.85rem;margin-bottom:1.3rem}
+.scard .ic{margin-bottom:0;flex:none}
+.seye{font:700 .58rem/1 var(--fS);letter-spacing:.2em;text-transform:uppercase;color:var(--ink3)}
+/* .scard b is the display figure — scope the fact values so they don't
+   inherit that 2.8rem type */
+.sfacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;
+  margin-top:1.6rem;padding-top:1.3rem;border-top:1px solid var(--line)}
+.sfacts>div{min-width:0}
+.sfacts span{display:block;font:700 .55rem/1.2 var(--fS);letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:.4rem}
+.scard .sfacts b{font-family:var(--fS);font-size:var(--t-0);font-weight:700;
+  letter-spacing:0;line-height:1.3;color:var(--ink)}
+.scard .snote{margin-top:1.2rem;font-size:var(--t-sm);color:var(--ink3);
+  line-height:1.55;max-width:46ch}
+@media (max-width:520px){
+  .sfacts{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+  .scard .snote{display:none}
+}
 
 /*── INDUSTRIES — growing vine with curved branches ──*/
 .tree{position:relative;padding-block:1rem 3rem}
@@ -880,7 +900,7 @@ body.rm .probList article{opacity:1!important;transform:none!important}
   #why{height:330svh!important}
   .glass,.drop,#menuPanel{backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
   #stage{height:clamp(270px, 48vh, 330px)}
-  .stackStage{height:clamp(280px, 46vh, 330px)}
+  .stackStage{height:clamp(380px, 56vh, 440px)}
   #bars{gap:1px;height:clamp(110px, 30vw, 150px)}
   .tlx{font-size:.52rem}
   .eye{flex-wrap:wrap;gap:.5rem}
@@ -1296,8 +1316,12 @@ setTimeout(function(){
       <div class="stackAside">
         <span class="snum">08 — Why FloodGuard</span>
         <h2>Built on observed data. Built for better decisions.</h2>
+        <p class="slede">Four things decide whether flood intelligence is worth acting on: how far
+          back the record runs, how finely it resolves, whether it spans time consistently, and
+          whether it arrives in a form you can actually use.</p>
         <p class="stackCount"><b id="stackI">01</b><span>/ 04</span></p>
         <div class="stackTicks" id="stackTicks"></div>
+        <p class="stackHint">Keep scrolling to move through each one.</p>
       </div>
       <div class="stackStage" id="stackStage"></div>
     </div>
@@ -2349,14 +2373,31 @@ function runDeck(dt){
 
 /*── WHY: pinned stack that unfolds one card at a time ──*/
 const WHY=[
- ["M3 12h4l3-8 4 16 3-8h4","75+ years","Of observations — an observed foundation, not a modelled average"],
- ["M4 19V9m5 10V5m5 14v-7m5 7V8","District → taluka","Intelligence resolved to the scale decisions are actually made at"],
- ["M12 3a9 9 0 1 0 9 9M12 3v9l6.4 6.4","Across time","Historical, current and future in a single consistent view"],
- ["M3 17l6-6 4 4 8-8","Decision-ready","Science-driven analysis, delivered as something you can act on"]];
+ ["M3 12h4l3-8 4 16 3-8h4","The foundation","75+ years",
+  "Of observations — an observed foundation, not a modelled average",
+  [["From","1951"],["Through","2025"],["Cadence","Daily"]],
+  "Rainfall, river levels and recorded flood events, held as one continuous series."],
+ ["M4 19V9m5 10V5m5 14v-7m5 7V8","The resolution","District → taluka",
+  "Intelligence resolved to the scale decisions are actually made at",
+  [["States / UTs","36"],["Districts","766"],["Talukas","6,512"]],
+  "Start at a state, drill to the taluka a single asset actually sits in."],
+ ["M12 3a9 9 0 1 0 9 9M12 3v9l6.4 6.4","The horizon","Across time",
+  "Historical, current and future in a single consistent view",
+  [["Historical","1951–2024"],["Current","Live"],["Projected","2030 · 2050 · 2100"]],
+  "One method across all three horizons, so the numbers stay comparable."],
+ ["M3 17l6-6 4 4 8-8","The output","Decision-ready",
+  "Science-driven analysis, delivered as something you can act on",
+  [["Outputs","Scores · depths"],["Delivery","API · CSV · dashboard"],["Uncertainty","Always stated"]],
+  "Every figure ships with the confidence attached to it, not stripped off."]];
 const stackStage=document.getElementById("stackStage"),stackTicks=document.getElementById("stackTicks"),stackI=document.getElementById("stackI");
-const SC=WHY.map(([p,n,l],i)=>{
+const SC=WHY.map(([p,eye,n,l,facts,note],i)=>{
   const d=document.createElement("article");d.className="scard glass";
-  d.innerHTML='<div class="ic"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="'+p+'"/></svg></div><b>'+n+'</b><em>'+l+'</em>';
+  /* all static authored copy — no user input reaches this markup */
+  d.innerHTML='<div class="shead"><div class="ic"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="'+p+'"/></svg></div>'+
+    '<span class="seye">'+eye+'</span></div>'+
+    '<b>'+n+'</b><em>'+l+'</em>'+
+    '<div class="sfacts">'+facts.map(([k,v])=>'<div><span>'+k+'</span><b>'+v+'</b></div>').join('')+'</div>'+
+    '<p class="snote">'+note+'</p>';
   stackStage.appendChild(d);
   const t=document.createElement("i");stackTicks.appendChild(t);
   return{el:d,tick:t};
