@@ -6,7 +6,7 @@ decisions (palette, typography scale, imagery direction) are deliberately **not*
 settled here — see [Deferred Decisions](#12-deferred-decisions).
 
 ---
- 
+   
 ## 1. What FloodGuard Is
 
 **FloodGuard Solutions Pvt. Ltd.** — founded 2025, based at COHORT Coworking,
