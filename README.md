@@ -14,7 +14,7 @@ Kondapur, Hyderabad. Currently incubated (three incubator emblems shown on the
 live site). 
     
 **One-liner:** Flood risk intelligence for India — predict, plan, protect.
-  
+   
 **What the product actually does:** combines satellite data, climate models,
 historical flood patterns, and geospatial analysis to produce localized flood
 vulnerability maps, future-risk projections, and decision dashboards.
