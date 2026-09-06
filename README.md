@@ -8,7 +8,7 @@ settled here — see [Deferred Decisions](#12-deferred-decisions).
 ---
    
 ## 1. What FloodGuard Is
-
+ 
 **FloodGuard Solutions Pvt. Ltd.** — founded 2025, based at COHORT Coworking,
 Kondapur, Hyderabad. Currently incubated (three incubator emblems shown on the
 live site).
