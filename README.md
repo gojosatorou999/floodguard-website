@@ -12,7 +12,7 @@ settled here — see [Deferred Decisions](#12-deferred-decisions).
 **FloodGuard Solutions Pvt. Ltd.** — founded 2025, based at COHORT Coworking,
 Kondapur, Hyderabad. Currently incubated (three incubator emblems shown on the
 live site). 
-   
+    
 **One-liner:** Flood risk intelligence for India — predict, plan, protect.
   
 **What the product actually does:** combines satellite data, climate models,
