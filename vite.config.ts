@@ -17,6 +17,9 @@ export default defineConfig({
         main: resolve(here, "index.html"),
         // The React scaffold, still buildable at /app.html while it's filled in.
         app: resolve(here, "app.html"),
+        // Gated district view + its login/register gate.
+        auth: resolve(here, "auth.html"),
+        district: resolve(here, "district.html"),
       },
     },
   },

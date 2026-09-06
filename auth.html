@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sign in · FloodGuard</title>
+<link rel="stylesheet" href="/assets/fg-base.css">
+<style>
+.shell{min-height:100vh;display:flex;flex-direction:column}
+.shell>.wrap{width:100%}
+.mid{flex:1 1 auto;display:grid;place-items:center;padding:clamp(1.6rem,5vw,3.4rem) 0}
+.card{width:min(430px,100%);padding:clamp(1.5rem,4vw,2.2rem)}
+
+/* the district the visitor was reaching for, echoed back so the gate
+   reads as a step toward something rather than a wall */
+.dest{display:flex;align-items:center;gap:.6rem;margin-bottom:1.4rem;padding:.7rem .85rem;
+  border-radius:var(--r-s);background:var(--dentBg);border:1px solid var(--line)}
+.dest i{width:8px;height:8px;border-radius:99px;background:var(--brand);flex:none}
+.dest span{font-size:var(--t-xs);color:var(--ink2);line-height:1.4}
+.dest b{color:var(--ink);font-weight:700}
+
+.tabs{display:flex;gap:.25rem;padding:.25rem;margin-bottom:1.5rem;
+  background:var(--dentBg);border-radius:99px;box-shadow:inset 0 1px 4px var(--dentIn)}
+.tabs button{flex:1;padding:.55rem;border:0;border-radius:99px;background:none;cursor:pointer;
+  font:700 var(--t-sm)/1 var(--fS);color:var(--ink3);transition:.22s var(--E)}
+.tabs button[aria-selected="true"]{background:var(--panelBg);color:var(--ink);
+  box-shadow:0 1px 3px rgba(4,38,61,.14)}
+.tabs button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+h1{font-size:var(--t-2);margin-bottom:.4rem}
+.lede{color:var(--ink2);font-size:var(--t-sm);margin-bottom:1.5rem}
+.pwWrap{position:relative}
+.pwWrap .inp{padding-right:3rem}
+.pwEye{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  border:0;background:none;cursor:pointer;padding:.4rem;line-height:0;color:var(--ink3)}
+.pwEye svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8}
+.hint{font-size:var(--t-xs);color:var(--ink3);margin-top:.4rem}
+.sub{text-align:center;font-size:var(--t-xs);color:var(--ink3);margin-top:1.2rem}
+.note{display:flex;gap:.5rem;margin-top:1.5rem;padding:.7rem .85rem;border-radius:var(--r-s);
+  background:color-mix(in srgb,var(--alert) 8%,transparent);
+  border:1px solid color-mix(in srgb,var(--alert) 26%,transparent)}
+.note svg{width:14px;height:14px;fill:none;stroke:var(--alert);stroke-width:2;flex:none;margin-top:.15rem}
+.note p{font-size:var(--t-xs);color:var(--ink2);line-height:1.5}
+.note b{color:var(--ink)}
+.spin{display:none;width:13px;height:13px;border-radius:99px;
+  border:2px solid color-mix(in srgb,var(--onBrand) 40%,transparent);
+  border-top-color:var(--onBrand);animation:sp .7s linear infinite}
+.btn.loading .spin{display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}}
+.ft{padding:1.4rem 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="wrap">
+    <header class="hd">
+      <a class="brand" href="/index.html">
+        <i>ƒ</i>
+        <span><b>FloodGuard</b><span>Predict · Plan · Protect</span></span>
+      </a>
+      <a class="btn bg2" href="/index.html">Back to site</a>
+    </header>
+  </div>
+
+  <main class="mid">
+    <div class="wrap" style="display:grid;place-items:center">
+      <div class="card panel">
+        <div class="dest" id="dest" hidden>
+          <i></i><span>You're opening district data for <b id="destName"></b>. Sign in to continue.</span>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Sign in or register">
+          <button role="tab" id="tabIn"  aria-selected="true"  aria-controls="paneIn">Sign in</button>
+          <button role="tab" id="tabUp"  aria-selected="false" aria-controls="paneUp">Create account</button>
+        </div>
+
+        <!-- ── sign in ── -->
+        <section id="paneIn" role="tabpanel" aria-labelledby="tabIn">
+          <h1>Welcome back.</h1>
+          <p class="lede">Access your Explorer workspace, saved districts and exports.</p>
+          <form id="formIn" novalidate>
+            <div class="field">
+              <label for="inMail">Work email</label>
+              <input class="inp" id="inMail" type="email" placeholder="you@organisation.in" autocomplete="username">
+              <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg><span>Enter a valid email address</span></span>
+            </div>
+            <div class="field">
+              <label for="inPw">Password</label>
+              <div class="pwWrap">
+                <input class="inp" id="inPw" type="password" placeholder="••••••••" autocomplete="current-password">
+                <button class="pwEye" type="button" data-eye="inPw" aria-label="Show password" aria-pressed="false">
+                  <svg viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.8"/></svg>
+                </button>
+              </div>
+              <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg><span>Password must be at least 8 characters</span></span>
+            </div>
+            <button class="btn bp" type="submit" id="btnIn" style="width:100%;margin-top:.4rem">
+              <span class="spin"></span><span class="lbl">Sign in</span>
+            </button>
+          </form>
+          <p class="sub">No account yet? <a href="#" id="toUp">Create one</a></p>
+        </section>
+
+        <!-- ── register ── -->
+        <section id="paneUp" role="tabpanel" aria-labelledby="tabUp" hidden>
+          <h1>Create your account.</h1>
+          <p class="lede">Free tier covers historical district risk across India.</p>
+          <form id="formUp" novalidate>
+            <div class="field">
+              <label for="upName">Full name</label>
+              <input class="inp" id="upName" type="text" placeholder="Your name" autocomplete="name">
+              <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg><span>Enter your name</span></span>
+            </div>
+            <div class="field">
+              <label for="upOrg">Organisation</label>
+              <input class="inp" id="upOrg" type="text" placeholder="Company, agency or institute" autocomplete="organization">
+              <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg><span>Enter your organisation</span></span>
+            </div>
+            <div class="field">
+              <label for="upMail">Work email</label>
+              <input class="inp" id="upMail" type="email" placeholder="you@organisation.in" autocomplete="username">
+              <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg><span>Enter a valid email address</span></span>
+            </div>
+            <div class="field">
+              <label for="upPw">Password</label>
+              <div class="pwWrap">
+                <input class="inp" id="upPw" type="password" placeholder="At least 8 characters" autocomplete="new-password">
+                <button class="pwEye" type="button" data-eye="upPw" aria-label="Show password" aria-pressed="false">
+                  <svg viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.8"/></svg>
+                </button>
+              </div>
+              <span class="emsg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg><span>Password must be at least 8 characters</span></span>
+            </div>
+            <button class="btn bp" type="submit" id="btnUp" style="width:100%;margin-top:.4rem">
+              <span class="spin"></span><span class="lbl">Create account</span>
+            </button>
+          </form>
+          <p class="sub">Already registered? <a href="#" id="toIn">Sign in</a></p>
+        </section>
+
+        <div class="note">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4M12 16.5v.5" stroke-linecap="round"/><path d="M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20.4h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+          <p><b>Prototype gate — not security.</b> Any valid-looking email and an 8-character
+             password will let you through. Nothing is sent anywhere and the session is a
+             flag in this browser's localStorage. Replace with a real auth provider before launch.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="wrap"><footer class="ft">© FloodGuard · Private preview</footer></div>
+</div>
+
+<script>
+/* ── where the visitor was headed ───────────────────────────────
+   `next` is accepted only as a same-origin relative path. An open
+   redirect here would let a crafted link bounce people off-site
+   straight after a login form, which is exactly the shape phishing
+   wants. Anything absolute or protocol-relative falls back home. */
+const P=new URLSearchParams(location.search);
+function safeNext(raw){
+  if(!raw)return "/index.html";
+  if(!raw.startsWith("/")||raw.startsWith("//"))return "/index.html";
+  try{
+    const u=new URL(raw,location.origin);
+    return u.origin===location.origin?u.pathname+u.search:"/index.html";
+  }catch(_){return "/index.html";}
+}
+const NEXT=safeNext(P.get("next"));
+const destName=P.get("dest");
+if(destName){
+  document.getElementById("dest").hidden=false;
+  document.getElementById("destName").textContent=destName;
+}
+
+/* ── tabs ── */
+const tabIn=document.getElementById("tabIn"),tabUp=document.getElementById("tabUp"),
+      paneIn=document.getElementById("paneIn"),paneUp=document.getElementById("paneUp");
+function pick(up){
+  tabIn.setAttribute("aria-selected",String(!up));
+  tabUp.setAttribute("aria-selected",String(up));
+  paneIn.hidden=up;paneUp.hidden=!up;
+}
+tabIn.onclick=()=>pick(false);
+tabUp.onclick=()=>pick(true);
+document.getElementById("toUp").onclick=e=>{e.preventDefault();pick(true);};
+document.getElementById("toIn").onclick=e=>{e.preventDefault();pick(false);};
+if(P.get("mode")==="register")pick(true);
+
+/* ── password visibility ── */
+document.querySelectorAll(".pwEye").forEach(b=>{
+  b.onclick=()=>{
+    const i=document.getElementById(b.dataset.eye),show=i.type==="password";
+    i.type=show?"text":"password";
+    b.setAttribute("aria-pressed",String(show));
+    b.setAttribute("aria-label",show?"Hide password":"Show password");
+    i.focus();
+  };
+});
+
+/* ── validation ── */
+const mailRe=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function setErr(el,bad){
+  el.closest(".field").classList.toggle("err",bad);
+  el.setAttribute("aria-invalid",String(bad));
+  return !bad;
+}
+document.querySelectorAll(".inp").forEach(i=>
+  i.addEventListener("input",()=>i.closest(".field").classList.remove("err")));
+
+function grant(email,name){
+  try{
+    localStorage.setItem("fg_session",JSON.stringify({
+      email:email,name:name||email.split("@")[0],at:Date.now()
+    }));
+  }catch(_){/* private mode — the district page falls back to the gate */}
+  location.href=NEXT;
+}
+function submitting(btn,label,then){
+  btn.classList.add("loading");btn.disabled=true;
+  btn.querySelector(".lbl").textContent=label;
+  setTimeout(then,700);
+}
+
+document.getElementById("formIn").addEventListener("submit",e=>{
+  e.preventDefault();
+  const m=document.getElementById("inMail"),p=document.getElementById("inPw");
+  const ok=[setErr(m,!mailRe.test(m.value.trim())),setErr(p,p.value.length<8)].every(Boolean);
+  if(!ok){document.querySelector("#paneIn .field.err .inp").focus();return;}
+  submitting(document.getElementById("btnIn"),"Signing in…",()=>grant(m.value.trim()));
+});
+
+document.getElementById("formUp").addEventListener("submit",e=>{
+  e.preventDefault();
+  const n=document.getElementById("upName"),o=document.getElementById("upOrg"),
+        m=document.getElementById("upMail"),p=document.getElementById("upPw");
+  const ok=[setErr(n,n.value.trim().length<2),setErr(o,o.value.trim().length<2),
+            setErr(m,!mailRe.test(m.value.trim())),setErr(p,p.value.length<8)].every(Boolean);
+  if(!ok){document.querySelector("#paneUp .field.err .inp").focus();return;}
+  submitting(document.getElementById("btnUp"),"Creating…",()=>grant(m.value.trim(),n.value.trim()));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+/*═══════════════════════════════════════════════════════════════
+  FloodGuard — shared tokens + base for the gated pages.
+  The palette block is copied verbatim from the homepage template so
+  auth.html / district.html can never drift from the marketing page.
+  If you change the ocean ramp there, re-run tools/synctokens.cjs.
+═══════════════════════════════════════════════════════════════*/
+:root{
+  --b950:#04263d;--b900:#073a5a;--b800:#0a5273;--b700:#0b5e80;
+  --b600:#12768f;--b500:#1a8c9e;--b400:#3fa6b2;--b300:#6dc0c6;
+  --b200:#9edad9;--b100:#c4ebe6;
+  --alert:#c1121f;
+
+  /* ── LIGHT (default) ── */
+  --bg:#edf5f6;
+  --bg2:#e1eef0;
+  --ink:#052430;
+  --ink2:#3a5c66;
+  --ink3:#6d9099;
+  --line:rgba(4,38,61,.10);
+  --line2:rgba(4,38,61,.18);
+  --brand:var(--b800);
+  --brand2:var(--b600);
+  --onBrand:#fff;
+
+  /* Menus and dropdowns sit over busy content — they need to read as solid
+     surfaces, not frosted glass. Separate token from the decorative glass. */
+  --panelBg:#f8fdfd;
+  --panelEdge:rgba(4,38,61,.14);
+  --panelShadow:0 2px 6px rgba(4,38,61,.07),0 26px 60px -22px rgba(4,38,61,.4);
+  --glassA:rgba(255,255,255,.74);
+  --glassB:rgba(255,255,255,.38);
+  --glassEdge:rgba(255,255,255,.85);
+  --glassGlow:rgba(255,255,255,.9);
+  --glassShade:rgba(4,38,61,.34);
+
+  --dentBg:rgba(4,38,61,.045);
+  --dentIn:rgba(4,38,61,.13);
+  --dentUp:rgba(255,255,255,.85);
+  /* switch needs its own contrast — --dentBg is far too faint on glass */
+  --swTrack:rgba(4,38,61,.11);
+  --swEdge:rgba(4,38,61,.26);
+
+  --aur1:rgba(63,166,178,.42);
+  --aur2:rgba(196,235,230,.55);
+  --aur3:rgba(10,82,115,.20);
+  --water:#12768f;
+  --waterA:.16;
+  --dotOff:rgba(4,38,61,.13);
+  --band:linear-gradient(145deg,#04263d,#0a5273 52%,#12768f);
+  --onBand:#eaf7f7;
+  --noise:.035;
+
+  /* type — display serif echoes the logo's calligraphic ƒ,
+     tracked sans caps echo PREDICT · PLAN · PROTECT */
+  --fD:"Iowan Old Style","Charter","Sitka Display",Cambria,"Palatino Linotype","Book Antiqua",Georgia,serif;
+  --fS:"Manrope","Inter",ui-sans-serif,"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --fM:"JetBrains Mono",ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
+
+  --t-xs:clamp(.68rem, .66rem + .08vw, .74rem);
+  --t-sm:clamp(.82rem, .8rem + .1vw, .88rem);
+  --t-0:clamp(.94rem, .91rem + .16vw, 1.02rem);
+  --t-1:clamp(1.05rem, 1rem + .3vw, 1.22rem);
+  --t-2:clamp(1.3rem, 1.14rem + .72vw, 1.85rem);
+  --t-3:clamp(1.75rem, 1.35rem + 1.9vw, 3.1rem);
+  --t-4:clamp(2.3rem, 1.5rem + 3.6vw, 4.6rem);
+  --t-5:clamp(2.9rem, 1.6rem + 5.8vw, 7rem);
+
+  --r-s:14px;--r-m:20px;--r-l:28px;--r-xl:38px;
+  --wrap:1260px;
+  --E:cubic-bezier(.22,1,.36,1);
+  --Es:cubic-bezier(.65,.05,.36,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#031a24;--bg2:#062a36;
+  --ink:#e4f3f4;--ink2:#a2c9cc;--ink3:#6c9298;
+  --line:rgba(158,218,217,.13);--line2:rgba(158,218,217,.24);
+  --brand:var(--b200);--brand2:var(--b300);--onBrand:#04222c;
+  --panelBg:#072630;--panelEdge:rgba(158,218,217,.22);
+  --panelShadow:0 2px 6px rgba(0,0,0,.6),0 26px 60px -22px rgba(0,0,0,.9);
+  --glassA:rgba(16,58,68,.62);--glassB:rgba(8,34,42,.4);
+  --glassEdge:rgba(158,218,217,.2);--glassGlow:rgba(158,218,217,.14);
+  --glassShade:rgba(0,0,0,.7);
+  --dentBg:rgba(0,0,0,.26);--dentIn:rgba(0,0,0,.55);--dentUp:rgba(158,218,217,.1);
+  --swTrack:rgba(158,218,217,.2);--swEdge:rgba(158,218,217,.42);
+  --aur1:rgba(10,82,115,.5);--aur2:rgba(18,118,143,.34);--aur3:rgba(109,192,198,.14);
+  --water:#6dc0c6;--waterA:.13;
+  --dotOff:rgba(158,218,217,.14);
+  --band:linear-gradient(145deg,#021a20,#073a5a 52%,#0a5273);
+  --onBand:#e8f6f6;--noise:.05;--alert:#ef5560;
+}}
+:root[data-theme="dark"]{
+  --bg:#031a24;--bg2:#062a36;
+  --ink:#e4f3f4;--ink2:#a2c9cc;--ink3:#6c9298;
+  --line:rgba(158,218,217,.13);--line2:rgba(158,218,217,.24);
+  --brand:var(--b200);--brand2:var(--b300);--onBrand:#04222c;
+  --panelBg:#072630;--panelEdge:rgba(158,218,217,.22);
+  --panelShadow:0 2px 6px rgba(0,0,0,.6),0 26px 60px -22px rgba(0,0,0,.9);
+  --glassA:rgba(16,58,68,.62);--glassB:rgba(8,34,42,.4);
+  --glassEdge:rgba(158,218,217,.2);--glassGlow:rgba(158,218,217,.14);
+  --glassShade:rgba(0,0,0,.7);
+  --dentBg:rgba(0,0,0,.26);--dentIn:rgba(0,0,0,.55);--dentUp:rgba(158,218,217,.1);
+  --swTrack:rgba(158,218,217,.2);--swEdge:rgba(158,218,217,.42);
+  --aur1:rgba(10,82,115,.5);--aur2:rgba(18,118,143,.34);--aur3:rgba(109,192,198,.14);
+  --water:#6dc0c6;--waterA:.13;
+  --dotOff:rgba(158,218,217,.14);
+  --band:linear-gradient(145deg,#021a20,#073a5a 52%,#0a5273);
+  --onBand:#e8f6f6;--noise:.05;--alert:#ef5560;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--fS);
+  font-size:var(--t-0);line-height:1.6;min-height:100vh;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60vw 50vh at 12% 0%,var(--aur1),transparent 70%),
+    radial-gradient(50vw 40vh at 88% 8%,var(--aur2),transparent 72%),
+    radial-gradient(40vw 40vh at 50% 100%,var(--aur3),transparent 70%)}
+a{color:var(--brand);text-underline-offset:3px}
+h1,h2,h3{font-family:var(--fD);font-weight:600;line-height:1.08;letter-spacing:-.015em}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(1.1rem,4vw,2.4rem)}
+.caps{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--ink3)}
+
+/* header */
+.hd{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.15rem 0;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit}
+.brand i{width:30px;height:30px;border-radius:99px;display:grid;place-items:center;flex:none;
+  background:var(--band);color:var(--onBand);font-family:var(--fD);font-style:normal;
+  font-size:.95rem;font-weight:700}
+.brand b{font-family:var(--fS);font-size:.82rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.brand span{display:block;font-size:.5rem;letter-spacing:.2em;color:var(--ink3);font-weight:700;text-transform:uppercase}
+
+/* panel + form */
+.panel{background:var(--panelBg);border:1px solid var(--panelEdge);
+  border-radius:var(--r-l);box-shadow:var(--panelShadow)}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink2);margin-bottom:.4rem}
+.inp{width:100%;padding:.8rem 1rem;border-radius:var(--r-s);border:1px solid var(--line2);
+  background:var(--bg);color:var(--ink);font:500 var(--t-0)/1.4 var(--fS);transition:.2s var(--E)}
+.inp:focus{outline:none;border-color:var(--brand);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 18%,transparent)}
+.inp::placeholder{color:var(--ink3)}
+.field.err .inp{border-color:var(--alert);box-shadow:0 0 0 3px color-mix(in srgb,var(--alert) 16%,transparent)}
+.emsg{display:none;align-items:center;gap:.35rem;margin-top:.4rem;
+  font-size:var(--t-xs);color:var(--alert);font-weight:600}
+.field.err .emsg{display:flex}
+.emsg svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;flex:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.85rem 1.5rem;border-radius:99px;border:1px solid transparent;cursor:pointer;
+  font:700 var(--t-sm)/1 var(--fS);letter-spacing:.02em;text-decoration:none;
+  transition:.22s var(--E)}
+.btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2}
+.bp{background:var(--brand);color:var(--onBrand);box-shadow:0 10px 26px -12px rgba(10,82,115,.6)}
+.bp:hover{background:var(--brand2)}
+.bg2{background:transparent;color:var(--ink);border-color:var(--line2)}
+.bg2:hover{border-color:var(--brand);color:var(--brand)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offset:3px}

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>District risk · FloodGuard</title>
+<link rel="stylesheet" href="/assets/fg-base.css">
+<style>
+/* Gate first, paint second. The body stays hidden until the session
+   check runs, so a signed-out visitor never sees a flash of the data
+   they haven't been let into yet. */
+body{visibility:hidden}
+body.ready{visibility:visible}
+
+.hd .who{display:flex;align-items:center;gap:.8rem}
+.who span{font-size:var(--t-xs);color:var(--ink3)}
+.who b{color:var(--ink2);font-weight:700}
+.lnk{background:none;border:0;padding:0;cursor:pointer;color:var(--brand);
+  font:700 var(--t-xs)/1 var(--fS);text-decoration:underline;text-underline-offset:3px}
+
+.crumb{display:flex;align-items:center;gap:.45rem;padding:1.4rem 0 .2rem;
+  font-size:var(--t-xs);color:var(--ink3)}
+.crumb a{color:var(--ink3);text-decoration:none}
+.crumb a:hover{color:var(--brand)}
+
+.head{padding:.4rem 0 2rem}
+.head h1{font-size:var(--t-4);margin:.5rem 0 .6rem}
+.head .lede{color:var(--ink2);max-width:56ch;font-size:var(--t-1)}
+.badge{display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .75rem;border-radius:99px;
+  font:700 .6rem/1 var(--fS);letter-spacing:.14em;text-transform:uppercase;color:var(--onBrand)}
+.badge i{width:7px;height:7px;border-radius:99px;background:currentColor}
+
+.grid{display:grid;gap:1.1rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-bottom:1.1rem}
+.tile{padding:1.2rem 1.3rem}
+.tile .caps{margin-bottom:.6rem}
+.tile b{display:block;font-family:var(--fD);font-size:var(--t-3);line-height:1;margin-bottom:.3rem}
+.tile em{font-style:normal;font-size:var(--t-xs);color:var(--ink3)}
+
+.meter{height:7px;border-radius:99px;background:var(--dentBg);overflow:hidden;
+  box-shadow:inset 0 1px 3px var(--dentIn);margin:.7rem 0 .5rem}
+.meter i{display:block;height:100%;border-radius:99px}
+
+.two{display:grid;gap:1.1rem;grid-template-columns:1.35fr 1fr;align-items:start;margin-bottom:1.1rem}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.pane{padding:1.3rem 1.4rem}
+.pane h2{font-size:var(--t-2);margin-bottom:.3rem}
+.pane .sub{color:var(--ink3);font-size:var(--t-xs);margin-bottom:1.2rem}
+
+/* decade bars — synthetic, but deterministic per district so the page
+   is stable across reloads instead of reshuffling on every visit */
+.bars{display:flex;align-items:flex-end;gap:5px;height:132px}
+.bars div{flex:1;border-radius:4px 4px 2px 2px;min-height:4px;position:relative}
+.barx{display:flex;gap:5px;margin-top:.5rem}
+.barx span{flex:1;text-align:center;font:600 .54rem/1 var(--fM);color:var(--ink3)}
+
+.rows{list-style:none}
+.rows li{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.7rem 0;border-bottom:1px solid var(--line)}
+.rows li:last-child{border-bottom:0}
+.rows span{font-size:var(--t-sm);color:var(--ink2)}
+.rows b{font:600 var(--t-sm)/1 var(--fM);color:var(--ink)}
+
+.lockrow{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;
+  padding:1.2rem 1.4rem;margin-bottom:2.4rem;border-radius:var(--r-l);
+  background:var(--band);color:var(--onBand)}
+.lockrow p{flex:1 1 260px;font-size:var(--t-sm);opacity:.92}
+.lockrow b{display:block;font-family:var(--fD);font-size:var(--t-1);margin-bottom:.2rem;opacity:1}
+.lockrow .btn{background:var(--onBand);color:var(--b950);border-color:transparent}
+
+.disc{display:flex;gap:.6rem;padding:.9rem 1rem;border-radius:var(--r-s);
+  background:var(--dentBg);border:1px solid var(--line);margin-bottom:2.6rem}
+.disc svg{width:15px;height:15px;fill:none;stroke:var(--ink3);stroke-width:2;flex:none;margin-top:.15rem}
+.disc p{font-size:var(--t-xs);color:var(--ink3);line-height:1.55}
+.disc b{color:var(--ink2)}
+.ft{padding:1.6rem 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hd">
+    <a class="brand" href="/index.html">
+      <i>ƒ</i><span><b>FloodGuard</b><span>Predict · Plan · Protect</span></span>
+    </a>
+    <div class="who">
+      <span>Signed in as <b id="whoMail">—</b></span>
+      <button class="lnk" id="out">Sign out</button>
+    </div>
+  </header>
+
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a><span>›</span>
+    <a href="/index.html#explorer">District risk</a><span>›</span>
+    <span id="crumbState">—</span>
+  </nav>
+
+  <div class="head">
+    <span class="badge" id="badge"><i></i><span id="badgeTxt">—</span></span>
+    <h1 id="dName">—</h1>
+    <p class="lede" id="dLede">—</p>
+  </div>
+
+  <div class="grid">
+    <div class="tile panel">
+      <p class="caps">Composite risk index</p>
+      <b id="kIdx">—</b>
+      <div class="meter"><i id="kBar"></i></div>
+      <em id="kBand">—</em>
+    </div>
+    <div class="tile panel">
+      <p class="caps">Observed record</p>
+      <b id="kYears">—</b><em>Years of continuous coverage</em>
+    </div>
+    <div class="tile panel">
+      <p class="caps">Return period · 1-in-100</p>
+      <b id="kRet">—</b><em>Modelled peak depth</em>
+    </div>
+    <div class="tile panel">
+      <p class="caps">Population exposed</p>
+      <b id="kPop">—</b><em>Within modelled extent</em>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="pane panel">
+      <h2>Flood events by decade</h2>
+      <p class="sub" id="barSub">—</p>
+      <div class="bars" id="bars" role="img" aria-label="Bar chart of recorded flood events by decade"></div>
+      <div class="barx" id="barx"></div>
+    </div>
+    <div class="pane panel">
+      <h2>Risk drivers</h2>
+      <p class="sub">Contribution to the composite index</p>
+      <ul class="rows" id="drivers"></ul>
+    </div>
+  </div>
+
+  <div class="lockrow">
+    <div style="flex:1 1 260px">
+      <b>Taluka-level detail is an Explorer feature.</b>
+      <p>Break this district into talukas, add asset overlays and export the
+         full return-period series.</p>
+    </div>
+    <a class="btn" href="/index.html#products">See Explorer</a>
+  </div>
+
+  <div class="disc">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5" stroke-linecap="round"/></svg>
+    <p><b>Demonstration data.</b> Every figure on this page is generated from the
+       homepage's schematic risk model, not from FloodGuard's observed record. The
+       district is the <b>nearest reference city</b> to the map cell you clicked, not a
+       surveyed boundary. Wire <code>src/data/geo/india-districts.json</code> and the
+       real metrics before this page goes in front of anyone.</p>
+  </div>
+
+  <footer class="ft">© FloodGuard · Private preview</footer>
+</div>
+
+<script>
+/* ── gate ───────────────────────────────────────────────────────
+   A localStorage flag, deliberately: there is no backend to check
+   against. This keeps anyone from wandering in, and nothing more —
+   it is not an access control and must not be treated as one. */
+const P=new URLSearchParams(location.search);
+let sess=null;
+try{sess=JSON.parse(localStorage.getItem("fg_session")||"null");}catch(_){}
+if(!sess||!sess.email){
+  const back=location.pathname+location.search;
+  location.replace("/auth.html?next="+encodeURIComponent(back)+
+                   "&dest="+encodeURIComponent(P.get("name")||"this district"));
+}else{
+  document.body.classList.add("ready");
+  document.getElementById("whoMail").textContent=sess.email;
+}
+document.getElementById("out").onclick=()=>{
+  try{localStorage.removeItem("fg_session");}catch(_){}
+  location.href="/index.html";
+};
+
+/* ── inputs ── */
+const NAME=P.get("name")||"Unknown district";
+const STATE=P.get("state")||"India";
+const IDX=Math.max(0,Math.min(1,parseFloat(P.get("idx"))||0));
+const LAT=P.get("lat"),LON=P.get("lon");
+const BANDS=["Very low","Low","Moderate","Elevated","High","Severe","Extreme"];
+const RAMP=["--b100","--b200","--b300","--b400","--b600","--b800","--b950"]
+  .map(n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim());
+const step=Math.min(6,Math.floor(IDX*7));
+const col=RAMP[step];
+
+/* deterministic pseudo-random from the district name, so the numbers
+   are stable per district instead of changing on every reload */
+function seed(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%1e4)/1e4;};}
+const rnd=seed(NAME+STATE);
+
+document.title=NAME+" · District risk · FloodGuard";
+document.getElementById("dName").textContent=NAME;
+document.getElementById("crumbState").textContent=STATE;
+document.getElementById("dLede").textContent=
+  "Composite flood risk for the "+NAME+" reference cell in "+STATE+
+  (LAT&&LON?" ("+LAT+"°N, "+LON+"°E)":"")+", derived from the observed record and forward projections.";
+
+const badge=document.getElementById("badge");
+badge.style.background=col;
+badge.style.color=step>=4?"#eaf7f7":"#04263d";
+document.getElementById("badgeTxt").textContent=BANDS[step]+" exposure";
+
+document.getElementById("kIdx").textContent=IDX.toFixed(2);
+const bar=document.getElementById("kBar");
+bar.style.width=(IDX*100).toFixed(0)+"%";bar.style.background=col;
+document.getElementById("kBand").textContent=BANDS[step]+" · band "+(step+1)+" of 7";
+document.getElementById("kYears").textContent="75";
+document.getElementById("kRet").textContent=(0.6+IDX*4.4).toFixed(1)+" m";
+const pop=Math.round((80+IDX*900+rnd()*220)*1000);
+document.getElementById("kPop").textContent=
+  pop>=1e6?(pop/1e6).toFixed(1)+" M":Math.round(pop/1000)+" K";
+
+/* decade bars */
+const decades=["1950s","60s","70s","80s","90s","2000s","10s","20s"];
+const bars=document.getElementById("bars"),barx=document.getElementById("barx");
+let total=0;
+decades.forEach((d,i)=>{
+  /* later decades trend up — the record thickens and exposure grows */
+  const v=Math.max(.08,Math.min(1,IDX*(.45+i*.075)+rnd()*.32));
+  total+=Math.round(v*22);
+  const el=document.createElement("div");
+  el.style.height=(v*100).toFixed(1)+"%";
+  el.style.background=RAMP[Math.min(6,Math.floor(v*7))];
+  el.title=d+" · "+Math.round(v*22)+" recorded events";
+  bars.append(el);
+  const s=document.createElement("span");s.textContent=d;barx.append(s);
+});
+document.getElementById("barSub").textContent=total+" recorded events since 1951";
+
+/* drivers */
+const drivers=[
+  ["Rainfall intensity",.9],["Drainage capacity deficit",.75],
+  ["River proximity",.68],["Terrain / slope",.55],["Built-up density",.6]
+];
+const ul=document.getElementById("drivers");
+drivers.forEach(([label,w])=>{
+  const v=Math.max(4,Math.min(96,Math.round(IDX*w*100+(rnd()-.5)*18)));
+  const li=document.createElement("li");
+  const a=document.createElement("span");a.textContent=label;
+  const b=document.createElement("b");b.textContent=v+"%";
+  li.append(a,b);ul.append(li);
+});
+</script>
+</body>
+</html>

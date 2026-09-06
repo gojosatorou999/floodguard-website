@@ -372,6 +372,74 @@ section{position:relative;z-index:1;padding-block:clamp(2.75rem, 4.6vw, 4.25rem)
 .lg b{width:17px;height:6px;border-radius:99px;display:block}
 .lg span{font-size:.58rem;letter-spacing:.18em;color:var(--ink3);font-weight:600;text-transform:uppercase}
 #readout{font-family:var(--fM);font-size:.62rem;color:var(--ink2);letter-spacing:.04em}
+.mbody{isolation:isolate}
+.mapC-hot{cursor:pointer}
+
+/* ── map search ─────────────────────────────────────────────────
+   Collapsed it is a 88px pill in the header's dead space; expanded it
+   takes the header row and drops a panel *over* the map. Nothing in the
+   card reflows either way — the panel is absolute, so the map never
+   moves and the layout never grows. */
+.msBtn[hidden],.msField[hidden],.msPanel[hidden],.mtip[hidden],.msEmpty[hidden]{display:none!important}
+.msearch{position:relative;display:flex;justify-content:flex-end;min-width:0}
+.msBtn{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--line2);
+  background:var(--dentBg);color:var(--ink2);border-radius:99px;padding:.3rem .6rem;cursor:pointer;
+  font:600 .6rem/1 var(--fS);letter-spacing:.14em;text-transform:uppercase;transition:.22s var(--E)}
+.msBtn svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2}
+.msBtn:hover{color:var(--brand);border-color:var(--brand);background:transparent}
+.msBtn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.msField{display:flex;align-items:center;gap:.45rem;width:min(300px,58vw);
+  border:1px solid var(--brand);border-radius:99px;padding:.28rem .5rem .28rem .65rem;
+  background:var(--panelBg);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 15%,transparent)}
+.msField svg{width:12px;height:12px;fill:none;stroke:var(--ink3);stroke-width:2.2;flex:none}
+.msField input{flex:1 1 auto;min-width:0;border:0;background:none;color:var(--ink);
+  font:500 .74rem/1.2 var(--fS);letter-spacing:0;padding:.12rem 0}
+.msField input:focus{outline:none}
+.msField input::placeholder{color:var(--ink3)}
+.msField input::-webkit-search-cancel-button{display:none}
+.msX{border:0;background:none;padding:0;cursor:pointer;flex:none;line-height:0}
+
+.msPanel{position:absolute;inset:.5rem .5rem auto .5rem;z-index:6;
+  background:var(--panelBg);border:1px solid var(--panelEdge);border-radius:var(--r-m);
+  box-shadow:var(--panelShadow);overflow:hidden;max-height:calc(100% - 1rem);display:flex;flex-direction:column}
+.msPanel ul{list-style:none;margin:0;padding:.3rem;overflow-y:auto;overscroll-behavior:contain}
+.msPanel li{display:flex;align-items:center;gap:.6rem;padding:.44rem .55rem;border-radius:10px;cursor:pointer}
+.msPanel li[aria-selected="true"]{background:color-mix(in srgb,var(--brand) 13%,transparent)}
+.msDot{width:9px;height:9px;border-radius:99px;flex:none;box-shadow:0 0 0 2px var(--panelBg)}
+.msName{font:600 .78rem/1.25 var(--fS);color:var(--ink);letter-spacing:0;flex:1 1 auto;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msName em{font-style:normal;color:var(--brand);font-weight:800}
+.msKind{font:700 .54rem/1 var(--fS);letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);flex:none}
+.msEmpty{margin:0;padding:.9rem .8rem;font-size:.72rem;color:var(--ink3);text-align:center}
+
+/* ── hover card ─────────────────────────────────────────────────
+   Reveals on hover, never navigates on hover — the click does that.
+   Pointer-events off so it can sit under the cursor without stealing
+   the pointermove stream that positions it. */
+.mtip{position:absolute;z-index:5;pointer-events:none;width:172px;
+  display:grid;gap:.3rem;padding:.6rem .7rem .65rem;
+  background:var(--panelBg);border:1px solid var(--panelEdge);border-radius:14px;
+  box-shadow:var(--panelShadow);transition:opacity .16s var(--E)}
+.mtip b{font:700 .84rem/1.2 var(--fD);color:var(--ink);letter-spacing:0}
+.mtipSub{font:600 .55rem/1 var(--fS);letter-spacing:.16em;text-transform:uppercase;color:var(--ink3)}
+.mtipMeter{height:4px;border-radius:99px;background:var(--dentBg);overflow:hidden;margin-top:.12rem}
+.mtipMeter i{display:block;height:100%;border-radius:99px;transition:width .2s var(--E)}
+.mtipRow{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
+.mtipRow span{font:600 .58rem/1 var(--fS);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.mtipRow em{font:500 .64rem/1 var(--fM);font-style:normal;color:var(--ink3)}
+.mtipGo{display:flex;align-items:center;gap:.3rem;margin-top:.16rem;padding-top:.4rem;
+  border-top:1px solid var(--line);
+  font:700 .55rem/1 var(--fS);letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+.mtipGo svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2.4}
+
+@media (max-width:640px){
+  /* the pill would crowd the header on small screens — the map is
+     tap-to-open there anyway, so search moves to full header width */
+  .msBtn span{display:none}
+  .msField{width:min(220px,64vw)}
+  .mtip{width:150px}
+}
+@media (prefers-reduced-motion:reduce){.mtip,.mtipMeter i{transition:none}}
 
 /* floating chips */
 .chip{position:absolute;padding:.7rem 1rem;border-radius:var(--r-m);z-index:3;will-change:transform;pointer-events:none}
@@ -1021,15 +1089,39 @@ setTimeout(function(){
       <div class="mcard glass" id="mcard">
         <div class="mhead">
           <span class="caps">District risk · observed record</span>
-          <span class="caps" style="color:var(--ink3)">Schematic</span>
+          <div class="msearch" id="msearch">
+            <button class="msBtn" type="button" id="msBtn" aria-expanded="false" aria-controls="msPanel" aria-label="Search the map by state, city or district">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4" stroke-linecap="round"/></svg>
+              <span>Search</span>
+            </button>
+            <div class="msField" id="msField" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4" stroke-linecap="round"/></svg>
+              <input id="msInput" type="search" placeholder="State, city or district…" autocomplete="off" spellcheck="false"
+                     role="combobox" aria-expanded="false" aria-controls="msList" aria-autocomplete="list" aria-label="Search the map">
+              <button class="msX" type="button" id="msX" aria-label="Close map search"><span class="kbd">ESC</span></button>
+            </div>
+          </div>
         </div>
-        <div class="mbody"><canvas id="mapC" aria-label="Schematic dot-density map of India showing relative flood exposure by district cell"></canvas></div>
+        <div class="mbody">
+          <canvas id="mapC" aria-label="Schematic dot-density map of India showing relative flood exposure by district cell"></canvas>
+          <div class="msPanel" id="msPanel" hidden>
+            <ul id="msList" role="listbox" aria-label="Map search results"></ul>
+            <p class="msEmpty" id="msEmpty" hidden>No match. Try “Kerala”, “Patna” or “Assam”.</p>
+          </div>
+          <div class="mtip" id="mtip" hidden>
+            <b id="mtipName"></b>
+            <span class="mtipSub" id="mtipSub"></span>
+            <span class="mtipMeter"><i id="mtipBar"></i></span>
+            <span class="mtipRow"><span id="mtipBand"></span><em id="mtipIdx"></em></span>
+            <span class="mtipGo">Open district data <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></span>
+          </div>
+        </div>
         <div class="mfoot">
           <div class="lg"><span>Lower</span>
             <b style="background:var(--b100)"></b><b style="background:var(--b200)"></b><b style="background:var(--b300)"></b>
             <b style="background:var(--b400)"></b><b style="background:var(--b600)"></b><b style="background:var(--b800)"></b><b style="background:var(--b950)"></b>
             <span style="margin-left:.3rem">Higher</span></div>
-          <span id="readout">hover to inspect</span>
+          <span id="readout">Hover a cell · click to open</span>
         </div>
         <div class="tspine" aria-hidden="true"><i>Historical</i><span></span><i>Current</i><span></span><i>Future</i></div>
       </div>
@@ -1774,8 +1866,109 @@ for(let lat=LAT0;lat<=LAT1;lat+=STEP)for(let lon=LON0;lon<=LON1;lon+=STEP){
   const south=1-(lat-LAT0)/(LAT1-LAT0);
   cells.push({lon,lat,risk:clamp(fbm(lon*.42,lat*.42,7,5)*.72+fbm(lon*.35,lat*.35,3,4)*.2+south*.22,0,1),ph:h2(lon,lat,11)});
 }
+
+/*── PLACES · states/UTs + major cities ────────────────────────────
+   The dot grid is schematic, so cells carry no boundary identity of
+   their own. Each cell is labelled by its NEAREST reference city —
+   stated as "nearest" in the UI rather than claiming the cell sits
+   inside that district. Swap this for real geometry when
+   src/data/geo/india-districts.json lands and the labels become exact. */
+const FG_ST=[
+["Andhra Pradesh","AP",79.74,15.91],["Arunachal Pradesh","AR",94.73,28.22],["Assam","AS",92.94,26.20],
+["Bihar","BR",85.31,25.10],["Chhattisgarh","CG",81.87,21.28],["Goa","GA",74.12,15.30],
+["Gujarat","GJ",71.19,22.26],["Haryana","HR",76.09,29.06],["Himachal Pradesh","HP",77.17,31.10],
+["Jharkhand","JH",85.28,23.61],["Karnataka","KA",75.71,15.32],["Kerala","KL",76.27,10.85],
+["Madhya Pradesh","MP",78.66,22.97],["Maharashtra","MH",75.71,19.75],["Manipur","MN",93.91,24.66],
+["Meghalaya","ML",91.37,25.47],["Mizoram","MZ",92.94,23.16],["Nagaland","NL",94.56,26.16],
+["Odisha","OD",85.10,20.95],["Punjab","PB",75.34,31.15],["Rajasthan","RJ",74.22,27.02],
+["Sikkim","SK",88.51,27.53],["Tamil Nadu","TN",78.66,11.13],["Telangana","TG",79.02,18.11],
+["Tripura","TR",91.99,23.94],["Uttar Pradesh","UP",80.95,26.85],["Uttarakhand","UK",79.02,30.07],
+["West Bengal","WB",87.86,22.99],["Andaman & Nicobar Islands","AN",92.75,11.74],
+["Chandigarh","CH",76.78,30.73],["Dadra & Nagar Haveli and Daman & Diu","DN",72.87,20.40],
+["Delhi","DL",77.10,28.70],["Jammu & Kashmir","JK",74.80,33.28],["Ladakh","LA",77.58,34.15],
+["Lakshadweep","LD",72.18,10.57],["Puducherry","PY",79.81,11.94]];
+const FG_CI=[
+["Mumbai","MH",72.88,19.08],["Thane","MH",72.97,19.22],["Navi Mumbai","MH",73.03,19.03],
+["Pune","MH",73.86,18.52],["Nashik","MH",73.79,20.00],["Nagpur","MH",79.09,21.15],
+["Aurangabad","MH",75.34,19.88],["Solapur","MH",75.91,17.66],["Kolhapur","MH",74.24,16.70],
+["Delhi","DL",77.21,28.61],["Gurugram","HR",77.03,28.46],["Faridabad","HR",77.31,28.41],
+["Noida","UP",77.39,28.54],["Ghaziabad","UP",77.44,28.67],["Meerut","UP",77.70,28.98],
+["Bengaluru","KA",77.59,12.97],["Mysuru","KA",76.64,12.30],["Mangaluru","KA",74.86,12.91],
+["Hubballi","KA",75.13,15.36],["Belagavi","KA",74.50,15.85],
+["Hyderabad","TG",78.49,17.39],["Warangal","TG",79.59,17.98],["Nizamabad","TG",78.09,18.67],
+["Chennai","TN",80.27,13.08],["Coimbatore","TN",76.96,11.02],["Madurai","TN",78.12,9.93],
+["Tiruchirappalli","TN",78.70,10.79],["Salem","TN",78.15,11.66],["Tirunelveli","TN",77.76,8.71],
+["Kolkata","WB",88.36,22.57],["Howrah","WB",88.31,22.59],["Siliguri","WB",88.43,26.73],
+["Durgapur","WB",87.31,23.52],["Asansol","WB",86.99,23.68],
+["Ahmedabad","GJ",72.57,23.02],["Surat","GJ",72.83,21.17],["Vadodara","GJ",73.19,22.31],
+["Rajkot","GJ",70.80,22.30],["Bhavnagar","GJ",72.15,21.76],["Jamnagar","GJ",70.07,22.47],
+["Bhuj","GJ",69.67,23.24],
+["Jaipur","RJ",75.79,26.91],["Jodhpur","RJ",73.02,26.24],["Udaipur","RJ",73.71,24.58],
+["Kota","RJ",75.83,25.21],["Bikaner","RJ",73.32,28.02],["Ajmer","RJ",74.64,26.45],
+["Lucknow","UP",80.95,26.85],["Kanpur","UP",80.33,26.45],["Agra","UP",78.01,27.18],
+["Varanasi","UP",82.99,25.32],["Prayagraj","UP",81.85,25.44],["Gorakhpur","UP",83.37,26.76],
+["Indore","MP",75.86,22.72],["Bhopal","MP",77.41,23.26],["Gwalior","MP",78.18,26.22],
+["Jabalpur","MP",79.93,23.18],["Ujjain","MP",75.78,23.18],
+["Patna","BR",85.14,25.59],["Muzaffarpur","BR",85.39,26.12],["Gaya","BR",85.00,24.79],
+["Bhagalpur","BR",86.98,25.24],
+["Ranchi","JH",85.31,23.34],["Jamshedpur","JH",86.20,22.80],["Dhanbad","JH",86.43,23.80],
+["Raipur","CG",81.63,21.25],["Bilaspur","CG",82.14,22.08],
+["Bhubaneswar","OD",85.82,20.30],["Cuttack","OD",85.88,20.46],
+["Kochi","KL",76.27,9.93],["Thiruvananthapuram","KL",76.95,8.52],["Kozhikode","KL",75.78,11.25],
+["Thrissur","KL",76.21,10.53],["Alappuzha","KL",76.34,9.50],["Kollam","KL",76.60,8.89],
+["Visakhapatnam","AP",83.22,17.69],["Vijayawada","AP",80.65,16.51],["Guntur","AP",80.44,16.31],
+["Nellore","AP",79.99,14.44],["Tirupati","AP",79.42,13.63],
+["Ludhiana","PB",75.86,30.90],["Amritsar","PB",74.87,31.63],["Chandigarh","CH",76.78,30.73],
+["Guwahati","AS",91.75,26.14],["Silchar","AS",92.80,24.83],["Dibrugarh","AS",94.90,27.47],
+["Srinagar","JK",74.80,34.08],["Jammu","JK",74.86,32.73],["Leh","LA",77.58,34.16],
+["Shimla","HP",77.17,31.10],["Dehradun","UK",78.03,30.32],["Haridwar","UK",78.16,29.95],
+["Gangtok","SK",88.61,27.33],["Shillong","ML",91.88,25.58],["Imphal","MN",93.94,24.82],
+["Aizawl","MZ",92.72,23.73],["Kohima","NL",94.11,25.67],["Itanagar","AR",93.61,27.08],
+["Agartala","TR",91.28,23.83],["Panaji","GA",73.83,15.50],["Puducherry","PY",79.81,11.94],
+["Port Blair","AN",92.74,11.62],["Kavaratti","LD",72.64,10.57],["Silvassa","DN",73.02,20.27]];
+
+const ST_NAME={};FG_ST.forEach(s=>ST_NAME[s[1]]=s[0]);
+const BANDS=["Very low","Low","Moderate","Elevated","High","Severe","Extreme"];
+const fgSlug=n=>n.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const band=r=>BANDS[Math.min(6,Math.floor(r*7))];
+
+/* lon degrees shrink toward the poles — without the cos correction the
+   nearest-city test skews east/west in the north */
+function nearCity(lon,lat){
+  let b=FG_CI[0],bd=1e9;
+  for(const c of FG_CI){
+    const dx=(c[2]-lon)*Math.cos(lat*Math.PI/180),dy=c[3]-lat,d=dx*dx+dy*dy;
+    if(d<bd){bd=d;b=c}
+  }
+  return b;
+}
+for(const c of cells){
+  const n=nearCity(c.lon,c.lat);
+  c.city=n[0];c.stc=n[1];c.state=ST_NAME[n[1]]||n[1];c.slug=fgSlug(n[0]);
+}
+/* search index: every state and every city, cities carrying their state
+   so "kerala" surfaces Kochi and Alappuzha too */
+const FG_PLACES=[
+  ...FG_ST.map(s=>({name:s[0],kind:"State",st:s[0],stc:s[1],lon:s[2],lat:s[3]})),
+  ...FG_CI.map(c=>({name:c[0],kind:"City",st:ST_NAME[c[1]]||c[1],stc:c[1],lon:c[2],lat:c[3]}))
+];
+function cellAt(lon,lat){
+  let b=null,bd=1e9;
+  for(const c of cells){
+    const dx=(c.lon-lon)*Math.cos(lat*Math.PI/180),dy=c.lat-lat,d=dx*dx+dy*dy;
+    if(d<bd){bd=d;b=c}
+  }
+  return b;
+}
+FG_PLACES.forEach(p=>{const c=cellAt(p.lon,p.lat);p.risk=c?c.risk:.5;p.cell=c;});
+function fgHref(p,risk){
+  return "district.html?place="+encodeURIComponent(fgSlug(p.name))+
+         "&name="+encodeURIComponent(p.name)+"&state="+encodeURIComponent(p.st||p.state)+
+         "&idx="+risk.toFixed(3)+"&lat="+(p.lat).toFixed(2)+"&lon="+(p.lon).toFixed(2);
+}
+
 const mc=document.getElementById("mapC"),mx2=mc.getContext("2d");
-let mapProg=0,hoverCell=null,geo=null;
+let mapProg=0,hoverCell=null,geo=null,pinCell=null;
 function sizeMap(){
   const w=mc.parentElement.clientWidth;if(!w)return;
   const h=Math.round(w*.84),d=Math.min(3,devicePixelRatio||1);   /* up to 3× for crispness */
@@ -1803,18 +1996,170 @@ function drawMap(){
     mx2.beginPath();mx2.arc(x,y,r*app*(c===hoverCell?2:1),0,6.284);mx2.fill();
   }
   mx2.globalAlpha=1;
+  /* focus ring for the cell the search pinned */
+  if(pinCell){
+    const x=ox+(pinCell.lon-LON0)*s,y=oy+(LAT1-pinCell.lat)*s;
+    mx2.strokeStyle=RAMP[6];mx2.lineWidth=1.6;mx2.globalAlpha=.9;
+    mx2.beginPath();mx2.arc(x,y,Math.max(7,r*3.2),0,6.284);mx2.stroke();
+    mx2.globalAlpha=.28;
+    mx2.beginPath();mx2.arc(x,y,Math.max(11,r*5),0,6.284);mx2.stroke();
+    mx2.globalAlpha=1;
+  }
 }
-mc.addEventListener("pointermove",e=>{
-  if(!geo)return;const b=mc.getBoundingClientRect();
-  const qx=e.clientX-b.left,qy=e.clientY-b.top;
+/*── map hover card · click-through · in-card search ──────────────
+   Hover reveals, click navigates. Navigating on hover would fire on
+   every accidental sweep across the map and is unreachable by keyboard,
+   so the cell is a real activation target instead. */
+const mtip=document.getElementById("mtip"),mtipName=document.getElementById("mtipName"),
+      mtipSub=document.getElementById("mtipSub"),mtipBar=document.getElementById("mtipBar"),
+      mtipBand=document.getElementById("mtipBand"),mtipIdx=document.getElementById("mtipIdx"),
+      readout=document.getElementById("readout");
+
+function cellXY(c){return[geo.ox+(c.lon-LON0)*geo.s,geo.oy+(LAT1-c.lat)*geo.s];}
+function hitCell(qx,qy){
   let best=null,bd=1e9;
-  for(const c of cells){const x=geo.ox+(c.lon-LON0)*geo.s,y=geo.oy+(LAT1-c.lat)*geo.s;
-    const dd=(x-qx)**2+(y-qy)**2;if(dd<bd){bd=dd;best=c}}
-  if(bd<420){hoverCell=best;
-    document.getElementById("readout").textContent=best.lat.toFixed(2)+"°N "+best.lon.toFixed(2)+"°E · index "+best.risk.toFixed(2);}
+  for(const c of cells){const[x,y]=cellXY(c);const d=(x-qx)**2+(y-qy)**2;if(d<bd){bd=d;best=c}}
+  return bd<420?best:null;
+}
+function showTip(c,px,py){
+  mtipName.textContent=c.city;
+  mtipSub.textContent=c.state;
+  mtipBand.textContent=band(c.risk);
+  mtipIdx.textContent="idx "+c.risk.toFixed(2);
+  mtipBar.style.width=(c.risk*100).toFixed(0)+"%";
+  mtipBar.style.background=RAMP[Math.min(6,Math.floor(c.risk*7))];
+  mtip.hidden=false;
+  const b=mc.getBoundingClientRect(),w=172,h=mtip.offsetHeight||104;
+  /* clamp inside the map body so the card never spills out of the card */
+  let x=px+14,y=py-h-10;
+  if(x+w>b.width-6)x=px-w-14;
+  if(x<6)x=6;
+  if(y<6)y=py+16;
+  if(y+h>b.height-6)y=Math.max(6,b.height-h-6);
+  mtip.style.left=x+"px";mtip.style.top=y+"px";
+}
+function hideTip(){mtip.hidden=true;}
+
+mc.addEventListener("pointermove",e=>{
+  if(!geo)return;
+  const b=mc.getBoundingClientRect(),qx=e.clientX-b.left,qy=e.clientY-b.top;
+  const hit=hitCell(qx,qy);
+  hoverCell=hit;
+  mc.classList.toggle("mapC-hot",!!hit);
+  if(hit){
+    showTip(hit,qx,qy);
+    readout.textContent="Nearest "+hit.city+" · "+hit.state+" · idx "+hit.risk.toFixed(2);
+  }else if(!pinCell){
+    hideTip();readout.textContent="Hover a cell · click to open";
+  }
 });
-mc.addEventListener("pointerleave",()=>{hoverCell=null;
-  document.getElementById("readout").textContent="hover to inspect";});
+mc.addEventListener("pointerleave",()=>{
+  hoverCell=null;mc.classList.remove("mapC-hot");
+  if(pinCell){const[x,y]=cellXY(pinCell);showTip(pinCell,x,y);}
+  else{hideTip();readout.textContent="Hover a cell · click to open";}
+});
+mc.addEventListener("click",e=>{
+  if(!geo)return;
+  const b=mc.getBoundingClientRect();
+  const hit=hitCell(e.clientX-b.left,e.clientY-b.top);
+  if(!hit)return;
+  location.href=fgHref({name:hit.city,st:hit.state,lat:hit.lat,lon:hit.lon},hit.risk);
+});
+/* keyboard equivalent: the canvas is focusable and Enter opens whatever
+   the search or a previous hover pinned */
+mc.setAttribute("tabindex","0");
+mc.setAttribute("role","application");
+mc.addEventListener("keydown",e=>{
+  if((e.key==="Enter"||e.key===" ")&&(pinCell||hoverCell)){
+    e.preventDefault();const c=pinCell||hoverCell;
+    location.href=fgHref({name:c.city,st:c.state,lat:c.lat,lon:c.lon},c.risk);
+  }
+});
+
+/*── in-card search ──*/
+const msBtn=document.getElementById("msBtn"),msField=document.getElementById("msField"),
+      msInput=document.getElementById("msInput"),msX=document.getElementById("msX"),
+      msPanel=document.getElementById("msPanel"),msList=document.getElementById("msList"),
+      msEmpty=document.getElementById("msEmpty");
+let msHits=[],msIdx=0,msOpen=false;
+
+function msSet(open){
+  msOpen=open;
+  msBtn.hidden=open;msField.hidden=!open;
+  msBtn.setAttribute("aria-expanded",String(open));
+  msInput.setAttribute("aria-expanded",String(open));
+  if(open){msInput.focus();msInput.select();}
+  else{msPanel.hidden=true;msInput.value="";}
+}
+function msRender(){
+  msList.innerHTML="";
+  msEmpty.hidden=msHits.length>0;
+  msPanel.hidden=!msOpen||!msInput.value.trim();
+  const q=msInput.value.trim();
+  msHits.slice(0,7).forEach((p,i)=>{
+    const li=document.createElement("li");
+    li.setAttribute("role","option");
+    li.setAttribute("aria-selected",String(i===msIdx));
+    li.id="msopt"+i;
+    const dot=document.createElement("span");
+    dot.className="msDot";
+    dot.style.background=RAMP[Math.min(6,Math.floor(p.risk*7))];
+    const nm=document.createElement("span");
+    nm.className="msName";
+    /* highlight the matched span without innerHTML on user input */
+    const hay=p.name,lo=hay.toLowerCase().indexOf(q.toLowerCase());
+    if(q&&lo>=0){
+      nm.append(hay.slice(0,lo));
+      const em=document.createElement("em");em.textContent=hay.slice(lo,lo+q.length);
+      nm.append(em,hay.slice(lo+q.length));
+    }else nm.textContent=hay;
+    if(p.kind==="City"){const s=document.createElement("span");s.textContent=" · "+p.st;
+      s.style.color="var(--ink3)";s.style.fontWeight="500";nm.append(s);}
+    const kd=document.createElement("span");kd.className="msKind";kd.textContent=p.kind;
+    li.append(dot,nm,kd);
+    li.onclick=()=>msPick(p);
+    li.onmouseenter=()=>{msIdx=i;msRender();};
+    msList.append(li);
+  });
+  msInput.setAttribute("aria-activedescendant",msHits.length?"msopt"+msIdx:"");
+}
+function msPick(p){
+  const c=p.cell||cellAt(p.lon,p.lat);
+  if(c){
+    pinCell=c;hoverCell=c;drawMap();
+    const[x,y]=cellXY(c);showTip(c,x,y);
+    readout.textContent=(p.kind==="State"
+      ? p.name+" · nearest "+c.city
+      : p.name+" · "+p.st)+" · idx "+c.risk.toFixed(2)+" · press Enter to open";
+  }
+  msPanel.hidden=true;
+  mc.focus();
+}
+msInput.addEventListener("input",()=>{
+  const q=msInput.value.trim().toLowerCase();
+  msHits=q?FG_PLACES.filter(p=>p.name.toLowerCase().includes(q)||p.st.toLowerCase().includes(q)):[];
+  /* exact prefix first, then state matches — "kera" should land on the
+     state before any of its cities */
+  msHits.sort((a,b)=>{
+    const ap=a.name.toLowerCase().startsWith(q)?0:1,bp=b.name.toLowerCase().startsWith(q)?0:1;
+    if(ap!==bp)return ap-bp;
+    if((a.kind==="State")!==(b.kind==="State"))return a.kind==="State"?-1:1;
+    return a.name.localeCompare(b.name);
+  });
+  msIdx=0;msRender();
+});
+msInput.addEventListener("keydown",e=>{
+  if(e.key==="ArrowDown"){e.preventDefault();msIdx=Math.min(Math.min(msHits.length,7)-1,msIdx+1);msRender();}
+  else if(e.key==="ArrowUp"){e.preventDefault();msIdx=Math.max(0,msIdx-1);msRender();}
+  else if(e.key==="Enter"){e.preventDefault();if(msHits[msIdx])msPick(msHits[msIdx]);}
+  else if(e.key==="Escape"){e.preventDefault();msSet(false);}
+});
+msBtn.onclick=()=>msSet(true);
+msX.onclick=()=>msSet(false);
+document.addEventListener("pointerdown",e=>{
+  if(msOpen&&!document.getElementById("msearch").contains(e.target)&&!msPanel.contains(e.target))msSet(false);
+});
+
 
 /*── EXPLORER PREVIEW ──*/
 const pv=document.getElementById("pvMap"),pvx=pv.getContext("2d");
