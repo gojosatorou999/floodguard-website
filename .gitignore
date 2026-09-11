@@ -35,3 +35,4 @@ _*.png
 
 # QA output
 qa-shots/
+.work/

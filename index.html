@@ -649,6 +649,56 @@ body.nopin .nlist h3{font-size:1.05rem;margin-bottom:.3rem}
 body.nopin .nlist p{font-size:.82rem;color:var(--ink2)}
 
 /*───────────────────────────────────────────────────────────────
+  §02 — Confluence (spec §5.2)
+  A drainage basin: seven tributaries, one hub, one outlet. It is
+  the visual answer to §01's "Fragmented" — scattered inputs settle,
+  draw in, and leave as a single channel.
+───────────────────────────────────────────────────────────────*/
+/* .pin sets align-items:center for its row layout; in a column that would
+   centre the header instead of leaving it flush with the grid. */
+.confl{display:flex;flex-direction:column;justify-content:center;align-items:stretch;
+  gap:clamp(1rem,2.4vh,2rem);overflow:hidden;
+  padding-top:calc(var(--header-h) + 14px);padding-bottom:.6rem}
+.conflHead h2{font-size:var(--t-3);max-width:18ch;margin-bottom:.9rem}
+.conflLead{color:var(--ink2);max-width:52ch}
+.conflStage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+  padding-inline:clamp(1.1rem,4.2vw,3.2rem)}
+.conflStage svg{display:block;height:100%;width:auto;max-width:100%;margin-inline:auto}
+@media (max-height:900px){.conflLead{display:none}}
+@media (max-height:760px){.conflHead h2{font-size:var(--t-2)}}
+
+.cflPill rect{fill:var(--glassA);stroke:var(--line2);stroke-width:1}
+.cflPill text{font-family:var(--fS);font-size:16px;font-weight:500;fill:var(--ink2)}
+.cflStream{fill:none;stroke-width:2.5;stroke-linecap:round}
+/* draw-on: pathLength is normalised to 1, so one dash covers the whole path
+   and the offset is the progress — no need to measure geometry at runtime */
+.cflDraw{stroke-dasharray:1;stroke-dashoffset:1}
+.cflHub circle{fill:var(--brand);stroke:none}
+.cflRing{fill:none;stroke:var(--line2);stroke-width:1.5;stroke-dasharray:4 6}
+.cflHub text,.cflOutBox text{font-family:var(--fS);font-weight:600}
+.cflHub text{fill:var(--onBrand);font-size:17px}
+.cflOutBox rect{fill:none;stroke:var(--brand);stroke-width:1.5}
+.cflOutBox text{fill:var(--ink);font-size:18px}
+.cflOutBox .sub{fill:var(--ink3);font-size:13px;font-weight:500}
+.cflOutlet{fill:none;stroke:var(--brand);stroke-width:6;stroke-linecap:round}
+
+/* ambient flow — a dashed overlay drifting along each drawn path. Starts
+   only once the diagram has finished drawing, and stops off-screen. */
+.cflFlow{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:6 10;opacity:0}
+.cflOn .cflFlow{opacity:.9;animation:cflDrift 1.6s linear infinite}
+@keyframes cflDrift{to{stroke-dashoffset:-16}}
+
+/* hover/tap focus: the chosen stream keeps its colour, the rest recede */
+.cflDim{opacity:.35}
+.cflLit rect{stroke:var(--brand)}
+.cflLit text{fill:var(--ink)}
+
+/* Static state: no pin, no scrub — the finished diagram, drawn once. */
+body.nopin .confl{padding-block:var(--section-pad-y);gap:1.6rem}
+body.nopin .conflStage{height:clamp(320px,54vh,520px);flex:none}
+body.nopin .conflLead{display:block}
+
+/*───────────────────────────────────────────────────────────────
   §05 — IsoStack (spec §5.3)
   The reference prompt was Tailwind + Next + GSAP + a dark-only
   canvas. Translated: tokens, static page, IntersectionObserver,
@@ -1016,26 +1066,6 @@ textarea.inp{resize:vertical;min-height:92px}
 
 /*── the flood problem ──*/
 
-/*── decision gap flow ──*/
-.flow{display:flex;flex-direction:column;align-items:center;gap:1.1rem;text-align:center}
-.flowIn{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;max-width:720px}
-.flowIn span{padding:.6rem 1.05rem;border-radius:999px;border:1px solid var(--line2);background:var(--dentBg);
-  font-size:var(--t-sm);color:var(--ink2);white-space:nowrap}
-.flowArrow{display:flex;flex-direction:column;align-items:center;gap:4px;flex:none}
-.flowArrow i{display:block;width:2px;height:9px;border-radius:2px;background:var(--line2)}
-.flowArrow i:nth-child(2){background:var(--b400)}
-.flowArrow i:nth-child(3){background:var(--brand)}
-.flowCore{padding:1.15rem 2.6rem;border-radius:var(--r-l);flex:none}
-.flowCore b{font-family:var(--fD);font-size:var(--t-2);font-weight:600;letter-spacing:-.02em}
-.flowOut{padding:1.05rem 2.4rem;border-radius:999px;background:var(--brand);color:var(--onBrand);flex:none}
-.flowOut b{font-size:var(--t-1);font-weight:650}
-@media(min-width:920px){
-  .flow{flex-direction:row;gap:1.5rem;text-align:left}
-  .flowIn{flex:1 1 40%;justify-content:flex-start;max-width:none}
-  .flowArrow{flex-direction:row;gap:5px}
-  .flowArrow i{width:9px;height:2px}
-}
-
 /*── product kickers, disclaimer, explorer band ──*/
 .pkick{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--brand);margin-bottom:.75rem}
 .disc{font-size:var(--t-xs);color:var(--ink3);line-height:1.6;margin-bottom:1.5rem;max-width:44ch;
@@ -1098,6 +1128,7 @@ textarea.inp{resize:vertical;min-height:92px}
   .aur{filter:blur(58px)}
   #a3{display:none}
   #problem{height:230svh!important}
+  #gap{height:200svh!important}
   #why{height:330svh!important}
   .glass,.drop,#menuPanel{backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
   .nstage{height:clamp(270px, 48vh, 330px)}
@@ -1112,7 +1143,6 @@ textarea.inp{resize:vertical;min-height:92px}
   .mfoot,.mhead{gap:.4rem}
   #readout{font-size:.56rem}
   #down{display:none}
-  .flowCore,.flowOut{width:100%}
   .explorerBand{flex-direction:column;align-items:flex-start}
 }
 @media(max-width:1024px) and (min-width:761px){
@@ -1401,20 +1431,22 @@ setTimeout(function(){
 </section>
 
 <!-- ══ DECISION GAP ══ -->
-<section id="gap">
-  <div class="wrap">
-    <span class="snum">02 — The decision gap</span>
-    <h2 data-rv style="font-size:var(--t-3);max-width:18ch;margin-bottom:2.6rem">Data alone doesn't answer the decision.</h2>
-    <div class="flow" data-rv>
-      <div class="flowIn" data-stag>
-        <span>Rainfall</span><span>Flood history</span><span>Terrain</span><span>Drainage</span>
-        <span>Satellite data</span><span>Climate projections</span><span>Exposure</span>
-      </div>
-      <div class="flowArrow" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="flowCore glass"><b>FloodGuard</b></div>
-      <div class="flowArrow" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="flowOut"><b>Decision</b></div>
+<section id="gap" class="pinsec" style="height:220svh;padding:0">
+  <div class="pin confl" id="gapPin">
+    <div class="wrap conflHead">
+      <span class="snum">02 — The decision gap</span>
+      <h2 data-rv>Data alone doesn't answer the decision.</h2>
+      <p class="conflLead" data-rv>Seven inputs, one channel. The work isn't collecting them — it's making them
+        arrive together, at the moment the decision is made.</p>
     </div>
+    <div class="conflStage" id="conflStage"></div>
+    <!-- The diagram is decorative; this is the content of record. -->
+    <ol class="sr" id="conflList">
+      <li>Rainfall</li><li>Flood history</li><li>Terrain</li><li>Drainage</li>
+      <li>Satellite data</li><li>Climate projections</li><li>Exposure</li>
+      <li>All seven converge in FloodGuard</li>
+      <li>One decision leaves it</li>
+    </ol>
   </div>
 </section>
 
@@ -1918,6 +1950,12 @@ function inViewPause(el,onChange,rootMargin){
 }
 document.addEventListener("visibilitychange",()=>PAUSABLE.forEach(r=>r.apply()));
 
+/* SVG element helper. SVGNS is declared again further down for the tree
+   diagram, so this keeps its own binding rather than reaching into a TDZ. */
+const NSSVG="http://www.w3.org/2000/svg";
+const mk=(tag,attrs)=>{const e=document.createElementNS(NSSVG,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
+
 /*── THEME ──*/
 const sw=document.getElementById("sw");
 const sysDark=matchMedia("(prefers-color-scheme: dark)");
@@ -2093,8 +2131,10 @@ function runCounters(y){
    IntersectionObserver, so it no longer needs scrubbed progress. */
 const pins=[
   {sec:document.getElementById("problem"),inner:document.getElementById("problemPin"),top:0,h:0,p:0},
-  {sec:document.getElementById("why"),inner:document.getElementById("whyPin"),top:0,h:0,p:0}
+  {sec:document.getElementById("why"),inner:document.getElementById("whyPin"),top:0,h:0,p:0},
+  {sec:document.getElementById("gap"),inner:document.getElementById("gapPin"),top:0,h:0,p:0}
 ].map(P=>Object.assign(P,{lastOff:-1,vis:true,ps:0}));
+const PIN_GAP=2;
 /* useSectionProgress (spec §4.5). P.p is the raw scroll-derived progress —
    always correct after a fling because it is read from scroll position, never
    counted from events. P.ps is the same value spring-smoothed, and only on
@@ -2773,6 +2813,217 @@ function runDeck(dt){
 }
 
 /*═══════════════════════════════════════════════════════════════
+  §02 — Confluence (spec §5.2)
+  Geometry is two fixed viewBoxes, chosen by width, both computed at
+  module scope. The scroll timeline reads pin progress; nothing here
+  counts events, so a fling lands in the right state.
+═══════════════════════════════════════════════════════════════*/
+const CFL_INPUTS=[
+  {id:"rainfall",label:"Rainfall",group:"hazard"},
+  {id:"history",label:"Flood history",group:"observed"},
+  {id:"terrain",label:"Terrain",group:"physical"},
+  {id:"drainage",label:"Drainage",group:"physical"},
+  {id:"satellite",label:"Satellite data",group:"observed"},
+  {id:"climate",label:"Climate projections",group:"hazard"},
+  {id:"exposure",label:"Exposure",group:"exposure"}
+];
+const CFL_STROKE={hazard:"var(--stream-hazard)",observed:"var(--stream-observed)",
+  physical:"var(--stream-physical)",exposure:"var(--stream-exposure)"};
+
+/* Deliberate per-index offsets, not Math.random(): the "fragmented" state has
+   to be identical on every load, and identical again when the visitor scrolls
+   back up through the section. */
+const CFL_JITTER=[[-14,10,-4],[12,-13,5],[-9,-8,3],[13,11,-5],[-12,7,4],[10,-11,-3],[-8,12,2]];
+
+const CFL_DESKTOP=(()=>{
+  const JX=[0,28,8,36,0,22,12],W=1200,H=560,pw=200,ph=40;
+  const pills=CFL_INPUTS.map((it,i)=>{
+    const x=40+JX[i],cy=60+i*72;
+    return{x,y:cy-ph/2,cy,w:pw,h:ph,tx:x+18,ty:cy+6};
+  });
+  return{W,H,pills,hub:[780,280],hubR:64,ringR:84,
+    streams:pills.map(q=>"M "+(q.x+pw)+" "+q.cy+" C "+(q.x+420)+" "+q.cy+", 600 280, 716 280"),
+    outlet:"M 844 280 L 980 280",
+    card:{x:990,y:232,w:180,h:96,rx:14,tx:1080,ty:272,sy:294}};
+})();
+
+const CFL_MOBILE=(()=>{
+  const W=360,H=720,pw=190,ph=40;
+  const pills=CFL_INPUTS.map((it,i)=>{
+    const y=24+i*52;
+    return{x:16,y,cy:y+ph/2,w:pw,h:ph,tx:34,ty:y+26};
+  });
+  return{W,H,pills,hub:[180,548],hubR:48,ringR:66,
+    streams:pills.map(q=>"M 206 "+(q.y+20)+" C 290 "+(q.y+20)+", 300 380, 300 420"),
+    trunk:"M 300 420 C 300 470, 180 450, 180 500",
+    outlet:"M 180 596 L 180 620",
+    card:{x:80,y:620,w:200,h:72,rx:12,tx:180,ty:658,sy:678}};
+})();
+
+let CFL=null;
+function buildConfluence(){
+  const host=document.getElementById("conflStage");
+  if(!host)return;
+  const G=mqValue("(min-width: 900px)")?CFL_DESKTOP:CFL_MOBILE;
+  const svg=mk("svg",{viewBox:"0 0 "+G.W+" "+G.H,"aria-hidden":"true",focusable:"false",
+    preserveAspectRatio:"xMidYMid meet"});
+
+  /* streams first, so the pills and the hub occlude their ends */
+  const streams=[],flows=[],sg=mk("g",{});
+  G.streams.forEach((d,i)=>{
+    const col=CFL_STROKE[CFL_INPUTS[i].group];
+    const base=mk("path",{d,class:"cflStream cflDraw",stroke:col,pathLength:1});
+    const flow=mk("path",{d,class:"cflFlow",stroke:col,"data-decorative":""});
+    sg.appendChild(base);sg.appendChild(flow);
+    streams.push(base);flows.push(flow);
+  });
+  let trunk=null,trunkFlow=null;
+  if(G.trunk){
+    trunk=mk("path",{d:G.trunk,class:"cflStream cflDraw",stroke:"var(--stream-observed)",pathLength:1});
+    trunkFlow=mk("path",{d:G.trunk,class:"cflFlow",stroke:"var(--stream-observed)","data-decorative":""});
+    sg.appendChild(trunk);sg.appendChild(trunkFlow);
+  }
+  svg.appendChild(sg);
+
+  const pills=G.pills.map((pp,i)=>{
+    const g=mk("g",{class:"cflPill"});
+    g.appendChild(mk("rect",{x:pp.x,y:pp.y,width:pp.w,height:pp.h,rx:pp.h/2}));
+    const t=mk("text",{x:pp.tx,y:pp.ty});
+    t.textContent=CFL_INPUTS[i].label;
+    g.appendChild(t);
+    svg.appendChild(g);
+    return g;
+  });
+
+  const ring=mk("circle",{cx:G.hub[0],cy:G.hub[1],r:G.ringR,class:"cflRing","data-decorative":""});
+  svg.appendChild(ring);
+  const hubG=mk("g",{class:"cflHub"});
+  hubG.appendChild(mk("circle",{cx:G.hub[0],cy:G.hub[1],r:G.hubR}));
+  const ht=mk("text",{x:G.hub[0],y:G.hub[1]+6,"text-anchor":"middle"});
+  ht.textContent="FloodGuard";
+  hubG.appendChild(ht);
+  svg.appendChild(hubG);
+
+  const outlet=mk("path",{d:G.outlet,class:"cflOutlet cflDraw",pathLength:1});
+  svg.appendChild(outlet);
+
+  const c=G.card,cardG=mk("g",{class:"cflOutBox"});
+  cardG.appendChild(mk("rect",{x:c.x,y:c.y,width:c.w,height:c.h,rx:c.rx}));
+  const ct=mk("text",{x:c.tx,y:c.ty,"text-anchor":"middle"});ct.textContent="Decision";
+  cardG.appendChild(ct);
+  const cs=mk("text",{x:c.tx,y:c.sy,"text-anchor":"middle",class:"sub"});
+  cs.textContent="One channel out";
+  cardG.appendChild(cs);
+  svg.appendChild(cardG);
+
+  host.innerHTML="";host.appendChild(svg);
+  CFL={svg,host,streams,flows,trunk,trunkFlow,pills,ring,hubG,outlet,cardG,G,last:-1};
+
+  /* Fine pointer: hovering a pill lights its stream and dims the rest.
+     Touch: tap toggles, tapping elsewhere clears. The pills stay
+     unfocusable — they are decorative, and the visually-hidden list
+     already carries the same content in reading order. */
+  let lit=-1;
+  const setLit=i=>{
+    if(lit===i)return;
+    lit=i;
+    pills.forEach((g,k)=>{
+      g.classList.toggle("cflDim",i>=0&&k!==i);
+      g.classList.toggle("cflLit",k===i);
+    });
+    streams.forEach((el,k)=>el.classList.toggle("cflDim",i>=0&&k!==i));
+    flows.forEach((el,k)=>el.classList.toggle("cflDim",i>=0&&k!==i));
+  };
+  pills.forEach((g,i)=>{
+    if(finePointer()){
+      g.addEventListener("pointerenter",()=>setLit(i));
+      g.addEventListener("pointerleave",()=>setLit(-1));
+    }else{
+      g.addEventListener("click",e=>{e.stopPropagation();setLit(lit===i?-1:i);});
+    }
+  });
+  if(!finePointer())host.addEventListener("click",()=>setLit(-1));
+
+  inViewPause(host);
+  paintConfluence(document.body.classList.contains("nopin")||RM?1:0);
+}
+
+/* p = track progress. Every value below is derived from it and nothing is
+   latched, so scrolling back up reverses the whole sequence exactly. */
+function paintConfluence(p){
+  if(!CFL)return;
+  if(Math.abs(p-CFL.last)<.0015)return;
+  CFL.last=p;
+  const {streams,flows,trunk,trunkFlow,pills,ring,hubG,outlet,cardG,G}=CFL;
+
+  /* 0.00–0.12 — the pills settle out of their fragmented state */
+  const settle=seg(p,0,.12),k=1-easeOut(settle);
+  pills.forEach((g,i)=>{
+    const j=CFL_JITTER[i],cx=G.pills[i].x+G.pills[i].w/2;
+    g.setAttribute("transform","translate("+(j[0]*k).toFixed(2)+" "+(j[1]*k).toFixed(2)+
+      ") rotate("+(j[2]*k).toFixed(2)+" "+cx+" "+G.pills[i].cy+")");
+    g.setAttribute("opacity",(.45+.55*settle).toFixed(3));
+  });
+
+  /* 0.12–0.62 — the tributaries draw, staggered by index */
+  streams.forEach((el,i)=>{
+    el.style.strokeDashoffset=String(1-seg(p,.12+i*.05,.32+i*.05));
+  });
+  if(trunk)trunk.style.strokeDashoffset=String(1-seg(p,.5,.66));
+
+  /* 0.55–0.72 — the hub takes */
+  const hub=seg(p,.55,.72);
+  ring.setAttribute("transform","rotate("+(hub*60).toFixed(2)+" "+G.hub[0]+" "+G.hub[1]+")");
+  hubG.setAttribute("opacity",hub.toFixed(3));
+  hubG.setAttribute("transform","translate("+G.hub[0]+" "+G.hub[1]+") scale("+
+    (.9+.1*hub).toFixed(3)+") translate("+(-G.hub[0])+" "+(-G.hub[1])+")");
+
+  /* 0.70–0.85 — one channel leaves */
+  const out=seg(p,.7,.85);
+  outlet.style.strokeDashoffset=String(1-out);
+  cardG.setAttribute("opacity",out.toFixed(3));
+  cardG.setAttribute("transform","translate("+(-16*(1-out)).toFixed(2)+" 0)");
+
+  /* 0.85–1.00 — hold, and the water starts moving */
+  CFL.svg.classList.toggle("cflOn",p>=.85&&!RM);
+}
+
+/* Not pinned: play the same order once on a timer when the section is 40%
+   in view, then hand over to the ambient flow (spec §5.2). */
+function conflOneShot(){
+  const host=document.getElementById("conflStage");
+  if(!host)return;
+  let played=false;
+  const io=new IntersectionObserver(([e])=>{
+    if(!e.isIntersecting||played)return;
+    played=true;io.disconnect();
+    if(RM){paintConfluence(1);return;}
+    const t0=performance.now(),dur=1800;
+    (function tick(t){
+      const q=clamp((t-t0)/dur,0,1);
+      paintConfluence(q);
+      if(q<1)requestAnimationFrame(tick);
+    })(performance.now());
+  },{threshold:.4});
+  io.observe(host);
+}
+
+/* The pinned path reads scroll progress every frame; the unpinned one plays
+   once. Only one of the two is ever live. */
+function runConfluence(){
+  if(!CFL||document.body.classList.contains("nopin"))return;
+  const P=pins[PIN_GAP];
+  if(!P||!P.vis)return;
+  paintConfluence(P.ps);
+}
+
+buildConfluence();
+if(document.body.classList.contains("nopin"))conflOneShot();
+/* the two viewBoxes are different diagrams, so crossing 900px rebuilds */
+onMq("(min-width: 900px)",()=>buildConfluence());
+
+
+/*═══════════════════════════════════════════════════════════════
   §05 — IsoStack (spec §5.3)
   Dimetric 2:1 slabs, bottom-up. Paint order is i = 0 … n-1 so an
   upper slab overlaps the one below it. Geometry is computed once at
@@ -2798,11 +3049,6 @@ function connectors(i,n){
   return[ISO.cx-ISO.halfW,ISO.cx+ISO.halfW].map(x=>({x,y1:yLower,y2:yUpper}));
 }
 
-/* SVGNS is declared further down for the tree diagram; this block runs
-   earlier, so it keeps its own binding rather than reaching into a TDZ. */
-const NSSVG="http://www.w3.org/2000/svg";
-const mk=(tag,attrs)=>{const e=document.createElementNS(NSSVG,tag);
-  for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
 
 /* One <pattern> per texture, skewed onto the 2:1 top face so it reads as
    lying flat rather than pasted on. `none` gets no pattern at all. */
@@ -3352,7 +3598,7 @@ function loop(now){
   cur=scrollY;
   const y=cur;
   runRevs(y);runCounters(y);runPins(y,dt);runHdr(y);runBars(y);runParallax(y,dt);
-  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);
+  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);runConfluence();
   if(mapProg<1){mapProg=Math.min(1,mapProg+dt*.45);drawMap();}
   else if(hoverCell!==lastHover){lastHover=hoverCell;drawMap();}
   /* the radar only needs painting while its product card is on screen */
