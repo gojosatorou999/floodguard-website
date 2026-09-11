@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "qa": "node scripts/qa.mjs",
+    "qa:a11y": "node scripts/a11y.mjs",
+    "qa:perf": "node scripts/perf.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",

@@ -33,7 +33,10 @@
   --bg2:#e1eef0;
   --ink:#052430;
   --ink2:#3a5c66;
-  --ink3:#6d9099;
+  /* was #6d9099, which is 3.11:1 on --bg — under the 4.5:1 body minimum.
+     Every eyebrow, section number, caption and hint on the page uses this.
+     #4d737b is 4.69:1 and still reads clearly tertiary against --ink2. */
+  --ink3:#4d737b;
   --line:rgba(4,38,61,.10);
   --line2:rgba(4,38,61,.18);
   --brand:var(--b800);
@@ -813,8 +816,10 @@ body:not(.nopin) .deckCard{position:sticky;
 @supports not (background:color-mix(in srgb,red,blue)){.deckInner{background:var(--bg2)}}
 
 .deckText{padding:clamp(1.3rem,3vw,2rem);display:flex;flex-direction:column;justify-content:center;min-width:0}
+/* --brand2 lands at 3.7:1 against the deepest card tint; --brand clears 6:1
+   on every step of the stack, in both themes. */
 .deckKind{display:inline-block;font-family:var(--fM);font-size:var(--t-xs);letter-spacing:.2em;
-  text-transform:uppercase;color:var(--brand2);font-weight:700;margin-bottom:.7rem}
+  text-transform:uppercase;color:var(--brand);font-weight:700;margin-bottom:.7rem}
 .deckText h3{font-size:var(--t-2);letter-spacing:-.022em;margin-bottom:.6rem;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .deckText p{color:var(--ink2);font-size:var(--t-sm);line-height:1.6;
@@ -1339,7 +1344,6 @@ textarea.inp{resize:vertical;min-height:92px}
 /*── platform pipeline ──*/
 
 /*── about ──*/
-@media(max-width:520px){.vals{grid-template-columns:1fr}}
 
 /*── insights ──*/
 
@@ -2400,6 +2404,29 @@ function inViewPause(el,onChange,rootMargin){
 }
 document.addEventListener("visibilitychange",()=>PAUSABLE.forEach(r=>r.apply()));
 
+/* Document-space geometry, cached in measure() exactly as pins already are.
+   Reading getBoundingClientRect inside the frame loop — after the same loop
+   has written styles — forces a synchronous layout every time. With a dozen
+   scroll-driven elements that is the difference between a smooth scroll and
+   half-second frames on a mid-range Android. */
+const GEOM=[];
+/* Deduped by element: every section rebuilds on breakpoint changes, and a
+   builder that cleared the list would wipe the entries of the ones that ran
+   before it. */
+function trackGeom(el){
+  for(const g of GEOM)if(g.el===el)return g;
+  const g={el,top:0,h:0};GEOM.push(g);return g;
+}
+function measureGeom(base){
+  for(const g of GEOM){const b=g.el.getBoundingClientRect();g.top=b.top+base;g.h=b.height;}
+}
+/* Element-relative scroll progress, the vanilla form of motion's useScroll
+   offsets: a = the viewport fraction the element's start sits at when p is
+   0, b = the fraction where p is 1. ['start end'] => a = 1. */
+function offsetProgress(g,a,b){
+  return clamp01((vh*a-(g.top-cur))/(vh*a-vh*b));
+}
+
 /* SVG element helper. SVGNS is declared again further down for the tree
    diagram, so this keeps its own binding rather than reaching into a TDZ. */
 const NSSVG="http://www.w3.org/2000/svg";
@@ -2609,6 +2636,9 @@ function measure(){
   docH=document.documentElement.scrollHeight;
   const base=scrollY;
   revs.forEach(r=>r.top=r.el.getBoundingClientRect().top+base);
+  DROPREV.forEach(r=>r.top=r.el.getBoundingClientRect().top+base);
+  measureGeom(base);
+  NARRATIVES.forEach(N=>{N.stageW=N.stage.clientWidth||600;});
   counters.forEach(c=>c.top=c.el.getBoundingClientRect().top+base);
   /* the inner's transform doesn't affect the section's own box, so no correction needed */
   pins.forEach(P=>{const b=P.sec.getBoundingClientRect();P.top=b.top+base;P.h=b.height;});
@@ -3207,7 +3237,9 @@ function createNarrative(o){
     cards.push(c);ALLCARDS.push(c);
     prog.appendChild(document.createElement("i"));
   });
-  const inst={cards,stage,prog,pin:o.pin,t:0,settled:false};
+  /* stage width is a layout read; it only changes on resize, and measure()
+     is where resizes are already absorbed */
+  const inst={cards,stage,prog,pin:o.pin,t:0,settled:false,stageW:stage.clientWidth||600};
   NARRATIVES.push(inst);
   return inst;
 }
@@ -3223,7 +3255,7 @@ function runNarrative(N,dt){
   N.settled=Math.abs(N.t-target)<.001;
   N.t=RM?target:lerp(N.t,target,1-Math.exp(-dt*9));
   const hT=N.t;
-  const w=N.stage.clientWidth||600;
+  const w=N.stageW||600;
   const sc=clamp(w/760,.55,1);
   /* On a phone the cards are nearly as wide as the stage, so a shallow arc
      stacks them on top of each other. Push the angle out and fade the
@@ -3445,7 +3477,13 @@ function conflOneShot(){
   if(!host)return;
   let played=false;
   const io=new IntersectionObserver(([e])=>{
-    if(!e.isIntersecting||played)return;
+    if(played)return;
+    /* scrolled clean past without ever intersecting — show the finished
+       diagram rather than an empty stage */
+    if(!e.isIntersecting){
+      if(e.boundingClientRect.bottom>0)return;
+      played=true;io.disconnect();paintConfluence(1);return;
+    }
     played=true;io.disconnect();
     if(RM){paintConfluence(1);return;}
     const t0=performance.now(),dur=1800;
@@ -3563,7 +3601,8 @@ function buildDroplet(){
     ro.observe(stage);
   }
 
-  DROP={scene,disc,stage,svg,rings,crown,dropWrap,dropG,wide,still,last:-2,
+  DROP={scene,disc,stage,svg,rings,crown,dropWrap,dropG,wide,still,last:-2,lastY:-1,
+    g:trackGeom(document.getElementById("dropTrack")),
     get cover(){return cover;}};
   paintDroplet(still?1:0);
 }
@@ -3612,33 +3651,39 @@ function paintDroplet(p){
 
 function runDroplet(){
   if(!DROP||DROP.still)return;
-  const track=document.getElementById("dropTrack");
-  if(!track)return;
-  const r=track.getBoundingClientRect();
-  if(r.bottom<0||r.top>vh)return;
+  if(DROP.lastY===cur)return;
+  DROP.lastY=cur;
+  const g=DROP.g,top=g.top-cur;
   /* The phases finish at 0.48 of their own scale. Stretch the track onto that
      range so the last stretch of scrolling is a short hold on the covered
      screen, not a long one. */
-  paintDroplet(clamp01((-r.top)/Math.max(1,r.height-vh))*.53);
+  paintDroplet(clamp01((-top)/Math.max(1,g.h-vh))*.53);
 }
 
-/* D · the surface rises. One-shot on enter, in DOM order. */
+/* D · the surface rises. One-shot, in DOM order.
+   Scroll-driven rather than IntersectionObserver: an observer only reports
+   *changes* in intersection, so an element the reader never intersects —
+   jumped past via an anchor, a restored scroll position, or a fling — is
+   never reported at all, and stays at opacity 0 for the rest of the session.
+   Reading scroll position each frame cannot miss it. This is the same shape
+   as the page's own runRevs(). */
+let DROPREV=[];
 function dropReveals(){
   const after=document.getElementById("dropAfter");
   if(!after)return;
   document.getElementById("about").setAttribute("data-motion","ready");
   const items=[...after.querySelectorAll(".dropText>*"),...after.querySelectorAll(".dropCards article")];
-  if(RM){items.forEach(el=>el.classList.add("in"));return;}
-  const io=new IntersectionObserver(entries=>{
-    for(const e of entries){
-      if(!e.isIntersecting)continue;
-      const i=items.indexOf(e.target);
-      e.target.style.transitionDelay=(Math.max(0,i)%4*80)+"ms";
-      e.target.classList.add("in");
-      io.unobserve(e.target);
-    }
-  },{rootMargin:"0px 0px -12% 0px"});
-  items.forEach(el=>io.observe(el));
+  if(RM){items.forEach(el=>el.classList.add("in"));DROPREV=[];return;}
+  DROPREV=items.map((el,i)=>({el,i,top:0}));
+}
+function runDropReveals(y){
+  for(let k=DROPREV.length-1;k>=0;k--){
+    const r=DROPREV[k];
+    if(y+vh*.88<r.top)continue;
+    DROPREV.splice(k,1);
+    r.el.style.transitionDelay=(r.i%4*80)+"ms";
+    r.el.classList.add("in");
+  }
 }
 
 /* the handoff wave, drawn with the same tileable generator as §06 */
@@ -3672,7 +3717,7 @@ function buildDeck(){
   const cards=[...deck.querySelectorAll(".deckCard")].map(card=>({
     card,inner:card.querySelector(".deckInner"),dim:card.querySelector(".deckDim")
   }));
-  DECKV={deck,cards,n:cards.length,last:-2};
+  DECKV={deck,cards,n:cards.length,last:-2,lastY:-1,g:trackGeom(deck)};
   if(document.body.classList.contains("nopin")||RM){
     cards.forEach(c=>{c.inner.style.transform="";c.dim.style.opacity=0;});
   }
@@ -3680,12 +3725,12 @@ function buildDeck(){
 function runDeckDepth(){
   if(!DECKV)return;
   if(document.body.classList.contains("nopin")||RM)return;
-  const {deck,cards,n}=DECKV;
-  const r=deck.getBoundingClientRect();
-  if(r.bottom<0||r.top>vh)return;
+  if(DECKV.lastY===cur)return;
+  DECKV.lastY=cur;
+  const {cards,n,g}=DECKV;
+  const top=g.top-cur;
   /* progress across the whole deck, 'start start' -> 'end end' */
-  const span=Math.max(1,r.height-vh);
-  const p=clamp01((-r.top)/span);
+  const p=clamp01((-top)/Math.max(1,g.h-vh));
   if(Math.abs(p-DECKV.last)<.0015)return;
   DECKV.last=p;
   cards.forEach((c,i)=>{
@@ -3725,14 +3770,6 @@ const TIDE_COVER=[waveFill(2400,400,18,400,24),waveFill(2400,400,12,300,44)];
 const TIDE_BAND_FILL=["var(--b800)","var(--b600)","var(--b400)"];
 const TIDE_BAND_ALPHA=[.22,.3,.42];
 const TIDE_DRIFT=["18s","26s","34s"];
-
-/* Element-relative scroll progress, the vanilla form of motion's
-   useScroll offsets: a = the viewport fraction the element's start sits at
-   when p is 0, b = the fraction where p is 1. ['start end'] => a = 1. */
-function offsetProgress(el,a,b){
-  const top=el.getBoundingClientRect().top;
-  return clamp01((vh*a-top)/(vh*a-vh*b));
-}
 
 let TIDE=null;
 function buildTide(){
@@ -3794,7 +3831,9 @@ function buildTide(){
     });
   }
 
-  TIDE={band,bandLayers,list,cards,fill,ticks,still,last:-2};
+  TIDE={band,bandLayers,list,cards,fill,ticks,still,last:-2,lastY:-1,
+    bandG:trackGeom(band),listG:trackGeom(list)};
+  cards.forEach(c=>{c.g=trackGeom(c.card);});
   if(still){
     if(fill)fill.style.setProperty("--g",1);
     ticks.forEach(t=>t.classList.add("on"));
@@ -3807,8 +3846,16 @@ function buildTide(){
 
 function runTide(){
   if(!TIDE||TIDE.still)return;
+  /* Skipping while the section is off-screen looks like a free win and is
+     not: offsetProgress clamps, so a card above the viewport reads 1 and one
+     below reads 0 — but only if the maths actually runs. Bail out on a
+     section that was jumped straight past and its covers stay shut forever.
+     Gate on the scroll having moved instead, which skips the same idle
+     frames without ever leaving a card stranded. */
+  if(TIDE.lastY===cur)return;
+  TIDE.lastY=cur;
   /* band: the layers separate vertically — the tide opening */
-  const bp=offsetProgress(TIDE.band,1,.3);
+  const bp=offsetProgress(TIDE.bandG,1,.3);
   const sep=[0,28,56];
   TIDE.bandLayers.forEach((L,k)=>{
     L.svg.style.transform="translateY("+(-bp*sep[k]).toFixed(1)+"px)";
@@ -3820,7 +3867,7 @@ function runTide(){
   const a=narrow?.95:.92, b=narrow?.65:.5;
   for(const c of TIDE.cards){
     if(!c.cover)continue;
-    const q=offsetProgress(c.card,a,b);
+    const q=offsetProgress(c.g,a,b);
     c.cover.style.transform="translateY("+(q*105).toFixed(2)+"%)";
     const r=seg(q,.2,1);
     c.body.style.opacity=r.toFixed(3);
@@ -3829,7 +3876,7 @@ function runTide(){
 
   /* gauge: the level rises with progress through the list */
   if(TIDE.fill){
-    const g=offsetProgress(TIDE.list,.9,-.2);
+    const g=offsetProgress(TIDE.listG,.9,-.2);
     if(Math.abs(g-TIDE.last)>.002){TIDE.last=g;TIDE.fill.style.setProperty("--g",g.toFixed(4));}
   }
 }
@@ -4414,7 +4461,7 @@ function loop(now){
   cur=scrollY;
   const y=cur;
   runRevs(y);runCounters(y);runPins(y,dt);runHdr(y);runBars(y);runParallax(y,dt);
-  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);runConfluence();runTide();runDeckDepth();runDroplet();
+  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);runConfluence();runTide();runDeckDepth();runDroplet();runDropReveals(y);
   if(mapProg<1){mapProg=Math.min(1,mapProg+dt*.45);drawMap();}
   else if(hoverCell!==lastHover){lastHover=hoverCell;drawMap();}
   /* the radar only needs painting while its product card is on screen */
