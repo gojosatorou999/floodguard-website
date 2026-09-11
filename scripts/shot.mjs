@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+import { mkdirSync } from 'node:fs';
+mkdirSync('qa-shots', { recursive: true });
+const [y, name, wh, theme] = process.argv.slice(2);
+const [w, h] = (wh || '1440x900').split('x').map(Number);
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: w, height: h }, colorScheme: theme || 'light' });
+await p.goto('http://localhost:5173/', { waitUntil: 'load' });
+await p.addStyleTag({content:'html{scroll-behavior:auto!important}'});
+await p.waitForTimeout(2200);
+await p.evaluate(v => scrollTo(0, v), Number(y));
+await p.waitForTimeout(1000);
+await p.screenshot({ path: `qa-shots/${name}.png` });
+console.log('qa-shots/' + name + '.png @ y=' + (await p.evaluate(() => Math.round(scrollY))));
+await b.close();

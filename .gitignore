@@ -32,3 +32,6 @@ dist-ssr/
 *.tsbuildinfo
 _probe.html
 _*.png
+
+# QA output
+qa-shots/

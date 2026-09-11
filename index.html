@@ -244,8 +244,8 @@ html,body{overflow-x:clip}
   #toTop .arw{width:21px;height:21px}
 }
 /* Older iOS lacks svh — fall back before the modern unit overrides it */
-#hero,.pin,#deckPin{min-height:100vh}
-@supports (height:100svh){#hero{min-height:100svh}.pin,#deckPin{height:100svh}}
+#hero,.pin{min-height:100vh}
+@supports (height:100svh){#hero{min-height:100svh}.pin{height:100svh}}
 h1,h2,h3,h4{font-family:var(--fD);font-weight:600;line-height:1.06;letter-spacing:-.022em;margin:0;text-wrap:balance}
 p{margin:0}
 a{color:inherit;text-decoration:none}
@@ -585,10 +585,6 @@ section{position:relative;z-index:1;padding-block:clamp(2.75rem, 4.6vw, 4.25rem)
 /*── PINNED STORY ──*/
 .pinsec{position:relative}
 .pin{position:sticky;top:0;height:100svh;display:flex;align-items:center}
-.story{display:grid;gap:clamp(1.8rem, 3.6vw, 3.2rem);align-items:center;width:100%}
-@media(min-width:940px){.story{grid-template-columns:.9fr 1.1fr}}
-.story h2{font-size:var(--t-3);max-width:20ch;margin-bottom:1.2rem}
-.story p{color:var(--ink2);max-width:48ch;margin-bottom:1rem}
 .srcline{font-size:.58rem;letter-spacing:.2em;color:var(--ink3);font-weight:700;text-transform:uppercase;margin-top:1.2rem}
 .tlhint{margin:0;white-space:nowrap;align-self:flex-end;padding-bottom:.25rem}
 @media(max-width:760px){.tlhint{white-space:normal}}
@@ -613,13 +609,108 @@ section{position:relative;z-index:1;padding-block:clamp(2.75rem, 4.6vw, 4.25rem)
 #pop dt{opacity:.62}
 #pop dd{margin:0;font-family:var(--fM);font-variant-numeric:tabular-nums;text-align:right}
 
+/*───────────────────────────────────────────────────────────────
+  §01 — ScrollNarrative (spec §5.1)
+  The mechanism is the old §05 helix, extracted verbatim: same arc,
+  same easing, same dither. Only the content is now fed in.
+───────────────────────────────────────────────────────────────*/
+/* the header floats over the pin, so the stage has to start below it */
+.narrative{display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(.7rem,1.5vw,1.3rem);overflow:hidden;
+  padding-top:calc(var(--header-h) + 14px);padding-bottom:.6rem}
+.narrative .dhead{text-align:center;max-width:min(92vw,760px);margin-inline:auto;padding-inline:1rem}
+.narrative .dhead h2{font-size:var(--t-3);margin-bottom:.9rem}
+.nlead{font-size:var(--t-0);color:var(--ink2);max-width:62ch;margin-inline:auto}
+.nlead+.nlead{margin-top:.7rem}
+/* A pin only has 100svh minus the header. Heading + two paragraphs + the
+   carousel do not fit under ~1000px, so the head sheds weight rather than
+   letting the arc overflow the stage. */
+@media (max-height:1000px){.nlead2{display:none}}
+@media (max-height:860px){.narrative .dhead h2{font-size:var(--t-2)}}
+@media (max-height:740px){.nlead{display:none}}
+.nstage{position:relative;height:clamp(240px,40vh,400px);perspective:1700px;perspective-origin:50% 48%}
+.nhx{position:absolute;inset:0;transform-style:preserve-3d}
+/* the SR/no-JS list: present in DOM order, shown only when the stage isn't */
+.nlist{display:none;list-style:none;margin:0;padding:0}
+.nlist i{font-style:normal}
+
+/* Static state (spec §4.4 / §4.6): no pin, no carousel, real list. */
+body.nopin .narrative{gap:1.4rem;padding-block:var(--section-pad-y)}
+body.nopin .nstage,body.nopin .dprog,body.nopin .dhint{display:none}
+body.nopin .nlead2{display:block}
+body.nopin .nlist{
+  display:grid;gap:1rem;max-width:var(--wrap);margin-inline:auto;
+  padding-inline:clamp(1.1rem,4.2vw,3.2rem);
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+}
+body.nopin .nlist li{padding:1.2rem 1.3rem;border:1px solid var(--line);border-radius:var(--r-m);background:var(--dentBg)}
+body.nopin .nlist i{display:block;font-size:.5rem;letter-spacing:.2em;color:var(--brand2);font-weight:700;margin-bottom:.45rem}
+body.nopin .nlist h3{font-size:1.05rem;margin-bottom:.3rem}
+body.nopin .nlist p{font-size:.82rem;color:var(--ink2)}
+
+/*───────────────────────────────────────────────────────────────
+  §05 — IsoStack (spec §5.3)
+  The reference prompt was Tailwind + Next + GSAP + a dark-only
+  canvas. Translated: tokens, static page, IntersectionObserver,
+  and a palette that works in both themes.
+───────────────────────────────────────────────────────────────*/
+#decision{position:relative;padding-block:var(--section-pad-y)}
+.iso{display:grid;gap:var(--gutter);align-items:start}
+.isoHead{margin-bottom:clamp(1.5rem,4vh,3rem)}
+.isoHead h2{font-size:var(--t-3);max-width:16ch;margin-bottom:1rem}
+.isoLead{color:var(--ink2);max-width:46ch}
+.isoStep{max-width:46ch}
+.isoStep i{display:block;font-style:normal;font-family:var(--fM);font-size:var(--t-xs);
+  letter-spacing:.2em;color:var(--brand2);font-weight:700;margin-bottom:.5rem}
+.isoStep h3{font-size:var(--t-2);margin-bottom:.5rem}
+.isoStep p{color:var(--ink2);font-size:var(--t-0)}
+.isoStage{position:relative;display:flex;align-items:center;justify-content:center}
+.isoStage svg{display:block;height:100%;width:auto;max-width:100%;overflow:visible}
+.isoSlab{opacity:0;transform:translateY(30px);
+  transition:opacity var(--dur-med) var(--ease-out-quint),transform var(--dur-med) var(--ease-out-quint)}
+.isoSlab.on{opacity:.7;transform:none}
+.isoSlab.act{opacity:1}
+.isoConn{opacity:0;transition:opacity var(--dur-med) var(--ease-out-quint)}
+.isoConn.on{opacity:1}
+.isoLabel{opacity:0;transition:opacity var(--dur-med) var(--ease-out-quint)}
+.isoLabel.on{opacity:1}
+.isoLabel text{font-family:var(--fS);fill:var(--ink2);font-size:14px;font-weight:500}
+.isoLabel .n{font-family:var(--fM);fill:var(--brand2);font-weight:700}
+.isoNum{font-family:var(--fM);font-size:14px;font-weight:700;fill:var(--onBrand);opacity:.85}
+
+/* ≥900 and pinning allowed: two columns, the stage sticky beside the steps */
+@media (min-width:900px){
+  body:not(.nopin) .iso{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+  body:not(.nopin) .isoStep{min-height:var(--step-h);display:flex;flex-direction:column;justify-content:center}
+  body:not(.nopin) .isoStageWrap{position:sticky;top:var(--header-h);height:var(--stage-h);
+    display:flex;align-items:center;justify-content:center}
+  body:not(.nopin) .isoStage{max-height:calc(var(--stage-h) - 48px);height:100%}
+}
+/* <900: one column, the stage sticks to the top and the steps run under it */
+@media (max-width:899px){
+  body:not(.nopin) .isoStageWrap{position:sticky;top:var(--header-h);height:44svh;z-index:1;
+    background:var(--bg);
+    -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 32px),transparent);
+    mask-image:linear-gradient(180deg,#000 calc(100% - 32px),transparent)}
+  body:not(.nopin) .isoStage{height:100%}
+  body:not(.nopin) .isoStep{min-height:55svh;display:flex;flex-direction:column;justify-content:center}
+  /* the stage has to come first in the flow, before the steps scroll under it */
+  body:not(.nopin) .iso{display:flex;flex-direction:column}
+  body:not(.nopin) .isoStageWrap{order:-1}
+  body:not(.nopin) .isoHead{order:-2}
+}
+@media (max-width:599px){
+  body:not(.nopin) .isoStageWrap{height:40svh}
+  body:not(.nopin) .isoStep{min-height:50svh}
+}
+/* !canPin: no sticky anywhere, the full stack shown once, steps as a list */
+body.nopin .isoStageWrap{position:static;height:auto;margin-bottom:2rem}
+body.nopin .isoStage{height:clamp(300px,52vh,460px)}
+body.nopin .isoStep{margin-bottom:1.8rem}
+body.nopin .isoSlab,body.nopin .isoConn,body.nopin .isoLabel{opacity:1;transform:none;transition:none}
+body.nopin .isoSlab{opacity:.9}
+
 /*── SCROLL-DRIVEN DECK ──*/
-#decision{position:relative}
-#deckPin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:clamp(1rem, 2vw, 1.7rem);overflow:hidden}
-.dhead{text-align:center;max-width:min(92vw,700px);margin-inline:auto;padding-inline:1rem}
-.dhead h2{font-size:var(--t-3)}
-#stage{position:relative;height:clamp(320px, 52vh, 470px);perspective:1700px;perspective-origin:50% 48%}
-#hx{position:absolute;inset:0;transform-style:preserve-3d}
 .hc{position:absolute;left:50%;top:50%;width:clamp(224px, 26vw, 300px);margin-left:calc(clamp(224px, 26vw, 300px) * -0.5);
   border-radius:var(--r-l);overflow:hidden;transform-style:preserve-3d;will-change:transform,opacity;
   background:linear-gradient(158deg,var(--glassA),var(--glassB));
@@ -924,17 +1015,6 @@ textarea.inp{resize:vertical;min-height:92px}
 .tspine.flat i{font-size:.6rem}
 
 /*── the flood problem ──*/
-.story .closer{color:var(--ink);font-weight:550;border-left:2px solid var(--brand);padding-left:1rem;margin-top:1.4rem}
-.probList{display:grid;gap:.8rem}
-.probList article{
-  position:relative;padding:clamp(1.2rem, 2.6vw, 1.6rem) clamp(1.3rem, 2.8vw, 1.8rem);
-  border-radius:var(--r-l);border:1px solid var(--line);background:var(--dentBg);
-  opacity:0;will-change:transform,opacity;transition:border-color .5s var(--E),background .5s var(--E)}
-.probList article.lit{border-color:var(--line2);background:var(--glassB)}
-.probList i{font-style:normal;font-family:var(--fM);font-size:.64rem;letter-spacing:.16em;color:var(--brand);display:block;margin-bottom:.5rem}
-.probList h3{font-size:var(--t-1);letter-spacing:-.02em;margin-bottom:.4rem}
-.probList p{font-size:var(--t-sm);color:var(--ink2);line-height:1.55}
-body.rm .probList article{opacity:1!important;transform:none!important}
 
 /*── decision gap flow ──*/
 .flow{display:flex;flex-direction:column;align-items:center;gap:1.1rem;text-align:center}
@@ -1018,10 +1098,9 @@ body.rm .probList article{opacity:1!important;transform:none!important}
   .aur{filter:blur(58px)}
   #a3{display:none}
   #problem{height:230svh!important}
-  #decision{height:290svh!important}
   #why{height:330svh!important}
   .glass,.drop,#menuPanel{backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
-  #stage{height:clamp(270px, 48vh, 330px)}
+  .nstage{height:clamp(270px, 48vh, 330px)}
   .stackStage{height:clamp(380px, 56vh, 440px)}
   #bars{gap:1px;height:clamp(110px, 30vw, 150px)}
   .tlx{font-size:.52rem}
@@ -1037,7 +1116,7 @@ body.rm .probList article{opacity:1!important;transform:none!important}
   .explorerBand{flex-direction:column;align-items:flex-start}
 }
 @media(max-width:1024px) and (min-width:761px){
-  #problem{height:250svh!important}#decision{height:350svh!important}#why{height:380svh!important}
+  #problem{height:250svh!important}#why{height:380svh!important}
 }
 
 /*── LEFT STORYLINE RAIL ──*/
@@ -1069,13 +1148,13 @@ body.rm .probList article{opacity:1!important;transform:none!important}
 @media print{
   @page{margin:16mm}
   html,body{background:#fff!important;color:#000!important;font-size:11pt}
-  #atmos,#skip,#fabs,#cookie,#pre,#down,header,#menuPanel,#rail,.ov,#stage,.dprog,.dhint,
+  #atmos,#skip,#fabs,#cookie,#pre,#down,header,#menuPanel,#rail,.ov,.nstage,.dprog,.dhint,
   .pv,.chip,#readout,.lg,.copy,.pwEye,.btn,.cta-sm,.sw{display:none!important}
   #vp{position:static!important;transform:none!important}
   body{height:auto!important;overflow:visible!important}
   section{padding-block:0!important;page-break-inside:avoid;margin-bottom:14mm}
-  .pinsec,#decision{height:auto!important}
-  .pin,#deckPin{height:auto!important;transform:none!important;display:block!important}
+  .pinsec{height:auto!important}
+  .pin{height:auto!important;transform:none!important;display:block!important}
   .glass,.dent,.prod,.formCard,#tl{background:none!important;backdrop-filter:none!important;
     box-shadow:none!important;border:1px solid #bbb!important;border-radius:4px!important}
   [data-rv],.mask>span{opacity:1!important;transform:none!important}
@@ -1094,11 +1173,9 @@ body.rm .probList article{opacity:1!important;transform:none!important}
   Heights use svh, never dvh — dvh resizes mid-scroll as the mobile
   URL bar collapses, which reads as jank on iOS Safari.
 ───────────────────────────────────────────────────────────────*/
-body.nopin .pinsec,
-body.nopin #decision{height:auto!important}
-body.nopin .pin,
-body.nopin #deckPin{position:static!important;height:auto!important;display:block!important}
-body.nopin #stage,
+body.nopin .pinsec{height:auto!important}
+body.nopin .pin{position:static!important;height:auto!important;display:block!important}
+body.nopin .nstage,
 body.nopin .dprog,
 body.nopin .dhint{display:none}
 /* content must never be stranded at opacity 0 when the motion is off */
@@ -1111,7 +1188,7 @@ body.nopin .mask>span{opacity:1!important;transform:none!important}
   #pre,#prog,#fabs,#cookie,.ov{display:none!important}
   #vp{position:static!important;transform:none!important}
   [data-rv],.mask>span,.ncard,.scard,.prod,.prod .pbody{opacity:1!important;transform:none!important}
-  .pinsec,#deckSec{height:auto!important}.pin,#deckPin{height:auto!important}
+  .pinsec{height:auto!important}.pin{height:auto!important}
 </style></noscript>
 </head>
 <body>
@@ -1303,19 +1380,24 @@ setTimeout(function(){
 
 <!-- ══ THE FLOOD PROBLEM ══ -->
 <section class="pinsec" id="problem" style="height:215svh;padding:0">
-  <div class="pin" id="problemPin"><div class="wrap story">
-    <div>
+  <div class="pin narrative" id="problemPin">
+    <div class="dhead">
       <span class="snum">01 — The flood problem</span>
       <h2 data-rv>Flood risk is changing. The way we assess it hasn't.</h2>
-      <p data-rv>Flood risk is no longer defined by what happened in the past. Changing rainfall patterns, expanding exposure and evolving climate conditions are reshaping where and how losses occur. Yet many important decisions still depend on fragmented, historical or coarse risk information.</p>
-      <p data-rv class="closer">The challenge isn't a lack of data. It's turning the right data into usable intelligence when a decision needs to be made.</p>
+      <p class="nlead" data-rv>Flood risk is no longer defined by what happened in the past. Changing rainfall patterns, expanding exposure and evolving climate conditions are reshaping where and how losses occur. Yet many important decisions still depend on fragmented, historical or coarse risk information.</p>
+      <p class="nlead nlead2" data-rv>The challenge isn't a lack of data. It's turning the right data into usable intelligence when a decision needs to be made.</p>
     </div>
-    <div class="probList" id="probList">
-      <article><i>01</i><h3>Backward-looking</h3><p>Past data doesn't fully describe future risk.</p></article>
-      <article><i>02</i><h3>Too coarse</h3><p>Risk gets lost between the district and the asset.</p></article>
-      <article><i>03</i><h3>Fragmented</h3><p>The data exists. The intelligence is scattered.</p></article>
-    </div>
-  </div></div>
+    <div class="nstage" id="problemStage" aria-hidden="true"><div class="nhx" id="problemHx"></div></div>
+    <div class="dprog" id="problemProg" aria-hidden="true"></div>
+    <p class="dhint">Keep scrolling</p>
+    <!-- the carousel is decorative; this is the content of record for
+         screen readers and for any visitor whose JS never runs -->
+    <ol class="nlist" id="problemList">
+      <li><i>01</i><h3>Backward-looking</h3><p>Past data doesn't fully describe future risk.</p></li>
+      <li><i>02</i><h3>Too coarse</h3><p>Risk gets lost between the district and the asset.</p></li>
+      <li><i>03</i><h3>Fragmented</h3><p>The data exists. The intelligence is scattered.</p></li>
+    </ol>
+  </div>
 </section>
 
 <!-- ══ DECISION GAP ══ -->
@@ -1408,15 +1490,25 @@ setTimeout(function(){
 </section>
 
 <!-- ══ DECISION SUPPORT ══ -->
-<section id="decision" style="height:315svh;padding:0">
-  <div id="deckPin">
-    <div class="dhead">
-      <span class="snum">05 — Decision support</span>
-      <h2 data-rv>From flood risk to actionable insight.</h2>
+<section id="decision">
+  <div class="wrap iso" id="isoRoot">
+    <div class="isoCol">
+      <div class="isoHead">
+        <span class="snum">05 — Decision support</span>
+        <h2 data-rv>From flood risk to actionable insight.</h2>
+        <p class="isoLead" data-rv>Each layer resolves the one beneath it. Nothing is inferred from a single
+          source, and every layer stays inspectable on its own.</p>
+      </div>
+      <!-- i = 0 is the BOTTOM layer. Text order top→bottom == stack order bottom→top. -->
+      <div class="isoStep" data-step><i>01</i><h3>Hazard signals</h3><p>Observed rainfall, river levels and recorded flood events, held as one continuous series from 1951.</p></div>
+      <div class="isoStep" data-step><i>02</i><h3>Terrain &amp; drainage</h3><p>Elevation, slope and drainage capacity — where the water can go once it arrives, and where it cannot.</p></div>
+      <div class="isoStep" data-step><i>03</i><h3>Exposure</h3><p>People, assets and land use in the path of the water, resolved from district down to site.</p></div>
+      <div class="isoStep" data-step><i>04</i><h3>Risk</h3><p>Hazard × exposure × vulnerability, combined into a single comparable measure rather than four separate ones.</p></div>
+      <div class="isoStep" data-step><i>05</i><h3>Decision</h3><p>The vulnerability atlas, portfolio exposure screening, drainage capacity assessment and site-level risk analysis all read off this stack.</p></div>
     </div>
-    <div id="stage"><div id="hx"></div></div>
-    <div class="dprog" id="dprog"></div>
-    <p class="dhint">Keep scrolling</p>
+    <div class="isoStageWrap">
+      <div class="isoStage" id="isoStage"></div>
+    </div>
   </div>
 </section>
 
@@ -1858,7 +1950,7 @@ function syncThemeColor(){
 function onThemeChange(){
   syncSw();readTokens();syncThemeColor();
   waterFrozen=false;                        /* reduced motion: repaint the frozen frame */
-  drawPv();HC.forEach(c=>c.dirty=true);
+  drawPv();ALLCARDS.forEach(c=>c.dirty=true);
 }
 function flipTheme(){
   document.documentElement.setAttribute("data-theme",isDark()?"light":"dark");
@@ -1997,9 +2089,10 @@ function runCounters(y){
 }
 
 /*── MANUAL PINNING (sticky can't work inside a transformed wrapper) ──*/
+/* #decision used to live here; it is now an IsoStack driven by
+   IntersectionObserver, so it no longer needs scrubbed progress. */
 const pins=[
   {sec:document.getElementById("problem"),inner:document.getElementById("problemPin"),top:0,h:0,p:0},
-  {sec:document.getElementById("decision"),inner:document.getElementById("deckPin"),top:0,h:0,p:0},
   {sec:document.getElementById("why"),inner:document.getElementById("whyPin"),top:0,h:0,p:0}
 ].map(P=>Object.assign(P,{lastOff:-1,vis:true,ps:0}));
 /* useSectionProgress (spec §4.5). P.p is the raw scroll-derived progress —
@@ -2148,21 +2241,6 @@ function runParallax(y,dt){
   if(mcard)mcard.style.transform=`rotateX(${(-tiltX*4).toFixed(2)}deg) rotateY(${(tiltY*5).toFixed(2)}deg) translateZ(0)`;
   if(chip1)chip1.style.transform=`translate3d(${(tiltY*22).toFixed(1)}px,${(tiltX*16-y*.03).toFixed(1)}px,0)`;
   if(chip2)chip2.style.transform=`translate3d(${(-tiltY*18).toFixed(1)}px,${(-tiltX*14-y*.05).toFixed(1)}px,0)`;
-}
-
-/*── STORY SCRUB ──*/
-const probCards=[...document.querySelectorAll("#probList article")];
-let lastProbP=-1;
-function runStory(){
-  const p=pins[0].p;
-  if(Math.abs(p-lastProbP)<.002)return;
-  lastProbP=p;
-  probCards.forEach((c,i)=>{
-    const e=easeOut(clamp((p-i*.2)/.34,0,1));
-    c.style.opacity=e.toFixed(3);
-    c.style.transform="translate3d(0,"+((1-e)*34).toFixed(1)+"px,0) scale("+(.96+.04*e).toFixed(3)+")";
-    c.classList.toggle("lit",e>.55);
-  });
 }
 
 /*── INDIA DOT MAP ──*/
@@ -2570,11 +2648,6 @@ function runBars(y){
 /*── DITHER DECK — driven entirely by scroll ──*/
 const BAYER=(()=>{const m=[0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
   return Float32Array.from(m,v=>(v+.5)/64);})();
-const DECK=[
- {seg:"Decision support",t:"Flood vulnerability atlas",n:"Where is risk concentrated?"},
- {seg:"Decision support",t:"Portfolio exposure screening",n:"Which assets or locations are exposed?"},
- {seg:"Decision support",t:"Drainage capacity assessment",n:"Where could drainage constraints amplify risk?"},
- {seg:"Decision support",t:"Property & site risk analysis",n:"What does flood risk look like at a specific location?"}];
 /* coarser dither grid on phones/tablets — 5 cards re-thresholded per frame
    was the second-biggest cost after the water field */
 const AW=280,AH=224,PS=LOWPWR?6:4,GW=Math.round(AW/PS),GH=Math.round(AH/PS);
@@ -2591,22 +2664,15 @@ function makeArt(i){
   }
   c.putImageData(id,0,0);return cv;
 }
-const hx=document.getElementById("hx"),dprog=document.getElementById("dprog");
-const HC=[];
-DECK.forEach((it,i)=>{
-  const el=document.createElement("article");el.className="hc";
-  el.innerHTML='<div class="top"><canvas></canvas></div><div class="m"><i>'+it.seg+'</i><h4>'+it.t+'</h4><p>'+it.n+'</p></div>';
-  hx.appendChild(el);
-  const cv=el.querySelector("canvas"),sm=document.createElement("canvas");
-  sm.width=GW;sm.height=GH;
-  const sc=sm.getContext("2d",{willReadFrequently:true});
-  sc.drawImage(makeArt(i),0,0,AW,AH,0,0,GW,GH);
-  const d=Math.min(3,devicePixelRatio||1);
-  cv.width=Math.round(AW*d);cv.height=Math.round(AH*d);
-  HC.push({el,cv,ctx:cv.getContext("2d"),sm,sc,src:sc.getImageData(0,0,GW,GH).data.slice(),
-    img:sc.createImageData(GW,GH),dis:1,dirty:true});
-  const p=document.createElement("i");dprog.appendChild(p);
-});
+/*═══════════════════════════════════════════════════════════════
+  ScrollNarrative (spec §5.1)
+  This IS the old §05 mechanism — same arc radius, same angular step,
+  same easing constant, same Bayer dither, same proximity fade. The
+  only change is that the cards, the stage and the progress bar are
+  passed in, so §01 can drive it with its own content.
+═══════════════════════════════════════════════════════════════*/
+const ALLCARDS=[];                       /* every card, for theme repaints */
+
 function renderH(c){
   const out=c.img.data,D=c.dis;
   for(let y=0;y<GH;y++){const gy=1-y/GH;
@@ -2627,15 +2693,47 @@ function renderH(c){
   q.imageSmoothingEnabled=false;
   q.drawImage(c.sm,0,0,GW,GH,0,0,c.cv.width,c.cv.height);
 }
-let hT=0,deckSettled=false;
-function runDeck(dt){
-  if(!pins[1].vis&&deckSettled)return;
-  const p=pins[1].p;
-  deckSettled=Math.abs(hT-p*(HC.length-1))<.001;
-  const target=p*(HC.length-1);              /* scroll position IS the carousel position */
-  hT=RM?target:lerp(hT,target,1-Math.exp(-dt*9));
-  const stage=document.getElementById("stage");
-  const w=stage.clientWidth||600;
+
+function createNarrative(o){
+  const hx=document.getElementById(o.hxId);
+  const stage=document.getElementById(o.stageId);
+  const prog=document.getElementById(o.progId);
+  if(!hx||!stage||!prog)return null;
+  const cards=[];
+  o.items.forEach((it,i)=>{
+    const el=document.createElement("article");el.className="hc";
+    el.innerHTML='<div class="top"><canvas></canvas></div><div class="m"><i>'+it.seg+'</i><h4>'+it.t+'</h4><p>'+it.n+'</p></div>';
+    hx.appendChild(el);
+    const cv=el.querySelector("canvas"),sm=document.createElement("canvas");
+    sm.width=GW;sm.height=GH;
+    const sc=sm.getContext("2d",{willReadFrequently:true});
+    sc.drawImage(makeArt(i+(o.seed||0)),0,0,AW,AH,0,0,GW,GH);
+    /* DPR cap (spec §4.7): 2 on a mouse, 1.5 on touch. The old code capped
+       at 3, which on a phone is four times the pixels for no visible gain. */
+    const d=Math.min(finePointer()?2:1.5,devicePixelRatio||1);
+    cv.width=Math.round(AW*d);cv.height=Math.round(AH*d);
+    const c={el,cv,ctx:cv.getContext("2d"),sm,sc,src:sc.getImageData(0,0,GW,GH).data.slice(),
+      img:sc.createImageData(GW,GH),dis:1,dirty:true};
+    cards.push(c);ALLCARDS.push(c);
+    prog.appendChild(document.createElement("i"));
+  });
+  const inst={cards,stage,prog,pin:o.pin,t:0,settled:false};
+  NARRATIVES.push(inst);
+  return inst;
+}
+
+function runNarrative(N,dt){
+  const P=pins[N.pin];
+  if(!P||(!P.vis&&N.settled))return;
+  const n=N.cards.length;
+  if(!n)return;
+  /* Scroll position IS the carousel position. Never a counter: a trackpad
+     fling skips positions, and a counter would land on the wrong card. */
+  const target=P.p*(n-1);
+  N.settled=Math.abs(N.t-target)<.001;
+  N.t=RM?target:lerp(N.t,target,1-Math.exp(-dt*9));
+  const hT=N.t;
+  const w=N.stage.clientWidth||600;
   const sc=clamp(w/760,.55,1);
   /* On a phone the cards are nearly as wide as the stage, so a shallow arc
      stacks them on top of each other. Push the angle out and fade the
@@ -2645,7 +2743,7 @@ function runDeck(dt){
   const AS=narrow?58:clamp(w/24,22,38);
   const maxA=AS*(narrow?1.5:2.5);
   const fade=narrow?.92:.62;
-  HC.forEach((c,i)=>{
+  N.cards.forEach((c,i)=>{
     const off=i-hT,ang=off*AS,rad=ang*Math.PI/180;
     const x=Math.sin(rad)*R,z=Math.cos(rad)*R-R,y=off*18*sc;
     const prox=Math.min(1,Math.abs(ang)/maxA);
@@ -2656,8 +2754,193 @@ function runDeck(dt){
     c.el.style.zIndex=200+Math.round(Math.cos(rad)*100);
     if(c.dirty){renderH(c);c.dirty=false}
   });
-  [...dprog.children].forEach((el,i)=>el.style.setProperty("--f",clamp(hT-i+1,0,1)));
+  [...N.prog.children].forEach((el,i)=>el.style.setProperty("--f",clamp(hT-i+1,0,1)));
 }
+
+const NARRATIVES=[];
+/* §01 — the flood problem. Content unchanged from the old §01 boxes. */
+createNarrative({
+  hxId:"problemHx",stageId:"problemStage",progId:"problemProg",pin:0,seed:0,
+  items:[
+    {seg:"01",t:"Backward-looking",n:"Past data doesn't fully describe future risk."},
+    {seg:"02",t:"Too coarse",n:"Risk gets lost between the district and the asset."},
+    {seg:"03",t:"Fragmented",n:"The data exists. The intelligence is scattered."}
+  ]
+});
+function runDeck(dt){
+  if(document.body.classList.contains("nopin"))return;
+  for(const N of NARRATIVES)runNarrative(N,dt);
+}
+
+/*═══════════════════════════════════════════════════════════════
+  §05 — IsoStack (spec §5.3)
+  Dimetric 2:1 slabs, bottom-up. Paint order is i = 0 … n-1 so an
+  upper slab overlaps the one below it. Geometry is computed once at
+  module scope — never per frame.
+═══════════════════════════════════════════════════════════════*/
+const ISO={cx:200,halfW:155,halfH:78,depth:14,gap:88,pad:32};
+/* i = 0 is the BOTTOM layer (revealed first); the top layer has the smallest cy */
+const layerCy=(i,n)=>ISO.pad+ISO.halfH+(n-1-i)*ISO.gap;
+const viewBoxH=n=>ISO.pad*2+ISO.halfH*2+(n-1)*ISO.gap+ISO.depth;
+const ptsOf=(...p)=>p.map(([x,y])=>x+","+y).join(" ");
+function slab(cy){
+  const {cx,halfW,halfH,depth:d}=ISO;
+  const T=[cx,cy-halfH],R=[cx+halfW,cy],B=[cx,cy+halfH],L=[cx-halfW,cy];
+  return{
+    top:ptsOf(T,R,B,L),
+    left:ptsOf(L,B,[B[0],B[1]+d],[L[0],L[1]+d]),
+    right:ptsOf(B,R,[R[0],R[1]+d],[B[0],B[1]+d])
+  };
+}
+/* dashed connectors at both side corners, between layer i and i+1 */
+function connectors(i,n){
+  const yUpper=layerCy(i+1,n)+ISO.depth, yLower=layerCy(i,n);
+  return[ISO.cx-ISO.halfW,ISO.cx+ISO.halfW].map(x=>({x,y1:yLower,y2:yUpper}));
+}
+
+/* SVGNS is declared further down for the tree diagram; this block runs
+   earlier, so it keeps its own binding rather than reaching into a TDZ. */
+const NSSVG="http://www.w3.org/2000/svg";
+const mk=(tag,attrs)=>{const e=document.createElementNS(NSSVG,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
+
+/* One <pattern> per texture, skewed onto the 2:1 top face so it reads as
+   lying flat rather than pasted on. `none` gets no pattern at all. */
+const ISO_TEX={
+  dots:'<circle cx="4" cy="4" r="1.5" fill="currentColor"/>',
+  contours:'<path d="M0 6 q4 -4 8 0" fill="none" stroke="currentColor" stroke-width="1"/>',
+  grid:'<path d="M0 0h8M0 0v8" fill="none" stroke="currentColor" stroke-width="1"/>',
+  hatch:'<path d="M0 8 8 0" fill="none" stroke="currentColor" stroke-width="1"/>'
+};
+
+function buildIsoStack(){
+  const root=document.getElementById("isoRoot");
+  const host=document.getElementById("isoStage");
+  if(!root||!host)return;
+  const steps=[...root.querySelectorAll(".isoStep")];
+  const n=steps.length;
+  if(!n)return;
+  const TEX=["dots","contours","grid","hatch","none"];
+  const wide=1200;
+  const vbW=innerWidth>=wide?560:400;
+  const vbH=viewBoxH(n);
+  const svg=mk("svg",{viewBox:(vbW===560?-80:0)+" 0 "+vbW+" "+vbH,
+    "aria-hidden":"true",focusable:"false",preserveAspectRatio:"xMidYMid meet"});
+
+  const defs=mk("defs",{});
+  Object.keys(ISO_TEX).forEach(k=>{
+    const pat=mk("pattern",{id:"isoTex-"+k,width:8,height:8,
+      patternUnits:"userSpaceOnUse",patternTransform:"matrix(1 0.5 -1 0.5 0 0)"});
+    pat.innerHTML=ISO_TEX[k];
+    defs.appendChild(pat);
+  });
+  svg.appendChild(defs);
+
+  /* connectors go under every slab so the slabs occlude them correctly */
+  const connG=mk("g",{});svg.appendChild(connG);
+  const conns=[];
+  for(let i=0;i<n-1;i++){
+    const g=mk("g",{class:"isoConn"});
+    connectors(i,n).forEach(c=>{
+      g.appendChild(mk("line",{x1:c.x,y1:c.y1,x2:c.x,y2:c.y2,
+        stroke:"var(--line2)","stroke-width":1,"stroke-dasharray":"3 5","data-decorative":""}));
+    });
+    connG.appendChild(g);conns.push(g);
+  }
+
+  const slabs=[],labels=[];
+  for(let i=0;i<n;i++){
+    const cy=layerCy(i,n),sp=slab(cy),fill="var(--iso-l"+(i+1)+")";
+    const g=mk("g",{class:"isoSlab"});
+    /* sides first, then the top face over them */
+    g.appendChild(mk("polygon",{points:sp.left,fill}));
+    g.appendChild(mk("polygon",{points:sp.left,fill:"var(--iso-side-left)","data-decorative":""}));
+    g.appendChild(mk("polygon",{points:sp.right,fill}));
+    g.appendChild(mk("polygon",{points:sp.right,fill:"var(--iso-side-right)","data-decorative":""}));
+    g.appendChild(mk("polygon",{points:sp.top,fill}));
+    const tex=TEX[i]||"none";
+    if(tex!=="none"){
+      const t=mk("polygon",{points:sp.top,fill:"url(#isoTex-"+tex+")",
+        opacity:"var(--iso-texture-opacity)","data-decorative":""});
+      t.style.color="var(--onBrand)";
+      g.appendChild(t);
+    }
+    /* glow = a second stroked polygon, never a CSS filter — drop-shadow on
+       five stacked slabs is the single most expensive thing you can ask a
+       mid-range Android GPU to do per frame (spec §4.7) */
+    const glow=mk("polygon",{points:sp.top,fill:"none",stroke:"var(--brand)",
+      "stroke-width":8,opacity:0,"data-decorative":""});
+    glow.classList.add("isoGlow");
+    g.appendChild(glow);
+    const edge=mk("polygon",{points:sp.top,fill:"none",stroke:"var(--line2)","stroke-width":1});
+    edge.classList.add("isoEdge");
+    g.appendChild(edge);
+    /* under 1200 there's no room for outside labels — the face carries the index */
+    if(vbW===400){
+      const num=mk("text",{x:ISO.cx,y:cy+5,"text-anchor":"middle",class:"isoNum"});
+      num.textContent=String(i+1).padStart(2,"0");
+      g.appendChild(num);
+    }
+    svg.appendChild(g);slabs.push({g,glow,edge});
+
+    if(vbW===560){
+      const lx=ISO.cx+ISO.halfW,lg=mk("g",{class:"isoLabel"});
+      lg.appendChild(mk("line",{x1:lx,y1:cy,x2:lx+24,y2:cy,stroke:"var(--line2)","stroke-width":1}));
+      const tn=mk("text",{x:lx+32,y:cy+5});
+      const num=mk("tspan",{class:"n"});num.textContent=String(i+1).padStart(2,"0")+"  ";
+      tn.appendChild(num);
+      tn.appendChild(document.createTextNode(steps[i].querySelector("h3").textContent));
+      lg.appendChild(tn);
+      svg.appendChild(lg);labels.push(lg);
+    }
+  }
+
+  /* the particle rides the connector into the newest layer — data arriving */
+  const particle=mk("circle",{r:3,fill:"var(--brand)",opacity:0,"data-decorative":""});
+  const pMotion=mk("animateMotion",{dur:"1.4s",repeatCount:"indefinite",path:"M0,0 L0,0"});
+  particle.appendChild(pMotion);
+  svg.appendChild(particle);
+
+  host.innerHTML="";host.appendChild(svg);
+
+  let active=-1;
+  function paint(a){
+    active=a;
+    slabs.forEach((s,i)=>{
+      const on=i<=a,act=i===a;
+      s.g.classList.toggle("on",on);
+      s.g.classList.toggle("act",act);
+      s.glow.setAttribute("opacity",act?.18:0);
+      s.edge.setAttribute("stroke",act?"var(--brand)":"var(--line2)");
+      s.edge.setAttribute("stroke-width",act?2.5:1);
+    });
+    conns.forEach((g,i)=>g.classList.toggle("on",i+1<=a));
+    labels.forEach((g,i)=>g.classList.toggle("on",i<=a));
+    if(a>0&&!RM){
+      const c=connectors(a-1,n)[1];
+      particle.setAttribute("cx",c.x);particle.setAttribute("cy",c.y1);
+      pMotion.setAttribute("path","M0,0 L0,"+(c.y2-c.y1));
+      particle.setAttribute("opacity",1);
+    }else particle.setAttribute("opacity",0);
+  }
+  /* static state: every layer up, no particle */
+  if(document.body.classList.contains("nopin")||RM)paint(n-1);
+  else{
+    paint(-1);
+    activeStep(root,paint,".isoStep");
+  }
+  /* SMIL keeps ticking off-screen unless it's told not to */
+  inViewPause(host,on=>{
+    if(!svg.pauseAnimations)return;
+    if(on)svg.unpauseAnimations();else svg.pauseAnimations();
+  });
+  ISOSTACK={root,host,paint,n};
+}
+let ISOSTACK=null;
+buildIsoStack();
+/* crossing the 1200px label threshold changes the viewBox, so rebuild */
+onMq("(min-width: 1200px)",()=>buildIsoStack());
+onMq(TALL_Q,()=>buildIsoStack());
 
 /*── WHY: pinned stack that unfolds one card at a time ──*/
 const WHY=[
@@ -2692,8 +2975,8 @@ const SC=WHY.map(([p,eye,n,l,facts,note],i)=>{
 });
 let stackA=0,stackSettled=false;
 function runStack(dt){
-  if(!pins[2].vis&&stackSettled)return;
-  const p=pins[2].p,N=SC.length,tgt=p*(N-1);
+  if(!pins[1].vis&&stackSettled)return;
+  const p=pins[1].p,N=SC.length,tgt=p*(N-1);
   stackSettled=Math.abs(stackA-tgt)<.001;
   stackA=RM?tgt:lerp(stackA,tgt,1-Math.exp(-dt*10));
   SC.forEach((c,i)=>{
@@ -3068,7 +3351,7 @@ function loop(now){
   const dt=Math.max(0,Math.min(.05,(now-prevT)/1000));prevT=now;
   cur=scrollY;
   const y=cur;
-  runRevs(y);runCounters(y);runPins(y,dt);runStory();runHdr(y);runBars(y);runParallax(y,dt);
+  runRevs(y);runCounters(y);runPins(y,dt);runHdr(y);runBars(y);runParallax(y,dt);
   runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);
   if(mapProg<1){mapProg=Math.min(1,mapProg+dt*.45);drawMap();}
   else if(hoverCell!==lastHover){lastHover=hoverCell;drawMap();}
