@@ -699,6 +699,73 @@ body.nopin .conflStage{height:clamp(320px,54vh,520px);flex:none}
 body.nopin .conflLead{display:block}
 
 /*───────────────────────────────────────────────────────────────
+  §06 — Platform tide reveal (spec §5.4)
+  The water recedes and the platform surfaces. Cards read top to
+  bottom in one column: readable first, animated second.
+───────────────────────────────────────────────────────────────*/
+#platform{position:relative;padding-block:0 var(--section-pad-y)}
+/* full-bleed via a negative-margin-free grid escape; never 100vw, which on
+   Windows overshoots by the width of a classic scrollbar */
+.tideBand{position:relative;width:100%;height:clamp(96px,14svh,180px);overflow:hidden;
+  margin-bottom:clamp(1.6rem,4vh,3rem)}
+.tideBand svg{position:absolute;left:0;top:0;width:200%;height:100%}
+.tideBand .tbLayer{will-change:transform}
+.tideBand .tbDrift{animation:tbDrift var(--d,24s) linear infinite}
+@keyframes tbDrift{to{transform:translateX(-50%)}}
+
+.plat{display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:start}
+.platHead h2{font-size:var(--t-3);max-width:16ch;margin-bottom:1rem}
+.platLead{color:var(--ink2);max-width:44ch}
+.platList{display:grid;gap:clamp(16px,3svh,32px);max-width:760px}
+
+.platCard{position:relative;isolation:isolate;overflow:clip;border-radius:var(--r-l)}
+@supports not (overflow:clip){.platCard{overflow:hidden}}
+.platBody{padding:clamp(1.3rem,3vw,1.8rem);border-radius:var(--r-l);
+  border:1px solid var(--line);background:var(--bg2)}
+.platTop{display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem}
+.platTop svg{width:24px;height:24px;flex:none;fill:none;stroke:var(--brand);stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round}
+.platTop h3{font-size:var(--t-2);letter-spacing:-.02em}
+.platCard p{color:var(--ink2);max-width:65ch;font-size:var(--t-0)}
+.platCard ul{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.4rem}
+.platCard li{position:relative;padding-left:1.1rem;font-size:var(--t-sm);color:var(--ink2)}
+.platCard li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;
+  border-radius:50%;background:var(--brand2)}
+
+/* the receding cover — same colour as the page, so what it uncovers is the card */
+.platCover{position:absolute;left:0;right:0;top:-20%;height:140%;z-index:2;pointer-events:none;
+  will-change:transform}
+.platCover svg{width:200%;height:100%;display:block}
+.platCover .pcDrift{animation:tbDrift 6s linear infinite}
+
+/* depth gauge — the water level rises as the list is read */
+.gauge{display:none;margin-top:2rem;gap:.9rem}
+.gaugeTrack{position:relative;width:2px;height:240px;background:var(--line2);border-radius:2px;flex:none}
+.gaugeFill{position:absolute;inset:0;background:linear-gradient(180deg,var(--b400),var(--b800));
+  border-radius:2px;transform:scaleY(var(--g,0));transform-origin:top;will-change:transform}
+.gaugeTicks{position:relative;height:240px;flex:1}
+.gaugeTicks b{position:absolute;left:0;transform:translateY(-50%);display:flex;align-items:center;gap:.5rem;
+  font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--ink3);white-space:nowrap;transition:color var(--dur-med) var(--ease-out-quint)}
+.gaugeTicks b::before{content:"";width:8px;height:1px;background:var(--line2);flex:none}
+.gaugeTicks b.on{color:var(--brand)}
+.gaugeTicks b.on::before{background:var(--brand);width:14px}
+
+@media (min-width:1200px){
+  .plat{grid-template-columns:minmax(0,4fr) minmax(0,7fr)}
+  .platHead{position:sticky;top:calc(var(--header-h) + 32px)}
+  .gauge{display:flex}
+}
+
+/* Static state (spec §5.4): no covers at all, cards fully visible, band still. */
+body.nopin .platCover,body.rm .platCover{display:none}
+body.nopin .platCard .platBody,body.rm .platCard .platBody{opacity:1;transform:none}
+body.nopin .tbDrift,body.nopin .pcDrift{animation:none}
+/* touch devices don't need a 6s drift loop running behind every card */
+@media (pointer:coarse){.pcDrift{animation:none}}
+@media (max-width:899px){.platCover svg{width:100%}}
+
+/*───────────────────────────────────────────────────────────────
   §05 — IsoStack (spec §5.3)
   The reference prompt was Tailwind + Next + GSAP + a dark-only
   canvas. Translated: tokens, static page, IntersectionObserver,
@@ -1076,12 +1143,6 @@ textarea.inp{resize:vertical;min-height:92px}
 .explorerBand .ptag{margin:0;color:var(--ink2);max-width:46ch}
 
 /*── platform pipeline ──*/
-.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr));gap:clamp(.7rem, 1.6vw, 1rem)}
-.pipe>div{padding:clamp(1.4rem, 3vw, 1.9rem);border-radius:var(--r-l);transition:transform .5s var(--E)}
-.pipe>div:hover{transform:translateY(-5px)}
-.pipe i{font-style:normal;font-family:var(--fM);font-size:.64rem;letter-spacing:.16em;color:var(--brand);display:block;margin-bottom:.9rem}
-.pipe h3{font-size:var(--t-1);letter-spacing:-.02em;margin-bottom:.45rem}
-.pipe p{font-size:var(--t-sm);color:var(--ink2);line-height:1.55}
 
 /*── about ──*/
 .aboutGrid{display:grid;gap:clamp(2rem, 4vw, 3.5rem);align-items:start}
@@ -1546,18 +1607,105 @@ setTimeout(function(){
 
 <!-- ══ PLATFORM ══ -->
 <section id="platform">
-  <div class="wrap">
-    <span class="snum">06 — Platform</span>
-    <p class="eye caps" data-rv><i></i>The intelligence behind FloodGuard</p>
-    <h2 data-rv style="font-size:var(--t-3);max-width:16ch;margin-bottom:2.6rem">Data in. Intelligence out.</h2>
-    <div class="pipe" data-rv data-stag>
-      <div class="glass"><i>01</i><h3>Data</h3><p>Observed climate, satellite and remote sensing, terrain, hydrological records and climate projections.</p></div>
-      <div class="glass"><i>02</i><h3>Models</h3><p>Statistical, machine-learning and climate-modelling approaches, applied where each is appropriate.</p></div>
-      <div class="glass"><i>03</i><h3>Risk</h3><p>Hazard × exposure × vulnerability, resolved from India down to site and asset level.</p></div>
-      <div class="glass"><i>04</i><h3>Decision</h3><p>Maps, reports, APIs and data services that drop into the workflows you already run.</p></div>
+  <!-- the tide band opens as the section arrives; full-bleed via grid, never 100vw -->
+  <div class="tideBand" id="tideBand" aria-hidden="true"></div>
+  <div class="wrap plat">
+    <div class="platHead">
+      <span class="snum">06 — Platform</span>
+      <p class="eye caps" data-rv><i></i>The intelligence behind FloodGuard</p>
+      <h2 data-rv>Data in. Intelligence out.</h2>
+      <p class="platLead" data-rv>Five parts, each inspectable on its own. Nothing here is a black box —
+        every number we publish can be traced back to the data and the method that produced it.</p>
+      <div class="gauge" id="platGauge" aria-hidden="true">
+        <div class="gaugeTrack"><i class="gaugeFill"></i></div>
+        <div class="gaugeTicks"></div>
+      </div>
     </div>
-    <div data-rv style="margin-top:2.2rem"><a class="btn bg2" href="#start">Explore the platform <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+
+    <div class="platList" id="platList">
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+            <h3>Data</h3>
+          </div>
+          <p>Observed climate, satellite and remote sensing, terrain, hydrological records and climate
+            projections, held as one continuous series rather than a set of disconnected extracts.</p>
+          <ul>
+            <li>Observed rainfall and river levels</li>
+            <li>Satellite and remote sensing</li>
+            <li>Terrain, drainage and land use</li>
+            <li>Climate projections</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/></svg>
+            <h3>Technology</h3>
+          </div>
+          <p>Statistical, machine-learning and climate-modelling approaches, applied where each is
+            appropriate rather than everywhere at once.</p>
+          <ul>
+            <li>Hydrological simulation</li>
+            <li>Machine learning where it earns its place</li>
+            <li>Reproducible model runs</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6M9 13h7M9 17h5"/></svg>
+            <h3>Methodology</h3>
+          </div>
+          <p>How hazard, exposure and vulnerability are combined, written down and published — so a
+            result can be argued with rather than taken on trust.</p>
+          <ul>
+            <li>Documented assumptions</li>
+            <li>Stated uncertainty</li>
+            <li>Versioned method notes</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="m8.5 12 2.5 2.5L16 9.5"/></svg>
+            <h3>Validation</h3>
+          </div>
+          <p>Model output checked against recorded events, and the checks reported alongside the
+            result rather than kept separately.</p>
+          <ul>
+            <li>Back-testing against observed floods</li>
+            <li>Independent review of method</li>
+            <li>Published performance notes</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 8-5 4 5 4M15 8l5 4-5 4M13 5l-2 14"/></svg>
+            <h3>API</h3>
+          </div>
+          <p>Maps, reports, data services and endpoints that drop into the workflows you already run,
+            instead of asking you to move into ours.</p>
+          <ul>
+            <li>REST endpoints for risk and exposure</li>
+            <li>Bulk data delivery</li>
+            <li>Tiles for your own map stack</li>
+          </ul>
+        </div>
+      </article>
+    </div>
   </div>
+  <div class="wrap" data-rv style="margin-top:2.4rem"><a class="btn bg2" href="#start">Explore the platform <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
 </section>
 
 <!-- ══ WHO WE SERVE ══ -->
@@ -3024,6 +3172,144 @@ onMq("(min-width: 900px)",()=>buildConfluence());
 
 
 /*═══════════════════════════════════════════════════════════════
+  §06 — Tide reveal (spec §5.4)
+  Wave paths are built once at module scope. Each is closed and
+  tileable, and every band renders a viewBox twice its container so
+  a -50% translate loops seamlessly.
+═══════════════════════════════════════════════════════════════*/
+/** Closed, horizontally tileable wave fill. width must be a multiple of wavelength. */
+function waveFill(width,height,amp,wavelength,baseY){
+  const half=wavelength/2;
+  let d="M0 "+baseY;
+  for(let x=0;x<width;x+=wavelength)d+=" q "+(half/2)+" "+(-amp)+" "+half+" 0 t "+half+" 0";
+  return d+" V "+height+" H 0 Z";
+}
+const TIDE_BAND=[
+  waveFill(2400,180,14,400,40),
+  waveFill(2400,180,10,300,70),
+  waveFill(2400,180,8,240,100)
+];
+const TIDE_COVER=[waveFill(2400,400,18,400,24),waveFill(2400,400,12,300,44)];
+/* light enough that the three crests read as separate water lines rather
+   than one dark bar across the page */
+const TIDE_BAND_FILL=["var(--b800)","var(--b600)","var(--b400)"];
+const TIDE_BAND_ALPHA=[.22,.3,.42];
+const TIDE_DRIFT=["18s","26s","34s"];
+
+/* Element-relative scroll progress, the vanilla form of motion's
+   useScroll offsets: a = the viewport fraction the element's start sits at
+   when p is 0, b = the fraction where p is 1. ['start end'] => a = 1. */
+function offsetProgress(el,a,b){
+  const top=el.getBoundingClientRect().top;
+  return clamp01((vh*a-top)/(vh*a-vh*b));
+}
+
+let TIDE=null;
+function buildTide(){
+  const band=document.getElementById("tideBand");
+  const list=document.getElementById("platList");
+  if(!band||!list)return;
+  const narrow=!mqValue("(min-width: 900px)");
+  const still=document.body.classList.contains("nopin")||RM;
+
+  /* ── the band ── */
+  band.innerHTML="";
+  const bandLayers=TIDE_BAND.map((d,k)=>{
+    const svg=mk("svg",{viewBox:"0 0 2400 180",preserveAspectRatio:"none",
+      "aria-hidden":"true",focusable:"false",class:"tbLayer"});
+    const path=mk("path",{d,fill:TIDE_BAND_FILL[k],opacity:TIDE_BAND_ALPHA[k],"data-decorative":""});
+    if(!still){svg.classList.add("tbDrift");svg.style.setProperty("--d",TIDE_DRIFT[k]);}
+    svg.appendChild(path);
+    band.appendChild(svg);
+    return{svg,path};
+  });
+
+  /* ── one cover per card ── */
+  const cards=[...list.querySelectorAll(".platCard")].map(card=>{
+    card.querySelectorAll(".platCover").forEach(n=>n.remove());
+    const body=card.querySelector(".platBody");
+    if(still){body.style.opacity="";body.style.transform="";return{card,body,cover:null};}
+    const cover=document.createElement("div");
+    cover.className="platCover";
+    const svg=mk("svg",{viewBox:"0 0 2400 400",preserveAspectRatio:"none",
+      "aria-hidden":"true",focusable:"false"});
+    /* under 900 one path is enough — a second one is invisible at that size
+       and doubles the fill cost on exactly the devices that can least afford it */
+    const paths=(narrow?TIDE_COVER.slice(0,1):TIDE_COVER);
+    paths.forEach((d,k)=>svg.appendChild(mk("path",{d,fill:"var(--bg)",
+      opacity:k===0?1:.6,"data-decorative":""})));
+    if(!narrow&&finePointer())svg.classList.add("pcDrift");
+    cover.appendChild(svg);
+    card.appendChild(cover);
+    return{card,body,cover};
+  });
+
+  /* ── the gauge ── */
+  const gauge=document.getElementById("platGauge");
+  const fill=gauge&&gauge.querySelector(".gaugeFill");
+  const ticksHost=gauge&&gauge.querySelector(".gaugeTicks");
+  let ticks=[];
+  if(ticksHost){
+    ticksHost.innerHTML="";
+    ticks=cards.map((c,i)=>{
+      const b=document.createElement("b");
+      b.textContent=c.card.querySelector("h3").textContent;
+      /* Reading order, top to bottom — the same order as the cards. The spec
+         describes a rising water level, but the ticks index the list, and a
+         gauge that runs opposite to the text it labels misreads at a glance.
+         Kept as depth instead: you descend through the platform. */
+      b.style.top=((i/Math.max(1,cards.length-1))*100).toFixed(2)+"%";
+      ticksHost.appendChild(b);
+      return b;
+    });
+  }
+
+  TIDE={band,bandLayers,list,cards,fill,ticks,still,last:-2};
+  if(still){
+    if(fill)fill.style.setProperty("--g",1);
+    ticks.forEach(t=>t.classList.add("on"));
+  }else if(ticks.length){
+    activeStep(list,i=>ticks.forEach((t,k)=>t.classList.toggle("on",k===i)),".platCard");
+  }
+  inViewPause(band);
+  inViewPause(list);
+}
+
+function runTide(){
+  if(!TIDE||TIDE.still)return;
+  /* band: the layers separate vertically — the tide opening */
+  const bp=offsetProgress(TIDE.band,1,.3);
+  const sep=[0,28,56];
+  TIDE.bandLayers.forEach((L,k)=>{
+    L.svg.style.transform="translateY("+(-bp*sep[k]).toFixed(1)+"px)";
+    if(k===2)L.path.setAttribute("opacity",(TIDE_BAND_ALPHA[2]*(1-bp*.65)).toFixed(3));
+  });
+
+  /* cards: the cover slides down past the bottom, uncovering the top first */
+  const narrow=!mqValue("(min-width: 900px)");
+  const a=narrow?.95:.92, b=narrow?.65:.5;
+  for(const c of TIDE.cards){
+    if(!c.cover)continue;
+    const q=offsetProgress(c.card,a,b);
+    c.cover.style.transform="translateY("+(q*105).toFixed(2)+"%)";
+    const r=seg(q,.2,1);
+    c.body.style.opacity=r.toFixed(3);
+    c.body.style.transform="translateY("+((1-r)*20).toFixed(1)+"px)";
+  }
+
+  /* gauge: the level rises with progress through the list */
+  if(TIDE.fill){
+    const g=offsetProgress(TIDE.list,.9,-.2);
+    if(Math.abs(g-TIDE.last)>.002){TIDE.last=g;TIDE.fill.style.setProperty("--g",g.toFixed(4));}
+  }
+}
+
+buildTide();
+onMq("(min-width: 900px)",()=>buildTide());
+onMq(TALL_Q,()=>buildTide());
+onMq(REDUCE_Q,()=>buildTide());
+
+/*═══════════════════════════════════════════════════════════════
   §05 — IsoStack (spec §5.3)
   Dimetric 2:1 slabs, bottom-up. Paint order is i = 0 … n-1 so an
   upper slab overlaps the one below it. Geometry is computed once at
@@ -3598,7 +3884,7 @@ function loop(now){
   cur=scrollY;
   const y=cur;
   runRevs(y);runCounters(y);runPins(y,dt);runHdr(y);runBars(y);runParallax(y,dt);
-  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);runConfluence();
+  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);runConfluence();runTide();
   if(mapProg<1){mapProg=Math.min(1,mapProg+dt*.45);drawMap();}
   else if(hoverCell!==lastHover){lastHover=hoverCell;drawMap();}
   /* the radar only needs painting while its product card is on screen */
