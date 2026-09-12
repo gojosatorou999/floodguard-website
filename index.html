@@ -876,9 +876,13 @@ body.rm .deckDim{opacity:0!important}
    Windows overshoots by the width of a classic scrollbar */
 .tideBand{position:relative;width:100%;height:clamp(96px,14svh,180px);overflow:hidden;
   margin-bottom:clamp(1.6rem,4vh,3rem)}
+.tbLayerWrap{position:absolute;inset:0;will-change:transform}
 .tideBand svg{position:absolute;left:0;top:0;width:200%;height:100%}
 .tideBand .tbLayer{will-change:transform}
 .tideBand .tbDrift{animation:tbDrift var(--d,24s) linear infinite}
+/* the echo layer drifts the opposite way, at its own speed, so the two
+   waves visibly cross rather than just riding in lockstep */
+.tideBand .tbDrift2{animation:tbDrift var(--d,24s) linear infinite reverse}
 @keyframes tbDrift{to{transform:translateX(-50%)}}
 
 .plat{display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:start}
@@ -928,7 +932,7 @@ body.rm .deckDim{opacity:0!important}
 /* Static state (spec §5.4): no covers at all, cards fully visible, band still. */
 body.nopin .platCover,body.rm .platCover{display:none}
 body.nopin .platCard .platBody,body.rm .platCard .platBody{opacity:1;transform:none}
-body.nopin .tbDrift,body.nopin .pcDrift{animation:none}
+body.nopin .tbDrift,body.nopin .tbDrift2,body.nopin .pcDrift{animation:none}
 /* touch devices don't need a 6s drift loop running behind every card */
 @media (pointer:coarse){.pcDrift{animation:none}}
 @media (max-width:899px){.platCover svg{width:100%}}
@@ -962,6 +966,10 @@ body.nopin .tbDrift,body.nopin .pcDrift{animation:none}
 .isoLabel text{font-family:var(--fS);fill:var(--ink2);font-size:14px;font-weight:500}
 .isoLabel .n{font-family:var(--fM);fill:var(--brand2);font-weight:700}
 .isoNum{font-family:var(--fM);font-size:14px;font-weight:700;fill:var(--onBrand);opacity:.85}
+/* the skyline on the top layer grows in once that layer is active — a
+   transform only (scaleY from its own ground point), no geometry rebuild */
+.isoBldg{transform:scaleY(.06);transition:transform var(--dur-slow) var(--ease-out-quint)}
+.isoSlab.act .isoBldg{transform:scaleY(1)}
 
 /* ≥900 and pinning allowed: two columns, the stage sticky beside the steps */
 @media (min-width:900px){
@@ -3279,9 +3287,53 @@ function runNarrative(N,dt){
   [...N.prog.children].forEach((el,i)=>el.style.setProperty("--f",clamp(hT-i+1,0,1)));
 }
 
+/*═══════════════════════════════════════════════════════════════
+  §01 — Rift
+  A second, distinct scroll mechanic sharing the dither-card factory
+  above but not its arc math: cards are thrown in from alternating
+  sides with a hard spin + tilt + depth-dive instead of orbiting a
+  shallow arc, so §01 doesn't just look like a rerun of the carousel
+  now driving §07 Solutions (see runNarrative). Same card build, same
+  proximity-driven dither dissolve — only the transform function
+  differs.
+═══════════════════════════════════════════════════════════════*/
+function runRift(N,dt){
+  const P=pins[N.pin];
+  if(!P||(!P.vis&&N.settled))return;
+  const n=N.cards.length;
+  if(!n)return;
+  const target=P.p*(n-1);
+  N.settled=Math.abs(N.t-target)<.001;
+  N.t=RM?target:lerp(N.t,target,1-Math.exp(-dt*8));
+  const hT=N.t;
+  const w=N.stageW||600;
+  const narrow=w<620;
+  const throwX=narrow?w*.7:Math.min(460,w*.52);
+  const dropY=narrow?70:110;
+  const dive=narrow?200:320;
+  N.cards.forEach((c,i)=>{
+    const off=i-hT,a=Math.min(Math.abs(off),2.2),s=i%2===0?-1:1;
+    const x=off*s*throwX;
+    const y=a*a*dropY*.4;
+    const z=-a*dive*.6;
+    const spin=off*s*54;
+    const tilt=off*s*-22;
+    const scale=clamp(1-a*.32,.38,1);
+    const prox=Math.min(1,a/1.15);
+    const tgt=Math.pow(prox,1.4)*.6;
+    if(Math.abs(tgt-c.dis)>.004){c.dis=tgt;c.dirty=true}
+    c.el.style.transform=`translate3d(${x.toFixed(1)}px,calc(-50% + ${y.toFixed(1)}px),${z.toFixed(1)}px) rotateZ(${spin.toFixed(1)}deg) rotateX(${tilt.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+    c.el.style.opacity=clamp(1-a*1.05,0,1).toFixed(3);
+    c.el.style.zIndex=300-Math.round(a*100);
+    if(c.dirty){renderH(c);c.dirty=false}
+  });
+  [...N.prog.children].forEach((el,i)=>el.style.setProperty("--f",clamp(hT-i+1,0,1)));
+}
+
 const NARRATIVES=[];
-/* §01 — the flood problem. Content unchanged from the old §01 boxes. */
-createNarrative({
+/* §01 — the flood problem. Content unchanged; mechanic is now Rift (above),
+   not the arc carousel — that moved to §07 Solutions. */
+const problemRift=createNarrative({
   hxId:"problemHx",stageId:"problemStage",progId:"problemProg",pin:0,seed:0,
   items:[
     {seg:"01",t:"Backward-looking",n:"Past data doesn't fully describe future risk."},
@@ -3289,9 +3341,10 @@ createNarrative({
     {seg:"03",t:"Fragmented",n:"The data exists. The intelligence is scattered."}
   ]
 });
+if(problemRift)problemRift.mode="rift";
 function runDeck(dt){
   if(document.body.classList.contains("nopin"))return;
-  for(const N of NARRATIVES)runNarrative(N,dt);
+  for(const N of NARRATIVES)(N.mode==="rift"?runRift:runNarrative)(N,dt);
 }
 
 /*═══════════════════════════════════════════════════════════════
@@ -3312,10 +3365,18 @@ const CFL_INPUTS=[
 const CFL_STROKE={hazard:"var(--stream-hazard)",observed:"var(--stream-observed)",
   physical:"var(--stream-physical)",exposure:"var(--stream-exposure)"};
 
-/* Deliberate per-index offsets, not Math.random(): the "fragmented" state has
-   to be identical on every load, and identical again when the visitor scrolls
-   back up through the section. */
-const CFL_JITTER=[[-14,10,-4],[12,-13,5],[-9,-8,3],[13,11,-5],[-12,7,4],[10,-11,-3],[-8,12,2]];
+/* Row-start deltas, not Math.random(): on entry the 7 inputs read as one
+   transparent horizontal line; the settle phase (in paintConfluence) pulls
+   each one from its row slot down into its column/funnel position, so the
+   same state renders identically on every load and again when the visitor
+   scrolls back up through the section. */
+function cflRowStart(pills,rowY,rowSpan,rowX0){
+  return pills.map((pp,i)=>({
+    dx:(rowX0+i*(rowSpan/(pills.length-1)))-pp.x,
+    dy:rowY-pp.cy,
+    rot:i%2?5:-5
+  }));
+}
 
 const CFL_DESKTOP=(()=>{
   const JX=[0,28,8,36,0,22,12],W=1200,H=560,pw=200,ph=40;
@@ -3323,7 +3384,8 @@ const CFL_DESKTOP=(()=>{
     const x=40+JX[i],cy=60+i*72;
     return{x,y:cy-ph/2,cy,w:pw,h:ph,tx:x+18,ty:cy+6};
   });
-  return{W,H,pills,hub:[780,280],hubR:64,ringR:84,
+  const rowStart=cflRowStart(pills,40,W-300,40);
+  return{W,H,pills,rowStart,hub:[780,280],hubR:64,ringR:84,
     streams:pills.map(q=>"M "+(q.x+pw)+" "+q.cy+" C "+(q.x+420)+" "+q.cy+", 600 280, 716 280"),
     outlet:"M 844 280 L 980 280",
     card:{x:990,y:232,w:180,h:96,rx:14,tx:1080,ty:272,sy:294}};
@@ -3335,7 +3397,8 @@ const CFL_MOBILE=(()=>{
     const y=24+i*52;
     return{x:16,y,cy:y+ph/2,w:pw,h:ph,tx:34,ty:y+26};
   });
-  return{W,H,pills,hub:[180,548],hubR:48,ringR:66,
+  const rowStart=cflRowStart(pills,18,W-60,10);
+  return{W,H,pills,rowStart,hub:[180,548],hubR:48,ringR:66,
     streams:pills.map(q=>"M 206 "+(q.y+20)+" C 290 "+(q.y+20)+", 300 380, 300 420"),
     trunk:"M 300 420 C 300 470, 180 450, 180 500",
     outlet:"M 180 596 L 180 620",
@@ -3438,36 +3501,38 @@ function paintConfluence(p){
   CFL.last=p;
   const {streams,flows,trunk,trunkFlow,pills,ring,hubG,outlet,cardG,G}=CFL;
 
-  /* 0.00–0.12 — the pills settle out of their fragmented state */
-  const settle=seg(p,0,.12),k=1-easeOut(settle);
+  /* 0.00–0.22 — the horizontal row pulls apart into its column/funnel
+     position: each pill travels from its row slot (G.rowStart) down to
+     its resting column position, not just a small in-place jitter. */
+  const settle=seg(p,0,.22),se=easeOut(settle),k=1-se;
   pills.forEach((g,i)=>{
-    const j=CFL_JITTER[i],cx=G.pills[i].x+G.pills[i].w/2;
-    g.setAttribute("transform","translate("+(j[0]*k).toFixed(2)+" "+(j[1]*k).toFixed(2)+
-      ") rotate("+(j[2]*k).toFixed(2)+" "+cx+" "+G.pills[i].cy+")");
-    g.setAttribute("opacity",(.45+.55*settle).toFixed(3));
+    const r=G.rowStart[i],cx=G.pills[i].x+G.pills[i].w/2;
+    g.setAttribute("transform","translate("+(r.dx*k).toFixed(2)+" "+(r.dy*k).toFixed(2)+
+      ") rotate("+(r.rot*k).toFixed(2)+" "+cx+" "+G.pills[i].cy+")");
+    g.setAttribute("opacity",(.28+.72*settle).toFixed(3));
   });
 
-  /* 0.12–0.62 — the tributaries draw, staggered by index */
+  /* 0.22–0.67 — the tributaries draw, staggered by index */
   streams.forEach((el,i)=>{
-    el.style.strokeDashoffset=String(1-seg(p,.12+i*.05,.32+i*.05));
+    el.style.strokeDashoffset=String(1-seg(p,.22+i*.045,.40+i*.045));
   });
-  if(trunk)trunk.style.strokeDashoffset=String(1-seg(p,.5,.66));
+  if(trunk)trunk.style.strokeDashoffset=String(1-seg(p,.55,.70));
 
-  /* 0.55–0.72 — the hub takes */
-  const hub=seg(p,.55,.72);
+  /* 0.60–0.75 — the hub takes */
+  const hub=seg(p,.6,.75);
   ring.setAttribute("transform","rotate("+(hub*60).toFixed(2)+" "+G.hub[0]+" "+G.hub[1]+")");
   hubG.setAttribute("opacity",hub.toFixed(3));
   hubG.setAttribute("transform","translate("+G.hub[0]+" "+G.hub[1]+") scale("+
     (.9+.1*hub).toFixed(3)+") translate("+(-G.hub[0])+" "+(-G.hub[1])+")");
 
-  /* 0.70–0.85 — one channel leaves */
-  const out=seg(p,.7,.85);
+  /* 0.73–0.87 — one channel leaves */
+  const out=seg(p,.73,.87);
   outlet.style.strokeDashoffset=String(1-out);
   cardG.setAttribute("opacity",out.toFixed(3));
   cardG.setAttribute("transform","translate("+(-16*(1-out)).toFixed(2)+" 0)");
 
-  /* 0.85–1.00 — hold, and the water starts moving */
-  CFL.svg.classList.toggle("cflOn",p>=.85&&!RM);
+  /* 0.87–1.00 — hold, and the water starts moving */
+  CFL.svg.classList.toggle("cflOn",p>=.87&&!RM);
 }
 
 /* Not pinned: play the same order once on a timer when the section is 40%
@@ -3759,17 +3824,31 @@ function waveFill(width,height,amp,wavelength,baseY){
   for(let x=0;x<width;x+=wavelength)d+=" q "+(half/2)+" "+(-amp)+" "+half+" 0 t "+half+" 0";
   return d+" V "+height+" H 0 Z";
 }
+/* Four crests, not three, and each one is two superimposed waveFills (a
+   primary + an echo of a different wavelength, drifting at its own speed)
+   instead of a single sine — a lone crest reads as "a line"; two waves of
+   different periods overlapping unevenly read as choppy, moving water.
+   Both wavelengths in every pair must divide 2400 evenly (waveFill's own
+   tiling requirement) — this is why they're not round numbers. */
 const TIDE_BAND=[
   waveFill(2400,180,14,400,40),
-  waveFill(2400,180,10,300,70),
-  waveFill(2400,180,8,240,100)
+  waveFill(2400,180,11,300,64),
+  waveFill(2400,180,8,200,90),
+  waveFill(2400,180,6,150,112)
+];
+const TIDE_BAND_ECHO=[
+  waveFill(2400,180,10,480,46),
+  waveFill(2400,180,8,240,70),
+  waveFill(2400,180,6,160,96),
+  waveFill(2400,180,5,120,116)
 ];
 const TIDE_COVER=[waveFill(2400,400,18,400,24),waveFill(2400,400,12,300,44)];
-/* light enough that the three crests read as separate water lines rather
+/* light enough that the crests read as separate water lines rather
    than one dark bar across the page */
-const TIDE_BAND_FILL=["var(--b800)","var(--b600)","var(--b400)"];
-const TIDE_BAND_ALPHA=[.22,.3,.42];
-const TIDE_DRIFT=["18s","26s","34s"];
+const TIDE_BAND_FILL=["var(--b900)","var(--b800)","var(--b600)","var(--b400)"];
+const TIDE_BAND_ALPHA=[.16,.22,.3,.42];
+const TIDE_DRIFT=["22s","18s","27s","33s"];
+const TIDE_DRIFT2=["31s","24s","36s","44s"];
 
 let TIDE=null;
 function buildTide(){
@@ -3782,13 +3861,35 @@ function buildTide(){
   /* ── the band ── */
   band.innerHTML="";
   const bandLayers=TIDE_BAND.map((d,k)=>{
+    /* the scroll-driven separation (runTide) goes on this wrapper — the two
+       waves inside keep their own independent CSS drift animations on
+       `transform`, and an animated property always wins over anything else
+       written to it, so the scroll offset can't live on the same element */
+    const wrap=document.createElement("div");
+    wrap.className="tbLayerWrap";
     const svg=mk("svg",{viewBox:"0 0 2400 180",preserveAspectRatio:"none",
       "aria-hidden":"true",focusable:"false",class:"tbLayer"});
     const path=mk("path",{d,fill:TIDE_BAND_FILL[k],opacity:TIDE_BAND_ALPHA[k],"data-decorative":""});
+    /* a thin high-contrast duplicate along the same crest, so it reads as a
+       lit edge rather than a flat fill boundary — no filter, just a second
+       stroke-only path (spec §4.7: duplicated stroke instead of drop-shadow) */
+    const foam=mk("path",{d,fill:"none",stroke:TIDE_BAND_FILL[k],"stroke-width":2.5,
+      opacity:Math.min(.9,TIDE_BAND_ALPHA[k]+.3),"data-decorative":""});
+    svg.appendChild(path);svg.appendChild(foam);
     if(!still){svg.classList.add("tbDrift");svg.style.setProperty("--d",TIDE_DRIFT[k]);}
-    svg.appendChild(path);
-    band.appendChild(svg);
-    return{svg,path};
+    wrap.appendChild(svg);
+    /* a second, independent wave (own wavelength, own drift speed) layered
+       on top — one crest alone reads as a static line; two of different
+       periods sliding past each other read as choppy, moving water */
+    const svg2=mk("svg",{viewBox:"0 0 2400 180",preserveAspectRatio:"none",
+      "aria-hidden":"true",focusable:"false",class:"tbLayer"});
+    const echo=mk("path",{d:TIDE_BAND_ECHO[k],fill:TIDE_BAND_FILL[k],
+      opacity:(TIDE_BAND_ALPHA[k]*.55).toFixed(3),"data-decorative":""});
+    svg2.appendChild(echo);
+    if(!still){svg2.classList.add("tbDrift2");svg2.style.setProperty("--d",TIDE_DRIFT2[k]);}
+    wrap.appendChild(svg2);
+    band.appendChild(wrap);
+    return{wrap,svg,path,svg2};
   });
 
   /* ── one cover per card ── */
@@ -3854,21 +3955,24 @@ function runTide(){
      frames without ever leaving a card stranded. */
   if(TIDE.lastY===cur)return;
   TIDE.lastY=cur;
-  /* band: the layers separate vertically — the tide opening */
-  const bp=offsetProgress(TIDE.bandG,1,.3);
-  const sep=[0,28,56];
+  /* band: the layers separate vertically — the tide opening. Eased, not
+     linear, so the separation settles instead of moving at a constant rate. */
+  const bp=easeOut(offsetProgress(TIDE.bandG,1,.3));
+  const sep=[0,18,36,58];
   TIDE.bandLayers.forEach((L,k)=>{
-    L.svg.style.transform="translateY("+(-bp*sep[k]).toFixed(1)+"px)";
-    if(k===2)L.path.setAttribute("opacity",(TIDE_BAND_ALPHA[2]*(1-bp*.65)).toFixed(3));
+    L.wrap.style.transform="translateY("+(-bp*sep[k]).toFixed(1)+"px)";
+    if(k===TIDE.bandLayers.length-1)L.path.setAttribute("opacity",(TIDE_BAND_ALPHA[k]*(1-bp*.65)).toFixed(3));
   });
 
-  /* cards: the cover slides down past the bottom, uncovering the top first */
+  /* cards: the cover slides down past the bottom, uncovering the top first.
+     Eased so the water decelerates as it recedes instead of sliding at a
+     constant rate. */
   const narrow=!mqValue("(min-width: 900px)");
   const a=narrow?.95:.92, b=narrow?.65:.5;
   for(const c of TIDE.cards){
     if(!c.cover)continue;
-    const q=offsetProgress(c.g,a,b);
-    c.cover.style.transform="translateY("+(q*105).toFixed(2)+"%)";
+    const q=offsetProgress(c.g,a,b),qe=easeOut(q);
+    c.cover.style.transform="translateY("+(qe*105).toFixed(2)+"%)";
     const r=seg(q,.2,1);
     c.body.style.opacity=r.toFixed(3);
     c.body.style.transform="translateY("+((1-r)*20).toFixed(1)+"px)";
@@ -3897,8 +4001,7 @@ const ISO={cx:200,halfW:155,halfH:78,depth:14,gap:88,pad:32};
 const layerCy=(i,n)=>ISO.pad+ISO.halfH+(n-1-i)*ISO.gap;
 const viewBoxH=n=>ISO.pad*2+ISO.halfH*2+(n-1)*ISO.gap+ISO.depth;
 const ptsOf=(...p)=>p.map(([x,y])=>x+","+y).join(" ");
-function slab(cy){
-  const {cx,halfW,halfH,depth:d}=ISO;
+function isoBox(cx,cy,halfW,halfH,d){
   const T=[cx,cy-halfH],R=[cx+halfW,cy],B=[cx,cy+halfH],L=[cx-halfW,cy];
   return{
     top:ptsOf(T,R,B,L),
@@ -3906,6 +4009,20 @@ function slab(cy){
     right:ptsOf(B,R,[R[0],R[1]+d],[B[0],B[1]+d])
   };
 }
+function slab(cy){return isoBox(ISO.cx,cy,ISO.halfW,ISO.halfH,ISO.depth);}
+/* extruded blocks standing on the top ("Decision") layer — the reference
+   prompt's "top grid with extruded 3D geometric buildings". Each is the
+   same dimetric box as a slab, just anchored at its own footprint and
+   built roof-down to ground level so it reads as rising off the surface,
+   not sunk into it. */
+const ISO_BUILDINGS=[
+  {dx:-96,dy:18,w:16,h:11,ht:30},
+  {dx:-58,dy:-22,w:13,h:10,ht:54},
+  {dx:-8,dy:14,w:15,h:11,ht:40},
+  {dx:34,dy:-16,w:12,h:9,ht:64},
+  {dx:76,dy:12,w:14,h:10,ht:24},
+  {dx:112,dy:-8,w:11,h:9,ht:46}
+];
 /* dashed connectors at both side corners, between layer i and i+1 */
 function connectors(i,n){
   const yUpper=layerCy(i+1,n)+ISO.depth, yLower=layerCy(i,n);
@@ -3989,6 +4106,25 @@ function buildIsoStack(){
       const num=mk("text",{x:ISO.cx,y:cy+5,"text-anchor":"middle",class:"isoNum"});
       num.textContent=String(i+1).padStart(2,"0");
       g.appendChild(num);
+    }
+    /* the topmost layer carries a small skyline standing on its surface */
+    if(i===n-1){
+      const bldgs=mk("g",{class:"isoBldgs","data-decorative":""});
+      ISO_BUILDINGS.forEach((b,bi)=>{
+        const bx=ISO.cx+b.dx,groundY=cy+b.dy,roofY=groundY-b.ht;
+        const bp=isoBox(bx,roofY,b.w,b.h,b.ht);
+        const bwrap=mk("g",{class:"isoBldg"});
+        bwrap.style.transformOrigin=bx+" "+groundY;
+        bwrap.style.transitionDelay=(90+bi*65)+"ms";
+        bwrap.appendChild(mk("polygon",{points:bp.left,fill:"var(--iso-l"+n+")"}));
+        bwrap.appendChild(mk("polygon",{points:bp.left,fill:"var(--iso-side-left)"}));
+        bwrap.appendChild(mk("polygon",{points:bp.right,fill:"var(--iso-l"+n+")"}));
+        bwrap.appendChild(mk("polygon",{points:bp.right,fill:"var(--iso-side-right)"}));
+        bwrap.appendChild(mk("polygon",{points:bp.top,fill:"var(--brand)"}));
+        bwrap.appendChild(mk("polygon",{points:bp.top,fill:"none",stroke:"var(--line2)","stroke-width":.75}));
+        bldgs.appendChild(bwrap);
+      });
+      g.appendChild(bldgs);
     }
     svg.appendChild(g);slabs.push({g,glow,edge});
 
