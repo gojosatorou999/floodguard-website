@@ -33,7 +33,10 @@
   --bg2:#e1eef0;
   --ink:#052430;
   --ink2:#3a5c66;
-  --ink3:#6d9099;
+  /* was #6d9099, which is 3.11:1 on --bg — under the 4.5:1 body minimum.
+     Every eyebrow, section number, caption and hint on the page uses this.
+     #4d737b is 4.69:1 and still reads clearly tertiary against --ink2. */
+  --ink3:#4d737b;
   --line:rgba(4,38,61,.10);
   --line2:rgba(4,38,61,.18);
   --brand:var(--b800);
@@ -87,6 +90,61 @@
   --wrap:1260px;
   --E:cubic-bezier(.22,1,.36,1);
   --Es:cubic-bezier(.65,.05,.36,1);
+
+  /*───────────────────────────────────────────────────────────────
+    REDESIGN v2 — semantic layer (spec §4.2)
+    Everything below maps onto the ocean ramp above (--b950 … --b100).
+    No new primitives: components read these, never a raw hex.
+  ───────────────────────────────────────────────────────────────*/
+
+  /* layout */
+  --header-h:64px;
+  --container-max:1320px;
+  --gutter:clamp(16px,4vw,40px);
+  --section-pad-y:clamp(64px,10svh,140px);
+
+  /* scroll stages */
+  --step-h:70svh;                             /* scroll length per narrative step */
+  --stage-h:calc(100svh - var(--header-h));   /* pinned stage height */
+
+  /* motion */
+  --ease-out-quint:var(--E);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:180ms;
+  --dur-med:480ms;
+  --dur-slow:900ms;
+
+  /* iso stack (§05) — bottom → top */
+  --iso-l1:var(--b900);
+  --iso-l2:var(--b800);
+  --iso-l3:var(--b700);
+  --iso-l4:var(--b600);
+  --iso-l5:var(--b400);
+  --iso-side-left:rgba(0,0,0,.22);
+  --iso-side-right:rgba(0,0,0,.10);
+  --iso-texture-opacity:.18;
+
+  /* confluence streams (§02) — one ramp, no rainbow */
+  --stream-hazard:var(--b700);
+  --stream-observed:var(--b500);
+  --stream-physical:var(--b600);
+  --stream-exposure:var(--b400);
+
+  /* water surfaces (§06, §09) */
+  --surface-water:var(--bg2);
+  --surface-about:var(--b950);                /* deep brand in BOTH themes */
+  --text-on-brand:#eaf7f7;
+
+  /* deck (§10) */
+  --deck-top:32px;
+  --deck-step:20px;
+
+  /* ripple background (§5.8) — rgb triplets; the canvas parses these */
+  --ripple-rgb:10 82 115;                     /* --b800 */
+  --ripple-alpha:.16;
+  --ripple-alpha-echo:.08;
+  --ripple-stroke:1.5;
+  --ripple-blend:multiply;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#031a24;--bg2:#062a36;
@@ -105,6 +163,14 @@
   --dotOff:rgba(158,218,217,.14);
   --band:linear-gradient(145deg,#021a20,#073a5a 52%,#0a5273);
   --onBand:#e8f6f6;--noise:.05;--alert:#ef5560;
+  /* redesign v2 (§4.2) */
+  --iso-side-left:rgba(0,0,0,.35);
+  --iso-side-right:rgba(0,0,0,.18);
+  --surface-water:#062a36;
+  --ripple-rgb:124 214 204;
+  --ripple-alpha:.13;
+  --ripple-alpha-echo:.06;
+  --ripple-blend:screen;
 }}
 :root[data-theme="dark"]{
   --bg:#031a24;--bg2:#062a36;
@@ -123,31 +189,66 @@
   --dotOff:rgba(158,218,217,.14);
   --band:linear-gradient(145deg,#021a20,#073a5a 52%,#0a5273);
   --onBand:#e8f6f6;--noise:.05;--alert:#ef5560;
+  /* redesign v2 (§4.2) */
+  --iso-side-left:rgba(0,0,0,.35);
+  --iso-side-right:rgba(0,0,0,.18);
+  --surface-water:#062a36;
+  --ripple-rgb:124 214 204;
+  --ripple-alpha:.13;
+  --ripple-alpha-echo:.06;
+  --ripple-blend:screen;
+}
+
+/*── REDESIGN v2 — responsive + fallback token overrides (spec §4.2) ──*/
+@media (max-width:899px){
+  :root{--header-h:56px;--step-h:60svh;--deck-top:16px;--deck-step:12px}
+}
+/* svh fallback (older Safari). Keep LAST so it wins over the blocks above. */
+@supports not (height:1svh){
+  :root{
+    --step-h:70vh;
+    --stage-h:calc(100vh - var(--header-h));
+    --section-pad-y:clamp(64px,10vh,140px);
+  }
 }
 
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+html{
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
+  overscroll-behavior-y:none;
+  /* anchor jumps must clear the fixed header */
+  scroll-padding-top:calc(var(--header-h) + 16px);
+  /* Windows classic scrollbars: reserve the gutter so nothing reflows
+     sideways when a tall section makes the bar appear. */
+  scrollbar-gutter:stable;
+}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:var(--fS);font-size:var(--t-0);line-height:1.7;
   font-weight:420;letter-spacing:-.004em;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-  overflow-x:hidden;width:100%;
+  width:100%;
   -webkit-tap-highlight-color:transparent;
   overscroll-behavior-y:none;
 }
+/* `clip`, not `hidden`. overflow-x:hidden makes body a scroll container and
+   every position:sticky pin inside then sticks to *that* box instead of the
+   viewport — the classic silent sticky failure, worst on Safari. `clip`
+   stops the sideways bleed without creating a scroll container. */
+html,body{overflow-x:clip}
+@supports not (overflow:clip){body{overflow-x:hidden}}
 /* iOS: give every touch target the 44px minimum and kill the 300ms delay */
 @media (pointer:coarse){
   button,a,input,select,textarea{touch-action:manipulation}
-  .ni>a,.ni>button,.drop a,.fg li a,.copy,.btn-xs{min-height:44px;display:flex;align-items:center}
+  .ni>a,.ni>button,.drop a,.copy,.btn-xs{min-height:44px;display:flex;align-items:center}
   .fab{width:54px;height:54px}
   #fabs{--fabH:54px}
-  #toTop{width:56px;height:56px}
+  #toTop{width:58px;height:58px}
   #toTop .arw{width:21px;height:21px}
 }
 /* Older iOS lacks svh — fall back before the modern unit overrides it */
-#hero,.pin,#deckPin{min-height:100vh}
-@supports (height:100svh){#hero{min-height:100svh}.pin,#deckPin{height:100svh}}
+#hero,.pin{min-height:100vh}
+@supports (height:100svh){#hero{min-height:100svh}.pin{height:100svh}}
 h1,h2,h3,h4{font-family:var(--fD);font-weight:600;line-height:1.06;letter-spacing:-.022em;margin:0;text-wrap:balance}
 p{margin:0}
 a{color:inherit;text-decoration:none}
@@ -158,6 +259,24 @@ img{max-width:100%;display:block}
 ::selection{background:var(--b300);color:#fff}
 
 .wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(1.1rem,4.2vw,3.2rem);position:relative}
+
+/*── REDESIGN v2 — global helpers (spec §4.3) ──*/
+/* Spec's `.container`. `.wrap` above is the existing equivalent and stays the
+   one in use; this exists so new sections can opt into the spec's width. */
+.container{width:min(100% - 2*var(--gutter),var(--container-max));margin-inline:auto}
+
+/* pause helper — set data-paused="true" on a wrapper when it leaves the
+   viewport or the tab is hidden, and every CSS animation under it stops. */
+[data-paused="true"],[data-paused="true"] *{animation-play-state:paused!important}
+
+/* Windows High Contrast: drop decorative SVG layers, let the rest recolor. */
+@media (forced-colors:active){
+  svg [data-decorative]{display:none}
+  svg{forced-color-adjust:auto}
+}
+
+/* iOS refuses to focus an input under 16px without zooming the page. */
+input,select,textarea{font-size:max(16px,1rem)}
 
 /* tracked caps — the logo's own voice */
 .caps{
@@ -177,7 +296,13 @@ img{max-width:100%;display:block}
 #a1{width:58vw;height:58vw;background:var(--aur1);left:-16vw;top:-14vw}
 #a2{width:46vw;height:46vw;background:var(--aur2);right:-12vw;top:22vh}
 #a3{width:52vw;height:52vw;background:var(--aur3);left:24vw;bottom:-24vw}
-#water{position:absolute;inset:0;width:100%;height:100%;opacity:var(--waterA);filter:blur(14px)}
+/* lvh (large viewport) not %, so the canvas never reallocates while the
+   iOS/Android URL bar collapses. Blend mode is the visibility knob: multiply
+   sinks the field into a light page, screen lifts it out of a dark one. */
+#water{position:absolute;left:0;top:0;width:100%;height:100lvh;
+  opacity:var(--ripple-alpha);filter:blur(14px);mix-blend-mode:var(--ripple-blend)}
+@supports not (height:100lvh){#water{height:100%}}
+/* reduced motion keeps one frozen frame — see drawWater()'s RM branch */
 #grain{position:absolute;inset:0;opacity:var(--noise);mix-blend-mode:overlay}
 
 /*── GLASS + DENT primitives ──*/
@@ -463,10 +588,6 @@ section{position:relative;z-index:1;padding-block:clamp(2.75rem, 4.6vw, 4.25rem)
 /*── PINNED STORY ──*/
 .pinsec{position:relative}
 .pin{position:sticky;top:0;height:100svh;display:flex;align-items:center}
-.story{display:grid;gap:clamp(1.8rem, 3.6vw, 3.2rem);align-items:center;width:100%}
-@media(min-width:940px){.story{grid-template-columns:.9fr 1.1fr}}
-.story h2{font-size:var(--t-3);max-width:20ch;margin-bottom:1.2rem}
-.story p{color:var(--ink2);max-width:48ch;margin-bottom:1rem}
 .srcline{font-size:.58rem;letter-spacing:.2em;color:var(--ink3);font-weight:700;text-transform:uppercase;margin-top:1.2rem}
 .tlhint{margin:0;white-space:nowrap;align-self:flex-end;padding-bottom:.25rem}
 @media(max-width:760px){.tlhint{white-space:normal}}
@@ -491,13 +612,398 @@ section{position:relative;z-index:1;padding-block:clamp(2.75rem, 4.6vw, 4.25rem)
 #pop dt{opacity:.62}
 #pop dd{margin:0;font-family:var(--fM);font-variant-numeric:tabular-nums;text-align:right}
 
+/*───────────────────────────────────────────────────────────────
+  §01 — ScrollNarrative (spec §5.1)
+  The mechanism is the old §05 helix, extracted verbatim: same arc,
+  same easing, same dither. Only the content is now fed in.
+───────────────────────────────────────────────────────────────*/
+/* the header floats over the pin, so the stage has to start below it */
+.narrative{display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(.7rem,1.5vw,1.3rem);overflow:hidden;
+  padding-top:calc(var(--header-h) + 14px);padding-bottom:.6rem}
+.narrative .dhead{text-align:center;max-width:min(92vw,760px);margin-inline:auto;padding-inline:1rem}
+.narrative .dhead h2{font-size:var(--t-3);margin-bottom:.9rem}
+.nlead{font-size:var(--t-0);color:var(--ink2);max-width:62ch;margin-inline:auto}
+.nlead+.nlead{margin-top:.7rem}
+/* A pin only has 100svh minus the header. Heading + two paragraphs + the
+   carousel do not fit under ~1000px, so the head sheds weight rather than
+   letting the arc overflow the stage. */
+@media (max-height:1000px){.nlead2{display:none}}
+@media (max-height:860px){.narrative .dhead h2{font-size:var(--t-2)}}
+@media (max-height:740px){.nlead{display:none}}
+.nstage{position:relative;height:clamp(240px,40vh,400px);perspective:1700px;perspective-origin:50% 48%}
+.nhx{position:absolute;inset:0;transform-style:preserve-3d}
+/* the SR/no-JS list: present in DOM order, shown only when the stage isn't */
+.nlist{display:none;list-style:none;margin:0;padding:0}
+.nlist i{font-style:normal}
+
+/* Static state (spec §4.4 / §4.6): no pin, no carousel, real list. */
+body.nopin .narrative{gap:1.4rem;padding-block:var(--section-pad-y)}
+body.nopin .nstage,body.nopin .dprog,body.nopin .dhint{display:none}
+body.nopin .nlead2{display:block}
+body.nopin .nlist{
+  display:grid;gap:1rem;max-width:var(--wrap);margin-inline:auto;
+  padding-inline:clamp(1.1rem,4.2vw,3.2rem);
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+}
+body.nopin .nlist li{padding:1.2rem 1.3rem;border:1px solid var(--line);border-radius:var(--r-m);background:var(--dentBg)}
+body.nopin .nlist i{display:block;font-size:.5rem;letter-spacing:.2em;color:var(--brand2);font-weight:700;margin-bottom:.45rem}
+body.nopin .nlist h3{font-size:1.05rem;margin-bottom:.3rem}
+body.nopin .nlist p{font-size:.82rem;color:var(--ink2)}
+
+/*───────────────────────────────────────────────────────────────
+  §02 — Confluence (spec §5.2)
+  A drainage basin: seven tributaries, one hub, one outlet. It is
+  the visual answer to §01's "Fragmented" — scattered inputs settle,
+  draw in, and leave as a single channel.
+───────────────────────────────────────────────────────────────*/
+/* .pin sets align-items:center for its row layout; in a column that would
+   centre the header instead of leaving it flush with the grid. */
+.confl{display:flex;flex-direction:column;justify-content:center;align-items:stretch;
+  gap:clamp(1rem,2.4vh,2rem);overflow:hidden;
+  padding-top:calc(var(--header-h) + 14px);padding-bottom:.6rem}
+.conflHead h2{font-size:var(--t-3);max-width:18ch;margin-bottom:.9rem}
+.conflLead{color:var(--ink2);max-width:52ch}
+.conflStage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+  padding-inline:clamp(1.1rem,4.2vw,3.2rem)}
+.conflStage svg{display:block;height:100%;width:auto;max-width:100%;margin-inline:auto}
+@media (max-height:900px){.conflLead{display:none}}
+@media (max-height:760px){.conflHead h2{font-size:var(--t-2)}}
+
+.cflPill rect{fill:var(--glassA);stroke:var(--line2);stroke-width:1}
+.cflPill text{font-family:var(--fS);font-size:16px;font-weight:500;fill:var(--ink2)}
+.cflStream{fill:none;stroke-width:2.5;stroke-linecap:round}
+/* draw-on: pathLength is normalised to 1, so one dash covers the whole path
+   and the offset is the progress — no need to measure geometry at runtime */
+.cflDraw{stroke-dasharray:1;stroke-dashoffset:1}
+.cflHub circle{fill:var(--brand);stroke:none}
+.cflRing{fill:none;stroke:var(--line2);stroke-width:1.5;stroke-dasharray:4 6}
+.cflHub text,.cflOutBox text{font-family:var(--fS);font-weight:600}
+.cflHub text{fill:var(--onBrand);font-size:17px}
+.cflOutBox rect{fill:none;stroke:var(--brand);stroke-width:1.5}
+.cflOutBox text{fill:var(--ink);font-size:18px}
+.cflOutBox .sub{fill:var(--ink3);font-size:13px;font-weight:500}
+.cflOutlet{fill:none;stroke:var(--brand);stroke-width:6;stroke-linecap:round}
+
+/* ambient flow — a dashed overlay drifting along each drawn path. Starts
+   only once the diagram has finished drawing, and stops off-screen. */
+.cflFlow{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:6 10;opacity:0}
+.cflOn .cflFlow{opacity:.9;animation:cflDrift 1.6s linear infinite}
+@keyframes cflDrift{to{stroke-dashoffset:-16}}
+
+/* hover/tap focus: the chosen stream keeps its colour, the rest recede */
+.cflDim{opacity:.35}
+.cflLit rect{stroke:var(--brand)}
+.cflLit text{fill:var(--ink)}
+
+/* Static state: no pin, no scrub — the finished diagram, drawn once. */
+body.nopin .confl{padding-block:var(--section-pad-y);gap:1.6rem}
+body.nopin .conflStage{height:clamp(320px,54vh,520px);flex:none}
+body.nopin .conflLead{display:block}
+
+/*───────────────────────────────────────────────────────────────
+  §09 — Droplet genesis (spec §5.5)
+  The page's one bold moment: a drop falls, strikes, and its ripple
+  becomes the section. Everything else on the page stays calm.
+───────────────────────────────────────────────────────────────*/
+#about{position:relative;padding:0}
+/* Phase D renders below the stage rather than on the disc, so the track only
+   has to carry A-C plus a short beat on the covered screen. A 300svh track
+   would leave roughly a screen and a half of scrolling with nothing left to
+   watch. */
+.dropTrack{position:relative;height:220svh}
+@media (max-width:899px){.dropTrack{height:170svh}}
+@supports not (height:1svh){.dropTrack{height:220vh}}
+
+.dropStage{position:sticky;top:0;height:100svh;overflow:hidden;isolation:isolate}
+@supports not (height:1svh){.dropStage{height:100vh}}
+.dropLabel{position:absolute;left:clamp(1.1rem,4.2vw,3.2rem);top:calc(var(--header-h) + 24px);z-index:3}
+.dropScene{position:absolute;inset:0;z-index:1}
+.dropScene svg{width:100%;height:100%;display:block}
+.dropDisc{position:absolute;left:50%;top:62%;width:40px;height:40px;margin:-20px 0 0 -20px;
+  border-radius:50%;background:var(--surface-about);z-index:2;transform:scale(0);
+  will-change:transform;pointer-events:none}
+
+/* Once the disc has covered the stage, everything below continues on the
+   same surface, so the handoff has no seam to see. */
+.dropAfter{position:relative;background:var(--surface-about);color:var(--text-on-brand);
+  padding-block:var(--section-pad-y) 0}
+.dropGrid{display:grid;gap:clamp(2rem,5vw,4rem);align-items:start}
+@media (min-width:900px){.dropGrid{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}}
+.dropText h2{font-size:var(--t-3);max-width:15ch;margin-bottom:1.2rem;color:var(--text-on-brand)}
+.dropText p{color:var(--text-on-brand);opacity:.82;max-width:46ch}
+.dropPrinciples{margin-top:1.1rem;font-size:var(--t-sm);opacity:.62!important}
+
+.dropCards{display:grid;gap:clamp(.9rem,2vw,1.3rem)}
+@media (min-width:900px) and (max-height:759px){.dropCards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:560px) and (max-width:899px){.dropCards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dropCards article{padding:clamp(1.1rem,2.4vw,1.5rem);border-radius:var(--r-l);
+  border:1px solid rgba(158,218,217,.18);background:rgba(158,218,217,.06)}
+.dropCards h3{font-size:var(--t-1);margin-bottom:.4rem;color:var(--text-on-brand)}
+.dropCards p{font-size:var(--t-sm);line-height:1.6;color:var(--text-on-brand);opacity:.78}
+/* rise-on-enter; the initial state only applies once JS has marked the
+   section ready, so with no JS every card is simply visible */
+[data-motion="ready"] .dropCards article{opacity:0;transform:translateY(32px)}
+[data-motion="ready"] .dropCards article.in{opacity:1;transform:none;
+  transition:opacity .7s var(--ease-out-quint),transform .7s var(--ease-out-quint)}
+[data-motion="ready"] .dropText>*{opacity:0;transform:translateY(28px)}
+[data-motion="ready"] .dropText>*.in{opacity:1;transform:none;
+  transition:opacity .7s var(--ease-out-quint),transform .7s var(--ease-out-quint)}
+
+/* ambient caustics — two slow radial blobs, fine pointers only */
+.dropAfter::before,.dropAfter::after{content:"";position:absolute;pointer-events:none;
+  border-radius:50%;opacity:.08;z-index:0}
+.dropAfter::before{width:60%;padding-bottom:60%;left:-10%;top:10%;
+  background:radial-gradient(circle,var(--b200),transparent 62%)}
+.dropAfter::after{width:52%;padding-bottom:52%;right:-8%;bottom:6%;
+  background:radial-gradient(circle,var(--b400),transparent 62%)}
+@media (hover:hover) and (pointer:fine){
+  .dropAfter::before{animation:dropDrift1 20s var(--ease-in-out) infinite alternate}
+  .dropAfter::after{animation:dropDrift2 26s var(--ease-in-out) infinite alternate}
+}
+@keyframes dropDrift1{to{transform:translate3d(6%,-4%,0) scale(1.12)}}
+@keyframes dropDrift2{to{transform:translate3d(-5%,5%,0) scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.dropAfter::before,.dropAfter::after{animation:none}}
+.dropGrid{position:relative;z-index:1}
+
+/* a single wave hands §09's surface over to §10's background */
+/* waveFill closes downward, so the drawn shape is what sits BELOW the wave
+   line — that part is the next section's ground, and the band behind it
+   stays on §09's surface. */
+.dropWave{position:relative;z-index:1;height:clamp(48px,7svh,96px);margin-top:var(--section-pad-y);
+  background:var(--surface-about)}
+.dropWave svg{display:block;width:100%;height:100%}
+
+/* Static state (spec §5.5): the section on its own surface, three frozen
+   rings as decoration, everything readable with nothing in motion. */
+body.nopin .dropTrack{height:auto}
+body.nopin .dropStage{position:static;height:clamp(220px,34svh,340px)}
+body.nopin .dropDisc{display:none}
+body.nopin .dropAfter{padding-top:clamp(2rem,5svh,4rem)}
+
+/*───────────────────────────────────────────────────────────────
+  §10 — DepthDeck (spec §5.6)
+  Every card is a direct child of .deck: sticky only works between
+  siblings of the same parent, so no wrapper may come between them.
+───────────────────────────────────────────────────────────────*/
+#insights{padding-block:var(--section-pad-y)}
+.deckGrid{display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:start}
+.deckHead h2{font-size:var(--t-3);max-width:20ch;margin-bottom:1rem}
+.deckLead{color:var(--ink2);max-width:42ch}
+@media (min-width:900px){
+  .deckGrid{grid-template-columns:minmax(0,4fr) minmax(0,7fr)}
+  body:not(.nopin) .deckHead{position:sticky;top:calc(var(--header-h) + 48px)}
+}
+
+.deck{position:relative}
+.deckCard{position:relative;margin-bottom:40svh}
+.deckCard:last-child{margin-bottom:0}
+body:not(.nopin) .deckCard{position:sticky;
+  top:calc(var(--header-h) + var(--deck-top) + var(--i) * var(--deck-step))}
+@media (max-width:899px){.deckCard{margin-bottom:28svh}}
+
+.deckInner{position:relative;display:grid;gap:0;border-radius:var(--r-l);overflow:hidden;
+  border:1px solid var(--line);background:var(--bg2);
+  transform-origin:top center;will-change:transform}
+/* the stacked top edges have to read as distinct layers, so each card steps
+   one stop along the ocean ramp */
+.deckCard:nth-child(1) .deckInner{background:var(--bg2)}
+.deckCard:nth-child(2) .deckInner{background:color-mix(in srgb,var(--b100) 22%,var(--bg2))}
+.deckCard:nth-child(3) .deckInner{background:color-mix(in srgb,var(--b200) 22%,var(--bg2))}
+.deckCard:nth-child(4) .deckInner{background:color-mix(in srgb,var(--b300) 20%,var(--bg2))}
+.deckCard:nth-child(5) .deckInner{background:color-mix(in srgb,var(--b400) 18%,var(--bg2))}
+.deckCard:nth-child(6) .deckInner{background:color-mix(in srgb,var(--b500) 16%,var(--bg2))}
+@supports not (background:color-mix(in srgb,red,blue)){.deckInner{background:var(--bg2)}}
+
+.deckText{padding:clamp(1.3rem,3vw,2rem);display:flex;flex-direction:column;justify-content:center;min-width:0}
+/* --brand2 lands at 3.7:1 against the deepest card tint; --brand clears 6:1
+   on every step of the stack, in both themes. */
+.deckKind{display:inline-block;font-family:var(--fM);font-size:var(--t-xs);letter-spacing:.2em;
+  text-transform:uppercase;color:var(--brand);font-weight:700;margin-bottom:.7rem}
+.deckText h3{font-size:var(--t-2);letter-spacing:-.022em;margin-bottom:.6rem;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.deckText p{color:var(--ink2);font-size:var(--t-sm);line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.deckLink{display:inline-flex;align-items:center;gap:.45rem;margin-top:1.1rem;
+  font-size:var(--t-sm);font-weight:650;color:var(--brand)}
+.deckLink svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round}
+/* one stretched link per card — the whole card is the target */
+.deckLink::after{content:"";position:absolute;inset:0;z-index:3}
+.deckCard:focus-within .deckInner{outline:2px solid var(--brand);outline-offset:3px}
+
+/* no image, so a brand texture tile — never a grey placeholder box */
+.deckMedia{position:relative;background:var(--dentBg);aspect-ratio:16/9;
+  background-image:var(--tex);background-size:14px 14px}
+.deckMedia[data-tex="dots"]{--tex:radial-gradient(circle at 3px 3px,var(--dotOff) 1.6px,transparent 1.7px)}
+.deckMedia[data-tex="grid"]{--tex:linear-gradient(var(--dotOff) 1px,transparent 1px),linear-gradient(90deg,var(--dotOff) 1px,transparent 1px)}
+.deckMedia[data-tex="hatch"]{--tex:repeating-linear-gradient(45deg,var(--dotOff) 0 1px,transparent 1px 9px)}
+.deckMedia[data-tex="contours"]{--tex:repeating-radial-gradient(circle at 50% 120%,transparent 0 10px,var(--dotOff) 10px 11px)}
+
+/* the dimming overlay for cards that have receded behind the next one */
+.deckDim{position:absolute;inset:0;z-index:2;border-radius:var(--r-l);pointer-events:none;
+  background:var(--bg);opacity:0}
+
+@media (min-width:900px){
+  .deckInner{grid-template-columns:55% 45%}
+  .deckCardEnd .deckInner{grid-template-columns:1fr}
+  body:not(.nopin) .deckInner{min-height:min(480px,calc(var(--stage-h) - 120px))}
+  .deckMedia{aspect-ratio:4/3;height:100%}
+}
+@media (max-width:899px){
+  .deckInner{grid-template-columns:1fr}
+  .deckMedia{order:-1}
+  .deckText h3{-webkit-line-clamp:4}
+  .deckText p{-webkit-line-clamp:2}
+  body:not(.nopin) .deckInner{max-height:72svh}
+}
+
+/* Static state: no sticky, no scale, no dim — an ordinary list of cards. */
+body.nopin .deckCard{position:static;margin-bottom:1.2rem}
+body.nopin .deckInner{transform:none!important}
+body.nopin .deckDim{display:none}
+/* reduced motion keeps the stacking, drops the depth */
+body.rm .deckInner{transform:none!important}
+body.rm .deckDim{opacity:0!important}
+
+/*───────────────────────────────────────────────────────────────
+  §06 — Platform tide reveal (spec §5.4)
+  The water recedes and the platform surfaces. Cards read top to
+  bottom in one column: readable first, animated second.
+───────────────────────────────────────────────────────────────*/
+#platform{position:relative;padding-block:0 var(--section-pad-y)}
+/* full-bleed via a negative-margin-free grid escape; never 100vw, which on
+   Windows overshoots by the width of a classic scrollbar */
+.tideBand{position:relative;width:100%;height:clamp(96px,14svh,180px);overflow:hidden;
+  margin-bottom:clamp(1.6rem,4vh,3rem)}
+.tbLayerWrap{position:absolute;inset:0;will-change:transform}
+.tideBand svg{position:absolute;left:0;top:0;width:200%;height:100%}
+.tideBand .tbLayer{will-change:transform}
+.tideBand .tbDrift{animation:tbDrift var(--d,24s) linear infinite}
+/* the echo layer drifts the opposite way, at its own speed, so the two
+   waves visibly cross rather than just riding in lockstep */
+.tideBand .tbDrift2{animation:tbDrift var(--d,24s) linear infinite reverse}
+@keyframes tbDrift{to{transform:translateX(-50%)}}
+
+.plat{display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:start}
+.platHead h2{font-size:var(--t-3);max-width:16ch;margin-bottom:1rem}
+.platLead{color:var(--ink2);max-width:44ch}
+.platList{display:grid;gap:clamp(16px,3svh,32px);max-width:760px}
+
+.platCard{position:relative;isolation:isolate;overflow:clip;border-radius:var(--r-l)}
+@supports not (overflow:clip){.platCard{overflow:hidden}}
+.platBody{padding:clamp(1.3rem,3vw,1.8rem);border-radius:var(--r-l);
+  border:1px solid var(--line);background:var(--bg2)}
+.platTop{display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem}
+.platTop svg{width:24px;height:24px;flex:none;fill:none;stroke:var(--brand);stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round}
+.platTop h3{font-size:var(--t-2);letter-spacing:-.02em}
+.platCard p{color:var(--ink2);max-width:65ch;font-size:var(--t-0)}
+.platCard ul{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.4rem}
+.platCard li{position:relative;padding-left:1.1rem;font-size:var(--t-sm);color:var(--ink2)}
+.platCard li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;
+  border-radius:50%;background:var(--brand2)}
+
+/* the receding cover — same colour as the page, so what it uncovers is the card */
+.platCover{position:absolute;left:0;right:0;top:-20%;height:140%;z-index:2;pointer-events:none;
+  will-change:transform}
+.platCover svg{width:200%;height:100%;display:block}
+.platCover .pcDrift{animation:tbDrift 6s linear infinite}
+
+/* depth gauge — the water level rises as the list is read */
+.gauge{display:none;margin-top:2rem;gap:.9rem}
+.gaugeTrack{position:relative;width:2px;height:240px;background:var(--line2);border-radius:2px;flex:none}
+.gaugeFill{position:absolute;inset:0;background:linear-gradient(180deg,var(--b400),var(--b800));
+  border-radius:2px;transform:scaleY(var(--g,0));transform-origin:top;will-change:transform}
+.gaugeTicks{position:relative;height:240px;flex:1}
+.gaugeTicks b{position:absolute;left:0;transform:translateY(-50%);display:flex;align-items:center;gap:.5rem;
+  font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--ink3);white-space:nowrap;transition:color var(--dur-med) var(--ease-out-quint)}
+.gaugeTicks b::before{content:"";width:8px;height:1px;background:var(--line2);flex:none}
+.gaugeTicks b.on{color:var(--brand)}
+.gaugeTicks b.on::before{background:var(--brand);width:14px}
+
+@media (min-width:1200px){
+  .plat{grid-template-columns:minmax(0,4fr) minmax(0,7fr)}
+  .platHead{position:sticky;top:calc(var(--header-h) + 32px)}
+  .gauge{display:flex}
+}
+
+/* Static state (spec §5.4): no covers at all, cards fully visible, band still. */
+body.nopin .platCover,body.rm .platCover{display:none}
+body.nopin .platCard .platBody,body.rm .platCard .platBody{opacity:1;transform:none}
+body.nopin .tbDrift,body.nopin .tbDrift2,body.nopin .pcDrift{animation:none}
+/* touch devices don't need a 6s drift loop running behind every card */
+@media (pointer:coarse){.pcDrift{animation:none}}
+@media (max-width:899px){.platCover svg{width:100%}}
+
+/*───────────────────────────────────────────────────────────────
+  §05 — IsoStack (spec §5.3)
+  The reference prompt was Tailwind + Next + GSAP + a dark-only
+  canvas. Translated: tokens, static page, IntersectionObserver,
+  and a palette that works in both themes.
+───────────────────────────────────────────────────────────────*/
+#decision{position:relative;padding-block:var(--section-pad-y)}
+.iso{display:grid;gap:var(--gutter);align-items:start}
+.isoHead{margin-bottom:clamp(1.5rem,4vh,3rem)}
+.isoHead h2{font-size:var(--t-3);max-width:16ch;margin-bottom:1rem}
+.isoLead{color:var(--ink2);max-width:46ch}
+.isoStep{max-width:46ch}
+.isoStep i{display:block;font-style:normal;font-family:var(--fM);font-size:var(--t-xs);
+  letter-spacing:.2em;color:var(--brand2);font-weight:700;margin-bottom:.5rem}
+.isoStep h3{font-size:var(--t-2);margin-bottom:.5rem}
+.isoStep p{color:var(--ink2);font-size:var(--t-0)}
+.isoStage{position:relative;display:flex;align-items:center;justify-content:center}
+.isoStage svg{display:block;height:100%;width:auto;max-width:100%;overflow:visible}
+.isoSlab{opacity:0;transform:translateY(30px);
+  transition:opacity var(--dur-med) var(--ease-out-quint),transform var(--dur-med) var(--ease-out-quint)}
+.isoSlab.on{opacity:.7;transform:none}
+.isoSlab.act{opacity:1}
+.isoConn{opacity:0;transition:opacity var(--dur-med) var(--ease-out-quint)}
+.isoConn.on{opacity:1}
+.isoLabel{opacity:0;transition:opacity var(--dur-med) var(--ease-out-quint)}
+.isoLabel.on{opacity:1}
+.isoLabel text{font-family:var(--fS);fill:var(--ink2);font-size:14px;font-weight:500}
+.isoLabel .n{font-family:var(--fM);fill:var(--brand2);font-weight:700}
+.isoNum{font-family:var(--fM);font-size:14px;font-weight:700;fill:var(--onBrand);opacity:.85}
+/* the skyline on the top layer grows in once that layer is active — a
+   transform only (scaleY from its own ground point), no geometry rebuild */
+.isoBldg{transform:scaleY(.06);transition:transform var(--dur-slow) var(--ease-out-quint)}
+.isoSlab.act .isoBldg{transform:scaleY(1)}
+
+/* ≥900 and pinning allowed: two columns, the stage sticky beside the steps */
+@media (min-width:900px){
+  body:not(.nopin) .iso{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+  body:not(.nopin) .isoStep{min-height:var(--step-h);display:flex;flex-direction:column;justify-content:center}
+  body:not(.nopin) .isoStageWrap{position:sticky;top:var(--header-h);height:var(--stage-h);
+    display:flex;align-items:center;justify-content:center}
+  body:not(.nopin) .isoStage{max-height:calc(var(--stage-h) - 48px);height:100%}
+}
+/* <900: one column, the stage sticks to the top and the steps run under it */
+@media (max-width:899px){
+  body:not(.nopin) .isoStageWrap{position:sticky;top:var(--header-h);height:44svh;z-index:1;
+    background:var(--bg);
+    -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 32px),transparent);
+    mask-image:linear-gradient(180deg,#000 calc(100% - 32px),transparent)}
+  body:not(.nopin) .isoStage{height:100%}
+  body:not(.nopin) .isoStep{min-height:55svh;display:flex;flex-direction:column;justify-content:center}
+  /* the stage has to come first in the flow, before the steps scroll under it */
+  body:not(.nopin) .iso{display:flex;flex-direction:column}
+  body:not(.nopin) .isoStageWrap{order:-1}
+  body:not(.nopin) .isoHead{order:-2}
+}
+@media (max-width:599px){
+  body:not(.nopin) .isoStageWrap{height:40svh}
+  body:not(.nopin) .isoStep{min-height:50svh}
+}
+/* !canPin: no sticky anywhere, the full stack shown once, steps as a list */
+body.nopin .isoStageWrap{position:static;height:auto;margin-bottom:2rem}
+body.nopin .isoStage{height:clamp(300px,52vh,460px)}
+body.nopin .isoStep{margin-bottom:1.8rem}
+body.nopin .isoSlab,body.nopin .isoConn,body.nopin .isoLabel{opacity:1;transform:none;transition:none}
+body.nopin .isoSlab{opacity:.9}
+
 /*── SCROLL-DRIVEN DECK ──*/
-#decision{position:relative}
-#deckPin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:clamp(1rem, 2vw, 1.7rem);overflow:hidden}
-.dhead{text-align:center;max-width:min(92vw,700px);margin-inline:auto;padding-inline:1rem}
-.dhead h2{font-size:var(--t-3)}
-#stage{position:relative;height:clamp(320px, 52vh, 470px);perspective:1700px;perspective-origin:50% 48%}
-#hx{position:absolute;inset:0;transform-style:preserve-3d}
 .hc{position:absolute;left:50%;top:50%;width:clamp(224px, 26vw, 300px);margin-left:calc(clamp(224px, 26vw, 300px) * -0.5);
   border-radius:var(--r-l);overflow:hidden;transform-style:preserve-3d;will-change:transform,opacity;
   background:linear-gradient(158deg,var(--glassA),var(--glassB));
@@ -622,16 +1128,47 @@ body.rm .ncard{opacity:1!important;transform:none!important}
 #close .bg2:hover{background:rgba(255,255,255,.12)}
 
 /*── FOOTER ──*/
-footer{padding-block:clamp(3.5rem,7vw,5.5rem) 2.5rem;position:relative;z-index:1}
-.fg{display:grid;grid-template-columns:repeat(2,1fr);gap:2.5rem 1.5rem}
-@media(min-width:860px){.fg{grid-template-columns:2.2fr repeat(4,1fr)}}
-.fg h4{font-family:var(--fS);font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink3);margin-bottom:1.1rem;font-weight:700}
-.fg ul{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
-.fg li a{font-size:var(--t-sm);color:var(--ink2);transition:color .22s}
-.fg li a:hover{color:var(--brand)}
-.fblurb{font-size:var(--t-sm);color:var(--ink2);max-width:34ch;margin:1.2rem 0 0;line-height:1.6}
-.fbot{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);
-  font-size:.56rem;letter-spacing:.18em;color:var(--ink3);font-weight:600;text-transform:uppercase}
+/*───────────────────────────────────────────────────────────────
+  Footer (spec §5.7)
+  Columns top-aligned, legal moved to its own bar, safe-area aware.
+───────────────────────────────────────────────────────────────*/
+.site-footer{padding-top:var(--section-pad-y);position:relative;z-index:1}
+.site-footer__top{display:grid;gap:clamp(32px,5vw,64px);grid-template-columns:1fr;align-items:start}
+.site-footer__logo{display:flex;align-items:center;gap:.8rem}
+.site-footer__logo img{width:44px;height:44px;border-radius:50%;flex:none}
+.site-footer__names{display:block}
+.site-footer__wordmark{display:block;font-family:var(--fD);font-size:1.05rem;font-weight:600;letter-spacing:-.01em}
+.site-footer__tagline{display:block;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink3);font-weight:700;margin-top:.2rem}
+.site-footer__desc{font-size:var(--t-sm);color:var(--ink2);max-width:36ch;margin:1.2rem 0 0;line-height:1.6}
+
+.site-footer__nav{display:grid;gap:32px 24px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:600px){.site-footer__nav{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:900px){.site-footer__nav{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (min-width:1200px){.site-footer__top{grid-template-columns:minmax(260px,4fr) 8fr}}
+@media (max-width:339px){.site-footer__nav{grid-template-columns:1fr}}
+
+.site-footer__heading{font-family:var(--fS);font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 12px;font-weight:700}
+.site-footer__col ul{list-style:none;margin:0;padding:0;display:grid;gap:.2rem}
+.site-footer__nav a{display:inline-flex;align-items:center;min-height:44px;
+  font-size:var(--t-sm);color:var(--ink2);transition:color .22s}
+@media (hover:hover) and (pointer:fine){
+  .site-footer__nav a{min-height:32px}
+  .site-footer__nav a:hover{color:var(--brand)}
+  .site-footer__legal a:hover{color:var(--brand)}
+}
+
+.site-footer__bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:12px 24px;margin-top:clamp(40px,6vw,72px);
+  padding-block:24px calc(24px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);
+  font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink3)}
+.site-footer__bottom p{margin:0}
+.site-footer__legal{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center}
+.site-footer__top-btn{font-size:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:inherit;
+  color:var(--ink3);min-height:44px;padding-inline:.2rem;transition:color .22s}
+@media (max-width:599px){.site-footer__bottom{flex-direction:column;align-items:flex-start}}
 
 /*═══════════ UI SYSTEMS ═══════════*/
 
@@ -664,16 +1201,24 @@ body.rm #down i{animation:none}
 .fab:hover{transform:translateY(-3px) scale(1.05)}
 .fab svg{width:19px;height:19px;stroke:var(--ink);fill:none;stroke-width:1.7}
 #toTop{opacity:0;visibility:hidden;transform:translateY(16px) scale(.9);
-  width:54px;height:54px;background:var(--brand);border-color:transparent;
+  width:58px;height:58px;background:linear-gradient(155deg,var(--brand2),var(--brand));border-color:transparent;
   box-shadow:0 10px 30px -8px color-mix(in srgb,var(--brand) 55%,transparent),0 2px 6px rgba(0,0,0,.25)}
 #toTop.on{opacity:1;visibility:visible;transform:none}
 #toTop:hover{transform:translateY(-3px) scale(1.06);filter:brightness(1.08)}
-#toTop .arw{width:20px;height:20px;stroke:var(--onBrand);stroke-width:2.1;position:relative;z-index:1}
-#toTop .ring{position:absolute;top:-7px;left:-7px;right:-7px;bottom:-7px;transform:rotate(-90deg);pointer-events:none}
+#toTop .arw{width:21px;height:21px;stroke:var(--onBrand);stroke-width:2.2;position:relative;z-index:1}
+#toTop .ring{position:absolute;top:-8px;left:-8px;right:-8px;bottom:-8px;transform:rotate(-90deg);pointer-events:none}
 #toTop .ring circle{fill:none;stroke-width:3}
 #toTop .ringBg{stroke:color-mix(in srgb,var(--ink3) 34%,transparent)}
-#toTop .ringFg{stroke:var(--brand);stroke-linecap:round;
+#toTop .ringFg{stroke:var(--onBrand);stroke-linecap:round;
   stroke-dasharray:125.66;stroke-dashoffset:125.66;transition:stroke-dashoffset .18s linear}
+/* a slow dashed ring, distinct from #fabMain right next to it and from the
+   scroll-progress ring above, so the control reads as alive rather than a
+   second static copy of the contact button */
+#toTop .spinRing{position:absolute;inset:-10px;pointer-events:none;
+  animation:sp 8s linear infinite}
+#toTop .spinRing circle{fill:none;stroke:var(--onBrand);stroke-width:1.3;
+  stroke-dasharray:2 8;opacity:.55}
+body.rm #toTop .spinRing{animation:none}
 #fabMain{background:var(--brand);border-color:transparent}
 #fabMain svg{stroke:var(--onBrand)}
 #fabMenu{position:absolute;right:0;bottom:calc(var(--fabH, 50px) + .7rem);
@@ -802,37 +1347,6 @@ textarea.inp{resize:vertical;min-height:92px}
 .tspine.flat i{font-size:.6rem}
 
 /*── the flood problem ──*/
-.story .closer{color:var(--ink);font-weight:550;border-left:2px solid var(--brand);padding-left:1rem;margin-top:1.4rem}
-.probList{display:grid;gap:.8rem}
-.probList article{
-  position:relative;padding:clamp(1.2rem, 2.6vw, 1.6rem) clamp(1.3rem, 2.8vw, 1.8rem);
-  border-radius:var(--r-l);border:1px solid var(--line);background:var(--dentBg);
-  opacity:0;will-change:transform,opacity;transition:border-color .5s var(--E),background .5s var(--E)}
-.probList article.lit{border-color:var(--line2);background:var(--glassB)}
-.probList i{font-style:normal;font-family:var(--fM);font-size:.64rem;letter-spacing:.16em;color:var(--brand);display:block;margin-bottom:.5rem}
-.probList h3{font-size:var(--t-1);letter-spacing:-.02em;margin-bottom:.4rem}
-.probList p{font-size:var(--t-sm);color:var(--ink2);line-height:1.55}
-body.rm .probList article{opacity:1!important;transform:none!important}
-
-/*── decision gap flow ──*/
-.flow{display:flex;flex-direction:column;align-items:center;gap:1.1rem;text-align:center}
-.flowIn{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;max-width:720px}
-.flowIn span{padding:.6rem 1.05rem;border-radius:999px;border:1px solid var(--line2);background:var(--dentBg);
-  font-size:var(--t-sm);color:var(--ink2);white-space:nowrap}
-.flowArrow{display:flex;flex-direction:column;align-items:center;gap:4px;flex:none}
-.flowArrow i{display:block;width:2px;height:9px;border-radius:2px;background:var(--line2)}
-.flowArrow i:nth-child(2){background:var(--b400)}
-.flowArrow i:nth-child(3){background:var(--brand)}
-.flowCore{padding:1.15rem 2.6rem;border-radius:var(--r-l);flex:none}
-.flowCore b{font-family:var(--fD);font-size:var(--t-2);font-weight:600;letter-spacing:-.02em}
-.flowOut{padding:1.05rem 2.4rem;border-radius:999px;background:var(--brand);color:var(--onBrand);flex:none}
-.flowOut b{font-size:var(--t-1);font-weight:650}
-@media(min-width:920px){
-  .flow{flex-direction:row;gap:1.5rem;text-align:left}
-  .flowIn{flex:1 1 40%;justify-content:flex-start;max-width:none}
-  .flowArrow{flex-direction:row;gap:5px}
-  .flowArrow i{width:9px;height:2px}
-}
 
 /*── product kickers, disclaimer, explorer band ──*/
 .pkick{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--brand);margin-bottom:.75rem}
@@ -844,34 +1358,10 @@ body.rm .probList article{opacity:1!important;transform:none!important}
 .explorerBand .ptag{margin:0;color:var(--ink2);max-width:46ch}
 
 /*── platform pipeline ──*/
-.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr));gap:clamp(.7rem, 1.6vw, 1rem)}
-.pipe>div{padding:clamp(1.4rem, 3vw, 1.9rem);border-radius:var(--r-l);transition:transform .5s var(--E)}
-.pipe>div:hover{transform:translateY(-5px)}
-.pipe i{font-style:normal;font-family:var(--fM);font-size:.64rem;letter-spacing:.16em;color:var(--brand);display:block;margin-bottom:.9rem}
-.pipe h3{font-size:var(--t-1);letter-spacing:-.02em;margin-bottom:.45rem}
-.pipe p{font-size:var(--t-sm);color:var(--ink2);line-height:1.55}
 
 /*── about ──*/
-.aboutGrid{display:grid;gap:clamp(2rem, 4vw, 3.5rem);align-items:start}
-@media(min-width:900px){.aboutGrid{grid-template-columns:.85fr 1.15fr}}
-.vals{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
-  background:var(--line);border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden}
-.vals>div{background:var(--bg);padding:clamp(1.2rem, 2.6vw, 1.6rem)}
-.vals h4{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--ink3);margin-bottom:.6rem}
-.vals p{font-family:var(--fD);font-size:var(--t-1);font-weight:600;letter-spacing:-.02em;line-height:1.3}
-@media(max-width:520px){.vals{grid-template-columns:1fr}}
 
 /*── insights ──*/
-.cats{display:grid;grid-template-columns:1fr;gap:.7rem}
-@media(min-width:560px){.cats{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:900px){.cats{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:1200px){.cats{grid-template-columns:repeat(5,1fr)}}
-.cats a{display:block;padding:clamp(1.1rem, 2.2vw, 1.4rem);border-radius:var(--r-l);
-  border:1px solid var(--line);background:var(--dentBg);transition:transform .45s var(--E),border-color .3s}
-.cats a:hover{transform:translateY(-5px);border-color:var(--line2)}
-.cats b{display:block;font-family:var(--fD);font-size:var(--t-1);font-weight:600;letter-spacing:-.02em;margin-bottom:.35rem}
-.cats em{display:block;font-style:normal;font-size:var(--t-sm);color:var(--ink2);line-height:1.5}
-.pending{margin-top:1.5rem;color:var(--ink3);letter-spacing:.2em}
 
 /*── get started intents ──*/
 .intents{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);
@@ -896,10 +1386,10 @@ body.rm .probList article{opacity:1!important;transform:none!important}
   .aur{filter:blur(58px)}
   #a3{display:none}
   #problem{height:230svh!important}
-  #decision{height:290svh!important}
+  #gap{height:200svh!important}
   #why{height:330svh!important}
   .glass,.drop,#menuPanel{backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
-  #stage{height:clamp(270px, 48vh, 330px)}
+  .nstage{height:clamp(270px, 48vh, 330px)}
   .stackStage{height:clamp(380px, 56vh, 440px)}
   #bars{gap:1px;height:clamp(110px, 30vw, 150px)}
   .tlx{font-size:.52rem}
@@ -911,11 +1401,10 @@ body.rm .probList article{opacity:1!important;transform:none!important}
   .mfoot,.mhead{gap:.4rem}
   #readout{font-size:.56rem}
   #down{display:none}
-  .flowCore,.flowOut{width:100%}
   .explorerBand{flex-direction:column;align-items:flex-start}
 }
 @media(max-width:1024px) and (min-width:761px){
-  #problem{height:250svh!important}#decision{height:350svh!important}#why{height:380svh!important}
+  #problem{height:250svh!important}#why{height:380svh!important}
 }
 
 /*── LEFT STORYLINE RAIL ──*/
@@ -947,21 +1436,39 @@ body.rm .probList article{opacity:1!important;transform:none!important}
 @media print{
   @page{margin:16mm}
   html,body{background:#fff!important;color:#000!important;font-size:11pt}
-  #atmos,#skip,#fabs,#cookie,#pre,#down,header,#menuPanel,#rail,.ov,#stage,.dprog,.dhint,
+  #atmos,#skip,#fabs,#cookie,#pre,#down,header,#menuPanel,#rail,.ov,.nstage,.dprog,.dhint,
   .pv,.chip,#readout,.lg,.copy,.pwEye,.btn,.cta-sm,.sw{display:none!important}
   #vp{position:static!important;transform:none!important}
   body{height:auto!important;overflow:visible!important}
   section{padding-block:0!important;page-break-inside:avoid;margin-bottom:14mm}
-  .pinsec,#decision{height:auto!important}
-  .pin,#deckPin{height:auto!important;transform:none!important;display:block!important}
+  .pinsec{height:auto!important}
+  .pin{height:auto!important;transform:none!important;display:block!important}
   .glass,.dent,.prod,.formCard,#tl{background:none!important;backdrop-filter:none!important;
     box-shadow:none!important;border:1px solid #bbb!important;border-radius:4px!important}
   [data-rv],.mask>span{opacity:1!important;transform:none!important}
 
   h1,h2,h3{page-break-after:avoid;color:#000!important}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#555}
-    .fbot{border-top:1px solid #999}
+    .site-footer__bottom{border-top:1px solid #999}
 }
+
+/*───────────────────────────────────────────────────────────────
+  REDESIGN v2 — PIN POLICY (spec §4.4)
+  A pin is allowed only when the viewport is tall enough to hold a
+  stage AND the visitor hasn't asked for reduced motion. `body.nopin`
+  is set by JS and kept in sync with the media queries; every pinned
+  section then collapses to its static layout, in DOM order.
+  Heights use svh, never dvh — dvh resizes mid-scroll as the mobile
+  URL bar collapses, which reads as jank on iOS Safari.
+───────────────────────────────────────────────────────────────*/
+body.nopin .pinsec{height:auto!important}
+body.nopin .pin{position:static!important;height:auto!important;display:block!important}
+body.nopin .nstage,
+body.nopin .dprog,
+body.nopin .dhint{display:none}
+/* content must never be stranded at opacity 0 when the motion is off */
+body.nopin [data-rv],
+body.nopin .mask>span{opacity:1!important;transform:none!important}
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
@@ -969,7 +1476,7 @@ body.rm .probList article{opacity:1!important;transform:none!important}
   #pre,#prog,#fabs,#cookie,.ov{display:none!important}
   #vp{position:static!important;transform:none!important}
   [data-rv],.mask>span,.ncard,.scard,.prod,.prod .pbody{opacity:1!important;transform:none!important}
-  .pinsec,#deckSec{height:auto!important}.pin,#deckPin{height:auto!important}
+  .pinsec{height:auto!important}.pin{height:auto!important}
 </style></noscript>
 </head>
 <body>
@@ -1161,36 +1668,43 @@ setTimeout(function(){
 
 <!-- ══ THE FLOOD PROBLEM ══ -->
 <section class="pinsec" id="problem" style="height:215svh;padding:0">
-  <div class="pin" id="problemPin"><div class="wrap story">
-    <div>
+  <div class="pin narrative" id="problemPin">
+    <div class="dhead">
       <span class="snum">01 — The flood problem</span>
       <h2 data-rv>Flood risk is changing. The way we assess it hasn't.</h2>
-      <p data-rv>Flood risk is no longer defined by what happened in the past. Changing rainfall patterns, expanding exposure and evolving climate conditions are reshaping where and how losses occur. Yet many important decisions still depend on fragmented, historical or coarse risk information.</p>
-      <p data-rv class="closer">The challenge isn't a lack of data. It's turning the right data into usable intelligence when a decision needs to be made.</p>
+      <p class="nlead" data-rv>Flood risk is no longer defined by what happened in the past. Changing rainfall patterns, expanding exposure and evolving climate conditions are reshaping where and how losses occur. Yet many important decisions still depend on fragmented, historical or coarse risk information.</p>
+      <p class="nlead nlead2" data-rv>The challenge isn't a lack of data. It's turning the right data into usable intelligence when a decision needs to be made.</p>
     </div>
-    <div class="probList" id="probList">
-      <article><i>01</i><h3>Backward-looking</h3><p>Past data doesn't fully describe future risk.</p></article>
-      <article><i>02</i><h3>Too coarse</h3><p>Risk gets lost between the district and the asset.</p></article>
-      <article><i>03</i><h3>Fragmented</h3><p>The data exists. The intelligence is scattered.</p></article>
-    </div>
-  </div></div>
+    <div class="nstage" id="problemStage" aria-hidden="true"><div class="nhx" id="problemHx"></div></div>
+    <div class="dprog" id="problemProg" aria-hidden="true"></div>
+    <p class="dhint">Keep scrolling</p>
+    <!-- the carousel is decorative; this is the content of record for
+         screen readers and for any visitor whose JS never runs -->
+    <ol class="nlist" id="problemList">
+      <li><i>01</i><h3>Backward-looking</h3><p>Past data doesn't fully describe future risk.</p></li>
+      <li><i>02</i><h3>Too coarse</h3><p>Risk gets lost between the district and the asset.</p></li>
+      <li><i>03</i><h3>Fragmented</h3><p>The data exists. The intelligence is scattered.</p></li>
+    </ol>
+  </div>
 </section>
 
 <!-- ══ DECISION GAP ══ -->
-<section id="gap">
-  <div class="wrap">
-    <span class="snum">02 — The decision gap</span>
-    <h2 data-rv style="font-size:var(--t-3);max-width:18ch;margin-bottom:2.6rem">Data alone doesn't answer the decision.</h2>
-    <div class="flow" data-rv>
-      <div class="flowIn" data-stag>
-        <span>Rainfall</span><span>Flood history</span><span>Terrain</span><span>Drainage</span>
-        <span>Satellite data</span><span>Climate projections</span><span>Exposure</span>
-      </div>
-      <div class="flowArrow" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="flowCore glass"><b>FloodGuard</b></div>
-      <div class="flowArrow" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="flowOut"><b>Decision</b></div>
+<section id="gap" class="pinsec" style="height:220svh;padding:0">
+  <div class="pin confl" id="gapPin">
+    <div class="wrap conflHead">
+      <span class="snum">02 — The decision gap</span>
+      <h2 data-rv>Data alone doesn't answer the decision.</h2>
+      <p class="conflLead" data-rv>Seven inputs, one channel. The work isn't collecting them — it's making them
+        arrive together, at the moment the decision is made.</p>
     </div>
+    <div class="conflStage" id="conflStage"></div>
+    <!-- The diagram is decorative; this is the content of record. -->
+    <ol class="sr" id="conflList">
+      <li>Rainfall</li><li>Flood history</li><li>Terrain</li><li>Drainage</li>
+      <li>Satellite data</li><li>Climate projections</li><li>Exposure</li>
+      <li>All seven converge in FloodGuard</li>
+      <li>One decision leaves it</li>
+    </ol>
   </div>
 </section>
 
@@ -1266,32 +1780,129 @@ setTimeout(function(){
 </section>
 
 <!-- ══ DECISION SUPPORT ══ -->
-<section id="decision" style="height:315svh;padding:0">
-  <div id="deckPin">
-    <div class="dhead">
-      <span class="snum">05 — Decision support</span>
-      <h2 data-rv>From flood risk to actionable insight.</h2>
+<section id="decision">
+  <div class="wrap iso" id="isoRoot">
+    <div class="isoCol">
+      <div class="isoHead">
+        <span class="snum">05 — Decision support</span>
+        <h2 data-rv>From flood risk to actionable insight.</h2>
+        <p class="isoLead" data-rv>Each layer resolves the one beneath it. Nothing is inferred from a single
+          source, and every layer stays inspectable on its own.</p>
+      </div>
+      <!-- i = 0 is the BOTTOM layer. Text order top→bottom == stack order bottom→top. -->
+      <div class="isoStep" data-step><i>01</i><h3>Hazard signals</h3><p>Observed rainfall, river levels and recorded flood events, held as one continuous series from 1951.</p></div>
+      <div class="isoStep" data-step><i>02</i><h3>Terrain &amp; drainage</h3><p>Elevation, slope and drainage capacity — where the water can go once it arrives, and where it cannot.</p></div>
+      <div class="isoStep" data-step><i>03</i><h3>Exposure</h3><p>People, assets and land use in the path of the water, resolved from district down to site.</p></div>
+      <div class="isoStep" data-step><i>04</i><h3>Risk</h3><p>Hazard × exposure × vulnerability, combined into a single comparable measure rather than four separate ones.</p></div>
+      <div class="isoStep" data-step><i>05</i><h3>Decision</h3><p>The vulnerability atlas, portfolio exposure screening, drainage capacity assessment and site-level risk analysis all read off this stack.</p></div>
     </div>
-    <div id="stage"><div id="hx"></div></div>
-    <div class="dprog" id="dprog"></div>
-    <p class="dhint">Keep scrolling</p>
+    <div class="isoStageWrap">
+      <div class="isoStage" id="isoStage"></div>
+    </div>
   </div>
 </section>
 
 <!-- ══ PLATFORM ══ -->
 <section id="platform">
-  <div class="wrap">
-    <span class="snum">06 — Platform</span>
-    <p class="eye caps" data-rv><i></i>The intelligence behind FloodGuard</p>
-    <h2 data-rv style="font-size:var(--t-3);max-width:16ch;margin-bottom:2.6rem">Data in. Intelligence out.</h2>
-    <div class="pipe" data-rv data-stag>
-      <div class="glass"><i>01</i><h3>Data</h3><p>Observed climate, satellite and remote sensing, terrain, hydrological records and climate projections.</p></div>
-      <div class="glass"><i>02</i><h3>Models</h3><p>Statistical, machine-learning and climate-modelling approaches, applied where each is appropriate.</p></div>
-      <div class="glass"><i>03</i><h3>Risk</h3><p>Hazard × exposure × vulnerability, resolved from India down to site and asset level.</p></div>
-      <div class="glass"><i>04</i><h3>Decision</h3><p>Maps, reports, APIs and data services that drop into the workflows you already run.</p></div>
+  <!-- the tide band opens as the section arrives; full-bleed via grid, never 100vw -->
+  <div class="tideBand" id="tideBand" aria-hidden="true"></div>
+  <div class="wrap plat">
+    <div class="platHead">
+      <span class="snum">06 — Platform</span>
+      <p class="eye caps" data-rv><i></i>The intelligence behind FloodGuard</p>
+      <h2 data-rv>Data in. Intelligence out.</h2>
+      <p class="platLead" data-rv>Five parts, each inspectable on its own. Nothing here is a black box —
+        every number we publish can be traced back to the data and the method that produced it.</p>
+      <div class="gauge" id="platGauge" aria-hidden="true">
+        <div class="gaugeTrack"><i class="gaugeFill"></i></div>
+        <div class="gaugeTicks"></div>
+      </div>
     </div>
-    <div data-rv style="margin-top:2.2rem"><a class="btn bg2" href="#start">Explore the platform <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+
+    <div class="platList" id="platList">
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+            <h3>Data</h3>
+          </div>
+          <p>Observed climate, satellite and remote sensing, terrain, hydrological records and climate
+            projections, held as one continuous series rather than a set of disconnected extracts.</p>
+          <ul>
+            <li>Observed rainfall and river levels</li>
+            <li>Satellite and remote sensing</li>
+            <li>Terrain, drainage and land use</li>
+            <li>Climate projections</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/></svg>
+            <h3>Technology</h3>
+          </div>
+          <p>Statistical, machine-learning and climate-modelling approaches, applied where each is
+            appropriate rather than everywhere at once.</p>
+          <ul>
+            <li>Hydrological simulation</li>
+            <li>Machine learning where it earns its place</li>
+            <li>Reproducible model runs</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6M9 13h7M9 17h5"/></svg>
+            <h3>Methodology</h3>
+          </div>
+          <p>How hazard, exposure and vulnerability are combined, written down and published — so a
+            result can be argued with rather than taken on trust.</p>
+          <ul>
+            <li>Documented assumptions</li>
+            <li>Stated uncertainty</li>
+            <li>Versioned method notes</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="m8.5 12 2.5 2.5L16 9.5"/></svg>
+            <h3>Validation</h3>
+          </div>
+          <p>Model output checked against recorded events, and the checks reported alongside the
+            result rather than kept separately.</p>
+          <ul>
+            <li>Back-testing against observed floods</li>
+            <li>Independent review of method</li>
+            <li>Published performance notes</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" data-step>
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 8-5 4 5 4M15 8l5 4-5 4M13 5l-2 14"/></svg>
+            <h3>API</h3>
+          </div>
+          <p>Maps, reports, data services and endpoints that drop into the workflows you already run,
+            instead of asking you to move into ours.</p>
+          <ul>
+            <li>REST endpoints for risk and exposure</li>
+            <li>Bulk data delivery</li>
+            <li>Tiles for your own map stack</li>
+          </ul>
+        </div>
+      </article>
+    </div>
   </div>
+  <div class="wrap" data-rv style="margin-top:2.4rem"><a class="btn bg2" href="#start">Explore the platform <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
 </section>
 
 <!-- ══ WHO WE SERVE ══ -->
@@ -1329,36 +1940,137 @@ setTimeout(function(){
 </section>
 
 <!-- ══ ABOUT ══ -->
+<!-- no class="drop" here: .drop is the nav dropdown, which is
+     opacity:0/visibility:hidden until opened. -->
 <section id="about">
-  <div class="wrap aboutGrid">
-    <div>
-      <span class="snum">09 — About us</span>
-      <h2 data-rv style="font-size:var(--t-3);max-width:15ch;margin-bottom:1.2rem">Building India's flood intelligence layer.</h2>
-      <p data-rv style="color:var(--ink2);max-width:44ch">FloodGuard is a team working across climate science, geospatial intelligence and data systems to make flood risk more understandable, accessible and actionable.</p>
+  <div class="dropTrack" id="dropTrack">
+    <div class="dropStage" id="dropStage">
+      <span class="snum dropLabel">09 — About us</span>
+      <div class="dropScene" id="dropScene" aria-hidden="true"></div>
+      <!-- the reveal disc is a plain div, not SVG: one composited transform
+           beats scaling a shape inside a slice-fitted viewBox -->
+      <div class="dropDisc" id="dropDisc" aria-hidden="true"></div>
     </div>
-    <div class="vals" data-rv data-stag>
-      <div><h4>Vision</h4><p>No decision made blind to climate risk.</p></div>
-      <div><h4>Mission</h4><p>Turning uncertainty into intelligence.</p></div>
-      <div><h4>Why we exist</h4><p>The data exists. The decision layer doesn't.</p></div>
-      <div><h4>Principles</h4><p>Science first · Built for India · Decision-ready · Honest about uncertainty</p></div>
+  </div>
+
+  <div class="dropAfter" id="dropAfter">
+    <div class="wrap dropGrid">
+      <div class="dropText">
+        <h2>Building India's flood intelligence layer.</h2>
+        <p>FloodGuard is a team working across climate science, geospatial intelligence and data
+          systems to make flood risk more understandable, accessible and actionable.</p>
+        <p class="dropPrinciples">Science first · Built for India · Decision-ready · Honest about uncertainty</p>
+      </div>
+      <!-- the branch pattern moved here from Solutions (spec: parked, reused
+           smaller) — same mechanism as before, now carrying the About copy
+           instead of the industries -->
+      <div class="tree aboutTree" id="aboutTree">
+        <svg id="aboutTreeSvg" aria-hidden="true">
+          <defs><linearGradient id="aboutVineGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--b400)"/><stop offset="55%" stop-color="var(--b600)"/><stop offset="100%" stop-color="var(--b800)"/>
+          </linearGradient></defs>
+        </svg>
+      </div>
     </div>
+    <div class="dropWave" aria-hidden="true"></div>
   </div>
 </section>
 
 <!-- ══ INSIGHTS ══ -->
 <section id="insights">
-  <div class="wrap">
-    <span class="snum">10 — Insights</span>
-    <p class="eye caps" data-rv><i></i>Understanding flood risk, beyond the map</p>
-    <h2 data-rv style="font-size:var(--t-3);max-width:20ch;margin-bottom:2.4rem">Research, data stories and practical perspectives.</h2>
-    <div class="cats" data-rv data-stag>
-      <a href="#start"><b>Research</b><em>Flood risk, climate data and India's changing risk landscape</em></a>
-      <a href="#start"><b>White papers</b><em>Detailed research on exposure and decision support</em></a>
-      <a href="#start"><b>Use cases</b><em>Sector-specific applications</em></a>
-      <a href="#start"><b>Data stories</b><em>Visual explorations of flood history and rainfall</em></a>
-      <a href="#start"><b>Articles</b><em>Perspectives on flood science, technology and resilience</em></a>
+  <div class="wrap deckGrid">
+    <div class="deckHead">
+      <span class="snum">10 — Insights</span>
+      <p class="eye caps" data-rv><i></i>Understanding flood risk, beyond the map</p>
+      <h2 data-rv>Research, data stories and practical perspectives.</h2>
+      <p class="deckLead" data-rv>Five strands of work, published as the library fills. Each one starts from
+        the same observed record the rest of the platform is built on.</p>
     </div>
-    <p class="pending caps" data-rv>Publication library in preparation</p>
+
+    <div class="deck" id="insightDeck">
+      <article class="deckCard" style="--i:0">
+        <div class="deckInner">
+          <div class="deckText">
+            <span class="deckKind">Research</span>
+            <h3>Flood risk, climate data and India's changing risk landscape</h3>
+            <p>How the observed record and climate projections disagree, where they agree, and what
+              that means for anyone pricing or planning around flood.</p>
+            <a class="deckLink" href="#start">Request research <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          </div>
+          <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
+        </div>
+        <i class="deckDim" aria-hidden="true"></i>
+      </article>
+
+      <article class="deckCard" style="--i:1">
+        <div class="deckInner">
+          <div class="deckText">
+            <span class="deckKind">White paper</span>
+            <h3>Exposure and decision support</h3>
+            <p>Detailed method notes on how exposure is resolved from district to site, and how the
+              result is meant to be read by the people making the call.</p>
+            <a class="deckLink" href="#start">Request paper <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          </div>
+          <div class="deckMedia" data-tex="grid" aria-hidden="true"></div>
+        </div>
+        <i class="deckDim" aria-hidden="true"></i>
+      </article>
+
+      <article class="deckCard" style="--i:2">
+        <div class="deckInner">
+          <div class="deckText">
+            <span class="deckKind">Use case</span>
+            <h3>Sector-specific applications</h3>
+            <p>What insurance, banking, government, infrastructure and agriculture each actually ask
+              of a flood model — and where those questions diverge.</p>
+            <a class="deckLink" href="#serve">See solutions <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          </div>
+          <div class="deckMedia" data-tex="hatch" aria-hidden="true"></div>
+        </div>
+        <i class="deckDim" aria-hidden="true"></i>
+      </article>
+
+      <article class="deckCard" style="--i:3">
+        <div class="deckInner">
+          <div class="deckText">
+            <span class="deckKind">Data story</span>
+            <h3>Seventy-five years of rainfall, drawn</h3>
+            <p>Visual explorations of the flood history and rainfall record behind the platform,
+              built from the same series the timeline above reads from.</p>
+            <a class="deckLink" href="#record">See the record <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          </div>
+          <div class="deckMedia" data-tex="contours" aria-hidden="true"></div>
+        </div>
+        <i class="deckDim" aria-hidden="true"></i>
+      </article>
+
+      <article class="deckCard" style="--i:4">
+        <div class="deckInner">
+          <div class="deckText">
+            <span class="deckKind">Article</span>
+            <h3>Perspectives on flood science and resilience</h3>
+            <p>Shorter pieces on flood science, technology and resilience, written for people who
+              have to act on the answer rather than publish it.</p>
+            <a class="deckLink" href="#start">Get notified <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          </div>
+          <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
+        </div>
+        <i class="deckDim" aria-hidden="true"></i>
+      </article>
+
+      <article class="deckCard deckCardEnd" style="--i:5">
+        <div class="deckInner">
+          <div class="deckText">
+            <span class="deckKind">Library</span>
+            <h3>In preparation</h3>
+            <p>The publication library isn't open yet. Tell us which of these you want first and
+              we'll send it when it lands.</p>
+            <a class="deckLink" href="#start">Tell us what to publish <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          </div>
+        </div>
+        <i class="deckDim" aria-hidden="true"></i>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -1473,25 +2185,53 @@ setTimeout(function(){
   </div></div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="fg">
-      <div>
-        <a class="logo" href="#hero"><img src="data:image/jpeg;base64,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UUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKACiiigD/9k=" alt="FloodGuard">
-          <span style="display:block"><b style="display:block">FloodGuard</b><span>Predict · Plan · Protect</span></span></a>
-        <p class="fblurb">Flood intelligence across time — historical, current and future — translated into decision-ready intelligence for organizations exposed to flood risk.</p>
+<footer class="site-footer">
+  <div class="wrap site-footer__top">
+    <div class="site-footer__brand">
+      <!-- One wordmark. The mark is decorative (alt=""), the text carries the
+           name, and the link is labelled once — it used to announce
+           "FloodGuard FloodGuard" to a screen reader. -->
+      <a class="site-footer__logo" href="#hero" aria-label="FloodGuard home">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAQCAwMDAgQDAwMEBAQEBQkGBQUFBQsICAYJDQsNDQ0LDAwOEBQRDg8TDwwMEhgSExUWFxcXDhEZGxkWGhQWFxb/2wBDAQQEBAUFBQoGBgoWDwwPFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhb/wAARCAFoAWgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD78o/AUUUAH4Cj8BRRQAfgKPwFFFAB+Ao/AUUUAH4Cj8BRRQAfgKPwFFFAB+Ao/AUUUAH4Cj8BRRQAfgKPwFFFAB+Ao/AUUUAH4Cj8BRRQAfgKPwFFFAB+Ao/AUUUAH4Cj8BRRQAfgKPwFFFAB+Ao/AUUUAH4Cj8BRRQAfgKPwFFFAB+Ao/AUUUAH4Cj8BRRQAfgKPwFFFAB+Ao/AUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUVS1jWNI0mPzNV1WysUxnddXCRD82IoAu0Vylz8TvhzA21/HPh8n0j1GJz/46TUI+K/w2Jx/wmmkD3a4AH5mnyvsTzR7nY0Vzdl8Q/AN4wW18beHpWPAVdUh3fluzXQWs8NzAs1tNHNG33XjcMp/EUNNDTT2JKKKKQwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACisLxp4t0bwykEd7JLcX14StlptnH513eMOojjHJA7scKvViBWGuieMfFx8zxTqEnh3S2+7oukXP+kyr6XF2vIzzlIduP77CmkS5dEaniXx54d0fU20kTz6nq4XP9laXA11dD3ZEyIx/tSFR71Q+1fEvXf8Aj00/SfClq2R5moP9vvMdj5UbLEh+sj/Suc+IXxV+DXwL0k6Vc3djYTqN66PpUIkupT/eZF6E/wB6QjPrXzN8V/24PGOqGS28B6BZ+H7bot5f4uroj1C8Rp+O+toUZy+FGNSvCHxP5I+vf+FfJeAyeJ/F3iTWcr+8ibUDZW//AH7thGMf7xaue1a+/Z58D5bU7vwLp8yHlriS3kuM+5O6Q1+f2q618avipKZNQ1TxRrsTno8zx2q/RRtjA+gq5onwC8ZXGHvZdK0xT13zGRvyQEfrWvsYx+OZj7eUvggfcNx+0/8As/aSnl23jWzYD+Gy06dh+G2PFVF/a++BJfafFF6B/eOkXGP/AECvk2x/Z2Qj/S/FxLdxb2OR+rVfX9nHTduT4k1U+4skx/Oly4b+Zlc+K/lX9fM+ql/aJ/Zv8QDy77xZosm7+HUdNkUfnJHitvw9p/wH8WTLP4Xu/DD3DfdfQdSW0nB/7d3Rq+LL/wDZ1jXi18Wsp7C4sR/Rq57V/gB4wtW87TrzSr8rypSVoX/DcMfrQoUX8M7C566+KFz9Ev8AhD/Eul/N4b8f6oqg5FrrcSajCfbedkw/7+GmjxR4w0PjxX4Oe6t1A3al4ckN2g92tmCzL9EEn1r89ND8b/tA/Ch1a21rxJY2sR4iuibyzP4PvUD6EV7X8Iv25rpHis/iT4XjmiOA2paIcMPdoHOD/wABb8KUsPO11ZoccTC9neLPsDwn4l0HxPYNeaBqttfxRttlET/PC392RD8yN/ssAfatWvMvDOpfCj4zWw8ReEtcgl1SBAP7R0uc2up2nA+WQcPj/ZkVkPoa031rxd4Nz/wlMDeIdFTrrWm2uLq2Xubm1XO5R3kh9OY1HNc7j0OlS0ud1RWPqvivw5pg0w6hrFrbjWWC2BkbAnyobIPYYK8nAyyjqQDsVJdwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACuN8TeKtRv9cn8KeB4oLnVoCF1DUZ1LWejgjP7zBBkmIIKwqQeQWKKQTF4q1nVfEniC48GeELtrT7Nhdd1uMA/2cGAIghzkNcspB5yI1IYgkqpyPi14/8AAH7PvwwikuIREvzJpulW75uNQm6sctkkknc8rZ65JJIBuMXe1tSJSVr30NS5XwV8JfDV/wCL/FOuKk8qj+0td1SQNc3jfwxjA6f3YYwFHZepr48/aQ/bD8U+LHuNE+HIn8N6I2UbUDgX90PUHpCD6DLe46V5T8UPHfxD+PXxHjm1DzLuZmYafpduSLbT4++AeBxjdI3J/IV7Z+z58A4rXUIZPsia1ri4Z53X/RbL3XPHH948nsBXVyQo+9U1Zx89Ss+WnpHueJ/D/wCEPizxZL/amqM+l2dw3mPd3oLT3Gf4gh+Yk/3mI/Gvor4Pfs6adGIrjS/DhvpBz/aerYKfVQRt/wC+VP1r6P8AAvww0bRtl1qgXU74c7pF/dRn/ZQ9fqf0rugAAAAABwAO1Y1MROfkjop4anDpdnl3h/4M2UcaHWtWmmKj/U2iiNF9snJx+ArrtK8BeENPwYdDtpGH8c4MpP8A31mujorA3K9tY2Vuu23s7eIDtHEq/wAhU+BjGBj6UtFAEFzZWdwpW4tIJQeoeIN/MVi6r4G8Jajk3GhWisf44V8pvzXFdDRQB5hr/wAGtPlR20bVJ7ZiP9VcgSxn2zwcfnXhXxi/Zz0+VZbnVPDn2Zzk/wBp6RgD6uoGP++l/GvsSg8jB71UZSi7pkyjGStJH5c+Jfhj47+HurJ4k8JajdXAszvi1DS3aK6tx6sqnOPXGR6iveP2av2z2DW/h/4vRqFyI4/ENrFgDt/pMS9Pd0H1Uda+l/HXwz0TWw91p6rpl+eRJCv7uQ/7Sf1GD9a+U/2hvgFFdX8sj2keja02Wju4lzbXv+9jv/tD5h3BroVaNRctVfM5XQlTfNSfyPqrV/A3hfxzet4nl1m+1C11O0jgT7HfgWs1nwzQjZw0cjDcxzubgZ2gCq3if4qWGnfEW38MWVvFehJ4re9ZZispllkVBHbJtInaPcHmAI8tCCck4r4X+Afxl8ffs9eMH8PaxaXF3oLSbrzRpX4UE/6+1c8Anrx8rd8Hkff3w11rwd490+w+IXhS8S9huLSS2ilRiPKDuryRvH/DIGRc5GePSoqU3DfVdC6VVVNFo+p1lFeeeAvEHjXxR4wutUWK3sPD8ExtV06dVMyhSwdpWHzxXIYKfLIMflup3Fjkeh1i1Y6E7hRRRSGFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAVyPxG1zUvt9r4P8LyomvatGztcsgddKtQcPdOvQnPyxqfvOf7qvjb8Za7Y+GfDF7ruo7zBZx7ika7nlYkBI0Hd3YqqjuWArC8DWDeGfDepeLPGFzBBq2pKdQ1y4Zx5VmiKSsCt/wA8oUyo9Tvfq5ql3Jk+hkfEvxd4M+APwbbULpX+z2oKWdr5m651O6fLHLHlndtzu5/2mNfnX4o1vx18dvi5JqOpS/adSvOEQEi2023B4VR/DGufqxOeSa2f2nfilrXxz+MSz6fFO2mQymz8Paf0IQn/AFjDs8hAYnsAB/DX0L+yx8HEsrVNHtyDMwWbWtRVep7Ih9OoUfVjXWrUIXfxM4XfET5V8KL/AOzR8Fba1sfsOlqY7ZSP7S1V0HmXL/3V/ovRepyev0/4c0bTdC0tNP0u2WCFOuOWc92Y9z71No+n2elaZDp9hAsNvAu1EXt7+59TVmuNtyd2d8YqKsgooopDCiiigAooooAKKKKACijBooAKpa/pOn63pkmn6nbJcQSDlW6qexB6gj1FXaKAPlb9pf4K2l1pxtNRRprJmP8AZ+qIg820c9Fb+o6N7Hp87fBb4heMv2bfi3JbXsUlzo92y/2np6N+6voc4E8OeBIo6H6q3t+leqWVrqOnzWN9Ak9vOhSSNhwwr5Q/ao+DkN5aPpNwcBt0ujaiw5ibujn06Bh3GCOa3o1be7L4Wc9ajze/DSSPoi58Sy+JfhMfFfw1mtNRk1K2S4sZioYSKSA5CkgGVVDAIxA3qFYgZxmfB221ODX9UeFfEP8AYkkERM3iHctzd32W82WONsGOMr5YI2qm4fIoAJPx7+wh8Xr/AOFfxNm+GnjKRrbQ9VvPJxM3Gm3xIAcHoI5OAe2SreufufxnpeuawkFjpuuHSLKTd9vnt483bLxhIXPyx5+bL4JHG3B+YKpD2b5eg6VT2i5uq6G5RWP4e1jw494/hvStbs7q80qMRzWi3wnuIQuF/eZYvnpktzk89a2KxN0FFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRWf4s1i08PeGNQ12+J+zabayXMoHVgilsD3OMD3NAHL6kv/CW/FqHTT82k+Dtl3dDHyz6jIuYUPr5UZMpH96WI/wANfPf/AAVB+K7afo1p8KNGuds+pot5rbI3K24P7uE/77AsR/dQdmr6J8Exr4I+E8+t+J3EV35M+ta7KB0mcGWUe4QYjX/ZRRX5qahc658Z/jxc6pfpOs/iLUGnmyrf6Lbjooz0CRKFHuBXVh4Jy5nsjjxE2oKK3kek/sffD6aby/FE1qZb7UX+zaTER91CdrSf8COQD2AJ7199+AfDtr4Y8Nw6bBhpPv3EoHMsh6n6dh7AV5v+zH4Tt7aBtaFsIrezQWenR7cBAAAzD6DC/wDfVexVhUm5ycmdFKmqcFFBRRRUGgUUUUAFFFFABRRSMwVSzEAAZJJwAKAKfiTWNL8P6Dd63rd/BYafYQma5uZ32pEg6kn/ADnpXwd+0n+1/wCK/FWoz6P8Nbifw7oSMUF+q7b69H94E/6lT2A+b1I6DH/bt+PM3xN8XSeFPDd4w8IaNOQrIcLqlwpIMx9Y1OQg7/e7jHjfw18F+J/H/iyDw34R0mXUdQnG4onypCmcGSRzwiDPU/QZPFehRw8YrmmebiMTKUuSmU5vEXiObUDfS+I9Ye6LbjO2ozGTPru3Zr3T9nT9rTx14G1KDTfGl3deKvDpIWT7Q2++tF/vRynmQD+45OexFeg+Dv2D55dLWXxX8Qvs94wy0Gl2AeOM+nmSEFv++RXjf7U37O3if4MGDU5L5Nb8O3cvkxalDCY2gk6hJkyQpIBwQSDjHB4rTno1PdMvZ16S5z9JPCGvaT4o8MWPiHQb2O903UoFntbiPpIjDj3B7EHkEEGtGvIf2EdE1TQf2V/C1lq8E1vcyxTXIgmUq8ccszyICDyMqwOPevXq82aSk0j1YNyimwrJ8baBaeJfDs+l3YxvG6GTHMUg+6w/z0zWtRUlH53/ALY/w6niSbxElr5eoaU32fVY1H+siBwsnvtyOf7pHpX01+wP8Vn+JnwZXTNXu2k8QeGgtlfOW/eTxFf3M+fUqCCf7yE962/2mvCtvd2K679nWSKVPsmooRxIjDCk/mV/EV8bfs5+IZ/gb+1xBYXk5TR7+cabeM5wr2szAwyn/cbYSfZq6ofvKTh1WxyVP3VVTWz3PvjwZ4M03w74Y0W1uobaSbw2JTbXVrAY2cFWRndQSWd0OX67n+bGcY6XSr201LTLfUbCdJ7W7hWaCVPuyIwBVh7EEVm+LfDGn+JGgj1aa+e0h3eZYxXTxQXOcY81UILgY+6Tt5OQateGtG07QNGi0nSLZbayty3kQKTtiDMW2qOygkgKOAMAYAFczdzpStp0L9FFFIoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK4v4tgarqfhnwh1TV9VW5vFK5BtbUee4Ps0iwIfZzXaVxmnEal8edTn3Fk0DQoLVAeiy3MrSSY99kEH51Ue5MtrHZOqspVgGB6gjINMWCBTlYYwfUIKkoqShAABgAAe1LRRQAUUUUAFFFFABRRRQAV8xf8FI/jE/hDwPH8O9AuzHrXiSEm9ljbDWljkq3I6NIcqP9kP7V9E+N/EOl+E/CGpeJdanEGn6Vavc3DnsqjOB6k9AO5Ir8nfi14z1X4h/EfV/GWssRc6rcGRYs5FvEOI4l9lQAfgT3rpw1Lnld7I5MXV5I8q3Zk+HNI1HXdesdC0Wze61DUZ0trS3jHMkjHAHsPU9gCe1fqB+y38HdG+Dvw7i0m1EdzrN4Fl1jUQvzXM2Pur3Ea5IUfj1Jr57/AOCXfwqWSW8+LWs22Qhex0IOvfpNOP8A0WD/AL9faFXiqt3yLYnB0bR53uwps0Uc0RjmjSRDjKuoIODkcGnUVxnaFFFFABRRRQBS8RabDrGhXel3ABju4WjOexI4P4HB/Cvzv/bU8LyQJY64YylxaTPpt6RwRySh/Bg4/EV+jtfK37b/AIWF3ZeJbSOL/j8sRqEAx/y0T5j+qH861oy5aiZlXhz02j2b9lPxofH/AOz94Z8RzSiS8kshb3xzk/aIj5chPuSu7/gVdraX08uvXmnS2E0UdvFFLDdHmO4D7gQD2ZSvIPYqe9fLP/BJzxG138PvFPhaSUH+zdRivYE7hJ0w2PbdET+NfWlKtHlqNBRlz00wooorM1CiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACuN+FLLd+IPGuqEfNP4ia3B/2YLaCID/vpX/OuyHWuP+Cig+HdWn7z+JdVc/heyr/JRTWzJe6OwooopFBRTJJoo3jSSVEaVtsaswBc4JwPU4BP4U+gAooooAKK5H4k/FH4e+AIC/i7xdpmmOBkW8kwadv92JcufwFfPXxG/bp8K2LSQeCvCOoawy8Ld6hKLSHPqFwzkfULWkKU5/CjOdanD4mfWdFfnnrH7aXxm1e4J0Wz0CwTtHa6c9yw/FmOfyqGz/a8+P2myibUF024iByVu9CaJSP95Sta/VKnkY/XKfmen/8ABU34lm30zS/hXplxiS826jrGxukSsRDEf95wXIP9xfWvkj4XeEdU8e/EPSPB+jKfter3Swh8ZEKdXkPsqBmP0pfil4w1jx/8QNU8Ya86Nf6rN5kix58uJQAqxoCSQqqABk9q+nf+CXGmeBLPUdW8T6r4k0tfFU5NhYaXPOiTQW/BaRVbljIcD5egT3NddvY0fM4r+3ra7fofY3gTw5pfhHwbpnhjRYBDp+k2qW1ug67VGMn1JOST3JNa1FFeWeulZBRRUEV5aS3stnFcxPcQAGaJWBaPPTcB0z2zQBPRRRQAUUUUAFeRftQ2CSy6TcsAVnSa2k9wcH+rV67Xm/7TEYPhXTpu8d9j80b/AAoA+T/+CYt62iftJeIvDbkhbvSp49v+1BOuP0Zq+xvir4W1rXBb3uiaxfxTW7ASacurzWFteR4YENJCpkRsspDDP3AMck18V/sbn7H/AMFA5rdOFkl1SMj28tn/APZa+5vFmm+JdR1qxTSfEM2j6ekExu3t4IZJZJd0flgeajALjzc4HXFdOI/iJ+RyYf8AhtdmX/CFlfab4T0zT9TvPtl7aWcUNzc5J86RUAZstyckE5PJ71o1V0a1nstMhtbnUbjUJo1w91cKiySnOcsEVVHpwBVquZnUtgooooGFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQADrXIfBQgeGNSh7weI9WQ/+B0x/kRXX1xvwkQ2uqeMtNZvmtvE00oHos0MM4P5ymmtmS90dlRRRSKMnxt4a0bxb4cn0PXbT7TaT4OA5R42HKvG6kMjqeQykEGvFtb8P/tLfDuVh4E8R6V8RNDQnybHxKBFqUK/3ftClRLjpuYg+1e/0VUZuJEoKXkz5U1f41/tXIGtrf9n2KGfp5uJZ0B9RtcD9a5bVdF/bb+JimHULn/hFrCX5Wjju4bBQp7Hyi8x/OvtSitFWS2ijN0G95M+N/An7Coluft3j/wAfzXM0jbpodJgwz+uZ5csfrtr27wF+zP8ABTwmEe18E2mo3Cc/adWY3jk/R8qPwUV61RSlWqS3Y40KcdkU9J0nStLhEOmaZZWUajAS2t0jUfgoFfN//BUHx9/YPwfsvBNnOFvfFNz/AKQoxkWkRDP9Nz+WvuN1fRfiXX9C8O2JvNf1rT9Ltx/y1vbpIV/NiK/Mv9sr4ip8TPj7q2s2NyJ9IsMadpLqco8EZOZF9ncu30IrTDQcp3fQzxVRQp2W7OG+HHhfUvGvj7SPCWjpuvNYvEt4zjIjBOWc+yqGY+wr7K8d/sJ+FLuPzfCHjLVNMmVRti1CFLqMsO+4bGX16mvMf+CcGofDTwv4y1Txd438XaRperLGLHSLa+m8sqr4Ms24/KM/Kg56b/WvvXQtY0jW7MXejarZajbnpNZ3CTIfxUkVriK04ztExw1CEoXlqfHmjfB79r/4cOkHgvx9a6vZRf6u3k1PzI8enlXSEL9A1dVo+vftwj/Rp/B3hGRhwbi5khUfX5Jv5Cvqaiud1m94o6VQS2k/vPBvD3gH9obxc6f8LM+Kdp4e00nMmm+D7YRXEo7qbpxuQf7uT7ivYvBHhjQ/CPh+LRfD9itpaRksfmLySufvSSOxLSOe7MST61r0VnKbZpGCiFFFFSWFFRXtzbWcBnu7iK3iXq8rhFH4msWy8c+Cr3Uxptl4u0O6vWOBbW+oxSS5/wB1WJp2Yro3685/aXcDwhYx55e/GPwRq9Gryn9p27RY9GtC3R5Z3HsAo/qaQz5P/Y/H2n/goRLMnIjm1Rz9PKZf5mvtL4wS+K420ceD01Rr43RMotooXtzBgb/O85lX024YN97FfHf/AATXtDrn7VPiHxAeUtNMu5g3vNcIB+m6vrz4oePrrw34ktNF0WDTdZ1W6tzLHoa3DrfTDdgONqskcfUF5Nq5B57V1V/4iS6I48Pb2bfdnVeEJNdl8N2knia2srbVmQm6isZWkhVsnG1mAPTGfQ5GT1OlVbRpry40i1uNQshZXcsKPPbCYSiByAWTeAA2DkZA5xVmuU61sFFFFAwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACuM0QDTvjrr1od23W9HtL+P0LwvJBL/AOOtb12dcZ8TidK8WeE/FQLCK11FtLvCOggvAI1J9hcLbfrVR7Ey7nj/AO3f8bvFfwv1bR9C0J5NOg1e0kn/ALTgtY55iyPtaNRKdiYDKclWJ3dsc+T+Dtd+N3iTQbLxP4N+Muv3E96rPFY6lawyKWUkFCqqQDlT0Br1j/gp/wCDW174D23ie2iL3Hha/WeQgci3l/dyfkxjb/gNeA/sVeKJbfT7vSUkxc6Rdpf2oz/AxG4D6Mo/76rpikqPNHfqcrbdfkk9Hsey/BD9rK6tPEq+Cvjlp0GiajkJDrVuhW1lycAyrzsB/vqSvqFr6ptpobm2juLeVJoZUDxyRsGV1IyCCOCCO9eF/tG/A/w78WvCEeu6TbLHezwi4j8oAMSwyWQ9A3qp4b2PNfMfw6+KXxZ/Zq10aBqcDa14W84qtjdFljXnnyZCCYH9UIK57d6hQjV+HR9v8i3OVL49Y9/8z9E6K8P+Gn7WPwa8V2cf2zxAfDl6wAe01mMxYPtKMxsP+BD6V6LD8UPhpLD50fxC8LMmM7v7Zt//AIusnTkt0bKpBq6Z0er39npemXGo6hcJb2trGZJpXOAigZJrw/xX4l+PHxMnksfhhocXgXw8xK/8JJ4jiIvbpf70FoQWjU9jIATwflrpfF/7R3wS8PRv9t+IOlXUiciHTy147EegiDD8zXjfjj9ubRftDWPgHwLqer3DcRS6hIIFY+0Sb3b/AMdq6dOb1UfvM6lWns5fccl+1H8APDvw9+Eep+PfiB4/8R+MPFNy6WunNczCOJ7qQ8Eg72KqodsbgMLjivmHwH4b1Xxh4z0vwtokRlv9XuktoBjIUseXb/ZUZYn0Br3H4u6j8Z/jubG48bw6T4c0fTXeW1g2GJYy4ALMpZnY4GBuIxk+prov2dP2b7bVZD4jikl8TWQZoYJ7fUG0+3SRTh/3kTeY46qQpA69a641lCHvO7OOdF1J+7Gy8z1HxF+w58M7vSo4tK17xBpl6saq8/nJPHIwHLGNxkZPOAwrx/xX+yH8Z/Ad82q/D3XodVEZLI+l3j6feYH+yWCk/Rz9K+v/AIV/D9PCABs9D0DT+OTbSXE8v4ySsSa7+uVYionvf1Op4anLpZ+R+dVj+0R+0j8K79dO8Xm8mWM4+z+J9MOX+kw2s313NXqngX9u7S5Vji8ZeA7y2b+O40m6WZPr5cm0j/vo19catp9hqli9lqdjbXttIMPBcwrJG31VgQa8q8Y/swfA/wARyPNP4GtbCeQ5MumTSWhz/uowX9Kv2tKXxR+4n2NaPwT+8ytC/a8+BWoxBpvE93prEcpe6ZOpH4qrD9am1f8Aa1+A9jCXj8YS3pA+5aaZcOx/NAP1rl739iD4RyylrfVfFVsp/gW/jcD/AL6jJ/Wr2g/sW/BewmWS8j8QaptOSl3qZVD+ESof1qbYfux3xPZHK+M/26fCkTm18G+CdZ1e5f5YWvXS2Vm9kXe7fTAqro+sfti/GECSwgsPh1ok/S4lt/Jl2+qiTfMfqAg96+jvh78L/h54FUf8Il4O0jS5B/y3htgZj9ZWy5/E11tJ1IL4I/eUqVSXxy+4+e/CH7JnhSS5XU/ih4o8QfEHUz8z/wBp30iWoPtEGJIz6sR7V7Z4P8KeGPCenix8MeHtM0e3UAeXY2iQg/XaBn8a2KKzlOUt2axpxjsgr5p/bR8TLYLrl4sgxpGkmGPB/wCWrg4/HLr+VfSGo3UNjp897cNtht42kkPoAMmvz8/bb8WvNo0di7/6Rrl697cKOoiQ5A/76IH/AAGnSjzTSFWnyU3I9M/4JL+G2g8J+LfFksZ/0y8h0+CQ91iQu/8A49Kv5V9V694d8P64Ma1oem6j8u3N3aJKQPTLA+tcL+x74LbwH+zp4Z0SeLy72W1+3Xw7+dOfMYH3G4L/AMBrvtPbVW1jUBeJCtirRixKffcbMuW/4EcD6e9OrPmqOSJow5aaiy3BFHDAkMKKkcahUVRgKAMACn0UVkbBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABWT480KHxN4N1PQJ3MYv7Z4klHWF8ZSQe6sFYe4Fa1FANXOO0E2vxK+DUmn+ILZQ2qWU2m6zbYH7m4XdDOmO2HVsfga/Nbw//AGl8Hvj3PpWtblfR76TTtR44khJx5g9QV2SD8K/SK2P/AAifxeltnOzSvGmZoD0WHUoowHT286FAw/2oX7tXzb/wVF+FLSLZ/FvR7bd5apY66qL/AA5xDOfoT5ZPoU9K6qElzOD2Zx4iL5VNbxPfP2b/ABEl1o83h+WZWe1/f2jbs74mOTj6E5+jCt34o/DTwz45spY9TtI0nkTa0wjVhIOwkQ8OPryOxr46/Y3+JNybC2sjPnVvDuPLDt/x82vQA+uAdh9tpr7o8OarZ63olvqli+6G4TcPVT3U+4ORWE4uEmmdMJqcFJHxz8Sf2M5BcyT6A0saE5As5A6f9+pCGH0DGuBX9kLxkZ9rNe7c9f7JOfz34r9EqKtYiqla5m8NSbvynxF4K/Ywu3lR9XN06Z5FxcJAn/fMe5v1r1i6+EHw/wDg78MtW8XassQt9Hs3uJIbOPyRMwHyxmQ5dizFVHI5NfQtfGv/AAVR+JAWDSPhZptx80hXU9XCnooJEEZ+rbnI/wBlDTg51ZqLYpqnRg5RR8xeHYvGnxf+JOmeGBqFzdXutXgjjiZ2MNqpJZ229AiIGP0Wv1O+HfhjSvBfgbSvCmhw+Vp+kWqW8C9yAOWP+0xyxPck18v/APBL74Vf2d4evPitrFti51VWs9FDrzHbBv3ko/33G0H+6no1fXNViZpy5Y7IjCU2o88t2FFFFcx1hRRRQAUUUUAFFFFABRRVTXtTtNH0e41O+k2QWyF3Pc+gHqSeBQBwP7RniFbLQYtAhlCzX/7y4OcbIVPf6kfkDXxP8K9Ef47/ALYFlbeWZtB02YXFwcHaLK3YHB9PMkIH/A/aux/bK+J1wmn3UQn2ar4gDLtVv+PS1HB+mR8o/wCBGvbP+CeHwpb4ffB8+JdXtDHrnipUupUZPnt7UAmGLHUEglyPVwO1dNP93Tc+r0Ry1f3lRU1stWe3eI/E+geH7yzttb1S30437GO1e5Jjidxj5PMPyBjnhSQTzgHBrWBBGQcg964vWodC+J3htP7E8RGJ7C8Ys8UMcj28ux4nhnt51IDbXcFHUEHB7V0/hzSrPQ/D9lounRmO00+3S3gQnJCIoUZPc4Fc7SOhNt+RdooopFBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQBi/EDw9F4n8LXGlNcNazkrNZ3iDL2dxGweKZfdXVTjuMg8E1leGbyz+IHgHUNE8UabCLoLJpfiHTGyVjl24cDPJR1ZXRu6up6119cV8QdN1DRddTx94ctJLq5t4RBrWnQj59Ts1JIKDvPFlmT+8C6fxKRS7Ey01Pzu+NPgfxL+z58dPstvJI9vE5udGvHHy31qTgo/qwB2OPXB7ivq/8AZi+LOnzadBqEExbRtRbF1ETlrGccHI9u/qMGvS/jp8OvCXx6+EEdoLyFxPGLzQ9XhXcbaQjhx3Knoy9x6EDH59WFx4z+BHxVvNC1+weKSFwl/ZFv3d3F/DNE3Q5HKt9Qe4HW7V4f3kcSvh5/3X+B+p8UiSxLLE6ujqGVlOQwPQg06vnv9nr4vae+i2xF6b3QLn/VSgZksm7qy9QAeq9R1HFfQFpcQXVrHc20yTQyqGSRGyrD1BrjaadmdyaaujP8beINL8KeEdS8S61OINP0q1e5uJD2VRnA9SegHckV+ZnhDSvEP7R37TrC6MkcviK/a71CRTkWFkmMgHttjCxr6sV9a98/4Kj/ABVVIrP4TaRdYLBL/XWRuijmGA/UjzCPQJ616D/wTo+Ep8C/Cs+L9YtTHr3itEm2uuHtrMcxR+xbO8/7yj+Guun+6pOb3exx1f31VQWy3Pf9A0yw0TQ7PR9LtktrGwgS3toUGFjjRQqqPoAKt0UVxnaFFFFABRRRQAUUUUAFFFMuJYoIHnnkSKKNSzu7YVQO5PagBzsqIzuwVVGWZjgAepr5v/ae+LGmw6ZPdyXBXRdOb90inDX8/IXaP0HoMsa0/wBoT4u6dFol0qX32PQrcf6Rcnh7w9kQdSCeg6n6V8oeD9A8Y/tNfF+PStNSTT9B08hp52G6PTYCeXbs074wF/koJralT5tXsjCtV5PdjrJnSfsf/DLVPjr8aLjx94wt9/hzSLlZLhCP3d1MuDFaJnqijBf2wD9+vt7xL4k8FX2pP4L1i9DPdypavE0cqQtKQHWAzqAgkIwRHuDEEcc0vgfSfB3w18P6F4C0fytOtzG0OnQyZ3XTqNzkvjDSNksc8n5iBgHFLVvh/PdapeRQ+IHi0HU7+PUL/SntFdmnV1c+VNkGNXZEZgQxznaVzwVKnPLsugU6bhHu3uSfDv4b6V4R8Q3eq2l1NOZImt7SOSNF+ywNIZTGXUBpfnPDSEkAAA/eJ7Oiism29zZJJWQUUUUhhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAcBrFpefD3WrrxFo1rNdeGb+Yz61plvGXksJWOXvLdByyk8yxAZPLqN24PlftDfCLwb8d/h/bu1zAt6sPnaLrtpiQxhhkcjiSJuMrn3GDzXqlcJqOgav4M1GfXPA9r9s065labUvDQdUDsxy09mxwscpPLRkhJDk5RiWa4yad1uZyirWauj87tWsfiP+z58SJdJ1myMBkOTGxLWeqRA4Ekbd/qPmXoR2r3/wCG/wC0tpXh/wAD3uvWF2JIraPM2g3b7ZPObhQn1b+JeMZyK+jvGFh8NPjB8MbyHxHDaXukW4c3f2sGC40mVBli+7D28idTnHHXIPP5i+J9G0y6+Ieo6R8PTqmvabHcSjTJGtS1zcwoCS+xBnGAxzgfKASB0rrio19ZKzRxSc8P8Lumeq/speB9Q+Pf7Sdzr/i+ZbqyguTq2uM5wLpy2Y7dR/dJABHZEI7iv0jUBVCqAABgADgV+X/wE+Ldl4KsF0bUNKaKBZ2l/tCxJE6ue8ik84wBwQQB0r64+FXx6bUbNGtdTs/EVqo+bEmy5jH+1xn/AL6X8azxKnzarTobYRw5dHq9z6JorjPD/wAUPCepKqzXj6fKeqXabRn/AHhlf1rrLG8s72ISWd3BcIejRSBx+lcp1k9FFFABRRUN7d2tnH5l3dQ26f3pZAg/WgCaiuO8QfE7wlpgKx3zX8o/gtF3jP8AvcL+teV/FT49nTbB3nv7Pw7asDtZ5N9zIP8AZHXP+6v400m3ZCbSV2e0+MvFmieGbUyaldjziMx20fzSyfRew9zgV82/tF/HS2s7MnWbkwQNlrTR7ZwZbj0L+3ucKO2TXhPxA+PGqa1qR0zwPYXc17eybEvbiMzXM7H/AJ5RDJz9cn2r0D9nz9kLxL4r1RPFnxluruxtpmEp0vzt19d+nnvz5S/7IO7t8tdEaKiuao7fmc0q7k+Wkrvv0POvhx4J+JH7TXj0OmdN8O2MuJ70qTa2C91jB/1sxH/1yor7k8PeFNK+DHwnj0T4f6BA6W4Z5p7y48tGYIWe5upQpY8Lj5VY5KgADp0OgaTo8Xw5g0j4f3Nlo+nLF5NjNp0KPHAobDFF+6W4YZbPzckHBBofCubU11bXtLk1W/1jSdPnjSw1DUItsxkIYTwb9qiVUZVIfH8ZXJ2VM6nNotEuhVOlyat3b6iQ3GlfFX4Z3Vr5Vxp00v7i6t7u3xd6TdKFYZU4KSplXVvdWHGK6fw7pdromiW2lWXmmC2TarTStJI5zks7tyzEkkk8kkml0LSdO0aw+xaZarbw72kYAli7scszMSSzEkkkkk1crFs3S77hRRRSGFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB80fFPxlqvg7/AIKI+EE1rWrm38Na7oBsIITKVthM7uMsudu4yrENx5G5e1fS9eLftv8AwZk+LnwxQ6MEXxLoLNc6UWbaJwQPMgLdtwAIPZlXtmvnr4Rftj+MPAmlN4S+I/hS51y70k/ZvPef7NfRleNk6upDMMY3cE98nk9Hs/aQThujl9oqU2p7PY+7qo+Jda0jw9odzrOu6la6dp9ohee5uZQkcYHqT/LvXxh4y/bv1qe2aPwp8P7OxkIIE+p3zT7ffYir/wChV48bn45ftMeLEtjJqGvrFJkBR9n0zT/9o4/dqfc5c+9OOFlvPRCli4bQV2dT+1z8bB8XvHy6B8NtHuYrO722ElxbRul54i+YbI3RfvRAgFVYE9ztHFe5fsi/DjTvgHbzan8RtHls9d1ZFX+3wRPp9nCcH7OZF5gbd99nARiBhyABXa/sofs4eHPhBajWL6SLWvFk0e2XUmjxHaqesdup5UHoWPzN7DivbXVXQoyhlYYIIyCKKlWNuSGw6VGXN7Se55D8Zv2ePhT8WYDq9xpyWOpXKb49a0Z1jeXI4Z8ApKPdgT6EV8s/Ev8AY4+KvhG8fUvBGoW/iOCElo2tZfsd8gH+wx2k/wC6/wCFfad18O7GyuJL3wZqd54UupGLumn7WspWPeS1cGM57lAjf7VNGsfELRPl1nwvaeILdc5vNAuBFNj1a1nYc/7srfSphWnHRPTzHUoQnrJWfdH54zfET4v/AA/uxp/i7Tb1DHx5Wu6e8bn6SYUn65NdL4e/aNtU2tf+HLq3fvLp94CPrg4P619z3HxC8AahF/ZviO4TTGlHzWfiOxezB9v36hG/4CSKw9Y+BfwJ8ZRtet4F8OXIlGftGmgQ59w0BWrdSk/ih9xCp1V8E7+p81aR+1BpEcYVfEXiazH910ZwPyY1qf8ADUek7cf8Jzq//gG+f/Qa9U1L9jT4IXUhaLTdas8/w2+rSYH/AH3uqiv7EvwZDZM/igj0OqLj/wBF0v8AZ/Mr/afI8m1f9qDR3Qq3iPxNef7McbID+bCuH8SftH2rFmsfD1zPJ2l1G8AH5DJ/WvqjR/2P/gXYuGl8O6hfY/5+9VnIP4Kyiunsvh38A/h4RIfDfgvRpFGVkvlh8z8GlJbNF6C2TYWxD3kkfDek+Kvjp8S5ja+DNA1FonOC2kaewRR/tXD8D67hXo/wz/Yp8deIb1dV+JfiaHSEkO6WC3k+23r+xkPyJ+b/AEr63t/iLo1xElv4S0PWtfA+WP8As3TjFbL6fv5vLix9GNBg+JWv4+0XmmeEbNsEpZ4v74juPMdRDGfokn1pus0rRSiJUIt3m3IwPAnw6+DnwG0db6xsrLTbiQeV/aV83n312x/gQ4Lsxz9yMc+ldNoOr+L/ABFrVvd2+jjQfD8TFnOqRn7ffjGAFhB/0dc85kJc4xsXrVvwn4H8PaDfnVIrea+1d12yatqUzXN449BI+Si/7KbV9q6Oudyvq9TojGystEcr4Q8Mapo/i/WtQ/tdY9Hv7pri20eCIFI5HC+ZM0jDdl2BbYuFBLN8xY46qiik3cpKwUUUUhhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABXC/FT4N/DP4j3C3XjDwlZX94q7VvF3Q3AHYeZGVYgdgSRXdUU02ndCcU1Zo8c8O/ssfArR7lZ08DQ3kinK/b7ua4Uf8Bdyp/EV6zo2m6dpGnR6fpVha2NpCMR29rCsUaD2VQAKtUU5SlLdijCMfhVgoooqSgooooAZcRRTwtDPGksbjDI6hlYe4Ncxqfwz+H99IZZvCGkxyk5M1tbC3kJ/wB+Pa3611VFNNrYTSe5x6fDPwzEoWzuPENmB0Ft4kvkA/DzsUv/AArrSyfm8QeL2H90+J73/wCOV19FPmfcXLHscbL8LfBlxj7daalf+v27Wry4DfUPKQfyrV0HwV4P0SRZNI8LaPZSr0lhsY1k/wC+sZ/Wt2ilzPuNRS6BRRRSGFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKACiiigD/9k=" alt="">
+        <span class="site-footer__names">
+          <b class="site-footer__wordmark">FloodGuard</b>
+          <span class="site-footer__tagline">Predict · Plan · Protect</span>
+        </span>
+      </a>
+      <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated into decision-ready intelligence for organizations exposed to flood risk.</p>
+    </div>
+    <nav class="site-footer__nav" aria-label="Footer">
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Products</h2>
+        <ul role="list"><li><a href="#explorer">Explorer</a></li><li><a href="#atlas">Atlas</a></li><li><a href="#live">Live</a></li></ul>
       </div>
-      <div><h4>Products</h4><ul><li><a href="#explorer">Explorer</a></li><li><a href="#atlas">Atlas</a></li><li><a href="#live">Live</a></li></ul></div>
-      <div><h4>Platform</h4><ul><li><a href="#platform">Technology</a></li><li><a href="#platform">Data</a></li><li><a href="#platform">Methodology</a></li><li><a href="#platform">Validation</a></li><li><a href="#platform">API</a></li></ul></div>
-      <div><h4>Solutions</h4><ul><li><a href="#serve">Insurance</a></li><li><a href="#serve">Banking</a></li><li><a href="#serve">Government</a></li><li><a href="#serve">Infrastructure</a></li><li><a href="#serve">Agriculture</a></li></ul></div>
-      <div><h4>Insights</h4><ul><li><a href="#insights">Research</a></li><li><a href="#insights">White papers</a></li><li><a href="#insights">Use cases</a></li><li><a href="#insights">Data stories</a></li><li><a href="#insights">Articles</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="#about">About us</a></li><li><a href="#start">Contact</a></li><li><a href="#start">Careers</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
-    </div>
-    <div class="fbot">
-      <span>© FloodGuard Solutions Pvt. Ltd. 2026 · Hyderabad</span>
-      <span>Last updated <time id="lastUpd">—</time></span>
-      <span>Private preview · figures pending validation</span>
-    </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Platform</h2>
+        <ul role="list"><li><a href="#platform">Technology</a></li><li><a href="#platform">Data</a></li><li><a href="#platform">Methodology</a></li><li><a href="#platform">Validation</a></li><li><a href="#platform">API</a></li></ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Solutions</h2>
+        <ul role="list"><li><a href="#serve">Insurance</a></li><li><a href="#serve">Banking</a></li><li><a href="#serve">Government</a></li><li><a href="#serve">Infrastructure</a></li><li><a href="#serve">Agriculture</a></li></ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Insights</h2>
+        <ul role="list"><li><a href="#insights">Research</a></li><li><a href="#insights">White papers</a></li><li><a href="#insights">Use cases</a></li><li><a href="#insights">Data stories</a></li><li><a href="#insights">Articles</a></li></ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Company</h2>
+        <ul role="list"><li><a href="#about">About us</a></li><li><a href="#start">Contact</a></li><li><a href="#start">Careers</a></li></ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap site-footer__bottom">
+    <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
+    <ul role="list" class="site-footer__legal">
+      <li><a href="#start">Privacy</a></li>
+      <li><a href="#start">Terms</a></li>
+      <li><span>Last updated <time id="lastUpd">—</time></span></li>
+      <li><span>Private preview · figures pending validation</span></li>
+    </ul>
+    <button type="button" class="site-footer__top-btn" id="footTop">Back to top</button>
   </div>
 </footer>
 
@@ -1564,6 +2304,7 @@ setTimeout(function(){
 
 <div id="fabs">
   <button class="fab" id="toTop" type="button" aria-label="Back to top">
+    <svg class="spinRing" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26"/></svg>
     <svg class="ring" viewBox="0 0 44 44" aria-hidden="true">
       <circle class="ringBg" cx="22" cy="22" r="20"/>
       <circle class="ringFg" id="toTopRing" cx="22" cy="22" r="20"/>
@@ -1588,6 +2329,131 @@ if(RM)document.body.classList.add("rm");
 const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const easeOut=x=>1-Math.pow(1-x,3), easeIO=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 
+/*═══════════════════════════════════════════════════════════════
+  REDESIGN v2 — MOTION PRIMITIVES (spec §4.5)
+  The spec is written as React hooks against motion/react. This file
+  has no React, so each hook is translated to its vanilla equivalent
+  with the same contract — implement the translation, not the original
+  (spec §0.1). Section code consumes these, never matchMedia directly.
+═══════════════════════════════════════════════════════════════*/
+
+/* range helpers (spec §4.5 range.ts) */
+const clamp01=v=>v<0?0:v>1?1:v;
+/* phase-local 0..1 — maps a slice [a,b] of a progress value onto 0..1 */
+const seg=(p,a,b)=>clamp01((p-a)/(b-a));
+
+/* useMediaQuery — live value + subscribers. Reads synchronously so the
+   first paint is already correct; no flash of the wrong layout. */
+const MQ=new Map();
+function mq(query){
+  let e=MQ.get(query);
+  if(!e){
+    const m=matchMedia(query);
+    e={m,v:m.matches,subs:[]};
+    const onChange=()=>{e.v=m.matches;e.subs.forEach(fn=>fn(e.v));};
+    /* Safari < 14 has no addEventListener on MediaQueryList */
+    if(m.addEventListener)m.addEventListener("change",onChange);
+    else m.addListener(onChange);
+    MQ.set(query,e);
+  }
+  return e;
+}
+const mqValue=q=>mq(q).v;
+const onMq=(q,fn)=>{mq(q).subs.push(fn);return mq(q).v;};
+
+/* useFinePointer */
+const FINE_Q="(hover: hover) and (pointer: fine)";
+const finePointer=()=>mqValue(FINE_Q);
+
+/* useCanPin — a stage may pin only if the viewport can hold one and the
+   visitor hasn't asked for reduced motion (spec §4.4). */
+const TALL_Q="(min-height: 560px)";
+const REDUCE_Q="(prefers-reduced-motion: reduce)";
+const canPin=()=>mqValue(TALL_Q)&&!mqValue(REDUCE_Q);
+function syncPinPolicy(){
+  document.body.classList.toggle("nopin",!canPin());
+}
+onMq(TALL_Q,syncPinPolicy);
+onMq(REDUCE_Q,syncPinPolicy);
+syncPinPolicy();
+
+/* useActiveStep — IntersectionObserver over [data-step] children.
+   Returns the highest index intersecting the centre band; -1 before the
+   first step; holds the last index past the end. Consumers must render
+   FROM the index (visible = i <= active), never step through
+   intermediate values — a fast fling skips them (spec Appendix A). */
+function activeStep(root,onChange,selector,rootMargin){
+  selector=selector||"[data-step]";
+  rootMargin=rootMargin||"-45% 0px -45% 0px";
+  if(!root)return()=>{};
+  const els=[...root.querySelectorAll(selector)];
+  if(!els.length)return()=>{};
+  const visible=new Set();
+  let active=-1;
+  const emit=v=>{if(v!==active){active=v;onChange(v);}};
+  const io=new IntersectionObserver(entries=>{
+    for(const e of entries){
+      const i=+e.target.dataset.stepIndex;
+      if(e.isIntersecting)visible.add(i);else visible.delete(i);
+    }
+    if(visible.size)emit(Math.max(...visible));
+    else if(els[0].getBoundingClientRect().top>innerHeight/2)emit(-1);
+    /* past the last step: hold the last index */
+  },{rootMargin,threshold:0});
+  els.forEach((el,i)=>{el.dataset.stepIndex=String(i);io.observe(el);});
+  return()=>io.disconnect();
+}
+
+/* useInViewPause — true while in view AND the document is visible.
+   Drives data-paused on CSS animations, rAF loops and SMIL. */
+const PAUSABLE=[];
+function inViewPause(el,onChange,rootMargin){
+  if(!el)return()=>{};
+  const rec={el,inView:false,cb:onChange||null};
+  const apply=()=>{
+    const on=rec.inView&&!document.hidden;
+    el.setAttribute("data-paused",on?"false":"true");
+    if(rec.cb)rec.cb(on);
+  };
+  rec.apply=apply;
+  const io=new IntersectionObserver(([e])=>{rec.inView=e.isIntersecting;apply();},
+    {rootMargin:rootMargin||"200px 0px"});
+  io.observe(el);
+  PAUSABLE.push(rec);
+  apply();
+  return()=>{io.disconnect();const i=PAUSABLE.indexOf(rec);if(i>-1)PAUSABLE.splice(i,1);};
+}
+document.addEventListener("visibilitychange",()=>PAUSABLE.forEach(r=>r.apply()));
+
+/* Document-space geometry, cached in measure() exactly as pins already are.
+   Reading getBoundingClientRect inside the frame loop — after the same loop
+   has written styles — forces a synchronous layout every time. With a dozen
+   scroll-driven elements that is the difference between a smooth scroll and
+   half-second frames on a mid-range Android. */
+const GEOM=[];
+/* Deduped by element: every section rebuilds on breakpoint changes, and a
+   builder that cleared the list would wipe the entries of the ones that ran
+   before it. */
+function trackGeom(el){
+  for(const g of GEOM)if(g.el===el)return g;
+  const g={el,top:0,h:0};GEOM.push(g);return g;
+}
+function measureGeom(base){
+  for(const g of GEOM){const b=g.el.getBoundingClientRect();g.top=b.top+base;g.h=b.height;}
+}
+/* Element-relative scroll progress, the vanilla form of motion's useScroll
+   offsets: a = the viewport fraction the element's start sits at when p is
+   0, b = the fraction where p is 1. ['start end'] => a = 1. */
+function offsetProgress(g,a,b){
+  return clamp01((vh*a-(g.top-cur))/(vh*a-vh*b));
+}
+
+/* SVG element helper. SVGNS is declared again further down for the tree
+   diagram, so this keeps its own binding rather than reaching into a TDZ. */
+const NSSVG="http://www.w3.org/2000/svg";
+const mk=(tag,attrs)=>{const e=document.createElementNS(NSSVG,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
+
 /*── THEME ──*/
 const sw=document.getElementById("sw");
 const sysDark=matchMedia("(prefers-color-scheme: dark)");
@@ -1600,14 +2466,38 @@ function syncSw(){
   sw.setAttribute("aria-label",d?"Switch to light mode":"Switch to dark mode");
   if(swLabel)swLabel.textContent=d?"Dark mode":"Light mode";
 }
+/* The two <meta name="theme-color"> tags in <head> are media-query scoped, so
+   they follow the OS but not a manual override. Once the visitor picks a
+   theme, drive the status-bar tint from the resolved theme instead
+   (spec §4.3) — otherwise iOS/Android keep tinting for the wrong one. */
+function syncThemeColor(){
+  const surface=getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
+  if(!surface)return;
+  let m=document.getElementById("themeColorNow");
+  if(!m){
+    m=document.createElement("meta");
+    m.name="theme-color";m.id="themeColorNow";
+    document.head.appendChild(m);          /* last one wins over the scoped pair */
+  }
+  m.setAttribute("content",surface);
+}
+/* Everything that has to be re-derived when the palette changes, in one place
+   so a system-level change and a manual flip can never drift apart. */
+function onThemeChange(){
+  syncSw();readTokens();syncThemeColor();
+  waterFrozen=false;                        /* reduced motion: repaint the frozen frame */
+  drawPv();ALLCARDS.forEach(c=>c.dirty=true);
+}
 function flipTheme(){
   document.documentElement.setAttribute("data-theme",isDark()?"light":"dark");
   try{localStorage.setItem("fg_theme",document.documentElement.getAttribute("data-theme"))}catch(_){}
-  syncSw();readTokens();drawPv();HC.forEach(c=>c.dirty=true);
+  onThemeChange();
 }
 sw.addEventListener("click",e=>{e.stopPropagation();flipTheme();});
 try{const saved=localStorage.getItem("fg_theme");if(saved)document.documentElement.setAttribute("data-theme",saved);}catch(_){}
-sysDark.addEventListener("change",syncSw);
+/* A system flip used to call syncSw() alone, leaving every canvas painted in
+   the old palette until something else happened to re-read the tokens. */
+sysDark.addEventListener("change",onThemeChange);
 syncSw();
 
 let RAMP=[],DOTOFF="#ccc",WATERC="#12768f",WR=42,WG=111,WB=151;
@@ -1618,7 +2508,17 @@ function readTokens(){
   WATERC=s.getPropertyValue("--water").trim();
   /* parse once per theme change, not once per pixel */
   WR=parseInt(WATERC.slice(1,3),16);WG=parseInt(WATERC.slice(3,5),16);WB=parseInt(WATERC.slice(5,7),16);
+  /* spec §5.8: the ripple colour is a semantic token, read here on mount and
+     on every theme change — never per frame. --ripple-rgb wins when present
+     so the canvas and the CSS layer can never drift apart. */
+  const trip=s.getPropertyValue("--ripple-rgb").trim();
+  if(trip){
+    const n=trip.split(/[\s,]+/).map(Number);
+    if(n.length===3&&n.every(v=>v===v)){WR=n[0];WG=n[1];WB=n[2];}
+  }
+  RIPPLE_ECHO=parseFloat(s.getPropertyValue("--ripple-alpha-echo"))||.08;
 }
+let RIPPLE_ECHO=.08;
 
 /*── SMOOTH SCROLL ──*/
 const vp=document.getElementById("vp"),content=document.getElementById("content");
@@ -1650,10 +2550,18 @@ let px=innerWidth/2,py=innerHeight/2,lx=px,ly=py,wt=0,wacc=0;
 addEventListener("pointermove",e=>{px=e.clientX;py=e.clientY;},{passive:true});
 function sizeWater(){wc.width=WW;wc.height=WH;wc.style.width="100%";wc.style.height="100%";}
 sizeWater();
+let waterFrozen=false;
 function drawWater(dt){
-  if(RM)return;
+  /* Reduced motion still gets the field — just one frozen frame instead of a
+     living one, so the page doesn't lose its ground (spec §5.8). */
+  if(RM){
+    if(waterFrozen)return;
+    waterFrozen=true;dt=0;
+  }
+  /* nothing to paint into a hidden tab */
+  else if(document.hidden)return;
   wacc+=dt;
-  if(wacc<1/30)return;                      /* the field is ambient — 30fps is plenty */
+  if(!RM&&wacc<1/30)return;                 /* the field is ambient — 30fps is plenty */
   const step=wacc; wacc=0;
   wt+=step;
   lx=lerp(lx,px,1-Math.exp(-step*.55));     /* heavy lag: presence, not a trail */
@@ -1717,16 +2625,27 @@ function runCounters(y){
 }
 
 /*── MANUAL PINNING (sticky can't work inside a transformed wrapper) ──*/
+/* #decision used to live here; it is now an IsoStack driven by
+   IntersectionObserver, so it no longer needs scrubbed progress. */
 const pins=[
   {sec:document.getElementById("problem"),inner:document.getElementById("problemPin"),top:0,h:0,p:0},
-  {sec:document.getElementById("decision"),inner:document.getElementById("deckPin"),top:0,h:0,p:0},
-  {sec:document.getElementById("why"),inner:document.getElementById("whyPin"),top:0,h:0,p:0}
-].map(P=>Object.assign(P,{lastOff:-1,vis:true}));
-function runPins(y){
+  {sec:document.getElementById("why"),inner:document.getElementById("whyPin"),top:0,h:0,p:0},
+  {sec:document.getElementById("gap"),inner:document.getElementById("gapPin"),top:0,h:0,p:0}
+].map(P=>Object.assign(P,{lastOff:-1,vis:true,ps:0}));
+const PIN_GAP=2;
+/* useSectionProgress (spec §4.5). P.p is the raw scroll-derived progress —
+   always correct after a fling because it is read from scroll position, never
+   counted from events. P.ps is the same value spring-smoothed, and only on
+   fine pointers: a mouse wheel arrives as ~100px jumps that would otherwise
+   step the scrubbed visuals. Touch scrolling is already smooth, so it reads
+   the raw value and stays perfectly locked to the finger. */
+function runPins(y,dt){
+  const smooth=finePointer()&&!RM;
   for(const P of pins){
     const span=Math.max(1,P.h-vh);
     const off=clamp(y-P.top,0,span);
     P.p=off/span;
+    P.ps=smooth?lerp(P.ps,P.p,1-Math.exp(-dt*9)):P.p;
     /* CSS position:sticky does the pinning now — this only tracks progress */
     P.vis=(y+vh>P.top-200)&&(y<P.top+P.h+200);
   }
@@ -1738,6 +2657,9 @@ function measure(){
   docH=document.documentElement.scrollHeight;
   const base=scrollY;
   revs.forEach(r=>r.top=r.el.getBoundingClientRect().top+base);
+  DROPREV.forEach(r=>r.top=r.el.getBoundingClientRect().top+base);
+  measureGeom(base);
+  NARRATIVES.forEach(N=>{N.stageW=N.stage.clientWidth||600;});
   counters.forEach(c=>c.top=c.el.getBoundingClientRect().top+base);
   /* the inner's transform doesn't affect the section's own box, so no correction needed */
   pins.forEach(P=>{const b=P.sec.getBoundingClientRect();P.top=b.top+base;P.h=b.height;});
@@ -1860,21 +2782,6 @@ function runParallax(y,dt){
   if(mcard)mcard.style.transform=`rotateX(${(-tiltX*4).toFixed(2)}deg) rotateY(${(tiltY*5).toFixed(2)}deg) translateZ(0)`;
   if(chip1)chip1.style.transform=`translate3d(${(tiltY*22).toFixed(1)}px,${(tiltX*16-y*.03).toFixed(1)}px,0)`;
   if(chip2)chip2.style.transform=`translate3d(${(-tiltY*18).toFixed(1)}px,${(-tiltX*14-y*.05).toFixed(1)}px,0)`;
-}
-
-/*── STORY SCRUB ──*/
-const probCards=[...document.querySelectorAll("#probList article")];
-let lastProbP=-1;
-function runStory(){
-  const p=pins[0].p;
-  if(Math.abs(p-lastProbP)<.002)return;
-  lastProbP=p;
-  probCards.forEach((c,i)=>{
-    const e=easeOut(clamp((p-i*.2)/.34,0,1));
-    c.style.opacity=e.toFixed(3);
-    c.style.transform="translate3d(0,"+((1-e)*34).toFixed(1)+"px,0) scale("+(.96+.04*e).toFixed(3)+")";
-    c.classList.toggle("lit",e>.55);
-  });
 }
 
 /*── INDIA DOT MAP ──*/
@@ -2282,11 +3189,6 @@ function runBars(y){
 /*── DITHER DECK — driven entirely by scroll ──*/
 const BAYER=(()=>{const m=[0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
   return Float32Array.from(m,v=>(v+.5)/64);})();
-const DECK=[
- {seg:"Decision support",t:"Flood vulnerability atlas",n:"Where is risk concentrated?"},
- {seg:"Decision support",t:"Portfolio exposure screening",n:"Which assets or locations are exposed?"},
- {seg:"Decision support",t:"Drainage capacity assessment",n:"Where could drainage constraints amplify risk?"},
- {seg:"Decision support",t:"Property & site risk analysis",n:"What does flood risk look like at a specific location?"}];
 /* coarser dither grid on phones/tablets — 5 cards re-thresholded per frame
    was the second-biggest cost after the water field */
 const AW=280,AH=224,PS=LOWPWR?6:4,GW=Math.round(AW/PS),GH=Math.round(AH/PS);
@@ -2303,22 +3205,15 @@ function makeArt(i){
   }
   c.putImageData(id,0,0);return cv;
 }
-const hx=document.getElementById("hx"),dprog=document.getElementById("dprog");
-const HC=[];
-DECK.forEach((it,i)=>{
-  const el=document.createElement("article");el.className="hc";
-  el.innerHTML='<div class="top"><canvas></canvas></div><div class="m"><i>'+it.seg+'</i><h4>'+it.t+'</h4><p>'+it.n+'</p></div>';
-  hx.appendChild(el);
-  const cv=el.querySelector("canvas"),sm=document.createElement("canvas");
-  sm.width=GW;sm.height=GH;
-  const sc=sm.getContext("2d",{willReadFrequently:true});
-  sc.drawImage(makeArt(i),0,0,AW,AH,0,0,GW,GH);
-  const d=Math.min(3,devicePixelRatio||1);
-  cv.width=Math.round(AW*d);cv.height=Math.round(AH*d);
-  HC.push({el,cv,ctx:cv.getContext("2d"),sm,sc,src:sc.getImageData(0,0,GW,GH).data.slice(),
-    img:sc.createImageData(GW,GH),dis:1,dirty:true});
-  const p=document.createElement("i");dprog.appendChild(p);
-});
+/*═══════════════════════════════════════════════════════════════
+  ScrollNarrative (spec §5.1)
+  This IS the old §05 mechanism — same arc radius, same angular step,
+  same easing constant, same Bayer dither, same proximity fade. The
+  only change is that the cards, the stage and the progress bar are
+  passed in, so §01 can drive it with its own content.
+═══════════════════════════════════════════════════════════════*/
+const ALLCARDS=[];                       /* every card, for theme repaints */
+
 function renderH(c){
   const out=c.img.data,D=c.dis;
   for(let y=0;y<GH;y++){const gy=1-y/GH;
@@ -2339,15 +3234,49 @@ function renderH(c){
   q.imageSmoothingEnabled=false;
   q.drawImage(c.sm,0,0,GW,GH,0,0,c.cv.width,c.cv.height);
 }
-let hT=0,deckSettled=false;
-function runDeck(dt){
-  if(!pins[1].vis&&deckSettled)return;
-  const p=pins[1].p;
-  deckSettled=Math.abs(hT-p*(HC.length-1))<.001;
-  const target=p*(HC.length-1);              /* scroll position IS the carousel position */
-  hT=RM?target:lerp(hT,target,1-Math.exp(-dt*9));
-  const stage=document.getElementById("stage");
-  const w=stage.clientWidth||600;
+
+function createNarrative(o){
+  const hx=document.getElementById(o.hxId);
+  const stage=document.getElementById(o.stageId);
+  const prog=document.getElementById(o.progId);
+  if(!hx||!stage||!prog)return null;
+  const cards=[];
+  o.items.forEach((it,i)=>{
+    const el=document.createElement("article");el.className="hc";
+    el.innerHTML='<div class="top"><canvas></canvas></div><div class="m"><i>'+it.seg+'</i><h4>'+it.t+'</h4><p>'+it.n+'</p></div>';
+    hx.appendChild(el);
+    const cv=el.querySelector("canvas"),sm=document.createElement("canvas");
+    sm.width=GW;sm.height=GH;
+    const sc=sm.getContext("2d",{willReadFrequently:true});
+    sc.drawImage(makeArt(i+(o.seed||0)),0,0,AW,AH,0,0,GW,GH);
+    /* DPR cap (spec §4.7): 2 on a mouse, 1.5 on touch. The old code capped
+       at 3, which on a phone is four times the pixels for no visible gain. */
+    const d=Math.min(finePointer()?2:1.5,devicePixelRatio||1);
+    cv.width=Math.round(AW*d);cv.height=Math.round(AH*d);
+    const c={el,cv,ctx:cv.getContext("2d"),sm,sc,src:sc.getImageData(0,0,GW,GH).data.slice(),
+      img:sc.createImageData(GW,GH),dis:1,dirty:true};
+    cards.push(c);ALLCARDS.push(c);
+    prog.appendChild(document.createElement("i"));
+  });
+  /* stage width is a layout read; it only changes on resize, and measure()
+     is where resizes are already absorbed */
+  const inst={cards,stage,prog,pin:o.pin,t:0,settled:false,stageW:stage.clientWidth||600};
+  NARRATIVES.push(inst);
+  return inst;
+}
+
+function runNarrative(N,dt){
+  const P=pins[N.pin];
+  if(!P||(!P.vis&&N.settled))return;
+  const n=N.cards.length;
+  if(!n)return;
+  /* Scroll position IS the carousel position. Never a counter: a trackpad
+     fling skips positions, and a counter would land on the wrong card. */
+  const target=P.p*(n-1);
+  N.settled=Math.abs(N.t-target)<.001;
+  N.t=RM?target:lerp(N.t,target,1-Math.exp(-dt*9));
+  const hT=N.t;
+  const w=N.stageW||600;
   const sc=clamp(w/760,.55,1);
   /* On a phone the cards are nearly as wide as the stage, so a shallow arc
      stacks them on top of each other. Push the angle out and fade the
@@ -2357,7 +3286,7 @@ function runDeck(dt){
   const AS=narrow?58:clamp(w/24,22,38);
   const maxA=AS*(narrow?1.5:2.5);
   const fade=narrow?.92:.62;
-  HC.forEach((c,i)=>{
+  N.cards.forEach((c,i)=>{
     const off=i-hT,ang=off*AS,rad=ang*Math.PI/180;
     const x=Math.sin(rad)*R,z=Math.cos(rad)*R-R,y=off*18*sc;
     const prox=Math.min(1,Math.abs(ang)/maxA);
@@ -2368,8 +3297,908 @@ function runDeck(dt){
     c.el.style.zIndex=200+Math.round(Math.cos(rad)*100);
     if(c.dirty){renderH(c);c.dirty=false}
   });
-  [...dprog.children].forEach((el,i)=>el.style.setProperty("--f",clamp(hT-i+1,0,1)));
+  [...N.prog.children].forEach((el,i)=>el.style.setProperty("--f",clamp(hT-i+1,0,1)));
 }
+
+/*═══════════════════════════════════════════════════════════════
+  §01 — Rift
+  A second, distinct scroll mechanic sharing the dither-card factory
+  above but not its arc math: cards are thrown in from alternating
+  sides with a hard spin + tilt + depth-dive instead of orbiting a
+  shallow arc, so §01 doesn't just look like a rerun of the carousel
+  now driving §07 Solutions (see runNarrative). Same card build, same
+  proximity-driven dither dissolve — only the transform function
+  differs.
+═══════════════════════════════════════════════════════════════*/
+function runRift(N,dt){
+  const P=pins[N.pin];
+  if(!P||(!P.vis&&N.settled))return;
+  const n=N.cards.length;
+  if(!n)return;
+  const target=P.p*(n-1);
+  N.settled=Math.abs(N.t-target)<.001;
+  N.t=RM?target:lerp(N.t,target,1-Math.exp(-dt*8));
+  const hT=N.t;
+  const w=N.stageW||600;
+  const narrow=w<620;
+  const throwX=narrow?w*.7:Math.min(460,w*.52);
+  const dropY=narrow?70:110;
+  const dive=narrow?200:320;
+  N.cards.forEach((c,i)=>{
+    const off=i-hT,a=Math.min(Math.abs(off),2.2),s=i%2===0?-1:1;
+    const x=off*s*throwX;
+    const y=a*a*dropY*.4;
+    const z=-a*dive*.6;
+    const spin=off*s*54;
+    const tilt=off*s*-22;
+    const scale=clamp(1-a*.32,.38,1);
+    const prox=Math.min(1,a/1.15);
+    const tgt=Math.pow(prox,1.4)*.6;
+    if(Math.abs(tgt-c.dis)>.004){c.dis=tgt;c.dirty=true}
+    c.el.style.transform=`translate3d(${x.toFixed(1)}px,calc(-50% + ${y.toFixed(1)}px),${z.toFixed(1)}px) rotateZ(${spin.toFixed(1)}deg) rotateX(${tilt.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+    c.el.style.opacity=clamp(1-a*1.05,0,1).toFixed(3);
+    c.el.style.zIndex=300-Math.round(a*100);
+    if(c.dirty){renderH(c);c.dirty=false}
+  });
+  [...N.prog.children].forEach((el,i)=>el.style.setProperty("--f",clamp(hT-i+1,0,1)));
+}
+
+const NARRATIVES=[];
+/* §01 — the flood problem. Content unchanged; mechanic is now Rift (above),
+   not the arc carousel — that moved to §07 Solutions. */
+const problemRift=createNarrative({
+  hxId:"problemHx",stageId:"problemStage",progId:"problemProg",pin:0,seed:0,
+  items:[
+    {seg:"01",t:"Backward-looking",n:"Past data doesn't fully describe future risk."},
+    {seg:"02",t:"Too coarse",n:"Risk gets lost between the district and the asset."},
+    {seg:"03",t:"Fragmented",n:"The data exists. The intelligence is scattered."}
+  ]
+});
+if(problemRift)problemRift.mode="rift";
+function runDeck(dt){
+  if(document.body.classList.contains("nopin"))return;
+  for(const N of NARRATIVES)(N.mode==="rift"?runRift:runNarrative)(N,dt);
+}
+
+/*═══════════════════════════════════════════════════════════════
+  §02 — Confluence (spec §5.2)
+  Geometry is two fixed viewBoxes, chosen by width, both computed at
+  module scope. The scroll timeline reads pin progress; nothing here
+  counts events, so a fling lands in the right state.
+═══════════════════════════════════════════════════════════════*/
+const CFL_INPUTS=[
+  {id:"rainfall",label:"Rainfall",group:"hazard"},
+  {id:"history",label:"Flood history",group:"observed"},
+  {id:"terrain",label:"Terrain",group:"physical"},
+  {id:"drainage",label:"Drainage",group:"physical"},
+  {id:"satellite",label:"Satellite data",group:"observed"},
+  {id:"climate",label:"Climate projections",group:"hazard"},
+  {id:"exposure",label:"Exposure",group:"exposure"}
+];
+const CFL_STROKE={hazard:"var(--stream-hazard)",observed:"var(--stream-observed)",
+  physical:"var(--stream-physical)",exposure:"var(--stream-exposure)"};
+
+/* Row-start deltas, not Math.random(): on entry the 7 inputs read as one
+   transparent horizontal line; the settle phase (in paintConfluence) pulls
+   each one from its row slot down into its column/funnel position, so the
+   same state renders identically on every load and again when the visitor
+   scrolls back up through the section. */
+function cflRowStart(pills,rowY,rowSpan,rowX0){
+  return pills.map((pp,i)=>({
+    dx:(rowX0+i*(rowSpan/(pills.length-1)))-pp.x,
+    dy:rowY-pp.cy,
+    rot:i%2?5:-5
+  }));
+}
+
+const CFL_DESKTOP=(()=>{
+  const JX=[0,28,8,36,0,22,12],W=1200,H=560,pw=200,ph=40;
+  const pills=CFL_INPUTS.map((it,i)=>{
+    const x=40+JX[i],cy=60+i*72;
+    return{x,y:cy-ph/2,cy,w:pw,h:ph,tx:x+18,ty:cy+6};
+  });
+  const rowStart=cflRowStart(pills,40,W-300,40);
+  return{W,H,pills,rowStart,hub:[780,280],hubR:64,ringR:84,
+    streams:pills.map(q=>"M "+(q.x+pw)+" "+q.cy+" C "+(q.x+420)+" "+q.cy+", 600 280, 716 280"),
+    outlet:"M 844 280 L 980 280",
+    card:{x:990,y:232,w:180,h:96,rx:14,tx:1080,ty:272,sy:294}};
+})();
+
+const CFL_MOBILE=(()=>{
+  const W=360,H=720,pw=190,ph=40;
+  const pills=CFL_INPUTS.map((it,i)=>{
+    const y=24+i*52;
+    return{x:16,y,cy:y+ph/2,w:pw,h:ph,tx:34,ty:y+26};
+  });
+  const rowStart=cflRowStart(pills,18,W-60,10);
+  return{W,H,pills,rowStart,hub:[180,548],hubR:48,ringR:66,
+    streams:pills.map(q=>"M 206 "+(q.y+20)+" C 290 "+(q.y+20)+", 300 380, 300 420"),
+    trunk:"M 300 420 C 300 470, 180 450, 180 500",
+    outlet:"M 180 596 L 180 620",
+    card:{x:80,y:620,w:200,h:72,rx:12,tx:180,ty:658,sy:678}};
+})();
+
+let CFL=null;
+function buildConfluence(){
+  const host=document.getElementById("conflStage");
+  if(!host)return;
+  const G=mqValue("(min-width: 900px)")?CFL_DESKTOP:CFL_MOBILE;
+  const svg=mk("svg",{viewBox:"0 0 "+G.W+" "+G.H,"aria-hidden":"true",focusable:"false",
+    preserveAspectRatio:"xMidYMid meet"});
+
+  /* streams first, so the pills and the hub occlude their ends */
+  const streams=[],flows=[],sg=mk("g",{});
+  G.streams.forEach((d,i)=>{
+    const col=CFL_STROKE[CFL_INPUTS[i].group];
+    const base=mk("path",{d,class:"cflStream cflDraw",stroke:col,pathLength:1});
+    const flow=mk("path",{d,class:"cflFlow",stroke:col,"data-decorative":""});
+    sg.appendChild(base);sg.appendChild(flow);
+    streams.push(base);flows.push(flow);
+  });
+  let trunk=null,trunkFlow=null;
+  if(G.trunk){
+    trunk=mk("path",{d:G.trunk,class:"cflStream cflDraw",stroke:"var(--stream-observed)",pathLength:1});
+    trunkFlow=mk("path",{d:G.trunk,class:"cflFlow",stroke:"var(--stream-observed)","data-decorative":""});
+    sg.appendChild(trunk);sg.appendChild(trunkFlow);
+  }
+  svg.appendChild(sg);
+
+  const pills=G.pills.map((pp,i)=>{
+    const g=mk("g",{class:"cflPill"});
+    g.appendChild(mk("rect",{x:pp.x,y:pp.y,width:pp.w,height:pp.h,rx:pp.h/2}));
+    const t=mk("text",{x:pp.tx,y:pp.ty});
+    t.textContent=CFL_INPUTS[i].label;
+    g.appendChild(t);
+    svg.appendChild(g);
+    return g;
+  });
+
+  const ring=mk("circle",{cx:G.hub[0],cy:G.hub[1],r:G.ringR,class:"cflRing","data-decorative":""});
+  svg.appendChild(ring);
+  const hubG=mk("g",{class:"cflHub"});
+  hubG.appendChild(mk("circle",{cx:G.hub[0],cy:G.hub[1],r:G.hubR}));
+  const ht=mk("text",{x:G.hub[0],y:G.hub[1]+6,"text-anchor":"middle"});
+  ht.textContent="FloodGuard";
+  hubG.appendChild(ht);
+  svg.appendChild(hubG);
+
+  const outlet=mk("path",{d:G.outlet,class:"cflOutlet cflDraw",pathLength:1});
+  svg.appendChild(outlet);
+
+  const c=G.card,cardG=mk("g",{class:"cflOutBox"});
+  cardG.appendChild(mk("rect",{x:c.x,y:c.y,width:c.w,height:c.h,rx:c.rx}));
+  const ct=mk("text",{x:c.tx,y:c.ty,"text-anchor":"middle"});ct.textContent="Decision";
+  cardG.appendChild(ct);
+  const cs=mk("text",{x:c.tx,y:c.sy,"text-anchor":"middle",class:"sub"});
+  cs.textContent="One channel out";
+  cardG.appendChild(cs);
+  svg.appendChild(cardG);
+
+  host.innerHTML="";host.appendChild(svg);
+  CFL={svg,host,streams,flows,trunk,trunkFlow,pills,ring,hubG,outlet,cardG,G,last:-1};
+
+  /* Fine pointer: hovering a pill lights its stream and dims the rest.
+     Touch: tap toggles, tapping elsewhere clears. The pills stay
+     unfocusable — they are decorative, and the visually-hidden list
+     already carries the same content in reading order. */
+  let lit=-1;
+  const setLit=i=>{
+    if(lit===i)return;
+    lit=i;
+    pills.forEach((g,k)=>{
+      g.classList.toggle("cflDim",i>=0&&k!==i);
+      g.classList.toggle("cflLit",k===i);
+    });
+    streams.forEach((el,k)=>el.classList.toggle("cflDim",i>=0&&k!==i));
+    flows.forEach((el,k)=>el.classList.toggle("cflDim",i>=0&&k!==i));
+  };
+  pills.forEach((g,i)=>{
+    if(finePointer()){
+      g.addEventListener("pointerenter",()=>setLit(i));
+      g.addEventListener("pointerleave",()=>setLit(-1));
+    }else{
+      g.addEventListener("click",e=>{e.stopPropagation();setLit(lit===i?-1:i);});
+    }
+  });
+  if(!finePointer())host.addEventListener("click",()=>setLit(-1));
+
+  inViewPause(host);
+  paintConfluence(document.body.classList.contains("nopin")||RM?1:0);
+}
+
+/* p = track progress. Every value below is derived from it and nothing is
+   latched, so scrolling back up reverses the whole sequence exactly. */
+function paintConfluence(p){
+  if(!CFL)return;
+  if(Math.abs(p-CFL.last)<.0015)return;
+  CFL.last=p;
+  const {streams,flows,trunk,trunkFlow,pills,ring,hubG,outlet,cardG,G}=CFL;
+
+  /* 0.00–0.22 — the horizontal row pulls apart into its column/funnel
+     position: each pill travels from its row slot (G.rowStart) down to
+     its resting column position, not just a small in-place jitter. */
+  const settle=seg(p,0,.22),se=easeOut(settle),k=1-se;
+  pills.forEach((g,i)=>{
+    const r=G.rowStart[i],cx=G.pills[i].x+G.pills[i].w/2;
+    g.setAttribute("transform","translate("+(r.dx*k).toFixed(2)+" "+(r.dy*k).toFixed(2)+
+      ") rotate("+(r.rot*k).toFixed(2)+" "+cx+" "+G.pills[i].cy+")");
+    g.setAttribute("opacity",(.28+.72*settle).toFixed(3));
+  });
+
+  /* 0.22–0.67 — the tributaries draw, staggered by index */
+  streams.forEach((el,i)=>{
+    el.style.strokeDashoffset=String(1-seg(p,.22+i*.045,.40+i*.045));
+  });
+  if(trunk)trunk.style.strokeDashoffset=String(1-seg(p,.55,.70));
+
+  /* 0.60–0.75 — the hub takes */
+  const hub=seg(p,.6,.75);
+  ring.setAttribute("transform","rotate("+(hub*60).toFixed(2)+" "+G.hub[0]+" "+G.hub[1]+")");
+  hubG.setAttribute("opacity",hub.toFixed(3));
+  hubG.setAttribute("transform","translate("+G.hub[0]+" "+G.hub[1]+") scale("+
+    (.9+.1*hub).toFixed(3)+") translate("+(-G.hub[0])+" "+(-G.hub[1])+")");
+
+  /* 0.73–0.87 — one channel leaves */
+  const out=seg(p,.73,.87);
+  outlet.style.strokeDashoffset=String(1-out);
+  cardG.setAttribute("opacity",out.toFixed(3));
+  cardG.setAttribute("transform","translate("+(-16*(1-out)).toFixed(2)+" 0)");
+
+  /* 0.87–1.00 — hold, and the water starts moving */
+  CFL.svg.classList.toggle("cflOn",p>=.87&&!RM);
+}
+
+/* Not pinned: play the same order once on a timer when the section is 40%
+   in view, then hand over to the ambient flow (spec §5.2). */
+function conflOneShot(){
+  const host=document.getElementById("conflStage");
+  if(!host)return;
+  let played=false;
+  const io=new IntersectionObserver(([e])=>{
+    if(played)return;
+    /* scrolled clean past without ever intersecting — show the finished
+       diagram rather than an empty stage */
+    if(!e.isIntersecting){
+      if(e.boundingClientRect.bottom>0)return;
+      played=true;io.disconnect();paintConfluence(1);return;
+    }
+    played=true;io.disconnect();
+    if(RM){paintConfluence(1);return;}
+    const t0=performance.now(),dur=1800;
+    (function tick(t){
+      const q=clamp((t-t0)/dur,0,1);
+      paintConfluence(q);
+      if(q<1)requestAnimationFrame(tick);
+    })(performance.now());
+  },{threshold:.4});
+  io.observe(host);
+}
+
+/* The pinned path reads scroll progress every frame; the unpinned one plays
+   once. Only one of the two is ever live. */
+function runConfluence(){
+  if(!CFL||document.body.classList.contains("nopin"))return;
+  const P=pins[PIN_GAP];
+  if(!P||!P.vis)return;
+  paintConfluence(P.ps);
+}
+
+if(!document.body.classList.contains("nopin"))buildConfluence();
+else conflOneShot();
+/* the two viewBoxes are different diagrams, so crossing 900px rebuilds */
+onMq("(min-width: 900px)",()=>{if(!document.body.classList.contains("nopin"))buildConfluence();});
+
+
+/*── Footer: year, and back-to-top (spec §5.7) ──*/
+{
+  const y=document.getElementById("fgYear");
+  if(y)y.textContent=new Date().getFullYear();
+  const b=document.getElementById("footTop");
+  if(b)b.addEventListener("click",()=>{
+    scrollTo({top:0,behavior:RM?"auto":"smooth"});
+    /* move focus too, or a keyboard user is scrolled to the top while their
+       tab position is still down in the footer */
+    const t=document.getElementById("hero");
+    if(t){t.setAttribute("tabindex","-1");t.focus({preventScroll:true});}
+  });
+}
+
+/*═══════════════════════════════════════════════════════════════
+  §09 — Droplet genesis (spec §5.5)
+
+  Phases, all derived from track progress:
+    A 0.00–0.22  fall      B 0.22–0.30  impact
+    C 0.26–0.45  ripple + disc expansion
+    D 0.45–1.00  the surface, handed to the block below
+
+  Deviation from the spec, deliberate: phase D renders in normal flow
+  underneath the stage rather than on the disc itself. The disc ends
+  covering the viewport in --surface-about and the block below is the
+  same surface, so the seam is invisible — and the about copy is never
+  trapped inside a 100svh box it might outgrow on a short screen.
+═══════════════════════════════════════════════════════════════*/
+const DROP_PATH="M 0 -46 C 16 -20 30 -2 30 16 A 30 30 0 1 1 -30 16 C -30 -2 -16 -20 0 -46 Z";
+const DROP_WATERLINE=620;
+
+let DROP=null;
+function buildDroplet(){
+  const scene=document.getElementById("dropScene");
+  const disc=document.getElementById("dropDisc");
+  const stage=document.getElementById("dropStage");
+  if(!scene||!disc||!stage)return;
+  const wide=mqValue("(min-width: 900px)");
+  const still=document.body.classList.contains("nopin")||RM;
+
+  const svg=mk("svg",{viewBox:"0 0 1000 1000",preserveAspectRatio:"xMidYMid slice",
+    "aria-hidden":"true",focusable:"false"});
+  const defs=mk("defs",{});
+  const grad=mk("linearGradient",{id:"dropGrad",x1:"0",y1:"0",x2:"0",y2:"1"});
+  grad.appendChild(mk("stop",{offset:"0","stop-color":"var(--b300)"}));
+  grad.appendChild(mk("stop",{offset:"1","stop-color":"var(--b800)"}));
+  defs.appendChild(grad);
+  const wgrad=mk("linearGradient",{id:"dropWater",x1:"0",y1:"0",x2:"0",y2:"1"});
+  wgrad.appendChild(mk("stop",{offset:"0","stop-color":"var(--surface-water)","stop-opacity":"1"}));
+  wgrad.appendChild(mk("stop",{offset:"1","stop-color":"var(--surface-water)","stop-opacity":".35"}));
+  defs.appendChild(wgrad);
+  svg.appendChild(defs);
+
+  svg.appendChild(mk("rect",{x:0,y:DROP_WATERLINE,width:1000,height:1000-DROP_WATERLINE,
+    fill:"url(#dropWater)","data-decorative":""}));
+
+  const rings=[0,1,2,3].map(()=>{
+    const e=mk("ellipse",{cx:500,cy:DROP_WATERLINE,rx:40,ry:12,fill:"none",
+      stroke:"rgb(var(--ripple-rgb))","stroke-width":2,opacity:0,"data-decorative":""});
+    svg.appendChild(e);return e;
+  });
+
+  /* crown splash is desktop-only: six extra animated circles is exactly the
+     kind of cost a mid-range phone should not pay for a flourish */
+  const crown=wide?[0,1,2,3,4,5].map(i=>{
+    const c=mk("circle",{r:3+(i%3),fill:"var(--b400)",opacity:0,"data-decorative":""});
+    svg.appendChild(c);return c;
+  }):[];
+
+  const dropG=mk("g",{});
+  dropG.appendChild(mk("path",{d:DROP_PATH,fill:"url(#dropGrad)"}));
+  dropG.appendChild(mk("ellipse",{cx:-10,cy:6,rx:6,ry:10,fill:"#fff",opacity:.45,"data-decorative":""}));
+  const dropWrap=mk("g",{});
+  dropWrap.appendChild(dropG);
+  svg.appendChild(dropWrap);
+
+  scene.innerHTML="";scene.appendChild(svg);
+
+  /* the disc has to cover the stage's diagonal, whatever its shape */
+  let cover=40;
+  const measureCover=()=>{
+    const r=stage.getBoundingClientRect();
+    cover=Math.hypot(r.width,r.height)/20;
+  };
+  measureCover();
+  if(window.ResizeObserver){
+    const ro=new ResizeObserver(()=>{measureCover();DROP&&(DROP.last=-2);});
+    ro.observe(stage);
+  }
+
+  DROP={scene,disc,stage,svg,rings,crown,dropWrap,dropG,wide,still,last:-2,lastY:-1,
+    g:trackGeom(document.getElementById("dropTrack")),
+    get cover(){return cover;}};
+  paintDroplet(still?1:0);
+}
+
+function paintDroplet(p){
+  if(!DROP)return;
+  if(Math.abs(p-DROP.last)<.0015)return;
+  DROP.last=p;
+  const {rings,crown,dropWrap,dropG,disc}=DROP;
+
+  /* A · fall — the drop stretches as it accelerates */
+  const fall=seg(p,0,.22);
+  const y=-80+fall*660;
+  const impact=seg(p,.22,.3);
+  const sy=lerp(1,1.12,fall)*lerp(1,.3,impact);
+  const sx=lerp(1,.94,fall)*lerp(1,1.6,impact);
+  dropWrap.setAttribute("transform","translate(500 "+y.toFixed(1)+") scale("+
+    sx.toFixed(3)+" "+sy.toFixed(3)+")");
+  dropG.setAttribute("opacity",(1-seg(p,.22,.28)).toFixed(3));
+
+  /* B · crown splash */
+  if(crown.length){
+    const c=seg(p,.23,.34);
+    crown.forEach((el,i)=>{
+      const dir=i<3?-1:1, k=(i%3)+1;
+      const px=500+dir*(20*k), py=DROP_WATERLINE-(30+k*20)*Math.sin(c*Math.PI);
+      el.setAttribute("cx",px.toFixed(1));
+      el.setAttribute("cy",py.toFixed(1));
+      el.setAttribute("opacity",(Math.sin(c*Math.PI)*.8).toFixed(3));
+    });
+  }
+
+  /* C · ripple — each ring staggered, expanding and fading */
+  rings.forEach((el,i)=>{
+    const r=seg(p,.26+i*.03,.45+i*.03);
+    const k=r*(6+3*i);
+    el.setAttribute("transform","translate(500 "+DROP_WATERLINE+") scale("+
+      (1+k).toFixed(3)+") translate(-500 "+(-DROP_WATERLINE)+")");
+    el.setAttribute("opacity",(r>0?(1-r)*.9:0).toFixed(3));
+  });
+
+  /* C · the disc opens into the section */
+  const d=seg(p,.32,.48);
+  disc.style.transform="scale("+(easeIO(d)*DROP.cover).toFixed(2)+")";
+}
+
+function runDroplet(){
+  if(!DROP||DROP.still)return;
+  if(DROP.lastY===cur)return;
+  DROP.lastY=cur;
+  const g=DROP.g,top=g.top-cur;
+  /* The phases finish at 0.48 of their own scale. Stretch the track onto that
+     range so the last stretch of scrolling is a short hold on the covered
+     screen, not a long one. */
+  paintDroplet(clamp01((-top)/Math.max(1,g.h-vh))*.53);
+}
+
+/* D · the surface rises. One-shot, in DOM order.
+   Scroll-driven rather than IntersectionObserver: an observer only reports
+   *changes* in intersection, so an element the reader never intersects —
+   jumped past via an anchor, a restored scroll position, or a fling — is
+   never reported at all, and stays at opacity 0 for the rest of the session.
+   Reading scroll position each frame cannot miss it. This is the same shape
+   as the page's own runRevs(). */
+let DROPREV=[];
+function dropReveals(){
+  const after=document.getElementById("dropAfter");
+  if(!after)return;
+  document.getElementById("about").setAttribute("data-motion","ready");
+  const items=[...after.querySelectorAll(".dropText>*"),...after.querySelectorAll(".dropCards article")];
+  if(RM){items.forEach(el=>el.classList.add("in"));DROPREV=[];return;}
+  DROPREV=items.map((el,i)=>({el,i,top:0}));
+}
+function runDropReveals(y){
+  for(let k=DROPREV.length-1;k>=0;k--){
+    const r=DROPREV[k];
+    if(y+vh*.88<r.top)continue;
+    DROPREV.splice(k,1);
+    r.el.style.transitionDelay=(r.i%4*80)+"ms";
+    r.el.classList.add("in");
+  }
+}
+
+/* the handoff wave, drawn with the same tileable generator as §06 */
+function buildDropWave(){
+  const host=document.querySelector(".dropWave");
+  if(!host)return;
+  const svg=mk("svg",{viewBox:"0 0 2400 120",preserveAspectRatio:"none",
+    "aria-hidden":"true",focusable:"false"});
+  svg.appendChild(mk("path",{d:waveFill(2400,120,16,600,52),
+    fill:"var(--bg)","data-decorative":""}));
+  host.innerHTML="";host.appendChild(svg);
+}
+
+buildDroplet();
+buildDropWave();
+dropReveals();
+onMq("(min-width: 900px)",()=>buildDroplet());
+onMq(TALL_Q,()=>buildDroplet());
+onMq(REDUCE_Q,()=>buildDroplet());
+
+/*═══════════════════════════════════════════════════════════════
+  §10 — DepthDeck (spec §5.6)
+  Sticky does the stacking; this only adds depth. Each card scales
+  down and dims as the cards after it arrive, so the stack reads as
+  receding rather than as a pile of equal rectangles.
+═══════════════════════════════════════════════════════════════*/
+let DECKV=null;
+function buildDeck(){
+  const deck=document.getElementById("insightDeck");
+  if(!deck)return;
+  const cards=[...deck.querySelectorAll(".deckCard")].map(card=>({
+    card,inner:card.querySelector(".deckInner"),dim:card.querySelector(".deckDim")
+  }));
+  DECKV={deck,cards,n:cards.length,last:-2,lastY:-1,g:trackGeom(deck)};
+  if(document.body.classList.contains("nopin")||RM){
+    cards.forEach(c=>{c.inner.style.transform="";c.dim.style.opacity=0;});
+  }
+}
+function runDeckDepth(){
+  if(!DECKV)return;
+  if(document.body.classList.contains("nopin")||RM)return;
+  if(DECKV.lastY===cur)return;
+  DECKV.lastY=cur;
+  const {cards,n,g}=DECKV;
+  const top=g.top-cur;
+  /* progress across the whole deck, 'start start' -> 'end end' */
+  const p=clamp01((-top)/Math.max(1,g.h-vh));
+  if(Math.abs(p-DECKV.last)<.0015)return;
+  DECKV.last=p;
+  cards.forEach((c,i)=>{
+    const target=1-(n-1-i)*.05;
+    const t=clamp01((p-i/n)/(1-i/n));
+    const sc=lerp(1,target,t);
+    const dim=lerp(0,i===n-1?0:.25,t);
+    c.inner.style.transform="scale("+sc.toFixed(4)+")";
+    c.dim.style.opacity=dim.toFixed(3);
+  });
+}
+buildDeck();
+onMq(TALL_Q,()=>buildDeck());
+onMq(REDUCE_Q,()=>buildDeck());
+
+/*═══════════════════════════════════════════════════════════════
+  §06 — Tide reveal (spec §5.4)
+  Wave paths are built once at module scope. Each is closed and
+  tileable, and every band renders a viewBox twice its container so
+  a -50% translate loops seamlessly.
+═══════════════════════════════════════════════════════════════*/
+/** Closed, horizontally tileable wave fill. width must be a multiple of wavelength. */
+function waveFill(width,height,amp,wavelength,baseY){
+  const half=wavelength/2;
+  let d="M0 "+baseY;
+  for(let x=0;x<width;x+=wavelength)d+=" q "+(half/2)+" "+(-amp)+" "+half+" 0 t "+half+" 0";
+  return d+" V "+height+" H 0 Z";
+}
+/* Four crests, not three, and each one is two superimposed waveFills (a
+   primary + an echo of a different wavelength, drifting at its own speed)
+   instead of a single sine — a lone crest reads as "a line"; two waves of
+   different periods overlapping unevenly read as choppy, moving water.
+   Both wavelengths in every pair must divide 2400 evenly (waveFill's own
+   tiling requirement) — this is why they're not round numbers. */
+const TIDE_BAND=[
+  waveFill(2400,180,14,400,40),
+  waveFill(2400,180,11,300,64),
+  waveFill(2400,180,8,200,90),
+  waveFill(2400,180,6,150,112)
+];
+const TIDE_BAND_ECHO=[
+  waveFill(2400,180,10,480,46),
+  waveFill(2400,180,8,240,70),
+  waveFill(2400,180,6,160,96),
+  waveFill(2400,180,5,120,116)
+];
+const TIDE_COVER=[waveFill(2400,400,18,400,24),waveFill(2400,400,12,300,44)];
+/* light enough that the crests read as separate water lines rather
+   than one dark bar across the page */
+const TIDE_BAND_FILL=["var(--b900)","var(--b800)","var(--b600)","var(--b400)"];
+const TIDE_BAND_ALPHA=[.16,.22,.3,.42];
+const TIDE_DRIFT=["22s","18s","27s","33s"];
+const TIDE_DRIFT2=["31s","24s","36s","44s"];
+
+let TIDE=null;
+function buildTide(){
+  const band=document.getElementById("tideBand");
+  const list=document.getElementById("platList");
+  if(!band||!list)return;
+  const narrow=!mqValue("(min-width: 900px)");
+  const still=document.body.classList.contains("nopin")||RM;
+
+  /* ── the band ── */
+  band.innerHTML="";
+  const bandLayers=TIDE_BAND.map((d,k)=>{
+    /* the scroll-driven separation (runTide) goes on this wrapper — the two
+       waves inside keep their own independent CSS drift animations on
+       `transform`, and an animated property always wins over anything else
+       written to it, so the scroll offset can't live on the same element */
+    const wrap=document.createElement("div");
+    wrap.className="tbLayerWrap";
+    const svg=mk("svg",{viewBox:"0 0 2400 180",preserveAspectRatio:"none",
+      "aria-hidden":"true",focusable:"false",class:"tbLayer"});
+    const path=mk("path",{d,fill:TIDE_BAND_FILL[k],opacity:TIDE_BAND_ALPHA[k],"data-decorative":""});
+    /* a thin high-contrast duplicate along the same crest, so it reads as a
+       lit edge rather than a flat fill boundary — no filter, just a second
+       stroke-only path (spec §4.7: duplicated stroke instead of drop-shadow) */
+    const foam=mk("path",{d,fill:"none",stroke:TIDE_BAND_FILL[k],"stroke-width":2.5,
+      opacity:Math.min(.9,TIDE_BAND_ALPHA[k]+.3),"data-decorative":""});
+    svg.appendChild(path);svg.appendChild(foam);
+    if(!still){svg.classList.add("tbDrift");svg.style.setProperty("--d",TIDE_DRIFT[k]);}
+    wrap.appendChild(svg);
+    /* a second, independent wave (own wavelength, own drift speed) layered
+       on top — one crest alone reads as a static line; two of different
+       periods sliding past each other read as choppy, moving water */
+    const svg2=mk("svg",{viewBox:"0 0 2400 180",preserveAspectRatio:"none",
+      "aria-hidden":"true",focusable:"false",class:"tbLayer"});
+    const echo=mk("path",{d:TIDE_BAND_ECHO[k],fill:TIDE_BAND_FILL[k],
+      opacity:(TIDE_BAND_ALPHA[k]*.55).toFixed(3),"data-decorative":""});
+    svg2.appendChild(echo);
+    if(!still){svg2.classList.add("tbDrift2");svg2.style.setProperty("--d",TIDE_DRIFT2[k]);}
+    wrap.appendChild(svg2);
+    band.appendChild(wrap);
+    return{wrap,svg,path,svg2};
+  });
+
+  /* ── one cover per card ── */
+  const cards=[...list.querySelectorAll(".platCard")].map(card=>{
+    card.querySelectorAll(".platCover").forEach(n=>n.remove());
+    const body=card.querySelector(".platBody");
+    if(still){body.style.opacity="";body.style.transform="";return{card,body,cover:null};}
+    const cover=document.createElement("div");
+    cover.className="platCover";
+    const svg=mk("svg",{viewBox:"0 0 2400 400",preserveAspectRatio:"none",
+      "aria-hidden":"true",focusable:"false"});
+    /* under 900 one path is enough — a second one is invisible at that size
+       and doubles the fill cost on exactly the devices that can least afford it */
+    const paths=(narrow?TIDE_COVER.slice(0,1):TIDE_COVER);
+    paths.forEach((d,k)=>svg.appendChild(mk("path",{d,fill:"var(--bg)",
+      opacity:k===0?1:.6,"data-decorative":""})));
+    if(!narrow&&finePointer())svg.classList.add("pcDrift");
+    cover.appendChild(svg);
+    card.appendChild(cover);
+    return{card,body,cover};
+  });
+
+  /* ── the gauge ── */
+  const gauge=document.getElementById("platGauge");
+  const fill=gauge&&gauge.querySelector(".gaugeFill");
+  const ticksHost=gauge&&gauge.querySelector(".gaugeTicks");
+  let ticks=[];
+  if(ticksHost){
+    ticksHost.innerHTML="";
+    ticks=cards.map((c,i)=>{
+      const b=document.createElement("b");
+      b.textContent=c.card.querySelector("h3").textContent;
+      /* Reading order, top to bottom — the same order as the cards. The spec
+         describes a rising water level, but the ticks index the list, and a
+         gauge that runs opposite to the text it labels misreads at a glance.
+         Kept as depth instead: you descend through the platform. */
+      b.style.top=((i/Math.max(1,cards.length-1))*100).toFixed(2)+"%";
+      ticksHost.appendChild(b);
+      return b;
+    });
+  }
+
+  TIDE={band,bandLayers,list,cards,fill,ticks,still,last:-2,lastY:-1,
+    bandG:trackGeom(band),listG:trackGeom(list)};
+  cards.forEach(c=>{c.g=trackGeom(c.card);});
+  if(still){
+    if(fill)fill.style.setProperty("--g",1);
+    ticks.forEach(t=>t.classList.add("on"));
+  }else if(ticks.length){
+    activeStep(list,i=>ticks.forEach((t,k)=>t.classList.toggle("on",k===i)),".platCard");
+  }
+  inViewPause(band);
+  inViewPause(list);
+}
+
+function runTide(){
+  if(!TIDE||TIDE.still)return;
+  /* Skipping while the section is off-screen looks like a free win and is
+     not: offsetProgress clamps, so a card above the viewport reads 1 and one
+     below reads 0 — but only if the maths actually runs. Bail out on a
+     section that was jumped straight past and its covers stay shut forever.
+     Gate on the scroll having moved instead, which skips the same idle
+     frames without ever leaving a card stranded. */
+  if(TIDE.lastY===cur)return;
+  TIDE.lastY=cur;
+  /* band: the layers separate vertically — the tide opening. Eased, not
+     linear, so the separation settles instead of moving at a constant rate. */
+  const bp=easeOut(offsetProgress(TIDE.bandG,1,.3));
+  const sep=[0,18,36,58];
+  TIDE.bandLayers.forEach((L,k)=>{
+    L.wrap.style.transform="translateY("+(-bp*sep[k]).toFixed(1)+"px)";
+    if(k===TIDE.bandLayers.length-1)L.path.setAttribute("opacity",(TIDE_BAND_ALPHA[k]*(1-bp*.65)).toFixed(3));
+  });
+
+  /* cards: the cover slides down past the bottom, uncovering the top first.
+     Eased so the water decelerates as it recedes instead of sliding at a
+     constant rate. */
+  const narrow=!mqValue("(min-width: 900px)");
+  const a=narrow?.95:.92, b=narrow?.65:.5;
+  for(const c of TIDE.cards){
+    if(!c.cover)continue;
+    const q=offsetProgress(c.g,a,b),qe=easeOut(q);
+    c.cover.style.transform="translateY("+(qe*105).toFixed(2)+"%)";
+    const r=seg(q,.2,1);
+    c.body.style.opacity=r.toFixed(3);
+    c.body.style.transform="translateY("+((1-r)*20).toFixed(1)+"px)";
+  }
+
+  /* gauge: the level rises with progress through the list */
+  if(TIDE.fill){
+    const g=offsetProgress(TIDE.listG,.9,-.2);
+    if(Math.abs(g-TIDE.last)>.002){TIDE.last=g;TIDE.fill.style.setProperty("--g",g.toFixed(4));}
+  }
+}
+
+buildTide();
+onMq("(min-width: 900px)",()=>buildTide());
+onMq(TALL_Q,()=>buildTide());
+onMq(REDUCE_Q,()=>buildTide());
+
+/*═══════════════════════════════════════════════════════════════
+  §05 — IsoStack (spec §5.3)
+  Dimetric 2:1 slabs, bottom-up. Paint order is i = 0 … n-1 so an
+  upper slab overlaps the one below it. Geometry is computed once at
+  module scope — never per frame.
+═══════════════════════════════════════════════════════════════*/
+const ISO={cx:200,halfW:155,halfH:78,depth:14,gap:88,pad:32};
+/* i = 0 is the BOTTOM layer (revealed first); the top layer has the smallest cy */
+const layerCy=(i,n)=>ISO.pad+ISO.halfH+(n-1-i)*ISO.gap;
+const viewBoxH=n=>ISO.pad*2+ISO.halfH*2+(n-1)*ISO.gap+ISO.depth;
+const ptsOf=(...p)=>p.map(([x,y])=>x+","+y).join(" ");
+function isoBox(cx,cy,halfW,halfH,d){
+  const T=[cx,cy-halfH],R=[cx+halfW,cy],B=[cx,cy+halfH],L=[cx-halfW,cy];
+  return{
+    top:ptsOf(T,R,B,L),
+    left:ptsOf(L,B,[B[0],B[1]+d],[L[0],L[1]+d]),
+    right:ptsOf(B,R,[R[0],R[1]+d],[B[0],B[1]+d])
+  };
+}
+function slab(cy){return isoBox(ISO.cx,cy,ISO.halfW,ISO.halfH,ISO.depth);}
+/* extruded blocks standing on the top ("Decision") layer — the reference
+   prompt's "top grid with extruded 3D geometric buildings". Each is the
+   same dimetric box as a slab, just anchored at its own footprint and
+   built roof-down to ground level so it reads as rising off the surface,
+   not sunk into it. */
+const ISO_BUILDINGS=[
+  {dx:-96,dy:18,w:16,h:11,ht:30},
+  {dx:-58,dy:-22,w:13,h:10,ht:54},
+  {dx:-8,dy:14,w:15,h:11,ht:40},
+  {dx:34,dy:-16,w:12,h:9,ht:64},
+  {dx:76,dy:12,w:14,h:10,ht:24},
+  {dx:112,dy:-8,w:11,h:9,ht:46}
+];
+/* dashed connectors at both side corners, between layer i and i+1 */
+function connectors(i,n){
+  const yUpper=layerCy(i+1,n)+ISO.depth, yLower=layerCy(i,n);
+  return[ISO.cx-ISO.halfW,ISO.cx+ISO.halfW].map(x=>({x,y1:yLower,y2:yUpper}));
+}
+
+
+/* One <pattern> per texture, skewed onto the 2:1 top face so it reads as
+   lying flat rather than pasted on. `none` gets no pattern at all. */
+const ISO_TEX={
+  dots:'<circle cx="4" cy="4" r="1.5" fill="currentColor"/>',
+  contours:'<path d="M0 6 q4 -4 8 0" fill="none" stroke="currentColor" stroke-width="1"/>',
+  grid:'<path d="M0 0h8M0 0v8" fill="none" stroke="currentColor" stroke-width="1"/>',
+  hatch:'<path d="M0 8 8 0" fill="none" stroke="currentColor" stroke-width="1"/>'
+};
+
+function buildIsoStack(){
+  const root=document.getElementById("isoRoot");
+  const host=document.getElementById("isoStage");
+  if(!root||!host)return;
+  const steps=[...root.querySelectorAll(".isoStep")];
+  const n=steps.length;
+  if(!n)return;
+  const TEX=["dots","contours","grid","hatch","none"];
+  const wide=1200;
+  const vbW=innerWidth>=wide?560:400;
+  const vbH=viewBoxH(n);
+  const svg=mk("svg",{viewBox:(vbW===560?-80:0)+" 0 "+vbW+" "+vbH,
+    "aria-hidden":"true",focusable:"false",preserveAspectRatio:"xMidYMid meet"});
+
+  const defs=mk("defs",{});
+  Object.keys(ISO_TEX).forEach(k=>{
+    const pat=mk("pattern",{id:"isoTex-"+k,width:8,height:8,
+      patternUnits:"userSpaceOnUse",patternTransform:"matrix(1 0.5 -1 0.5 0 0)"});
+    pat.innerHTML=ISO_TEX[k];
+    defs.appendChild(pat);
+  });
+  svg.appendChild(defs);
+
+  /* connectors go under every slab so the slabs occlude them correctly */
+  const connG=mk("g",{});svg.appendChild(connG);
+  const conns=[];
+  for(let i=0;i<n-1;i++){
+    const g=mk("g",{class:"isoConn"});
+    connectors(i,n).forEach(c=>{
+      g.appendChild(mk("line",{x1:c.x,y1:c.y1,x2:c.x,y2:c.y2,
+        stroke:"var(--line2)","stroke-width":1,"stroke-dasharray":"3 5","data-decorative":""}));
+    });
+    connG.appendChild(g);conns.push(g);
+  }
+
+  const slabs=[],labels=[];
+  for(let i=0;i<n;i++){
+    const cy=layerCy(i,n),sp=slab(cy),fill="var(--iso-l"+(i+1)+")";
+    const g=mk("g",{class:"isoSlab"});
+    /* sides first, then the top face over them */
+    g.appendChild(mk("polygon",{points:sp.left,fill}));
+    g.appendChild(mk("polygon",{points:sp.left,fill:"var(--iso-side-left)","data-decorative":""}));
+    g.appendChild(mk("polygon",{points:sp.right,fill}));
+    g.appendChild(mk("polygon",{points:sp.right,fill:"var(--iso-side-right)","data-decorative":""}));
+    g.appendChild(mk("polygon",{points:sp.top,fill}));
+    const tex=TEX[i]||"none";
+    if(tex!=="none"){
+      const t=mk("polygon",{points:sp.top,fill:"url(#isoTex-"+tex+")",
+        opacity:"var(--iso-texture-opacity)","data-decorative":""});
+      t.style.color="var(--onBrand)";
+      g.appendChild(t);
+    }
+    /* glow = a second stroked polygon, never a CSS filter — drop-shadow on
+       five stacked slabs is the single most expensive thing you can ask a
+       mid-range Android GPU to do per frame (spec §4.7) */
+    const glow=mk("polygon",{points:sp.top,fill:"none",stroke:"var(--brand)",
+      "stroke-width":8,opacity:0,"data-decorative":""});
+    glow.classList.add("isoGlow");
+    g.appendChild(glow);
+    const edge=mk("polygon",{points:sp.top,fill:"none",stroke:"var(--line2)","stroke-width":1});
+    edge.classList.add("isoEdge");
+    g.appendChild(edge);
+    /* under 1200 there's no room for outside labels — the face carries the index */
+    if(vbW===400){
+      const num=mk("text",{x:ISO.cx,y:cy+5,"text-anchor":"middle",class:"isoNum"});
+      num.textContent=String(i+1).padStart(2,"0");
+      g.appendChild(num);
+    }
+    /* the topmost layer carries a small skyline standing on its surface */
+    if(i===n-1){
+      const bldgs=mk("g",{class:"isoBldgs","data-decorative":""});
+      ISO_BUILDINGS.forEach((b,bi)=>{
+        const bx=ISO.cx+b.dx,groundY=cy+b.dy,roofY=groundY-b.ht;
+        const bp=isoBox(bx,roofY,b.w,b.h,b.ht);
+        const bwrap=mk("g",{class:"isoBldg"});
+        bwrap.style.transformOrigin=bx+" "+groundY;
+        bwrap.style.transitionDelay=(90+bi*65)+"ms";
+        bwrap.appendChild(mk("polygon",{points:bp.left,fill:"var(--iso-l"+n+")"}));
+        bwrap.appendChild(mk("polygon",{points:bp.left,fill:"var(--iso-side-left)"}));
+        bwrap.appendChild(mk("polygon",{points:bp.right,fill:"var(--iso-l"+n+")"}));
+        bwrap.appendChild(mk("polygon",{points:bp.right,fill:"var(--iso-side-right)"}));
+        bwrap.appendChild(mk("polygon",{points:bp.top,fill:"var(--brand)"}));
+        bwrap.appendChild(mk("polygon",{points:bp.top,fill:"none",stroke:"var(--line2)","stroke-width":.75}));
+        bldgs.appendChild(bwrap);
+      });
+      g.appendChild(bldgs);
+    }
+    svg.appendChild(g);slabs.push({g,glow,edge});
+
+    if(vbW===560){
+      const lx=ISO.cx+ISO.halfW,lg=mk("g",{class:"isoLabel"});
+      lg.appendChild(mk("line",{x1:lx,y1:cy,x2:lx+24,y2:cy,stroke:"var(--line2)","stroke-width":1}));
+      const tn=mk("text",{x:lx+32,y:cy+5});
+      const num=mk("tspan",{class:"n"});num.textContent=String(i+1).padStart(2,"0")+"  ";
+      tn.appendChild(num);
+      tn.appendChild(document.createTextNode(steps[i].querySelector("h3").textContent));
+      lg.appendChild(tn);
+      svg.appendChild(lg);labels.push(lg);
+    }
+  }
+
+  /* the particle rides the connector into the newest layer — data arriving */
+  const particle=mk("circle",{r:3,fill:"var(--brand)",opacity:0,"data-decorative":""});
+  const pMotion=mk("animateMotion",{dur:"1.4s",repeatCount:"indefinite",path:"M0,0 L0,0"});
+  particle.appendChild(pMotion);
+  svg.appendChild(particle);
+
+  host.innerHTML="";host.appendChild(svg);
+
+  let active=-1;
+  function paint(a){
+    active=a;
+    slabs.forEach((s,i)=>{
+      const on=i<=a,act=i===a;
+      s.g.classList.toggle("on",on);
+      s.g.classList.toggle("act",act);
+      s.glow.setAttribute("opacity",act?.18:0);
+      s.edge.setAttribute("stroke",act?"var(--brand)":"var(--line2)");
+      s.edge.setAttribute("stroke-width",act?2.5:1);
+    });
+    conns.forEach((g,i)=>g.classList.toggle("on",i+1<=a));
+    labels.forEach((g,i)=>g.classList.toggle("on",i<=a));
+    if(a>0&&!RM){
+      const c=connectors(a-1,n)[1];
+      particle.setAttribute("cx",c.x);particle.setAttribute("cy",c.y1);
+      pMotion.setAttribute("path","M0,0 L0,"+(c.y2-c.y1));
+      particle.setAttribute("opacity",1);
+    }else particle.setAttribute("opacity",0);
+  }
+  /* static state: every layer up, no particle */
+  if(document.body.classList.contains("nopin")||RM)paint(n-1);
+  else{
+    paint(-1);
+    activeStep(root,paint,".isoStep");
+  }
+  /* SMIL keeps ticking off-screen unless it's told not to */
+  inViewPause(host,on=>{
+    if(!svg.pauseAnimations)return;
+    if(on)svg.unpauseAnimations();else svg.pauseAnimations();
+  });
+  ISOSTACK={root,host,paint,n};
+}
+let ISOSTACK=null;
+buildIsoStack();
+/* crossing the 1200px label threshold changes the viewBox, so rebuild */
+onMq("(min-width: 1200px)",()=>buildIsoStack());
+onMq(TALL_Q,()=>buildIsoStack());
 
 /*── WHY: pinned stack that unfolds one card at a time ──*/
 const WHY=[
@@ -2404,15 +4233,21 @@ const SC=WHY.map(([p,eye,n,l,facts,note],i)=>{
 });
 let stackA=0,stackSettled=false;
 function runStack(dt){
-  if(!pins[2].vis&&stackSettled)return;
-  const p=pins[2].p,N=SC.length,tgt=p*(N-1);
+  if(!pins[1].vis&&stackSettled)return;
+  const p=pins[1].p,N=SC.length,tgt=p*(N-1);
   stackSettled=Math.abs(stackA-tgt)<.001;
   stackA=RM?tgt:lerp(stackA,tgt,1-Math.exp(-dt*10));
+  /* Opacity holds flat at 1 while a card is centered/in-frame and only
+     starts falling once it's meaningfully on its way in or out — the old
+     curve (1-d*.3 / 1+d*1.5) started fading the instant d left exactly 0,
+     so a card was never fully opaque except at the precise rest position
+     and the incoming/outgoing pair spent most of the scroll half-and-half. */
+  const AHEAD_HOLD=.18,PASSED_HOLD=.12;
   SC.forEach((c,i)=>{
     const d=i-stackA;
     let y,s,o,rx,z;
-    if(d>=0){ y=d*26; s=1-d*.05; o=clamp(1-d*.3,0,1); rx=-d*3; z=100-i; }
-    else    { y=d*160; s=1+(-d)*.02; o=clamp(1+d*1.5,0,1); rx=-d*6; z=300+i; }
+    if(d>=0){ y=d*26; s=1-d*.05; o=clamp(1-Math.max(0,d-AHEAD_HOLD)*(1/(1-AHEAD_HOLD)),0,1); rx=-d*3; z=100-i; }
+    else    { y=d*160; s=1+(-d)*.02; o=clamp(1-Math.max(0,-d-PASSED_HOLD)*(1/(1-PASSED_HOLD))*1.6,0,1); rx=-d*6; z=300+i; }
     c.el.style.transform=`translate3d(0,calc(-50% + ${y.toFixed(1)}px),0) scale(${clamp(s,.7,1).toFixed(3)}) rotateX(${rx.toFixed(1)}deg)`;
     c.el.style.opacity=o.toFixed(3);
     c.el.style.zIndex=z;
@@ -2422,19 +4257,19 @@ function runStack(dt){
   stackI.textContent=String(Math.min(N,Math.round(stackA)+1)).padStart(2,"0");
 }
 
-/*── INDUSTRIES: branching tree ──*/
+/*── ABOUT: branching tree (relocated from Solutions — spec: parked, reused
+   smaller). Same mechanism, now carrying the About copy. ──*/
 const IND=[
- ["M3 21h18M6 21V10m4 11V6m4 15v-8m4 8V12","Insurance & Reinsurance","Underwrite flood risk with greater confidence — portfolio screening, location risk and forward-looking analysis."],
- ["M4 19V5m0 14h16M8 15l3.5-4 3 2.5L20 8","Banking & Finance","See flood risk inside the loan book — portfolio exposure, collateral assessment and stress-testing inputs."],
- ["M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6","Government & Disaster Management","Plan earlier. Respond faster. District risk, preparedness, response prioritisation and post-event assessment."],
- ["M12 2 3 7v10l9 5 9-5V7Z M12 12l9-5M12 12v10M12 12 3 7","Infrastructure & Engineering","Build for the flood risk of tomorrow — site exposure, project screening and infrastructure vulnerability."],
- ["M3 20h18M6 20V12m0 0c0-3 2-5 5-5m-5 5c0-3-1-5-3-6m9 11V9m0 0c0-2 2-4 4-4","Agriculture & Food Security","Understand flood risk where crops are exposed — district and taluka risk, seasonal intelligence and crop exposure."]];
+ ["M6 21V9l6-4 6 4v12M10 21v-5h4v5","Who we are","FloodGuard Solutions Pvt. Ltd., founded 2025 in Hyderabad; a DPIIT-recognised startup."],
+ ["M12 3 3 8l9 5 9-5-9-5Z M3 13l9 5 9-5M3 18l9 5 9-5","What we build","Flood intelligence across time — historical, current and future — turned into decision-ready insight."],
+ ["M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75","Who we serve","Governments, insurers, banks, infrastructure and agriculture."],
+ ["M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z","Backed by","T-Hub and WE-Hub."]];
 const treeEl=document.getElementById("tree"),treeSvg=document.getElementById("treeSvg");
 const SVGNS="http://www.w3.org/2000/svg";
 const NODES=IND.map(([p,t,d],i)=>{
   const n=document.createElement("div");
   n.className="node "+(i%2?"r":"l");
-  n.innerHTML='<div class="ncard glass"><div class="top">'+
+  n.innerHTML='<div class="ncard"><div class="top">'+
     '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="'+p+'"/></svg><h3>'+t+'</h3></div><p>'+d+'</p></div>';
   treeEl.appendChild(n);
   return{el:n,card:n.querySelector(".ncard"),left:i%2===0,top:0,h:0};
@@ -2780,8 +4615,8 @@ function loop(now){
   const dt=Math.max(0,Math.min(.05,(now-prevT)/1000));prevT=now;
   cur=scrollY;
   const y=cur;
-  runRevs(y);runCounters(y);runPins(y);runStory();runHdr(y);runBars(y);runParallax(y,dt);
-  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);
+  runRevs(y);runCounters(y);runPins(y,dt);runHdr(y);runBars(y);runParallax(y,dt);
+  runTree(y);runStack(dt);runProducts(y);runToTop(y);runRail(y,dt);runConfluence();runTide();runDeckDepth();runDroplet();runDropReveals(y);
   if(mapProg<1){mapProg=Math.min(1,mapProg+dt*.45);drawMap();}
   else if(hoverCell!==lastHover){lastHover=hoverCell;drawMap();}
   /* the radar only needs painting while its product card is on screen */
@@ -2794,6 +4629,7 @@ let lastHover=null,prodTop=0,prodH=1e9;
 /*── BOOT ──*/
 if(TOUCH){const th=document.getElementById("tlHint");if(th)th.textContent="Tap";}
 readTokens();
+syncThemeColor();
 measure();          /* also caches tree-node, bar and pin offsets */
 requestAnimationFrame(loop);
 {

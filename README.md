@@ -7,6 +7,114 @@ settled here — see [Deferred Decisions](#12-deferred-decisions).
 
 ---
    
+---
+
+## 0. Redesign v2 — what actually ships, and where
+
+> **Read this before the rest of the file.** Sections 4, 8 and 10 below describe a
+> React/Vite rebuild that has never been filled in. The live marketing page is a
+> single hand-written document, and that is where the redesign was built.
+
+| | |
+|---|---|
+| **Live page** | `index.html` — one self-contained static document: inline CSS, inline JS, no framework |
+| **React scaffold** | `src/` — stubs only (`Hero.tsx` renders `"TODO eyebrow"`); builds to `/app.html`; not on the critical path |
+| **Spec** | `REDESIGN_README.md` — Redesign Spec v2 |
+| **Branch** | `redesign-v2`; `master` is tagged `v1` and untouched |
+
+`vite.config.ts` says the same thing in its own comments. The spec is written as
+React components against `motion/react`; per its §0.1 ("implement the
+translation, not the original") every hook has been translated to a vanilla
+equivalent with the same contract, living in `index.html` alongside the code it
+drives.
+
+### 0.1 Motion primitives
+
+All in `index.html`, in the block marked *REDESIGN v2 — MOTION PRIMITIVES*.
+
+| Primitive | Spec equivalent | Contract |
+|---|---|---|
+| `mq(q)` / `mqValue(q)` / `onMq(q, fn)` | `useMediaQuery` | live value read synchronously, plus subscribers |
+| `canPin()` | `useCanPin` | `(min-height: 560px)` **and** not reduced motion |
+| `finePointer()` | `useFinePointer` | `(hover: hover) and (pointer: fine)` |
+| `activeStep(root, cb, sel, margin)` | `useActiveStep` | highest `[data-step]` index in the centre band; `-1` before the first, holds the last past the end |
+| `inViewPause(el, cb)` | `useInViewPause` | sets `data-paused`; true only while in view **and** the document is visible |
+| `offsetProgress(g, a, b)` | `useSectionProgress` | element-relative progress from **cached** geometry |
+| `clamp01(v)` / `seg(p, a, b)` | `range.ts` | clamp, and phase-local 0..1 |
+
+Two rules the section code depends on:
+
+- **Derive from scroll position, never from counted events.** A trackpad fling
+  skips intermediate positions; anything counting steps lands in the wrong state.
+  Sections render *from* an index (`visible = i <= active`), never by stepping.
+- **Never read layout in the frame loop.** `GEOM` caches document-space
+  top/height for every scroll-driven element and is refreshed in `measure()`,
+  alongside the existing `pins` and `revs` caches. Reading
+  `getBoundingClientRect` after the same loop has written styles forces a
+  synchronous layout every frame — measured at ~1s of a 16s profile before this
+  was cached.
+
+### 0.2 Pin policy
+
+A stage may pin only when `canPin()` is true. Otherwise `body.nopin` is set and
+every pinned section collapses to its static layout in DOM order.
+
+- Pins are CSS `position: sticky` only — never JS-driven `position: fixed`.
+- Structure is *track* (sets scroll length) › *stage* (`sticky`, `height:
+  var(--stage-h)`).
+- Heights use `svh`, never `dvh`: `dvh` changes as the mobile URL bar collapses,
+  which resizes the stage mid-scroll.
+- **No ancestor of a stage may have `overflow` other than `visible`/`clip`, a
+  `transform`, `filter`, `contain: paint|layout|strict`, or
+  `content-visibility`.** `html, body { overflow-x: clip }` is load-bearing for
+  this — `hidden` makes `body` a scroll container and silently reparents every
+  sticky element off the viewport.
+- Scrubbed state is never latched, so scrolling back up reverses it exactly.
+
+### 0.3 Running the checks
+
+Start a server first — `npm run dev` (5173) for `qa`/`a11y`, or `npm run build &&
+npx vite preview --port 4173` for `perf`, which must measure the production
+build. Override with `QA_BASE`.
+
+```bash
+node scripts/qa.mjs            # 15 viewports x 2 themes + reduced motion,
+                               #   short viewport, reverse-scroll
+node scripts/qa.mjs --shots    # ...and write screenshots to qa-shots/
+node scripts/qa.mjs --only=1280x600
+node scripts/a11y.mjs          # contrast in both themes + placeholder stats
+node scripts/perf.mjs          # CLS and long frames, desktop + 4x-throttled mobile
+```
+
+`qa.mjs` asserts: no horizontal overflow, nothing wider than its viewport, no
+sticky stage taller than the viewport, no console or page errors, and no content
+left at opacity 0 just after the reader has scrolled past it.
+
+Two things these cannot tell you:
+
+- **Playwright's WebKit is not iOS Safari.** Sign-off still needs a real iPhone
+  pass on §02, §05, §09 and §10.
+- **`perf.mjs` is very sensitive to what else is running.** Close other vite
+  servers first: with a few stray ones alive the same build measured 49, 51, 56
+  and 73 long tasks, versus 2–4 on an idle machine. On an idle machine, two runs
+  each: desktop 0 long tasks for both `v1` and the redesign; mobile at 4× CPU
+  throttle, `v1` 4 (worst 72–80ms) against the redesign's 2–4 (worst 77–94ms).
+  The two are equivalent — five new scroll-driven sections cost nothing
+  measurable. Neither quite reaches the spec's "no frame over 50ms", but both sit
+  close. CLS is 0.000 throughout.
+
+### 0.4 Open items for the owner
+
+- About copy carries the founding year, DPIIT recognition and T-Hub/WE-Hub
+  backing from the spec verbatim — these are the owner's to confirm.
+- Platform and Insights copy is capability copy with no numbers in it, so nothing
+  renders that could be an unvalidated statistic.
+- The publication library is not open; §10's last card says so and asks which
+  piece to publish first, rather than linking to nothing.
+- Footer still lists **Atlas** as a product while the products section shows only
+  Explorer and Live.
+
+
 ## 1. What FloodGuard Is
  
 **FloodGuard Solutions Pvt. Ltd.** — founded 2025, based at COHORT Coworking,
