@@ -46,6 +46,11 @@ const VIEWPORTS = [
   { name: '3440x1300', w: 3440, h: 1300 },  // ultrawide
 ].filter(v => !only || v.name === only);
 
+if (only && VIEWPORTS.length === 0) {
+  console.error(`Unknown viewport "${only}". Valid names: ${['280x653','360x800','375x667','393x852','430x932','412x915','844x390','744x1133','1180x820','1280x600','1536x730','1440x800','1920x960','2560x1300','3440x1300'].join(', ')}`);
+  process.exit(1);
+}
+
 const failures = [];
 const note = m => failures.push(m);
 
@@ -205,7 +210,7 @@ for (const vp of VIEWPORTS) {
 /* ── 4. scrubbed sections must reverse cleanly ───────────────────────── */
 {
   const vp = { name: 'reverse', w: 1440, h: 900 };
-  const { ctx, page } = await open(vp);
+  const { ctx, page, errs } = await open(vp);
   const before = failures.length;
   const probe = () => page.evaluate(() => {
     const q = s => document.querySelector(s);
@@ -229,6 +234,7 @@ for (const vp of VIEWPORTS) {
       note(`reverse: ${k} did not return (down=${down[k]} back=${back[k]})`);
     }
   }
+  if (errs.length) note(`reverse: console → ${[...new Set(errs)].slice(0, 2).join(' | ')}`);
   await ctx.close();
   process.stdout.write(failures.length > before ? 'x' : '.');
 }

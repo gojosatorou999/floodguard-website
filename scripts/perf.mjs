@@ -23,8 +23,8 @@ const RESULTS = [];
  * stray vite servers alive on the same box the same build measured 49, 51,
  * 56 and 73 long tasks. Close other servers before trusting a run. */
 const BUDGETS = {
-  'desktop':   { count: 2,  worst: 90,  v1: '0' },
-  'mobile-4x': { count: 10, worst: 140, v1: '4 / 72-80ms' },
+  'desktop':   { count: 2,  worst: 90  },
+  'mobile-4x': { count: 10, worst: 140 },
 };
 
 for (const [name, w, h, throttle] of [['desktop', 1440, 900, 1], ['mobile-4x', 412, 915, 4]]) {

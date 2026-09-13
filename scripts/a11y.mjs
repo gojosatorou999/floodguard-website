@@ -40,13 +40,39 @@ for (const theme of ['light', 'dark']) {
     };
     const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
     const opaqueBg = el => {
+      /* Composite translucent background layers before calculating contrast.
+         Walk up from el, blending each rgba layer onto the one below. */
+      let result = null;
       let n = el;
       while (n && n !== document.documentElement) {
         const c = parse(getComputedStyle(n).backgroundColor);
-        if (c.length >= 3 && (c[3] === undefined || c[3] >= 0.92)) return c.slice(0, 3);
+        if (c.length >= 3) {
+          const a = c[3] === undefined ? 1 : c[3];
+          if (result === null) {
+            result = [c[0], c[1], c[2], a];
+          } else {
+            /* Porter-Duff src-over composite */
+            const outA = a + result[3] * (1 - a);
+            result = outA > 0
+              ? [(c[0] * a + result[0] * result[3] * (1 - a)) / outA,
+                 (c[1] * a + result[1] * result[3] * (1 - a)) / outA,
+                 (c[2] * a + result[2] * result[3] * (1 - a)) / outA,
+                 outA]
+              : [0, 0, 0, 0];
+          }
+          if (outA >= 0.98) return result.slice(0, 3);
+        }
         n = n.parentElement;
       }
-      return parse(getComputedStyle(document.body).backgroundColor).slice(0, 3);
+      const body = parse(getComputedStyle(document.body).backgroundColor);
+      if (result === null) return body.slice(0, 3);
+      /* composite accumulated layers onto the body colour */
+      const a = result[3];
+      return [
+        result[0] * a + body[0] * (1 - a),
+        result[1] * a + body[1] * (1 - a),
+        result[2] * a + body[2] * (1 - a),
+      ];
     };
 
     const bad = [], stats = [];
@@ -67,8 +93,12 @@ for (const theme of ['light', 'dark']) {
         if (p.display === 'none' || p.visibility === 'hidden' || parseFloat(p.opacity) < 0.5) { hidden = true; break; }
       }
       if (hidden) continue;
+      /* Run the placeholder check before the gradient exclusion so that
+         TODO/XX/dash text on gradient backgrounds is still caught. */
+      if (/\bTODO\b|\bXX\b/.test(t) || /^[\u2014\u2013-]$/.test(t)) stats.push(t.slice(0, 40));
+
       /* A gradient or image behind the text has no single colour to compare
-         against, so a ratio computed from the first opaque *colour* ancestor
+         against, so a ratio computed from the composited background
          would be meaningless. Those need a human eye on a screenshot. */
       let painted = false;
       for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
@@ -77,8 +107,6 @@ for (const theme of ['light', 'dark']) {
         if (c.length >= 3 && (c[3] === undefined || c[3] >= 0.92)) break;
       }
       if (painted) continue;
-
-      if (/\bTODO\b|\bXX\b/.test(t) || /^[\u2014\u2013-]$/.test(t)) stats.push(t.slice(0, 40));
 
       const fg = parse(cs.color);
       if (fg.length >= 4 && fg[3] < 0.5) continue;
