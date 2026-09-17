@@ -81,7 +81,7 @@ body.ready{visibility:visible}
 <div class="wrap">
   <header class="hd">
     <a class="brand" href="/index.html">
-      <i>ƒ</i><span><b>FloodGuard</b><span>Predict · Plan · Protect</span></span>
+      <i>ƒ</i><b>FloodGuard</b>
     </a>
     <div class="who">
       <span>Signed in as <b id="whoMail">—</b></span>
@@ -157,24 +157,27 @@ body.ready{visibility:visible}
   <footer class="ft">© FloodGuard · Private preview</footer>
 </div>
 
-<script>
+<script type="module">
+import { getSession, signOut } from "/assets/js/supabase.js";
+
 /* ── gate ───────────────────────────────────────────────────────
-   A localStorage flag, deliberately: there is no backend to check
-   against. This keeps anyone from wandering in, and nothing more —
-   it is not an access control and must not be treated as one. */
+   A real Supabase session, checked before the page reveals anything.
+   Row Level Security on the data this page reads is the actual access
+   control; this redirect is just the UX for "you're not signed in". */
 const P=new URLSearchParams(location.search);
-let sess=null;
-try{sess=JSON.parse(localStorage.getItem("fg_session")||"null");}catch(_){}
-if(!sess||!sess.email){
-  const back=location.pathname+location.search;
-  location.replace("/auth.html?next="+encodeURIComponent(back)+
-                   "&dest="+encodeURIComponent(P.get("name")||"this district"));
-}else{
-  document.body.classList.add("ready");
-  document.getElementById("whoMail").textContent=sess.email;
-}
-document.getElementById("out").onclick=()=>{
-  try{localStorage.removeItem("fg_session");}catch(_){}
+(async()=>{
+  const sess=await getSession();
+  if(!sess){
+    const back=location.pathname+location.search;
+    location.replace("/auth.html?next="+encodeURIComponent(back)+
+                     "&dest="+encodeURIComponent(P.get("name")||"this district"));
+  }else{
+    document.body.classList.add("ready");
+    document.getElementById("whoMail").textContent=sess.user.email;
+  }
+})();
+document.getElementById("out").onclick=async()=>{
+  await signOut();
   location.href="/index.html";
 };
 

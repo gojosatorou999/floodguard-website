@@ -37,6 +37,7 @@ h1{font-size:var(--t-2);margin-bottom:.4rem}
 .pwEye svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8}
 .hint{font-size:var(--t-xs);color:var(--ink3);margin-top:.4rem}
 .sub{text-align:center;font-size:var(--t-xs);color:var(--ink3);margin-top:1.2rem}
+.note[hidden]{display:none}
 .note{display:flex;gap:.5rem;margin-top:1.5rem;padding:.7rem .85rem;border-radius:var(--r-s);
   background:color-mix(in srgb,var(--alert) 8%,transparent);
   border:1px solid color-mix(in srgb,var(--alert) 26%,transparent)}
@@ -50,6 +51,21 @@ h1{font-size:var(--t-2);margin-bottom:.4rem}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}}
 .ft{padding:1.4rem 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--ink3)}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:.65rem;width:100%;
+  padding:.7rem;border-radius:var(--r-m);border:1px solid var(--line2);background:var(--bg);
+  color:var(--ink);font:700 var(--t-sm)/1 var(--fS);cursor:pointer;transition:.2s var(--E)}
+.gbtn:hover{background:var(--dentBg)}
+.gbtn svg{width:18px;height:18px;flex:none}
+.gbtn:disabled{opacity:.5;cursor:not-allowed}
+.orDiv{display:flex;align-items:center;gap:.8rem;margin:1.2rem 0;color:var(--ink3);font-size:var(--t-xs);
+  text-transform:uppercase;letter-spacing:.1em}
+.orDiv::before,.orDiv::after{content:"";flex:1;height:1px;background:var(--line)}
+.authErr{display:none;gap:.5rem;margin-bottom:1.2rem;padding:.7rem .85rem;border-radius:var(--r-s);
+  background:color-mix(in srgb,var(--alert) 8%,transparent);
+  border:1px solid color-mix(in srgb,var(--alert) 26%,transparent)}
+.authErr.on{display:flex}
+.authErr svg{width:14px;height:14px;fill:none;stroke:var(--alert);stroke-width:2;flex:none;margin-top:.15rem}
+.authErr p{font-size:var(--t-xs);color:var(--ink2);line-height:1.5}
 </style>
 </head>
 <body>
@@ -58,7 +74,7 @@ h1{font-size:var(--t-2);margin-bottom:.4rem}
     <header class="hd">
       <a class="brand" href="/index.html">
         <i>ƒ</i>
-        <span><b>FloodGuard</b><span>Predict · Plan · Protect</span></span>
+        <b>FloodGuard</b>
       </a>
       <a class="btn bg2" href="/index.html">Back to site</a>
     </header>
@@ -70,6 +86,17 @@ h1{font-size:var(--t-2);margin-bottom:.4rem}
         <div class="dest" id="dest" hidden>
           <i></i><span>You're opening district data for <b id="destName"></b>. Sign in to continue.</span>
         </div>
+
+        <div class="authErr" id="authErr" role="alert">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4M12 16.5v.5" stroke-linecap="round"/><path d="M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20.4h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+          <p id="authErrMsg"></p>
+        </div>
+
+        <button class="gbtn" type="button" id="googleBtn">
+          <svg viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62Z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.95v2.33A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.96H.95A9 9 0 0 0 0 9c0 1.45.35 2.83.95 4.04l3-2.33Z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .95 4.96l3 2.33C4.66 5.17 6.65 3.58 9 3.58Z"/></svg>
+          <span id="googleLbl">Continue with Google</span>
+        </button>
+        <div class="orDiv">or</div>
 
         <div class="tabs" role="tablist" aria-label="Sign in or register">
           <button role="tab" id="tabIn"  aria-selected="true"  aria-controls="paneIn">Sign in</button>
@@ -140,11 +167,11 @@ h1{font-size:var(--t-2);margin-bottom:.4rem}
           <p class="sub">Already registered? <a href="#" id="toIn">Sign in</a></p>
         </section>
 
-        <div class="note">
+        <div class="note" id="notConfiguredNote" hidden>
           <svg viewBox="0 0 24 24"><path d="M12 9v4M12 16.5v.5" stroke-linecap="round"/><path d="M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20.4h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-          <p><b>Prototype gate — not security.</b> Any valid-looking email and an 8-character
-             password will let you through. Nothing is sent anywhere and the session is a
-             flag in this browser's localStorage. Replace with a real auth provider before launch.</p>
+          <p><b>Sign-in isn't connected yet.</b> This page is wired to Supabase but no project is
+             configured — set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>
+             (see <code>.env.local.example</code>) to turn it on.</p>
         </div>
       </div>
     </div>
@@ -153,7 +180,10 @@ h1{font-size:var(--t-2);margin-bottom:.4rem}
   <div class="wrap"><footer class="ft">© FloodGuard · Private preview</footer></div>
 </div>
 
-<script>
+<script type="module">
+import { configured, getSession, signInWithPassword, signUpWithPassword, signInWithGoogle, friendlyAuthError }
+  from "/assets/js/supabase.js";
+
 /* ── where the visitor was headed ───────────────────────────────
    `next` is accepted only as a same-origin relative path. An open
    redirect here would let a crafted link bounce people off-site
@@ -174,6 +204,32 @@ if(destName){
   document.getElementById("dest").hidden=false;
   document.getElementById("destName").textContent=destName;
 }
+
+/* ── Supabase wiring ──────────────────────────────────────────── */
+const googleBtn=document.getElementById("googleBtn");
+const errBox=document.getElementById("authErr"),errMsg=document.getElementById("authErrMsg");
+function showErr(msg){errMsg.textContent=msg;errBox.classList.add("on");}
+function clearErr(){errBox.classList.remove("on");}
+
+if(!configured){
+  document.getElementById("notConfiguredNote").hidden=false;
+  googleBtn.disabled=true;
+  document.getElementById("googleLbl").textContent="Google sign-in not configured";
+}else{
+  /* already signed in? skip the gate entirely */
+  getSession().then(s=>{if(s)location.href=NEXT;});
+}
+
+googleBtn.addEventListener("click",()=>{
+  if(!configured)return;
+  clearErr();
+  googleBtn.disabled=true;
+  signInWithGoogle(location.origin+NEXT).catch(err=>{
+    googleBtn.disabled=false;
+    showErr(friendlyAuthError(err));
+  });
+  /* on success the browser navigates away to Google — nothing else to do here */
+});
 
 /* ── tabs ── */
 const tabIn=document.getElementById("tabIn"),tabUp=document.getElementById("tabUp"),
@@ -210,36 +266,53 @@ function setErr(el,bad){
 document.querySelectorAll(".inp").forEach(i=>
   i.addEventListener("input",()=>i.closest(".field").classList.remove("err")));
 
-function grant(email,name){
-  try{
-    localStorage.setItem("fg_session",JSON.stringify({
-      email:email,name:name||email.split("@")[0],at:Date.now()
-    }));
-  }catch(_){/* private mode — the district page falls back to the gate */}
-  location.href=NEXT;
-}
-function submitting(btn,label,then){
-  btn.classList.add("loading");btn.disabled=true;
-  btn.querySelector(".lbl").textContent=label;
-  setTimeout(then,700);
+function busy(btn,on,label){
+  btn.classList.toggle("loading",on);
+  btn.disabled=on;
+  if(label)btn.querySelector(".lbl").textContent=label;
 }
 
-document.getElementById("formIn").addEventListener("submit",e=>{
+document.getElementById("formIn").addEventListener("submit",async e=>{
   e.preventDefault();
+  clearErr();
+  if(!configured){showErr("Sign-in isn't connected yet — see the note below.");return;}
   const m=document.getElementById("inMail"),p=document.getElementById("inPw");
   const ok=[setErr(m,!mailRe.test(m.value.trim())),setErr(p,p.value.length<8)].every(Boolean);
   if(!ok){document.querySelector("#paneIn .field.err .inp").focus();return;}
-  submitting(document.getElementById("btnIn"),"Signing in…",()=>grant(m.value.trim()));
+  const btn=document.getElementById("btnIn");
+  busy(btn,true,"Signing in…");
+  try{
+    await signInWithPassword(m.value.trim(),p.value);
+    location.href=NEXT;
+  }catch(err){
+    busy(btn,false,"Sign in");
+    showErr(friendlyAuthError(err));
+  }
 });
 
-document.getElementById("formUp").addEventListener("submit",e=>{
+document.getElementById("formUp").addEventListener("submit",async e=>{
   e.preventDefault();
+  clearErr();
+  if(!configured){showErr("Account creation isn't connected yet — see the note below.");return;}
   const n=document.getElementById("upName"),o=document.getElementById("upOrg"),
         m=document.getElementById("upMail"),p=document.getElementById("upPw");
   const ok=[setErr(n,n.value.trim().length<2),setErr(o,o.value.trim().length<2),
             setErr(m,!mailRe.test(m.value.trim())),setErr(p,p.value.length<8)].every(Boolean);
   if(!ok){document.querySelector("#paneUp .field.err .inp").focus();return;}
-  submitting(document.getElementById("btnUp"),"Creating…",()=>grant(m.value.trim(),n.value.trim()));
+  const btn=document.getElementById("btnUp");
+  busy(btn,true,"Creating…");
+  try{
+    const data=await signUpWithPassword(m.value.trim(),p.value,n.value.trim(),o.value.trim());
+    if(data.session){location.href=NEXT;return;}
+    /* email confirmation is turned on for this project — no session yet */
+    busy(btn,false,"Create account");
+    document.getElementById("paneUp").innerHTML=
+      '<h1>Check your inbox.</h1><p class="lede">We\'ve sent a confirmation link to <b>'+
+      m.value.trim().replace(/</g,"&lt;")+'</b>. Follow it to finish creating your account.</p>';
+  }catch(err){
+    busy(btn,false,"Create account");
+    showErr(friendlyAuthError(err));
+  }
 });
 </script>
 </body>
