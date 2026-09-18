@@ -17,6 +17,10 @@
     content="Predict, plan and protect. District-level flood risk for governments, insurers and planners.">
   <meta property="og:locale" content="en_IN">
   <meta name="twitter:card" content="summary_large_image">
+  <script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <link rel="preload" href="assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
   <style>
@@ -84,7 +88,7 @@
 
       /* type — display serif echoes the logo's calligraphic ƒ,
      tracked sans caps echo PREDICT · PLAN · PROTECT */
-      --fD: "Iowan Old Style", "Charter", "Sitka Display", Cambria, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --fD: "Newsreader", "Iowan Old Style", "Charter", Cambria, Georgia, serif;
       --fS: "Manrope", "Inter", ui-sans-serif, "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       --fM: "JetBrains Mono", ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
 
@@ -96,6 +100,12 @@
       --t-3: clamp(1.75rem, 1.35rem + 1.9vw, 3.1rem);
       --t-4: clamp(2.3rem, 1.5rem + 3.6vw, 4.6rem);
       --t-5: clamp(2.9rem, 1.6rem + 5.8vw, 7rem);
+      /* one display size for the hero and every section head, one compact card
+         title, and a floor for labels/micro text — nothing on the page smaller */
+      --t-display: clamp(2.4rem, 1.1rem + 4.2vw, 5.2rem);
+      --t-card: clamp(1.2rem, 1.05rem + .5vw, 1.45rem);
+      --t-micro: .8125rem;
+      --t-label: .75rem;
 
       --r-s: 14px;
       --r-m: 20px;
@@ -313,13 +323,13 @@
       font-family: var(--fS);
       font-size: var(--t-0);
       line-height: 1.7;
-      font-weight: 420;
+      font-weight: 400;
       letter-spacing: -.004em;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
       width: 100%;
       -webkit-tap-highlight-color: transparent;
-      overscroll-behavior-y: none;
+      overscroll-behavior-y: none
     }
 
     /* `clip`, not `hidden`. overflow-x:hidden makes body a scroll container and
@@ -333,7 +343,8 @@
 
     @supports not (overflow:clip) {
       body {
-        overflow-x: hidden
+        overflow-x: hidden;
+        font-weight: 400
       }
     }
 
@@ -394,20 +405,29 @@
       }
     }
 
+    /* Newsreader is set light: its optical sizes carry the contrast at display
+       sizes, so weight doesn't have to. 600 on a fallback serif read as bold. */
     h1,
     h2,
     h3,
     h4 {
       font-family: var(--fD);
-      font-weight: 600;
+      font-weight: 450;
+      font-optical-sizing: auto;
       line-height: 1.06;
-      letter-spacing: -.022em;
+      letter-spacing: -.02em;
       margin: 0;
       text-wrap: balance
     }
 
     p {
       margin: 0
+    }
+
+    /* browser-default bold is 700; the text face's emphasis weight is 600 */
+    b,
+    strong {
+      font-weight: 600
     }
 
     a {
@@ -490,15 +510,14 @@
     textarea {
       font-size: max(16px, 1rem)
     }
-
-    /* tracked caps — the logo's own voice */
+/* tracked caps — the logo's own voice */
     .caps {
-      font-family: var(--fS);
-      font-size: var(--t-xs);
-      font-weight: 600;
-      letter-spacing: .26em;
-      text-transform: uppercase;
-    }
+  font-family: var(--fS);
+  font-size: var(--t-label);
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase
+}
 
     .mono {
       font-family: var(--fM);
@@ -713,7 +732,7 @@
     .logo b {
       font-family: var(--fD);
       font-size: 1.28rem;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: .04em;
       line-height: 1.1;
       white-space: nowrap
@@ -892,7 +911,7 @@
       border: 1px solid var(--swEdge);
       background: var(--swTrack);
       font-size: var(--t-sm);
-      font-weight: 650;
+      font-weight: 600;
       color: var(--ink);
       line-height: 1;
       white-space: nowrap;
@@ -970,11 +989,11 @@
     }
 
     .mLbl {
-      font-size: .54rem;
-      letter-spacing: .22em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--ink3);
-      font-weight: 700;
+      font-weight: 600;
       padding: 0 .7rem;
       margin-bottom: .5rem
     }
@@ -1009,7 +1028,7 @@
     .mSec em {
       display: block;
       font-style: normal;
-      font-size: .68rem;
+      font-size: var(--t-micro);
       color: var(--ink3);
       margin-top: .1rem;
       letter-spacing: 0;
@@ -1025,7 +1044,7 @@
       background: var(--brand) !important;
       color: var(--onBrand);
       justify-content: center !important;
-      font-weight: 650;
+      font-weight: 600;
       font-size: var(--t-sm);
       margin-top: .45rem;
       padding: .8rem !important;
@@ -1062,7 +1081,7 @@
 
     .mTheme>span {
       font-size: var(--t-sm);
-      font-weight: 650;
+      font-weight: 600;
       white-space: nowrap
     }
 
@@ -1095,7 +1114,7 @@
       background: var(--brand);
       color: var(--onBrand);
       font-size: var(--t-sm);
-      font-weight: 650;
+      font-weight: 600;
       line-height: 1;
       white-space: nowrap;
       transition: filter .3s, transform .3s var(--E)
@@ -1221,7 +1240,8 @@
     section {
       position: relative;
       z-index: 1;
-      padding-block: clamp(2.75rem, 4.6vw, 4.25rem);
+      /* display-size heads need real air between sections */
+      padding-block: clamp(4rem, 8vw, 7.5rem);
       scroll-margin-top: 86px
     }
 
@@ -1258,15 +1278,15 @@
     }
 
     #hero h1 {
-      font-size: clamp(2.3rem, 1.5rem + 4vw, 5rem);
-      font-weight: 600;
-      letter-spacing: -.035em;
+      font-size: var(--t-display);
+      font-weight: 400;
+      letter-spacing: -.03em;
       line-height: .98
     }
 
     #hero h1 em {
       font-style: italic;
-      font-weight: 500;
+      font-weight: 400;
       color: var(--brand)
     }
 
@@ -1285,7 +1305,7 @@
 
     .hsub b {
       color: var(--ink);
-      font-weight: 700;
+      font-weight: 600;
       font-variant-numeric: tabular-nums
     }
 
@@ -1302,7 +1322,7 @@
       gap: .6rem;
       padding: .95rem 1.75rem;
       border-radius: 999px;
-      font-weight: 650;
+      font-weight: 600;
       font-size: var(--t-sm);
       transition: transform .35s var(--E), filter .3s, background .3s, border-color .3s;
       white-space: nowrap
@@ -1367,8 +1387,9 @@
 
     .mhead .caps {
       color: var(--ink3);
-      font-size: .6rem;
-      letter-spacing: .22em
+      font-size: var(--t-label);
+      letter-spacing: .1em;
+      font-weight: 600
     }
 
     @keyframes pl {
@@ -1422,8 +1443,8 @@
     }
 
     .lg span {
-      font-size: .58rem;
-      letter-spacing: .18em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       color: var(--ink3);
       font-weight: 600;
       text-transform: uppercase
@@ -1431,7 +1452,7 @@
 
     #readout {
       font-family: var(--fM);
-      font-size: .62rem;
+      font-size: var(--t-micro);
       color: var(--ink2);
       letter-spacing: .04em
     }
@@ -1474,7 +1495,7 @@
       border-radius: 99px;
       padding: .3rem .6rem;
       cursor: pointer;
-      font: 600 .6rem/1 var(--fS);
+      font: 600 var(--t-label)/1 var(--fS);
       letter-spacing: .14em;
       text-transform: uppercase;
       transition: .22s var(--E)
@@ -1526,7 +1547,7 @@
       border: 0;
       background: none;
       color: var(--ink);
-      font: 500 .74rem/1.2 var(--fS);
+      font: 500 var(--t-micro)/1.2 var(--fS);
       letter-spacing: 0;
       padding: .12rem 0
     }
@@ -1596,7 +1617,7 @@
     }
 
     .msName {
-      font: 600 .78rem/1.25 var(--fS);
+      font: 600 var(--t-micro)/1.25 var(--fS);
       color: var(--ink);
       letter-spacing: 0;
       flex: 1 1 auto;
@@ -1609,11 +1630,11 @@
     .msName em {
       font-style: normal;
       color: var(--brand);
-      font-weight: 800
+      font-weight: 600
     }
 
     .msKind {
-      font: 700 .54rem/1 var(--fS);
+      font: 600 var(--t-label)/1 var(--fS);
       letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--ink3);
@@ -1623,7 +1644,7 @@
     .msEmpty {
       margin: 0;
       padding: .9rem .8rem;
-      font-size: .72rem;
+      font-size: var(--t-micro);
       color: var(--ink3);
       text-align: center
     }
@@ -1648,13 +1669,13 @@
     }
 
     .mtip b {
-      font: 700 .84rem/1.2 var(--fD);
+      font: 450 1rem/1.2 var(--fD);
       color: var(--ink);
       letter-spacing: 0
     }
 
     .mtipSub {
-      font: 600 .55rem/1 var(--fS);
+      font: 600 var(--t-label)/1 var(--fS);
       letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--ink3)
@@ -1683,14 +1704,14 @@
     }
 
     .mtipRow span {
-      font: 600 .58rem/1 var(--fS);
+      font: 600 var(--t-label)/1 var(--fS);
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--ink2)
     }
 
     .mtipRow em {
-      font: 500 .64rem/1 var(--fM);
+      font: 500 var(--t-label)/1 var(--fM);
       font-style: normal;
       color: var(--ink3)
     }
@@ -1702,7 +1723,7 @@
       margin-top: .16rem;
       padding-top: .4rem;
       border-top: 1px solid var(--line);
-      font: 700 .55rem/1 var(--fS);
+      font: 600 var(--t-label)/1 var(--fS);
       letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--brand)
@@ -1755,17 +1776,17 @@
       display: block;
       font-family: var(--fD);
       font-size: 1.35rem;
-      font-weight: 600;
+      font-weight: 450;
       line-height: 1;
       font-variant-numeric: tabular-nums
     }
 
     .chip span {
       display: block;
-      font-size: .54rem;
-      letter-spacing: .2em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       color: var(--ink3);
-      font-weight: 700;
+      font-weight: 600;
       text-transform: uppercase;
       margin-top: .3rem
     }
@@ -1835,7 +1856,7 @@
       display: block;
       font-family: var(--fM);
       font-size: clamp(1.9rem, 4.6vw, 3rem);
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -.02em;
       line-height: 1;
       font-variant-numeric: tabular-nums
@@ -1845,10 +1866,10 @@
       display: block;
       font-family: var(--fS);
       font-style: normal;
-      font-size: .64rem;
-      letter-spacing: .16em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       color: var(--ink3);
-      font-weight: 650;
+      font-weight: 600;
       text-transform: uppercase;
       margin-top: .8rem
     }
@@ -1867,10 +1888,10 @@
     }
 
     .srcline {
-      font-size: .58rem;
-      letter-spacing: .2em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       color: var(--ink3);
-      font-weight: 700;
+      font-weight: 600;
       text-transform: uppercase;
       margin-top: 1.2rem
     }
@@ -1901,16 +1922,22 @@
       opacity: 1;
       transform: none
     }
-
+/* the section label is set in the text face, not the mono: at this size the
+       mono read as spaced-out code rather than a label */
     .sechead .snum {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1.1rem;
-      margin-bottom: 1.2rem;
-      opacity: 0;
-      transition: opacity .8s var(--E)
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  margin-bottom: 1.4rem;
+  font-family: var(--fS);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--brand2);
+  opacity: 0;
+  transition: opacity .8s var(--E)
+}
 
     .sechead .snum::before,
     .sechead .snum::after {
@@ -1941,12 +1968,17 @@
     .sechead .eye::after {
       display: none
     }
-
+    /* every section head is the same: a moderate size that runs the full
+       width of the container, wrapping only when it has to (pretty, not
+       balance, so the first line fills out instead of both lines shrinking) */
     .sechead h2 {
-      font-size: var(--t-4);
-      line-height: 1.06;
-      max-width: 24ch;
-      margin: 0 auto
+      font-size: var(--t-3);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -.02em;
+      max-width: none;
+      margin: 0 auto;
+      text-wrap: pretty
     }
 
     .sechead h2 .w {
@@ -1961,8 +1993,10 @@
     .sechead .shLead {
       color: var(--ink2);
       font-size: var(--t-1);
-      max-width: 60ch;
-      margin: 1.4rem auto 0;
+      line-height: 1.6;
+      max-width: 68ch;
+      margin: 1.2rem auto 0;
+      text-wrap: pretty;
       opacity: 0;
       transform: translateY(16px);
       transition: opacity .9s var(--E) .6s, transform .9s var(--E) .6s
@@ -1993,16 +2027,15 @@
       filter: none;
       transition: none
     }
-
-    /*── TIMELINE ──*/
+/*── TIMELINE ──*/
     .tlHintTxt {
-      font-size: .58rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--ink3);
-      margin-right: auto
-    }
+  font-size: var(--t-label);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink3);
+  margin-right: auto
+}
 
 
     #tl {
@@ -2027,17 +2060,17 @@
     }
 
     .tltools label {
-      font-size: .58rem;
-      letter-spacing: .16em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--ink3)
     }
 
     .tlGran {
       font: inherit;
       font-size: .82rem;
-      font-weight: 650;
+      font-weight: 600;
       color: var(--ink);
       background: var(--dentBg);
       border: 1px solid var(--line2);
@@ -2090,7 +2123,7 @@
       justify-content: flex-end;
       gap: 1.3rem;
       margin-top: .7rem;
-      font-size: .68rem;
+      font-size: var(--t-micro);
       color: var(--ink3)
     }
 
@@ -2153,10 +2186,11 @@
       display: flex;
       justify-content: space-between;
       margin-top: .9rem;
-      font-size: .58rem;
-      letter-spacing: .18em;
+      font-size: var(--t-micro);
+      letter-spacing: 0;
       color: var(--ink3);
-      font-weight: 600
+      font-weight: 400;
+      font-family: var(--fM)
     }
 
     .tlx span.fut {
@@ -2205,7 +2239,7 @@
       grid-template-columns: 1fr auto;
       gap: .3rem .9rem;
       margin: 0;
-      font-size: .74rem
+      font-size: var(--t-micro)
     }
 
     #pop dt {
@@ -2272,7 +2306,7 @@
       font-style: normal;
       font-family: var(--fM);
       font-size: clamp(3rem, 5vw, 4.4rem);
-      font-weight: 600;
+      font-weight: 500;
       color: var(--line2);
       line-height: 1;
       pointer-events: none
@@ -2304,8 +2338,8 @@
     }
 
     .nlist p {
-      font-size: var(--t-1);
-      line-height: 1.55;
+      font-size: var(--t-0);
+      line-height: 1.6;
       color: var(--ink2)
     }
 
@@ -2336,14 +2370,9 @@
       padding-bottom: .6rem
     }
 
-    /* inside a 100svh pin, so a size down from the other section heads */
+    /* inside a 100svh pin: no gap under the head */
     .conflHead.sechead {
       margin-bottom: 0
-    }
-
-    .conflHead.sechead h2 {
-      font-size: var(--t-3);
-      max-width: 28ch
     }
 
     .conflLead {
@@ -2375,11 +2404,7 @@
       }
     }
 
-    @media (max-height:760px) {
-      .conflHead.sechead h2 {
-        font-size: var(--t-2)
-      }
-    }
+
 
     .cflPill rect {
       fill: var(--glassA);
@@ -2592,10 +2617,10 @@
       display: flex;
       align-items: center;
       gap: .9rem;
-      font-family: var(--fM);
-      font-size: var(--t-xs);
-      font-weight: 500;
-      letter-spacing: .24em;
+      font-family: var(--fS);
+      font-size: var(--t-micro);
+      font-weight: 600;
+      letter-spacing: .06em;
       opacity: 0
     }
 
@@ -2611,7 +2636,7 @@
     .aboutWord {
       font-family: var(--fD);
       font-size: clamp(3.4rem, 12vw, 10rem);
-      font-weight: 600;
+      font-weight: 400;
       line-height: 1;
       letter-spacing: -.03em;
       transform-origin: center
@@ -2659,7 +2684,8 @@
       max-width: 20ch;
       margin-inline: auto;
       margin-bottom: 1.2rem;
-      color: var(--text-on-brand)
+      color: var(--text-on-brand);
+      font-weight: 400
     }
 
     .dropText p {
@@ -2702,7 +2728,8 @@
       max-width: 20ch;
       margin-inline: auto;
       margin-bottom: 1.2rem;
-      color: #fff
+      color: #fff;
+      font-weight: 400
     }
 
     .dropShared p {
@@ -2714,6 +2741,7 @@
     }
 
     .dropShared .eye {
+      font-size: var(--t-label);
       justify-content: center;
       color: rgba(234, 247, 247, .62);
       max-width: none;
@@ -2783,7 +2811,7 @@
     }
 
     .dropCards h3 {
-      font-size: var(--t-1);
+      font-size: var(--t-card);
       margin-bottom: .4rem;
       color: var(--text-on-brand)
     }
@@ -3033,19 +3061,18 @@
       justify-content: center;
       min-width: 0
     }
-
-    /* --brand2 lands at 3.7:1 against the deepest card tint; --brand clears 6:1
+/* --brand2 lands at 3.7:1 against the deepest card tint; --brand clears 6:1
    on every step of the stack, in both themes. */
     .deckKind {
-      display: inline-block;
-      font-family: var(--fM);
-      font-size: var(--t-xs);
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--brand);
-      font-weight: 700;
-      margin-bottom: .7rem
-    }
+  display: inline-block;
+  font-family: var(--fS);
+  font-size: var(--t-label);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--brand);
+  font-weight: 600;
+  margin-bottom: .7rem
+}
 
     .deckText h3 {
       font-size: var(--t-2);
@@ -3073,7 +3100,7 @@
       gap: .45rem;
       margin-top: 1.1rem;
       font-size: var(--t-sm);
-      font-weight: 650;
+      font-weight: 600;
       color: var(--brand)
     }
 
@@ -3403,10 +3430,10 @@
       display: flex;
       align-items: center;
       gap: .5rem;
-      font-size: var(--t-xs);
-      letter-spacing: .14em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--ink3);
       white-space: nowrap;
       transition: color var(--dur-med) var(--ease-out-quint)
@@ -3500,10 +3527,10 @@
       display: block;
       font-style: normal;
       font-family: var(--fM);
-      font-size: var(--t-xs);
-      letter-spacing: .2em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       color: var(--brand2);
-      font-weight: 700;
+      font-weight: 500;
       margin-bottom: .5rem
     }
 
@@ -3575,13 +3602,13 @@
     .isoLabel .n {
       font-family: var(--fM);
       fill: var(--brand2);
-      font-weight: 700
+      font-weight: 600
     }
 
     .isoNum {
       font-family: var(--fM);
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
       fill: var(--onBrand);
       opacity: .85
     }
@@ -3710,20 +3737,30 @@
     }
 
     .briefCard {
-      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
+      padding: clamp(1.6rem, 2.6vw, 2.2rem);
       border: 1px solid var(--line);
-      border-radius: var(--r-m);
-      background: var(--dentBg)
+      border-radius: var(--r-l);
+      background: var(--panelBg)
     }
 
     .briefCard h3 {
-      font-size: 1.1rem;
-      margin-bottom: .4rem
+      font-size: var(--t-2);
+      margin: auto 0 .5rem
     }
 
-    .briefCard p {
-      font-size: .9rem;
+    .briefCard h3+p {
+      font-size: var(--t-0);
+      line-height: 1.6;
       color: var(--ink2)
+    }
+
+    .briefCta {
+      display: flex;
+      justify-content: center;
+      margin-top: clamp(1.8rem, 3vw, 2.6rem)
     }
 
     /* sectors: one large brand panel, a brief per sector, one big way through */
@@ -3803,22 +3840,22 @@
     }
 
     .secBrief h3 {
-      font-size: 1.3rem;
+      font-size: var(--t-card);
       color: #fff
     }
 
     .secBrief p {
-      font-size: .92rem;
+      font-size: var(--t-sm);
       line-height: 1.55;
       opacity: .8
     }
 
     .secBrief .go {
       margin-top: auto;
-      font-size: .62rem;
-      letter-spacing: .18em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 600;
       opacity: .7
     }
 
@@ -3886,7 +3923,7 @@
 
     .stackCount b {
       font-size: 2.6rem;
-      font-weight: 600;
+      font-weight: 450;
       color: var(--brand);
       letter-spacing: -.04em;
       font-variant-numeric: tabular-nums
@@ -3963,7 +4000,7 @@
       display: block;
       font-family: var(--fD);
       font-size: clamp(2rem, 5vw, 2.8rem);
-      font-weight: 600;
+      font-weight: 450;
       letter-spacing: -.04em;
       line-height: 1;
       font-variant-numeric: tabular-nums
@@ -3981,7 +4018,7 @@
 
     .stackHint {
       margin-top: 1.1rem;
-      font-size: var(--t-xs);
+      font-size: var(--t-micro);
       color: var(--ink3);
       letter-spacing: .02em
     }
@@ -3999,8 +4036,8 @@
     }
 
     .seye {
-      font: 700 .58rem/1 var(--fS);
-      letter-spacing: .2em;
+      font: 600 var(--t-label)/1 var(--fS);
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--ink3)
     }
@@ -4022,7 +4059,7 @@
 
     .sfacts span {
       display: block;
-      font: 700 .55rem/1.2 var(--fS);
+      font: 600 var(--t-label)/1.2 var(--fS);
       letter-spacing: .15em;
       text-transform: uppercase;
       color: var(--ink3);
@@ -4032,7 +4069,7 @@
     .scard .sfacts b {
       font-family: var(--fS);
       font-size: var(--t-0);
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0;
       line-height: 1.3;
       color: var(--ink)
@@ -4146,7 +4183,7 @@
     }
 
     .ncard h3 {
-      font-size: clamp(1.2rem, 1.05rem + .6vw, 1.5rem);
+      font-size: var(--t-card);
       letter-spacing: -.022em;
       margin: .15rem 0 .45rem
     }
@@ -4228,11 +4265,11 @@
 
     .site-footer__tagline {
       display: block;
-      font-size: .56rem;
-      letter-spacing: .22em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--ink3);
-      font-weight: 700;
+      font-weight: 600;
       margin-top: .2rem
     }
 
@@ -4276,12 +4313,12 @@
 
     .site-footer__heading {
       font-family: var(--fS);
-      font-size: .56rem;
-      letter-spacing: .24em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--ink3);
       margin: 0 0 12px;
-      font-weight: 700
+      font-weight: 600
     }
 
     .site-footer__col ul {
@@ -4324,8 +4361,8 @@
       margin-top: clamp(40px, 6vw, 72px);
       padding-block: 24px calc(24px + env(safe-area-inset-bottom));
       border-top: 1px solid var(--line);
-      font-size: .56rem;
-      letter-spacing: .18em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
       font-weight: 600;
       color: var(--ink3)
@@ -4359,7 +4396,10 @@
     @media (max-width:599px) {
       .site-footer__bottom {
         flex-direction: column;
-        align-items: flex-start
+        align-items: flex-start;
+        font-size: var(--t-label);
+        font-weight: 600;
+        letter-spacing: .1em
       }
     }
 
@@ -4377,7 +4417,7 @@
       border-radius: 999px;
       background: var(--brand);
       color: var(--onBrand);
-      font-weight: 650;
+      font-weight: 600;
       font-size: var(--t-sm);
       transition: top .3s var(--E)
     }
@@ -4389,7 +4429,10 @@
     /*── scroll-down cue ──*/
     #down {
       position: absolute;
-      right: clamp(1rem, 4vw, 3.2rem);
+      left: 0;
+      right: 0;
+      width: max-content;
+      margin-inline: auto;
       bottom: clamp(1rem, 3vw, 2.2rem);
       z-index: 4;
       display: flex;
@@ -4400,9 +4443,9 @@
     }
 
     #down span {
-      font-size: .52rem;
-      letter-spacing: .24em;
-      font-weight: 700;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
+      font-weight: 600;
       text-transform: uppercase
     }
 
@@ -4603,7 +4646,7 @@
       border: 1px solid var(--glassEdge);
       box-shadow: 0 12px 28px -14px var(--glassShade);
       font-size: var(--t-sm);
-      font-weight: 550;
+      font-weight: 500;
       white-space: nowrap;
       transition: transform .3s var(--E)
     }
@@ -4620,22 +4663,21 @@
       stroke-width: 1.8;
       flex: none
     }
-
-    /*── copy button ──*/
+/*── copy button ──*/
     .copy {
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      padding: .3rem .6rem;
-      border-radius: 999px;
-      border: 1px solid var(--line2);
-      font-size: .62rem;
-      letter-spacing: .1em;
-      font-weight: 650;
-      text-transform: uppercase;
-      color: var(--ink2);
-      transition: background .25s, color .25s, border-color .25s
-    }
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .6rem;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  font-size: var(--t-label);
+  letter-spacing: .1em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ink2);
+  transition: background .25s, color .25s, border-color .25s
+}
 
     .copy:hover {
       background: var(--dentBg);
@@ -4686,7 +4728,7 @@
 
     #cookie p b {
       color: var(--ink);
-      font-weight: 650
+      font-weight: 600
     }
 
     #cookie .row {
@@ -4699,7 +4741,7 @@
       padding: .55rem 1.05rem;
       border-radius: 999px;
       font-size: var(--t-sm);
-      font-weight: 650;
+      font-weight: 600;
       transition: filter .25s, background .25s, transform .25s var(--E)
     }
 
@@ -4799,7 +4841,7 @@
 
     .kbd {
       font-family: var(--fM);
-      font-size: .6rem;
+      font-size: var(--t-label);
       padding: .22rem .45rem;
       border-radius: 5px;
       border: 1px solid var(--line2);
@@ -4830,7 +4872,7 @@
 
     #sList b {
       font-size: var(--t-sm);
-      font-weight: 650
+      font-weight: 600
     }
 
     #sList em {
@@ -4852,9 +4894,11 @@
       gap: 1rem;
       padding: .65rem 1.2rem;
       border-top: 1px solid var(--line);
-      font-size: .62rem;
+      font-size: var(--t-label);
       color: var(--ink3);
-      flex-wrap: wrap
+      flex-wrap: wrap;
+      font-weight: 600;
+      letter-spacing: .1em
     }
 
     /*── modal ──*/
@@ -4911,9 +4955,9 @@
     }
 
     .field>label {
-      font-size: .58rem;
-      letter-spacing: .18em;
-      font-weight: 700;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
+      font-weight: 600;
       text-transform: uppercase;
       color: var(--ink3)
     }
@@ -5132,10 +5176,11 @@
       border-radius: 999px;
       background: var(--dentBg);
       font-family: var(--fM);
-      font-size: .6rem;
+      font-size: var(--t-label);
       color: var(--ink2);
-      letter-spacing: .04em;
-      flex-wrap: wrap
+      letter-spacing: .1em;
+      flex-wrap: wrap;
+      font-weight: 600
     }
 
     .utmChip.on {
@@ -5162,10 +5207,10 @@
     .tspine i {
       font-style: normal;
       font-family: var(--fS);
-      font-size: .56rem;
-      letter-spacing: .18em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--ink3);
       white-space: nowrap
     }
@@ -5188,20 +5233,21 @@
     }
 
     .tspine.flat i {
-      font-size: .6rem
+      font-size: var(--t-label);
+      font-weight: 600;
+      letter-spacing: .1em
     }
-
-    /*── the flood problem ──*/
+/*── the flood problem ──*/
 
     /*── product kickers, disclaimer, explorer band ──*/
     .pkick {
-      font-size: .58rem;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--brand);
-      margin-bottom: .75rem
-    }
+  font-size: var(--t-label);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--brand);
+  margin-bottom: .75rem
+}
 
     .disc {
       font-size: var(--t-xs);
@@ -5302,24 +5348,25 @@
 
     .intents b {
       font-size: var(--t-sm);
-      font-weight: 650
+      font-weight: 600
     }
 
     .intents span {
-      font-size: .58rem;
-      letter-spacing: .16em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--ink3)
     }
 
     .next {
-      font-size: .56rem;
-      letter-spacing: .16em;
+      font-size: var(--t-label);
+      letter-spacing: .1em;
       color: var(--ink3);
       margin-top: 1rem;
       text-align: center;
-      line-height: 1.8
+      line-height: 1.8;
+      font-weight: 600
     }
 
     /*── header ghost CTA ──*/
@@ -5387,9 +5434,12 @@
         height: clamp(140px, 34vw, 190px)
       }
 
-      .tlx {
-        font-size: .52rem
-      }
+    .tlx {
+      font-size: var(--t-micro);
+      font-family: var(--fM);
+      font-weight: 400;
+      letter-spacing: 0
+    }
 
       .eye {
         flex-wrap: wrap;
@@ -5418,9 +5468,9 @@
         gap: .4rem
       }
 
-      #readout {
-        font-size: .56rem
-      }
+    #readout {
+      font-size: var(--t-micro)
+    }
 
       #down {
         display: none
@@ -5476,10 +5526,11 @@
         transform: none !important
       }
 
-      body {
-        height: auto !important;
-        overflow: visible !important
-      }
+    body {
+      height: auto !important;
+      overflow: visible !important;
+      font-weight: 400
+    }
 
       section {
         padding-block: 0 !important;
@@ -5527,9 +5578,12 @@
         color: #555
       }
 
-      .site-footer__bottom {
-        border-top: 1px solid #999
-      }
+    .site-footer__bottom {
+      border-top: 1px solid #999;
+      font-size: var(--t-label);
+      font-weight: 600;
+      letter-spacing: .1em
+    }
     }
 
     /*───────────────────────────────────────────────────────────────
@@ -5890,7 +5944,6 @@
         <div class="wrap">
           <div class="sechead" data-rv>
             <span class="snum">02 — Fifty years back, fifty years ahead</span>
-            <p class="eye caps"><i></i>One flood record, extended</p>
             <h2>FloodGuard reconstructs 50 years of flood history — and projects 50 more.</h2>
             <p class="shLead">A consistent foundation for understanding how risk has evolved, and where it's headed,
               across every district and taluka we cover.</p>
@@ -5965,7 +6018,6 @@
         <div class="wrap">
           <div class="sechead" data-rv>
             <span class="snum">04 — Products</span>
-            <p class="eye caps"><i></i>Three ways in</p>
             <h2>Start free. Go deeper. Monitor in real time.</h2>
             <p class="shLead">Explorer, Atlas and Live are the same flood record at three different depths.</p>
           </div>
@@ -5986,10 +6038,11 @@
               <p>Real-time rainfall, radar and flood-risk signals.</p>
             </div>
           </div>
-          <a class="btn bp" href="products.html" data-rv style="margin-top:2rem">See all products <svg
-              viewBox="0 0 14 14">
-              <path d="M2 7h10M8 3l4 4-4 4" />
-            </svg></a>
+          <div class="briefCta" data-rv>
+            <a class="btn bp btnXl" href="products.html">See all products <svg viewBox="0 0 14 14">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg></a>
+          </div>
         </div>
       </section>
 
@@ -6043,7 +6096,6 @@
         <div class="wrap">
           <div class="sechead" data-rv>
             <span class="snum">06 — Platform</span>
-            <p class="eye caps"><i></i>The intelligence behind FloodGuard</p>
             <h2>Data in. Intelligence out.</h2>
             <p class="shLead">Five parts, each inspectable on its own. Nothing here is a black box — every number we
               publish can be traced back to the data and the method that produced it.</p>
@@ -6165,7 +6217,6 @@
         <div class="wrap">
           <div class="sechead" data-rv>
             <span class="snum">07 — Sectors</span>
-            <p class="eye caps"><i></i>Where FloodGuard is used</p>
             <h2>One flood record. Every sector.</h2>
             <p class="shLead">The same intelligence, shaped around how each sector actually makes its flood
               decisions.</p>
@@ -6334,7 +6385,6 @@
         <div class="wrap">
           <div class="sechead" data-rv>
             <span class="snum">11 — Insights</span>
-            <p class="eye caps"><i></i>Understanding flood risk, beyond the map</p>
             <h2>Research, data stories and practical perspectives.</h2>
             <p class="shLead">Five strands of work, published as the library fills. Each one starts from the same
               observed record the rest of the platform is built on.</p>
@@ -6430,7 +6480,6 @@
         <div class="wrap">
           <div class="sechead" data-rv>
             <span class="snum">12 — Book a demo</span>
-            <p class="eye caps"><i></i>Let's talk flood risk</p>
             <h2>Ready to understand flood risk differently?</h2>
             <p class="shLead">Whether you want to explore your district, evaluate FloodGuard, book a product
               demonstration or collaborate with us — start here.</p>
@@ -7501,8 +7550,10 @@
       const TL_START = 1975, TL_ACTUAL_END = 2025, TL_END = 2075;
       const YEARS = [];
       for (let y = TL_START; y <= TL_END; y++) {
-        const t = (y - TL_START) / (TL_ACTUAL_END - TL_START), base = fbm(y * .13, 3, 17, 4);
-        const exposure = clamp(base * .55 + Math.pow(Math.max(0, t), 1.6) * .55 + .12, 0, 1);
+        /* t runs across the whole century so the projection keeps climbing
+           instead of saturating at the top of the chart after 2025 */
+        const t = (y - TL_START) / (TL_END - TL_START), base = fbm(y * .13, 3, 17, 4);
+        const exposure = clamp(base * .42 + Math.pow(t, 1.35) * .42 + .1, 0, 1);
         YEARS.push({
           year: y, exposure, projected: y > TL_ACTUAL_END,
           anomaly: Math.round((exposure - .42) * 180),

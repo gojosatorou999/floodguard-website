@@ -7,60 +7,128 @@
 <meta name="description" content="Explorer, Atlas and Live — three ways into FloodGuard's flood intelligence, from a free district-level read to real-time operational monitoring.">
 <link rel="canonical" href="https://floodguard.in/products.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="/assets/fg-base.css">
+<script type="module" src="/assets/js/theme.js" defer></script>
 <style>
-.crumb{display:flex;align-items:center;gap:.45rem;padding:1.4rem 0 .2rem;font-size:var(--t-xs);color:var(--ink3)}
+.crumb{display:flex;align-items:center;gap:.45rem;padding:1.6rem 0 .2rem;font-size:var(--t-xs);color:var(--ink3)}
 .crumb a{color:var(--ink3);text-decoration:none}
 .crumb a:hover{color:var(--brand)}
 
-.head{padding:.6rem 0 clamp(2rem,5vw,3.2rem);max-width:64ch}
-.head h1{font-size:var(--t-4);margin:.6rem 0 .8rem}
-.head p{color:var(--ink2);font-size:var(--t-1)}
+.head{padding:clamp(1.6rem,4vw,3rem) 0 clamp(2.6rem,6vw,4.4rem);text-align:center}
+.head .caps{font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:none;color:var(--brand2)}
+.head h1{font-size:var(--t-3);font-weight:400;line-height:1.12;letter-spacing:-.02em;margin:1rem auto 0;text-wrap:pretty}
+.head p{color:var(--ink2);font-size:var(--t-1);line-height:1.6;max-width:68ch;margin:1.2rem auto 0;text-wrap:pretty}
 
-.prodFull{display:grid;gap:clamp(1.6rem,3vw,2.4rem);padding:clamp(1.6rem,3vw,2.3rem);
-  border-radius:var(--r-xl);margin-bottom:clamp(1.3rem,2.4vw,2rem)}
-@media(min-width:860px){.prodFull{grid-template-columns:1.1fr .9fr;align-items:center}
+/* the card: a gradient hairline edge, resting on the shared elevation scale,
+   lifting a step on hover */
+.prodFull{display:grid;gap:clamp(1.6rem,3.4vw,3rem);padding:clamp(1.6rem,3vw,2.6rem);
+  border-radius:var(--r-xl);margin-bottom:clamp(1.4rem,2.6vw,2.2rem);border:1px solid transparent;
+  background:linear-gradient(var(--panelBg),var(--panelBg)) padding-box,var(--cardEdge) border-box;
+  box-shadow:var(--elev-1);transition:opacity .7s var(--E),transform .5s var(--E),box-shadow .45s var(--E)}
+.prodFull.in:hover{transform:translateY(-4px);box-shadow:var(--elev-2)}
+@media(min-width:900px){.prodFull{grid-template-columns:1.05fr .95fr;align-items:center}
   .prodFull.rev>.pf-art{order:-1}}
-.pkick{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--brand);margin-bottom:.7rem}
-.prodFull h2{font-size:var(--t-2);margin-bottom:.7rem}
-.prodFull .lede{color:var(--ink2);max-width:46ch;margin-bottom:1.6rem}
-.tiers{display:grid;gap:1.3rem;margin-bottom:1.6rem}
+
+.pkick{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .85rem;border-radius:99px;margin-bottom:1.1rem;
+  font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--brand);
+  background:color-mix(in srgb,var(--brand) 11%,transparent)}
+.pkick::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.prodFull h2{font-size:var(--t-3);font-weight:400;line-height:1.1;margin-bottom:.9rem}
+.prodFull .lede{color:var(--ink2);font-size:var(--t-1);line-height:1.6;max-width:46ch;margin-bottom:1.8rem}
+.tiers{display:grid;gap:1.4rem;margin-bottom:1.8rem}
 @media(min-width:520px){.tiers{grid-template-columns:1fr 1fr}}
-.tier h4{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);font-weight:700;
-  padding-bottom:.55rem;border-bottom:1px solid var(--line);margin-bottom:.7rem}
-.tier ul{list-style:none;display:grid;gap:.5rem}
-.tier li{font-size:var(--t-sm);color:var(--ink2);display:flex;gap:.55rem;align-items:flex-start;line-height:1.5}
-.tier li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--brand);margin-top:.55rem;flex:none}
-.tier.pro li::before{background:var(--b300)}
-.disc{font-size:var(--t-xs);color:var(--ink3);margin-bottom:1.2rem;max-width:46ch}
+.tier h4{font-family:var(--fS);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-weight:600;
+  padding-bottom:.6rem;border-bottom:1px solid var(--line);margin-bottom:.8rem}
+.tier ul{list-style:none;display:grid;gap:.6rem}
+.tier li{font-size:var(--t-0);color:var(--ink2);display:flex;gap:.6rem;align-items:flex-start;line-height:1.45}
+.tier li::before{content:"";flex:none;width:18px;height:18px;margin-top:.12em;border-radius:50%;
+  background:color-mix(in srgb,var(--brand) 14%,transparent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5.2 9.3l2.4 2.4 5.2-5.4' fill='none' stroke='%233fa6b2' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.tier.pro li::before{background-color:color-mix(in srgb,var(--b300) 22%,transparent)}
+.disc{font-size:var(--t-sm);color:var(--ink3);margin-bottom:1.4rem;max-width:48ch;padding-left:.9rem;border-left:2px solid var(--line2)}
 
-.pf-art{position:relative;border-radius:var(--r-l);overflow:hidden;aspect-ratio:4/3;background:var(--dentBg);
-  box-shadow:inset 0 2px 12px var(--dentIn);display:grid;place-items:center;padding:1.4rem}
-.pf-art svg{width:min(180px,60%);height:auto;opacity:.9}
-.pf-spine{display:flex;align-items:center;gap:.5rem;margin-bottom:1.4rem}
-.pf-spine i{font-style:normal;font-size:.58rem;letter-spacing:.16em;color:var(--ink3);font-weight:700}
-.pf-spine span{flex:1;height:1px;background:var(--line2)}
+/* ── the illustrations: each one shows what the product actually does ── */
+.pf-art{position:relative;border-radius:var(--r-l);overflow:hidden;aspect-ratio:4/3;background:var(--band);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 80px rgba(0,0,0,.25);isolation:isolate}
+.pf-art::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 80% at 80% 0%,rgba(158,218,217,.22),transparent 60%)}
+.artTag{position:absolute;left:1rem;bottom:1rem;z-index:3;display:flex;align-items:center;gap:.5rem;
+  padding:.45rem .75rem;border-radius:99px;font:500 .8125rem/1 var(--fS);color:#eaf7f7;
+  background:rgba(4,38,61,.55);border:1px solid rgba(158,218,217,.25);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.artTag b{font:500 .8125rem/1 var(--fM);color:#9edad9}
 
-[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .6s var(--E),transform .6s var(--E)}
+/* Explorer — a lens drifting over a district risk dot-map */
+.art-explorer .grid{position:absolute;inset:-10%;
+  background-image:radial-gradient(circle,rgba(158,218,217,.5) 1.4px,transparent 1.8px);background-size:18px 18px;
+  -webkit-mask-image:radial-gradient(70% 70% at 50% 50%,#000 40%,transparent 80%);mask-image:radial-gradient(70% 70% at 50% 50%,#000 40%,transparent 80%)}
+.art-explorer .lens{position:absolute;left:32%;top:26%;width:34%;aspect-ratio:1;border-radius:50%;z-index:2;
+  border:2px solid rgba(234,247,247,.85);box-shadow:0 0 0 6px rgba(158,218,217,.12),0 14px 40px rgba(0,0,0,.35);
+  background:radial-gradient(circle,rgba(63,166,178,.55) 1.8px,transparent 2.4px) 0 0/12px 12px,radial-gradient(circle,rgba(158,218,217,.28),rgba(10,82,115,.15));
+  animation:lens 10s var(--E) infinite alternate}
+/* the handle starts on the rim at 45° (85.4%, 85.4% of the lens box) and runs outward */
+.art-explorer .lens::after{content:"";position:absolute;left:85.4%;top:85.4%;width:32%;height:5px;margin-top:-2.5px;border-radius:3px;
+  background:rgba(234,247,247,.85);transform:rotate(45deg);transform-origin:0 50%}
+@keyframes lens{0%{transform:translate(-30%,-10%)}50%{transform:translate(40%,20%)}100%{transform:translate(-5%,40%)}}
+
+/* Atlas — one record across three horizons, a time cursor sweeping through */
+.art-atlas .bands{position:absolute;inset:18% 8% 26%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.art-atlas .bands span{border-radius:10px}
+.art-atlas .bands span:nth-child(1){background:linear-gradient(180deg,rgba(158,218,217,.18),rgba(158,218,217,.05))}
+.art-atlas .bands span:nth-child(2){background:linear-gradient(180deg,rgba(63,166,178,.45),rgba(63,166,178,.12))}
+.art-atlas .bands span:nth-child(3){background:repeating-linear-gradient(135deg,rgba(158,218,217,.16) 0 6px,transparent 6px 12px)}
+.art-atlas .curve{position:absolute;left:8%;top:18%;width:84%;height:56%}
+.art-atlas .curve path{fill:none;stroke:#eaf7f7;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.art-atlas .curve path.fut{stroke-dasharray:5 6;opacity:.75}
+.art-atlas .cursor{position:absolute;top:14%;bottom:22%;left:8%;width:2px;background:#eaf7f7;z-index:2;
+  box-shadow:0 0 16px rgba(158,218,217,.9);animation:sweep 7s ease-in-out infinite alternate}
+.art-atlas .years{position:absolute;left:8%;right:8%;bottom:14%;display:flex;justify-content:space-between;
+  font:400 .75rem/1 var(--fM);color:rgba(234,247,247,.75)}
+@keyframes sweep{to{left:92%}}
+
+/* Live — radar sweep with signals pulsing up */
+.art-live .radar{position:absolute;left:50%;top:48%;width:72%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:repeating-radial-gradient(circle,transparent 0 17%,rgba(158,218,217,.22) 17% calc(17% + 1px)),
+    linear-gradient(rgba(158,218,217,.18),rgba(158,218,217,.18)) center/1px 100% no-repeat,
+    linear-gradient(rgba(158,218,217,.18),rgba(158,218,217,.18)) center/100% 1px no-repeat}
+.art-live .sweep{position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,rgba(158,218,217,.5),rgba(158,218,217,0) 22%,transparent);animation:spin 4s linear infinite}
+.art-live .blip{position:absolute;width:10px;height:10px;margin:-5px;border-radius:50%;background:#9edad9;z-index:2;
+  animation:ping 2.4s var(--E) infinite}
+.art-live .blip.b1{left:36%;top:30%}
+.art-live .blip.b2{left:64%;top:58%;animation-delay:.8s}
+.art-live .blip.b3{left:44%;top:66%;background:#ef5560;animation-delay:1.5s}
+@keyframes spin{to{transform:rotate(1turn)}}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(158,218,217,.55)}80%,100%{box-shadow:0 0 0 18px rgba(158,218,217,0)}}
+
+@media(prefers-reduced-motion:reduce){.pf-art *{animation:none!important}}
+
+[data-reveal]{opacity:0;transform:translateY(26px)}
 [data-reveal].in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}}
 
 .closing{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.4rem;
-  padding:clamp(1.6rem,3vw,2.2rem);margin:1.6rem 0 2.6rem;border-radius:var(--r-l);background:var(--band);color:var(--onBand)}
-.closing p{flex:1 1 260px;font-size:var(--t-sm);opacity:.92}
-.closing b{display:block;font-family:var(--fD);font-size:var(--t-2);margin-bottom:.3rem}
-.closing .btn{background:var(--onBand);color:var(--b950);border-color:transparent}
+  padding:clamp(1.8rem,3.4vw,2.6rem);margin:2rem 0 2.6rem;border-radius:var(--r-xl);background:var(--band);color:var(--onBand);
+  box-shadow:var(--elev-1);transition:opacity .7s var(--E),transform .7s var(--E)}
+.closing p{flex:1 1 260px;font-size:var(--t-0);opacity:.92}
+.closing b{display:block;font-family:var(--fD);font-size:var(--t-2);font-weight:400;margin-bottom:.4rem}
+.closing .btn{background:#fff;color:var(--b950);border-color:transparent}
 .ft{padding:1.6rem 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--ink3)}
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <header class="hd">
-    <a class="brand" href="/index.html">
-      <i>ƒ</i><b>FloodGuard</b>
+  <header class="topbar">
+    <a class="brandmark" href="/index.html">
+      <img src="/assets/img/logo.jpeg" alt="" aria-hidden="true"><b>FLOODGUARD</b>
     </a>
-    <a class="btn bp" href="/index.html#start">Book a demo</a>
+    <div class="topbarAct">
+      <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <a class="btn bp" href="/index.html#start">Book a demo</a>
+    </div>
   </header>
 
   <nav class="crumb" aria-label="Breadcrumb">
@@ -75,7 +143,7 @@
       how far into the decision you already are.</p>
   </div>
 
-  <article class="prodFull panel" id="explorer" data-reveal>
+  <article class="prodFull" id="explorer" data-reveal>
     <div>
       <p class="pkick">Explorer · free</p>
       <h2>Get a first read on flood risk, free.</h2>
@@ -91,21 +159,20 @@
           </ul>
         </div>
       </div>
-      <a class="btn bg2" href="/auth.html">Explore <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a class="btn bp" href="/auth.html">Explore free <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
-    <div class="pf-art" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.4">
-        <circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4" stroke-linecap="round"/>
-      </svg>
+    <div class="pf-art art-explorer" aria-hidden="true">
+      <div class="grid"></div>
+      <div class="lens"></div>
+      <span class="artTag">District risk score <b>0.72</b></span>
     </div>
   </article>
 
-  <article class="prodFull panel rev" id="atlas" data-reveal>
+  <article class="prodFull rev" id="atlas" data-reveal>
     <div>
       <p class="pkick">Atlas · premium</p>
       <h2>Understand flood risk across time.</h2>
       <p class="lede">Historical intelligence, current risk and future climate projections in one view.</p>
-      <div class="pf-spine"><i>1951</i><span></span><i>Today</i><span></span><i>2100</i></div>
       <div class="tiers">
         <div class="tier">
           <h4>Intelligence</h4>
@@ -128,15 +195,19 @@
       </div>
       <a class="btn bg2" href="/auth.html">Explore <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
-    <div class="pf-art" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.4">
-        <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>
-        <ellipse cx="12" cy="6" rx="8" ry="3"/>
+    <div class="pf-art art-atlas" aria-hidden="true">
+      <div class="bands"><span></span><span></span><span></span></div>
+      <svg class="curve" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M0 80 L12 76 L22 78 L33 64"/>
+        <path d="M33 64 L45 58 L55 52 L66 46"/>
+        <path class="fut" d="M66 46 L78 36 L89 30 L100 18"/>
       </svg>
+      <span class="cursor"></span>
+      <div class="years"><span>1951</span><span>Today</span><span>2100</span></div>
     </div>
   </article>
 
-  <article class="prodFull panel" id="live" data-reveal>
+  <article class="prodFull" id="live" data-reveal>
     <div>
       <p class="pkick">Live · operational</p>
       <h2>Know what's happening now.</h2>
@@ -164,11 +235,10 @@
         event can be predicted in advance.</p>
       <a class="btn bg2" href="/auth.html">Explore <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
-    <div class="pf-art" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.4">
-        <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/>
-        <circle cx="12" cy="12" r="3"/>
-      </svg>
+    <div class="pf-art art-live" aria-hidden="true">
+      <div class="radar"><div class="sweep"></div></div>
+      <span class="blip b1"></span><span class="blip b2"></span><span class="blip b3"></span>
+      <span class="artTag">Rainfall alert · <b>Khammam</b></span>
     </div>
   </article>
 
@@ -186,7 +256,6 @@
 <script>
 document.getElementById("fgYear").textContent = new Date().getFullYear();
 const els = document.querySelectorAll("[data-reveal]");
-els.forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + "ms"; });
 if ("IntersectionObserver" in window) {
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });

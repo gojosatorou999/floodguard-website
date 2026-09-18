@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>District risk · FloodGuard</title>
+<script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="/assets/fg-base.css">
+<script type="module" src="/assets/js/theme.js" defer></script>
 <style>
 /* Gate first, paint second. The body stays hidden until the session
    check runs, so a signed-out visitor never sees a flash of the data
@@ -84,6 +86,7 @@ body.ready{visibility:visible}
       <i>ƒ</i><b>FloodGuard</b>
     </a>
     <div class="who">
+      <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg></button>
       <span>Signed in as <b id="whoMail">—</b></span>
       <button class="lnk" id="out">Sign out</button>
     </div>
