@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Products · FloodGuard</title>
+<meta name="description" content="Explorer, Atlas and Live — three ways into FloodGuard's flood intelligence, from a free district-level read to real-time operational monitoring.">
+<link rel="canonical" href="https://floodguard.in/products.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/fg-base.css">
+<style>
+.crumb{display:flex;align-items:center;gap:.45rem;padding:1.4rem 0 .2rem;font-size:var(--t-xs);color:var(--ink3)}
+.crumb a{color:var(--ink3);text-decoration:none}
+.crumb a:hover{color:var(--brand)}
+
+.head{padding:.6rem 0 clamp(2rem,5vw,3.2rem);max-width:64ch}
+.head h1{font-size:var(--t-4);margin:.6rem 0 .8rem}
+.head p{color:var(--ink2);font-size:var(--t-1)}
+
+.prodFull{display:grid;gap:clamp(1.6rem,3vw,2.4rem);padding:clamp(1.6rem,3vw,2.3rem);
+  border-radius:var(--r-xl);margin-bottom:clamp(1.3rem,2.4vw,2rem)}
+@media(min-width:860px){.prodFull{grid-template-columns:1.1fr .9fr;align-items:center}
+  .prodFull.rev>.pf-art{order:-1}}
+.pkick{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--brand);margin-bottom:.7rem}
+.prodFull h2{font-size:var(--t-2);margin-bottom:.7rem}
+.prodFull .lede{color:var(--ink2);max-width:46ch;margin-bottom:1.6rem}
+.tiers{display:grid;gap:1.3rem;margin-bottom:1.6rem}
+@media(min-width:520px){.tiers{grid-template-columns:1fr 1fr}}
+.tier h4{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);font-weight:700;
+  padding-bottom:.55rem;border-bottom:1px solid var(--line);margin-bottom:.7rem}
+.tier ul{list-style:none;display:grid;gap:.5rem}
+.tier li{font-size:var(--t-sm);color:var(--ink2);display:flex;gap:.55rem;align-items:flex-start;line-height:1.5}
+.tier li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--brand);margin-top:.55rem;flex:none}
+.tier.pro li::before{background:var(--b300)}
+.disc{font-size:var(--t-xs);color:var(--ink3);margin-bottom:1.2rem;max-width:46ch}
+
+.pf-art{position:relative;border-radius:var(--r-l);overflow:hidden;aspect-ratio:4/3;background:var(--dentBg);
+  box-shadow:inset 0 2px 12px var(--dentIn);display:grid;place-items:center;padding:1.4rem}
+.pf-art svg{width:min(180px,60%);height:auto;opacity:.9}
+.pf-spine{display:flex;align-items:center;gap:.5rem;margin-bottom:1.4rem}
+.pf-spine i{font-style:normal;font-size:.58rem;letter-spacing:.16em;color:var(--ink3);font-weight:700}
+.pf-spine span{flex:1;height:1px;background:var(--line2)}
+
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .6s var(--E),transform .6s var(--E)}
+[data-reveal].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}}
+
+.closing{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.4rem;
+  padding:clamp(1.6rem,3vw,2.2rem);margin:1.6rem 0 2.6rem;border-radius:var(--r-l);background:var(--band);color:var(--onBand)}
+.closing p{flex:1 1 260px;font-size:var(--t-sm);opacity:.92}
+.closing b{display:block;font-family:var(--fD);font-size:var(--t-2);margin-bottom:.3rem}
+.closing .btn{background:var(--onBand);color:var(--b950);border-color:transparent}
+.ft{padding:1.6rem 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hd">
+    <a class="brand" href="/index.html">
+      <i>ƒ</i><b>FloodGuard</b>
+    </a>
+    <nav style="display:flex;align-items:center;gap:1.4rem">
+      <a href="sectors.html" style="font-size:var(--t-sm);color:var(--ink2);text-decoration:none">Sectors</a>
+      <a class="btn bp" href="/index.html#start">Book a demo</a>
+    </nav>
+  </header>
+
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a><span>›</span>
+    <span>Products</span>
+  </nav>
+
+  <div class="head">
+    <p class="caps">Three ways in</p>
+    <h1>Start free. Go deeper. Monitor in real time.</h1>
+    <p>Explorer, Atlas and Live are the same flood record at three different depths — pick the one that matches
+      how far into the decision you already are.</p>
+  </div>
+
+  <article class="prodFull panel" id="explorer" data-reveal>
+    <div>
+      <p class="pkick">Explorer · free</p>
+      <h2>Get a first read on flood risk, free.</h2>
+      <p class="lede">No sign-up cost, no commitment — a free, non-paying view of district-wise flood analytics.
+        Enough to see how exposed a district is before you go deeper.</p>
+      <div class="tiers">
+        <div class="tier">
+          <h4>Basic view</h4>
+          <ul>
+            <li>District-level risk score</li>
+            <li>A quick read on historical exposure</li>
+            <li>Free for every visitor, always</li>
+          </ul>
+        </div>
+      </div>
+      <a class="btn bg2" href="/auth.html">Explore <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+    <div class="pf-art" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.4">
+        <circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </article>
+
+  <article class="prodFull panel rev" id="atlas" data-reveal>
+    <div>
+      <p class="pkick">Atlas · premium</p>
+      <h2>Understand flood risk across time.</h2>
+      <p class="lede">Historical intelligence, current risk and future climate projections in one view.</p>
+      <div class="pf-spine"><i>1951</i><span></span><i>Today</i><span></span><i>2100</i></div>
+      <div class="tiers">
+        <div class="tier">
+          <h4>Intelligence</h4>
+          <ul>
+            <li>Historical flood records and rainfall trends</li>
+            <li>Current baseline risk and vulnerability layers</li>
+            <li>Future projections: 2030, 2050, 2100</li>
+          </ul>
+        </div>
+        <div class="tier pro">
+          <h4>Analysis</h4>
+          <ul>
+            <li>Taluka-level intelligence</li>
+            <li>Risk scoring and return-period analysis</li>
+            <li>Advanced flood analytics</li>
+            <li>Portfolio and asset screening</li>
+            <li>Maps, risk reports and custom outputs</li>
+          </ul>
+        </div>
+      </div>
+      <a class="btn bg2" href="/auth.html">Explore <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+    <div class="pf-art" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.4">
+        <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>
+        <ellipse cx="12" cy="6" rx="8" ry="3"/>
+      </svg>
+    </div>
+  </article>
+
+  <article class="prodFull panel" id="live" data-reveal>
+    <div>
+      <p class="pkick">Live · operational</p>
+      <h2>Know what's happening now.</h2>
+      <p class="lede">Real-time rainfall, flood signals and changing conditions to support faster operational
+        decisions.</p>
+      <div class="tiers">
+        <div class="tier">
+          <h4>Signals</h4>
+          <ul>
+            <li>Rainfall monitoring</li>
+            <li>Radar imagery and playback</li>
+            <li>Flood-risk signals and location intelligence</li>
+          </ul>
+        </div>
+        <div class="tier pro">
+          <h4>Response</h4>
+          <ul>
+            <li>Community and field reports</li>
+            <li>Alerts and notifications</li>
+            <li>Dashboard and mobile app</li>
+          </ul>
+        </div>
+      </div>
+      <p class="disc">Advance risk signals are probabilistic intelligence — not a guarantee that every flood
+        event can be predicted in advance.</p>
+      <a class="btn bg2" href="/auth.html">Explore <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+    <div class="pf-art" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.4">
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </div>
+  </article>
+
+  <div class="closing" data-reveal>
+    <div>
+      <b>Not sure which one fits?</b>
+      <p>Explorer is free forever. Book a demo and we'll walk through Atlas and Live for your use case.</p>
+    </div>
+    <a class="btn" href="/index.html#start">Book a demo</a>
+  </div>
+
+  <footer class="ft">© <span id="fgYear"></span> FloodGuard Solutions Pvt. Ltd. · <a href="/index.html">Back to home</a></footer>
+</div>
+
+<script>
+document.getElementById("fgYear").textContent = new Date().getFullYear();
+const els = document.querySelectorAll("[data-reveal]");
+els.forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + "ms"; });
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: .15 });
+  els.forEach(el => io.observe(el));
+} else {
+  els.forEach(el => el.classList.add("in"));
+}
+</script>
+</body>
+</html>

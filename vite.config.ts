@@ -20,6 +20,9 @@ export default defineConfig({
         // Gated district view + its login/register gate.
         auth: resolve(here, "auth.html"),
         district: resolve(here, "district.html"),
+        // Full Products / Sectors detail, split out of the homepage.
+        products: resolve(here, "products.html"),
+        sectors: resolve(here, "sectors.html"),
       },
     },
   },

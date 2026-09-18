@@ -712,9 +712,9 @@
 
     .logo b {
       font-family: var(--fD);
-      font-size: 1.44rem;
+      font-size: 1.28rem;
       font-weight: 700;
-      letter-spacing: .01em;
+      letter-spacing: .04em;
       line-height: 1.1;
       white-space: nowrap
     }
@@ -1833,23 +1833,24 @@
 
     .stats b {
       display: block;
-      font-family: var(--fD);
+      font-family: var(--fM);
       font-size: clamp(1.9rem, 4.6vw, 3rem);
       font-weight: 600;
-      letter-spacing: -.035em;
+      letter-spacing: -.02em;
       line-height: 1;
       font-variant-numeric: tabular-nums
     }
 
     .stats em {
       display: block;
+      font-family: var(--fS);
       font-style: normal;
-      font-size: .58rem;
-      letter-spacing: .2em;
+      font-size: .64rem;
+      letter-spacing: .16em;
       color: var(--ink3);
-      font-weight: 700;
+      font-weight: 650;
       text-transform: uppercase;
-      margin-top: .75rem
+      margin-top: .8rem
     }
 
     /*── PINNED STORY ──*/
@@ -1908,34 +1909,103 @@
       border-radius: var(--r-xl)
     }
 
-    #bars {
+    .tltools {
       display: flex;
-      align-items: flex-end;
-      gap: 1.5px;
-      height: clamp(130px, 24vw, 250px);
-      width: 100%;
-      min-width: 0;
-      overflow: hidden
+      align-items: center;
+      justify-content: flex-end;
+      gap: .55rem;
+      margin-bottom: 1rem
     }
 
-    .ybar {
-      flex: 1 1 0;
-      min-width: 0;
-      border-radius: 99px 99px 2px 2px;
-      background: color-mix(in srgb, var(--b800) 55%, var(--b200));
-      transform-origin: bottom;
-      transform: scaleY(0);
-      transition: transform .9s var(--E), background .25s;
+    .tltools label {
+      font-size: .58rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--ink3)
+    }
+
+    .tlGran {
+      font: inherit;
+      font-size: .82rem;
+      font-weight: 650;
+      color: var(--ink);
+      background: var(--dentBg);
+      border: 1px solid var(--line2);
+      border-radius: 999px;
+      padding: .4rem .9rem;
       cursor: pointer
     }
 
-    .ybar.hi {
-      background: var(--b800)
+    #tlChart {
+      position: relative;
+      height: clamp(160px, 28vw, 260px);
+      width: 100%;
+      opacity: 0;
+      transition: opacity .5s var(--E)
     }
 
-    .ybar:hover,
-    .ybar.sel {
-      background: var(--alert) !important
+    #tlChart.on {
+      opacity: 1
+    }
+
+    #tlSvg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible
+    }
+
+    .tlLine {
+      fill: none;
+      stroke: var(--b800);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke
+    }
+
+    .tlLineFut {
+      stroke: var(--brand2);
+      stroke-dasharray: 5 5
+    }
+
+    #dots {
+      position: absolute;
+      inset: 0
+    }
+
+    .ydot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      margin: -6px 0 0 -6px;
+      border-radius: 50%;
+      background: var(--b800);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--line2);
+      transform: scale(0);
+      transition: transform .45s var(--E), background .25s;
+      cursor: pointer;
+      padding: 0
+    }
+
+    #tlChart.on .ydot {
+      transform: scale(1)
+    }
+
+    .ydot.fut {
+      background: var(--bg);
+      border-color: var(--brand2)
+    }
+
+    .ydot:hover,
+    .ydot.sel,
+    .ydot:focus-visible {
+      background: var(--alert) !important;
+      border-color: var(--alert) !important;
+      transform: scale(1.35) !important
     }
 
     .tlx {
@@ -1946,6 +2016,10 @@
       letter-spacing: .18em;
       color: var(--ink3);
       font-weight: 600
+    }
+
+    .tlx span.fut {
+      color: var(--brand2)
     }
 
     #pop {
@@ -2005,138 +2079,41 @@
     }
 
     /*───────────────────────────────────────────────────────────────
-  §01 — ScrollNarrative (spec §5.1)
-  The mechanism is the old §05 helix, extracted verbatim: same arc,
-  same easing, same dither. Only the content is now fed in.
+  §01 — The flood problem: three static cards.
 ───────────────────────────────────────────────────────────────*/
-    /* the header floats over the pin, so the stage has to start below it */
-    .narrative {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: clamp(.4rem, 1vw, .9rem);
-      overflow: hidden;
-      padding-top: calc(var(--header-h) + 14px);
-      padding-bottom: .3rem
-    }
-
-    .narrative .dhead {
-      text-align: center;
-      max-width: min(92vw, 760px);
-      margin-inline: auto;
-      padding-inline: 1rem
-    }
-
-    .narrative .dhead h2 {
-      font-size: var(--t-3);
-      margin-bottom: .9rem
-    }
-
-    .nlead {
-      font-size: var(--t-0);
-      color: var(--ink2);
-      max-width: 62ch;
-      margin-inline: auto
-    }
-
-    .nlead+.nlead {
-      margin-top: .7rem
-    }
-
-    /* A pin only has 100svh minus the header. Heading + two paragraphs + the
-   carousel do not fit under ~1000px, so the head sheds weight rather than
-   letting the arc overflow the stage. */
-    @media (max-height:1000px) {
-      .nlead2 {
-        display: none
-      }
-    }
-
-    @media (max-height:860px) {
-      .narrative .dhead h2 {
-        font-size: var(--t-2)
-      }
-    }
-
-    @media (max-height:740px) {
-      .nlead {
-        display: none
-      }
-    }
-
-    .nstage {
-      position: relative;
-      height: clamp(320px, 56vh, 540px);
-      perspective: 1700px;
-      perspective-origin: 50% 48%
-    }
-
-    .nhx {
-      position: absolute;
-      inset: 0;
-      transform-style: preserve-3d
-    }
-
-    /* the SR/no-JS list: present in DOM order, shown only when the stage isn't */
     .nlist {
-      display: none;
-      list-style: none;
-      margin: 0;
-      padding: 0
-    }
-
-    .nlist i {
-      font-style: normal
-    }
-
-    /* Static state (spec §4.4 / §4.6): no pin, no carousel, real list. */
-    body.nopin .narrative {
-      gap: 1.4rem;
-      padding-block: var(--section-pad-y)
-    }
-
-    body.nopin .nstage,
-    body.nopin .dprog,
-    body.nopin .dhint {
-      display: none
-    }
-
-    body.nopin .nlead2 {
-      display: block
-    }
-
-    body.nopin .nlist {
       display: grid;
-      gap: 1rem;
-      max-width: var(--wrap);
-      margin-inline: auto;
-      padding-inline: clamp(1.1rem, 4.2vw, 3.2rem);
+      gap: 1.1rem;
+      margin-top: 2rem;
+      list-style: none;
+      padding: 0;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     }
 
-    body.nopin .nlist li {
-      padding: 1.2rem 1.3rem;
+    .nlist li {
+      padding: 1.4rem 1.5rem;
       border: 1px solid var(--line);
       border-radius: var(--r-m);
       background: var(--dentBg)
     }
 
-    body.nopin .nlist i {
+    .nlist i {
       display: block;
-      font-size: .5rem;
+      font-style: normal;
+      font-size: .58rem;
       letter-spacing: .2em;
       color: var(--brand2);
       font-weight: 700;
-      margin-bottom: .45rem
+      margin-bottom: .55rem
     }
 
-    body.nopin .nlist h3 {
-      font-size: 1.05rem;
-      margin-bottom: .3rem
+    .nlist h3 {
+      font-size: 1.15rem;
+      margin-bottom: .4rem
     }
 
-    body.nopin .nlist p {
-      font-size: .82rem;
+    .nlist p {
+      font-size: .92rem;
       color: var(--ink2)
     }
 
@@ -2982,8 +2959,7 @@
   The water recedes and the platform surfaces. Cards read top to
   bottom in one column: readable first, animated second.
 ───────────────────────────────────────────────────────────────*/
-    #platform,
-    #sectors {
+    #platform {
       position: relative;
       padding-block: 0 var(--section-pad-y)
     }
@@ -3510,256 +3486,45 @@
       opacity: .9
     }
 
-    /*── SCROLL-DRIVEN DECK ──*/
-    .hc {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: clamp(290px, 42vw, 580px);
-      margin-left: calc(clamp(290px, 42vw, 580px) * -0.5);
-      border-radius: var(--r-l);
-      overflow: hidden;
-      transform-style: preserve-3d;
-      will-change: transform, opacity;
-      background: linear-gradient(158deg, var(--glassA), var(--glassB));
-      backdrop-filter: blur(18px) saturate(1.6);
-      -webkit-backdrop-filter: blur(18px) saturate(1.6);
-      border: 1px solid var(--glassEdge);
-      box-shadow: inset 0 1px 0 var(--glassGlow), 0 30px 60px -30px var(--glassShade)
+    /*── PRODUCTS / SECTORS — home page briefs, full detail lives on their own pages ──*/
+    .briefRow {
+      display: grid;
+      gap: 1.1rem;
+      margin-top: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
     }
 
-    .hc .top {
-      position: relative;
-      aspect-ratio: 5/3;
-      background: var(--dentBg);
-      overflow: hidden
+    .briefCard {
+      padding: 1.4rem 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: var(--r-m);
+      background: var(--dentBg)
     }
 
-    .hc canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%
-    }
-
-    .hc .m {
-      padding: .85rem .95rem 1.05rem
-    }
-
-    .hc .m i {
-      display: block;
-      font-style: normal;
-      font-size: .5rem;
-      letter-spacing: .2em;
-      color: var(--brand2);
-      font-weight: 700;
-      text-transform: uppercase;
+    .briefCard h3 {
+      font-size: 1.1rem;
       margin-bottom: .4rem
     }
 
-    .hc .m h4 {
-      font-size: 1.25rem;
-      margin-bottom: .3rem;
-      letter-spacing: -.02em
+    .briefCard p {
+      font-size: .9rem;
+      color: var(--ink2)
     }
 
-    .hc .m p {
-      font-size: .88rem;
-      color: var(--ink2);
-      line-height: 1.5
-    }
-
-    .dprog {
+    .briefPanel {
+      margin-top: 1.8rem;
+      padding: clamp(1.6rem, 3vw, 2.4rem);
       display: flex;
-      justify-content: center;
-      gap: .35rem
-    }
-
-    .dprog i {
-      width: 34px;
-      height: 3px;
-      border-radius: 2px;
-      background: var(--line2);
-      overflow: hidden;
-      position: relative
-    }
-
-    .dprog i::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: var(--brand);
-      transform: scaleX(var(--f, 0));
-      transform-origin: left
-    }
-
-    .dhint {
-      text-align: center;
-      color: var(--ink3);
-      font-size: .58rem;
-      letter-spacing: .22em;
-      font-weight: 700;
-      text-transform: uppercase
-    }
-
-    /*── PRODUCTS ──*/
-    .prod {
-      display: grid;
-      gap: clamp(1.6rem, 3.4vw, 3rem);
+      flex-wrap: wrap;
       align-items: center;
-      padding: clamp(1.5rem, 3vw, 2.3rem);
-      border-radius: var(--r-xl);
-      margin-bottom: clamp(1rem, 2vw, 1.6rem)
+      gap: 1.6rem 2.2rem;
+      justify-content: space-between
     }
 
-    @media(min-width:940px) {
-      .prod {
-        grid-template-columns: 1fr 1fr
-      }
-
-      .prod.rev>div:first-child {
-        order: 2
-      }
-    }
-
-    .prod h3 {
-      font-size: var(--t-2);
-      margin-bottom: .6rem
-    }
-
-    .ptag {
+    .briefPanel p {
       color: var(--ink2);
-      margin-bottom: 1.8rem;
-      max-width: 42ch
-    }
-
-    .tiers {
-      display: grid;
-      gap: 1.5rem;
-      margin-bottom: 2rem
-    }
-
-    @media(min-width:540px) {
-      .tiers {
-        grid-template-columns: 1fr 1fr
-      }
-    }
-
-    .tier h4 {
-      font-family: var(--fS);
-      font-size: .56rem;
-      letter-spacing: .24em;
-      text-transform: uppercase;
-      color: var(--ink3);
-      font-weight: 700;
-      padding-bottom: .6rem;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: .8rem
-    }
-
-    .tier ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: .5rem
-    }
-
-    .tier li {
-      font-size: var(--t-sm);
-      color: var(--ink2);
-      display: flex;
-      gap: .55rem;
-      align-items: flex-start;
-      line-height: 1.5
-    }
-
-    .tier li::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--brand);
-      margin-top: .55rem;
-      flex: none
-    }
-
-    .tier.pro li::before {
-      background: var(--b300)
-    }
-
-    .pv {
-      position: relative;
-      border-radius: var(--r-l);
-      overflow: hidden;
-      aspect-ratio: 4/3;
-      background: var(--dentBg);
-      box-shadow: inset 0 2px 12px var(--dentIn)
-    }
-
-    .pv canvas {
-      display: block;
-      width: 100%;
-      height: 100%
-    }
-
-    /* scrubbed 3D entrance — the card tilts up out of depth as you scroll it in */
-    #products .wrap {
-      perspective: 1800px;
-      perspective-origin: 50% 42%
-    }
-
-    .prod {
-      will-change: transform, opacity;
-      transform-style: preserve-3d;
-      transform: translate3d(0, calc((1 - var(--o, 1)) * 86px), calc((1 - var(--o, 1)) * -220px)) rotateX(calc((1 - var(--o, 1)) * 13deg)) rotateZ(calc((1 - var(--o, 1)) * -1.4deg));
-      opacity: calc(.08 + var(--o, 1) * .92)
-    }
-
-    .prod .pbody {
-      transform: translateY(calc((1 - var(--o, 1)) * 60px)) scale(calc(.82 + var(--o, 1) * .18));
-      opacity: calc(.1 + var(--o, 1) * .9);
-      will-change: transform
-    }
-
-    body.rm .prod,
-    body.rm .prod .pbody {
-      transform: none;
-      opacity: 1
-    }
-
-    .phone {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      background: var(--band)
-    }
-
-    .pbody {
-      width: min(44%, 180px);
-      aspect-ratio: 9/18.5;
-      background: #02161c;
-      border: 2px solid rgba(255, 255, 255, .16);
-      border-radius: 26px;
-      padding: 8px;
-      position: relative;
-      box-shadow: 0 24px 50px -18px rgba(0, 0, 0, .7)
-    }
-
-    .pscr {
-      width: 100%;
-      height: 100%;
-      border-radius: 19px;
-      background: #031f28;
-      position: relative;
-      overflow: hidden
-    }
-
-    #radar {
-      display: block;
-      width: 100%;
-      height: 100%
+      max-width: 56ch;
+      flex: 1 1 320px
     }
 
     /*── WHY — unfolding card stack ──*/
@@ -5277,10 +5042,6 @@
         display: none
       }
 
-      #problem {
-        height: 230svh !important
-      }
-
       #gap {
         height: 200svh !important
       }
@@ -5296,17 +5057,12 @@
         -webkit-backdrop-filter: blur(16px) saturate(1.4)
       }
 
-      .nstage {
-        height: clamp(270px, 48vh, 330px)
-      }
-
       .stackStage {
         height: clamp(380px, 56vh, 440px)
       }
 
-      #bars {
-        gap: 1px;
-        height: clamp(110px, 30vw, 150px)
+      #tlChart {
+        height: clamp(140px, 34vw, 190px)
       }
 
       .tlx {
@@ -5355,171 +5111,9 @@
     }
 
     @media(max-width:1024px) and (min-width:761px) {
-      #problem {
-        height: 250svh !important
-      }
-
       #why {
         height: 380svh !important
       }
-    }
-
-    /*── LEFT STORYLINE RAIL ──*/
-    #rail {
-      position: fixed;
-      left: clamp(16px, 2.4vw, 34px);
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 75;
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1.35rem .8rem
-    }
-
-    @media(min-width:1100px) {
-      #rail {
-        display: flex
-      }
-    }
-
-    .railLine {
-      position: absolute;
-      left: 50%;
-      top: 1.5rem;
-      bottom: 1.5rem;
-      width: 3px;
-      margin-left: -1.5px;
-      background: var(--line2);
-      border-radius: 3px;
-      overflow: hidden
-    }
-
-    .railLine i {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, var(--b400), var(--b800));
-      transform: scaleY(var(--g, 0));
-      transform-origin: top;
-      will-change: transform
-    }
-
-    :root[data-theme="dark"] .railLine i {
-      background: linear-gradient(180deg, var(--b200), var(--b500))
-    }
-
-    @media (prefers-color-scheme:dark) {
-      :root:not([data-theme="light"]) .railLine i {
-        background: linear-gradient(180deg, var(--b200), var(--b500))
-      }
-    }
-
-    .railBtn {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      flex: none
-    }
-
-    .railBtn i {
-      display: block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--line2);
-      transition: transform .45s var(--E), background .45s var(--E), box-shadow .45s var(--E);
-      font-style: normal
-    }
-
-    .railBtn:hover i {
-      background: var(--ink3);
-      transform: scale(1.3)
-    }
-
-    .railBtn.past i,
-    .railBtn[aria-current="true"] i {
-      background: var(--brand)
-    }
-
-    .railBtn[aria-current="true"] i {
-      transform: scale(1.3)
-    }
-
-    /* the thumb rides the line at the exact scroll position, dot to dot */
-    .railThumb {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 14px;
-      height: 14px;
-      margin: -7px 0 0 -7px;
-      border-radius: 50%;
-      background: var(--brand);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 24%, transparent);
-      transform: translateY(var(--ty, 0px));
-      z-index: 2;
-      pointer-events: none;
-      will-change: transform
-    }
-
-    .railThumb span {
-      position: absolute;
-      left: calc(100% + .8rem);
-      top: 50%;
-      transform: translateY(-50%);
-      white-space: nowrap;
-      font-size: .56rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--ink);
-      background: var(--panelBg);
-      border: 1px solid var(--panelEdge);
-      box-shadow: var(--panelShadow);
-      padding: .35rem .6rem;
-      border-radius: 999px;
-      opacity: 0;
-      transition: opacity .3s var(--E)
-    }
-
-    #rail.live .railThumb span {
-      opacity: 1
-    }
-
-    #rail:hover .railThumb span {
-      opacity: 0
-    }
-
-    .railBtn span {
-      position: absolute;
-      left: calc(100% + .85rem);
-      top: 50%;
-      transform: translateY(-50%) translateX(-4px);
-      white-space: nowrap;
-      font-size: .56rem;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--ink);
-      background: var(--panelBg);
-      border: 1px solid var(--panelEdge);
-      box-shadow: var(--panelShadow);
-      padding: .4rem .65rem;
-      border-radius: 999px;
-      opacity: 0;
-      pointer-events: none;
-      transition: .28s var(--E)
-    }
-
-    .railBtn:hover span,
-    .railBtn:focus-visible span {
-      opacity: 1;
-      transform: translateY(-50%) translateX(0)
     }
 
     /*── PRINT ──*/
@@ -5543,12 +5137,7 @@
       #down,
       header,
       #menuPanel,
-      #rail,
       .ov,
-      .nstage,
-      .dprog,
-      .dhint,
-      .pv,
       .chip,
       #readout,
       .lg,
@@ -5588,7 +5177,6 @@
 
       .glass,
       .dent,
-      .prod,
       .formCard,
       #tl {
         background: none !important;
@@ -5641,12 +5229,6 @@
       display: block !important
     }
 
-    body.nopin .nstage,
-    body.nopin .dprog,
-    body.nopin .dhint {
-      display: none
-    }
-
     /* content must never be stranded at opacity 0 when the motion is off */
     body.nopin [data-rv],
     body.nopin .mask>span {
@@ -5679,9 +5261,7 @@
       [data-rv],
       .mask>span,
       .ncard,
-      .scard,
-      .prod,
-      .prod .pbody {
+      .scard {
         opacity: 1 !important;
         transform: none !important
       }
@@ -5739,7 +5319,7 @@
       <div class="bar">
         <a class="logo" href="#hero">
           <img src="assets/img/logo.jpeg" alt="" aria-hidden="true">
-          <b>FloodGuard</b>
+          <b>FLOODGUARD</b>
         </a>
         <nav class="main" aria-label="Primary">
           <div class="ni"><a href="#hero">Home</a></div>
@@ -5748,9 +5328,9 @@
                 <path d="M2 4.5 6 8.5 10 4.5" />
               </svg></button>
             <div class="drop">
-              <a href="#explorer"><b>Explorer</b><em>Free historical district and taluka flood intelligence</em></a>
-              <a href="#atlas"><b>Atlas</b><em>Premium historical, current and future intelligence</em></a>
-              <a href="#live"><b>Live</b><em>Real-time rainfall, radar, risk and alerts</em></a>
+              <a href="products.html#explorer"><b>Explorer</b><em>Free historical district and taluka flood intelligence</em></a>
+              <a href="products.html#atlas"><b>Atlas</b><em>Premium historical, current and future intelligence</em></a>
+              <a href="products.html#live"><b>Live</b><em>Real-time rainfall, radar, risk and alerts</em></a>
             </div>
           </div>
           <div class="ni"><button type="button" aria-expanded="false">Platform <svg viewBox="0 0 12 12">
@@ -5780,8 +5360,8 @@
           <div class="ni"><a href="#start">Contact</a></div>
         </nav>
         <div class="hact">
-          <a class="cta-sm ghost" href="#explorer">Explore district risk</a>
-          <a class="cta-sm" href="#start" data-utm>Book a demo</a>
+          <a class="cta-sm" href="products.html#explorer">Explore district risk</a>
+          <a class="cta-sm ghost" href="#start" data-utm>Book a demo</a>
           <div class="menuWrap">
             <button id="menuBtn" type="button" aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
               <span class="mIcon"><i></i><i></i><i></i></span><span class="mWord">Menu</span>
@@ -5808,9 +5388,9 @@
 
               <div class="mSec">
                 <p class="mLbl">Products</p>
-                <a href="#explorer"><b>Explorer</b><em>Free historical district intelligence</em></a>
-                <a href="#atlas"><b>Atlas</b><em>Historical, current and future in one view</em></a>
-                <a href="#live"><b>Live</b><em>Real-time rainfall, radar and risk</em></a>
+                <a href="products.html#explorer"><b>Explorer</b><em>Free historical district intelligence</em></a>
+                <a href="products.html#atlas"><b>Atlas</b><em>Historical, current and future in one view</em></a>
+                <a href="products.html#live"><b>Live</b><em>Real-time rainfall, radar and risk</em></a>
               </div>
 
               <div class="mSec">
@@ -5819,7 +5399,7 @@
                 <a href="#record"><b>75 years of flood record</b></a>
                 <a href="#decision"><b>Decision support</b></a>
                 <a href="#platform"><b>Platform</b></a>
-                <a href="#sectors"><b>Sectors</b></a>
+                <a href="sectors.html"><b>Sectors</b></a>
                 <a href="#serve"><b>Solutions</b></a>
                 <a href="#about"><b>About us</b></a>
                 <a href="#insights"><b>Insights</b></a>
@@ -5841,8 +5421,6 @@
     </div>
   </header>
 
-  <nav id="rail" aria-label="Story progress"><span class="railLine"><i id="railFill"></i></span></nav>
-
   <div id="vp">
     <div id="content">
 
@@ -5858,7 +5436,7 @@
             <p class="hsub" data-rv>FloodGuard turns decades of observed climate and flood data into forward-looking
               flood intelligence — helping organizations understand risk across India's districts and talukas.</p>
             <div class="hcta" data-rv>
-              <a class="btn bp" href="#explorer">Explore district risk <svg viewBox="0 0 14 14">
+              <a class="btn bp" href="products.html#explorer">Explore district risk <svg viewBox="0 0 14 14">
                   <path d="M2 7h10M8 3l4 4-4 4" />
                 </svg></a>
               <a class="btn bg2" href="#start" data-utm>Book a demo</a>
@@ -5940,21 +5518,13 @@
       </div>
 
       <!-- ══ THE FLOOD PROBLEM ══ -->
-      <section class="pinsec" id="problem" style="height:215svh;padding:0">
-        <div class="pin narrative" id="problemPin">
-          <div class="dhead">
-            <span class="snum">01 — The flood problem</span>
-            <h2 data-rv>Flood risk is changing. The way we assess it hasn't.</h2>
-            <p class="nlead" data-rv>Rainfall, exposure and climate are reshaping where floods hit — yet decisions still
-              rest on fragmented, backward-looking data.</p>
-          </div>
-          <div class="nstage" id="problemStage" aria-hidden="true">
-            <div class="nhx" id="problemHx"></div>
-          </div>
-          <div class="dprog" id="problemProg" aria-hidden="true"></div>
-          <p class="dhint">Keep scrolling</p>
-          <!-- the carousel is decorative; this is the content of record for
-         screen readers and for any visitor whose JS never runs -->
+      <section id="problem">
+        <div class="wrap" id="problemPin">
+          <span class="snum">01 — The flood problem</span>
+          <h2 data-rv style="font-size:var(--t-3);max-width:34ch">Flood risk is changing. The way we assess it hasn't.
+          </h2>
+          <p data-rv style="color:var(--ink2);max-width:56ch;margin-top:1rem">Rainfall, exposure and climate are
+            reshaping where floods hit — yet decisions still rest on fragmented, backward-looking data.</p>
           <ol class="nlist" id="problemList">
             <li><i>01</i>
               <h3>Backward-looking</h3>
@@ -5983,11 +5553,26 @@
               <p data-rv style="color:var(--ink2);max-width:46ch;margin-top:1rem">A consistent historical foundation for
                 understanding how risk has evolved — across every district and taluka we cover.</p>
             </div>
-            <p class="srcline tlhint" data-rv><span id="tlHint">Hover</span> any year — exposure, anomaly, events</p>
+            <p class="srcline tlhint" data-rv><span id="tlHint">Hover</span> a point — exposure, anomaly, events</p>
           </div>
           <div id="tl" class="glass" data-rv>
-            <div id="bars" role="group" aria-label="Relative flood exposure by year, 1951 to 2025"></div>
-            <div class="tlx"><span>1951</span><span>1970</span><span>1990</span><span>2010</span><span>2025</span></div>
+            <div class="tltools">
+              <label for="tlGran">Interval</label>
+              <select id="tlGran" class="tlGran">
+                <option value="3">Every 3 years</option>
+                <option value="5" selected>Every 5 years</option>
+                <option value="10">Every 10 years</option>
+              </select>
+            </div>
+            <div id="tlChart">
+              <svg id="tlSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path id="tlPathHist" class="tlLine"></path>
+                <path id="tlPathFut" class="tlLine tlLineFut"></path>
+              </svg>
+              <div id="dots" role="group"
+                aria-label="Flood exposure by year, 1951 onward. Points from 2026 are a projection."></div>
+            </div>
+            <div class="tlx" id="tlx"></div>
             <div id="pop" role="status">
               <h4>—</h4>
               <dl></dl>
@@ -6026,105 +5611,31 @@
         <div class="wrap">
           <span class="snum">04 — Products</span>
           <p class="eye caps" data-rv><i></i>Three ways in</p>
-          <h2 data-rv style="font-size:var(--t-3);max-width:20ch;margin-bottom:2.5rem">Start free. Go deeper. Monitor in
+          <h2 data-rv style="font-size:var(--t-3);max-width:20ch;margin-bottom:1rem">Start free. Go deeper. Monitor in
             real time.</h2>
-
-          <div class="prod glass" id="explorer" data-rv style="grid-template-columns:1fr">
-            <div>
+          <p data-rv style="color:var(--ink2);max-width:56ch">Explorer, Atlas and Live are the same flood record at
+            three different depths.</p>
+          <div class="briefRow" data-rv>
+            <div class="briefCard">
               <p class="pkick">Explorer · free</p>
-              <h3>Get a first read on flood risk, free.</h3>
-              <p class="ptag">No sign-up cost, no commitment — a free, non-paying view of district-wise flood analytics.
-                Enough to see how exposed a district is before you go deeper.</p>
-              <div class="tiers">
-                <div class="tier">
-                  <h4>Basic view</h4>
-                  <ul>
-                    <li>District-level risk score</li>
-                    <li>A quick read on historical exposure</li>
-                    <li>Free for every visitor, always</li>
-                  </ul>
-                </div>
-              </div>
-              <a class="btn bg2" href="auth.html" data-utm>Explore <svg viewBox="0 0 14 14">
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg></a>
+              <h3>First read on flood risk</h3>
+              <p>District-level risk score, free for every visitor.</p>
             </div>
-          </div>
-
-          <div class="prod glass rev" id="atlas" data-rv>
-            <div>
+            <div class="briefCard">
               <p class="pkick">Atlas · premium</p>
-              <h3>Understand flood risk across time.</h3>
-              <p class="ptag">Historical intelligence, current risk and future climate projections in one view.</p>
-              <div class="tspine flat" aria-hidden="true"><i>1951</i><span></span><i>Today</i><span></span><i>2100</i>
-              </div>
-              <div class="tiers">
-                <div class="tier">
-                  <h4>Intelligence</h4>
-                  <ul>
-                    <li>Historical flood records and rainfall trends</li>
-                    <li>Current baseline risk and vulnerability layers</li>
-                    <li>Future projections: 2030, 2050, 2100</li>
-                  </ul>
-                </div>
-                <div class="tier pro">
-                  <h4>Analysis</h4>
-                  <ul>
-                    <li>Taluka-level intelligence</li>
-                    <li>Risk scoring and return-period analysis</li>
-                    <li>Advanced flood analytics</li>
-                    <li>Portfolio and asset screening</li>
-                    <li>Maps, risk reports and custom outputs</li>
-                  </ul>
-                </div>
-              </div>
-              <a class="btn bg2" href="auth.html" data-utm>Explore <svg viewBox="0 0 14 14">
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg></a>
+              <h3>Risk across time</h3>
+              <p>Historical, current and future flood intelligence in one view.</p>
             </div>
-            <div class="pv"><canvas id="pvMap"></canvas></div>
-          </div>
-
-          <div class="prod glass" id="live" data-rv>
-            <div>
+            <div class="briefCard">
               <p class="pkick">Live · operational</p>
-              <h3>Know what's happening now.</h3>
-              <p class="ptag">Real-time rainfall, flood signals and changing conditions to support faster operational
-                decisions.</p>
-              <div class="tiers">
-                <div class="tier">
-                  <h4>Signals</h4>
-                  <ul>
-                    <li>Rainfall monitoring</li>
-                    <li>Radar imagery and playback</li>
-                    <li>Flood-risk signals and location intelligence</li>
-                  </ul>
-                </div>
-                <div class="tier pro">
-                  <h4>Response</h4>
-                  <ul>
-                    <li>Community and field reports</li>
-                    <li>Alerts and notifications</li>
-                    <li>Dashboard and mobile app</li>
-                  </ul>
-                </div>
-              </div>
-              <p class="disc">Advance risk signals are probabilistic intelligence — not a guarantee that every flood
-                event can be predicted in advance.</p>
-              <a class="btn bg2" href="auth.html" data-utm>Explore <svg viewBox="0 0 14 14">
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg></a>
-            </div>
-            <div class="pv">
-              <div class="phone">
-                <div class="pbody">
-                  <div class="pscr">
-                    <canvas id="radar"></canvas>
-                  </div>
-                </div>
-              </div>
+              <h3>What's happening now</h3>
+              <p>Real-time rainfall, radar and flood-risk signals.</p>
             </div>
           </div>
+          <a class="btn bp" href="products.html" data-rv style="margin-top:2rem">See all products <svg
+              viewBox="0 0 14 14">
+              <path d="M2 7h10M8 3l4 4-4 4" />
+            </svg></a>
         </div>
       </section>
 
@@ -6291,114 +5802,16 @@
 
       <!-- ══ SECTORS ══ -->
       <section id="sectors">
-        <div class="wrap plat">
-          <div class="platHead">
-            <span class="snum">07 — Sectors</span>
-            <p class="eye caps" data-rv><i></i>Where FloodGuard is used</p>
-            <h2 data-rv>One flood record. Every sector.</h2>
-            <p class="platLead" data-rv>The same intelligence, shaped around how each sector actually makes its flood
-              decisions.</p>
-            <div class="gauge" id="secGauge" aria-hidden="true">
-              <div class="gaugeTrack"><i class="gaugeFill"></i></div>
-              <div class="gaugeTicks"></div>
-            </div>
-          </div>
-
-          <div class="platList" id="secList">
-            <article class="platCard" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M12 21V10" />
-                    <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z" />
-                    <path d="M4 21h16" />
-                  </svg>
-                  <h3>Agriculture</h3>
-                </div>
-                <p>Crop, farm and supply-chain decisions timed to the season, with flood exposure mapped down to the
-                  taluka a field actually sits in.</p>
-                <ul>
-                  <li>Crop loss and sowing-window risk</li>
-                  <li>Warehouse and mandi exposure</li>
-                  <li>Irrigation and drainage planning</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M3 10 12 4l9 6" />
-                    <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" />
-                  </svg>
-                  <h3>Agri loans &amp; lending</h3>
-                </div>
-                <p>Flood risk priced into the loan book — from Kisan credit and farm loans to mortgages and MSME
-                  lending.</p>
-                <ul>
-                  <li>Agri and KCC loan screening</li>
-                  <li>Collateral and mortgage exposure</li>
-                  <li>Portfolio stress testing</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" />
-                    <path d="M9 12h6M12 9v6" />
-                  </svg>
-                  <h3>Insurance</h3>
-                </div>
-                <p>Underwriting, pricing and accumulation with an observed flood record behind every policy location.
-                </p>
-                <ul>
-                  <li>Crop and parametric insurance</li>
-                  <li>Property accumulation</li>
-                  <li>Claims triage after an event</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M4 21V9l8-5 8 5v12" />
-                    <path d="M9 21v-6h6v6M2 21h20" />
-                  </svg>
-                  <h3>Government</h3>
-                </div>
-                <p>District disaster plans, relief pre-positioning and resilient public spending built on the same
-                  numbers.</p>
-                <ul>
-                  <li>District disaster management plans</li>
-                  <li>Relief and evacuation planning</li>
-                  <li>Budget and scheme targeting</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16" />
-                    <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1" />
-                  </svg>
-                  <h3>Infrastructure</h3>
-                </div>
-                <p>Roads, rail, power and real estate sited and designed for the water they will actually face.</p>
-                <ul>
-                  <li>Site selection and due diligence</li>
-                  <li>Asset-level flood depth</li>
-                  <li>Drainage capacity for new builds</li>
-                </ul>
-              </div>
-            </article>
+        <div class="wrap">
+          <span class="snum">07 — Sectors</span>
+          <p class="eye caps" data-rv><i></i>Where FloodGuard is used</p>
+          <h2 data-rv style="font-size:var(--t-3);max-width:22ch">One flood record. Every sector.</h2>
+          <div class="briefPanel dent" data-rv>
+            <p>The same intelligence, shaped around how each sector actually makes its flood decisions —
+              agriculture, lending, insurance, government and infrastructure.</p>
+            <a class="btn bp" href="sectors.html">See all sectors <svg viewBox="0 0 14 14">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg></a>
           </div>
         </div>
       </section>
@@ -6466,7 +5879,7 @@
               <a class="btn bp" href="#start" data-utm>Book a demo <svg viewBox="0 0 14 14">
                   <path d="M2 7h10M8 3l4 4-4 4" />
                 </svg></a>
-              <a class="btn bg2" href="#explorer">Explore district risk</a>
+              <a class="btn bg2" href="products.html#explorer">Explore district risk</a>
             </div>
           </div>
           <div class="wrap dropGrid">
@@ -6737,9 +6150,9 @@
             <div class="site-footer__col">
               <h2 class="site-footer__heading">Products</h2>
               <ul role="list">
-                <li><a href="#explorer">Explorer</a></li>
-                <li><a href="#atlas">Atlas</a></li>
-                <li><a href="#live">Live</a></li>
+                <li><a href="products.html#explorer">Explorer</a></li>
+                <li><a href="products.html#atlas">Atlas</a></li>
+                <li><a href="products.html#live">Live</a></li>
               </ul>
             </div>
             <div class="site-footer__col">
@@ -7087,8 +6500,7 @@
          so a system-level change and a manual flip can never drift apart. */
       function onThemeChange() {
         syncSw(); readTokens(); syncThemeColor();
-        waterFrozen = false;                        /* reduced motion: repaint the frozen frame */
-        drawPv(); ALLCARDS.forEach(c => c.dirty = true);
+        waterFrozen = false                        /* reduced motion: repaint the frozen frame */
       }
       function flipTheme() {
         document.documentElement.setAttribute("data-theme", isDark() ? "light" : "dark");
@@ -7263,21 +6675,13 @@
         revs.forEach(r => r.top = r.el.getBoundingClientRect().top + base);
         DROPREV.forEach(r => r.top = r.el.getBoundingClientRect().top + base);
         measureGeom(base);
-        NARRATIVES.forEach(N => { N.stageW = N.stage.clientWidth || 600; });
         counters.forEach(c => c.top = c.el.getBoundingClientRect().top + base);
         /* the inner's transform doesn't affect the section's own box, so no correction needed */
         pins.forEach(P => { const b = P.sec.getBoundingClientRect(); P.top = b.top + base; P.h = b.height; });
         buildTree();
-        PRODS.forEach(P => { P.top = P.el.getBoundingClientRect().top + base; P.last = -1; });
-        RAIL.forEach(r => r.top = r.sec.getBoundingClientRect().top + base);
-        measureRail();
-        {
-          const ps = document.getElementById("products").getBoundingClientRect();
-          prodTop = ps.top + base; prodH = ps.height;
-        }
         lastGp = -1; pins.forEach(P => P.lastOff = -1);
         barsTop = document.getElementById("tl").getBoundingClientRect().top + base;
-        sizeMap(); drawPv();
+        sizeMap();
       }
       /* Mobile browsers fire resize constantly as the URL bar slides in and out.
          Re-measuring on every one of those is what made scrolling stutter, so
@@ -7291,72 +6695,6 @@
         rTimer = setTimeout(() => { sizeWater(); measure(); }, 180);
       }, { passive: true });
       addEventListener("orientationchange", () => setTimeout(() => { sizeWater(); measure(); }, 260));
-
-      /*── LEFT STORYLINE RAIL ──*/
-      /* must stay in page order — the fill walks these dot to dot */
-      const STORY = [["hero", "Start"], ["problem", "Problem"], ["record", "Record"], ["gap", "Decision gap"],
-      ["products", "Products"], ["decision", "Decision support"], ["platform", "Platform"], ["sectors", "Sectors"],
-      ["serve", "Solutions"], ["why", "Why FloodGuard"], ["about", "About"], ["insights", "Insights"], ["start", "Book a demo"]];
-      const railEl = document.getElementById("rail"), railLine = railEl.querySelector(".railLine");
-      const railThumb = document.createElement("b"); railThumb.className = "railThumb"; railThumb.setAttribute("aria-hidden", "true");
-      const railLabel = document.createElement("span"); railThumb.appendChild(railLabel); railEl.appendChild(railThumb);
-      const RAIL = STORY.map(([id, label]) => {
-        const sec = document.getElementById(id);
-        const b = document.createElement("button");
-        b.type = "button"; b.className = "railBtn"; b.setAttribute("aria-label", label); b.setAttribute("aria-current", "false");
-        b.innerHTML = '<i></i><span>' + label + '</span>';
-        b.addEventListener("click", () => {
-          if (!sec) return;
-          const t = sec.getBoundingClientRect().top + scrollY;
-          scrollTo({ top: t, behavior: "smooth" });
-        });
-        railEl.appendChild(b);
-        return { sec, btn: b, label, top: 0, start: 0, cy: 0 };
-      }).filter(r => r.sec);
-      let railActive = -1, railLastPos = -1, railLastY = -1, railIdle = null, railLineTop = 0, railLineH = 0;
-      /* Section k becomes current when its top is 42% up the viewport — and that
-         is exactly the scroll position where the thumb lands on dot k. Between
-         two sections the thumb travels 1:1 with scroll, so it always sits on the
-         line where you actually are. Positions come from measureRail(). */
-      function measureRail() {
-        if (!RAIL.length || !railEl.getClientRects().length) { railLineH = 0; return; }
-        railLineTop = railLine.offsetTop; railLineH = railLine.offsetHeight;
-        const maxY = Math.max(0, docH - vh);
-        let prev = 0;
-        RAIL.forEach((r, i) => {
-          r.cy = r.btn.offsetTop + r.btn.offsetHeight / 2;
-          r.start = i === 0 ? 0 : Math.max(prev, Math.min(maxY, r.top - vh * .42));
-          prev = r.start;
-        });
-        railLastPos = -1; railActive = -1;
-      }
-      function runRail(y) {
-        const n = RAIL.length;
-        if (!n || !railLineH) return;
-        let k = 0;
-        for (let i = 0; i < n; i++) if (y >= RAIL[i].start) k = i;
-        let pos;
-        if (k >= n - 1 || y >= docH - vh - 1) { k = y >= docH - vh - 1 ? n - 1 : k; pos = RAIL[k].cy; }
-        else {
-          const a = RAIL[k].start, b = RAIL[k + 1].start;
-          const t = b > a ? clamp((y - a) / (b - a), 0, 1) : 1;
-          pos = RAIL[k].cy + (RAIL[k + 1].cy - RAIL[k].cy) * t;
-        }
-        if (Math.abs(pos - railLastPos) > .25) {
-          railLastPos = pos;
-          railEl.style.setProperty("--g", clamp((pos - railLineTop) / railLineH, 0, 1).toFixed(4));
-          railThumb.style.setProperty("--ty", pos.toFixed(1) + "px");
-        }
-        if (railLastY >= 0 && Math.abs(y - railLastY) > 1) {
-          railEl.classList.add("live"); clearTimeout(railIdle);
-          railIdle = setTimeout(() => railEl.classList.remove("live"), 1200);
-        }
-        railLastY = y;
-        if (k === railActive) return;
-        railActive = k;
-        railLabel.textContent = RAIL[k].label;
-        RAIL.forEach((r, i) => { r.btn.setAttribute("aria-current", String(i === k)); r.btn.classList.toggle("past", i < k); });
-      }
 
       /*── HEADER + NAV ──*/
       const hdr = document.querySelector("header"); let lastY = 0;
@@ -7714,87 +7052,35 @@
       });
 
 
-      /*── EXPLORER PREVIEW ──*/
-      const pv = document.getElementById("pvMap"), pvx = pv.getContext("2d");
-      let lastPvProg = -1;
-      /* Each cell flies in from a scattered orbit and locks into the grid —
-         the raster assembling itself, scrubbed by scroll. */
-      function drawPv(prog) {
-        if (prog === undefined) prog = lastPvProg < 0 ? 1 : lastPvProg;
-        if (RM) prog = 1;
-        const w = pv.parentElement.clientWidth, h = pv.parentElement.clientHeight; if (!w || !h) return;
-        const d = Math.min(3, devicePixelRatio || 1);
-        if (pv.width !== Math.round(w * d)) { pv.width = Math.round(w * d); pv.height = Math.round(h * d); }
-        pvx.setTransform(d, 0, 0, d, 0, 0); pvx.clearRect(0, 0, w, h);
-        const g = 24, cw = w / g, ch = h / g, rr = Math.min(cw, ch) * .3;
-        for (let y = 0; y < g; y++)for (let x = 0; x < g; x++) {
-          const seed = h2(x, y, 31);
-          const t = clamp((prog - seed * .44) / .56, 0, 1);
-          if (t <= 0) continue;
-          const e = easeOut(t), v = fbm(x * .34, y * .34, 21, 4);
-          const ang = seed * 6.2832, dist = (1 - e) * (70 + seed * 90);
-          pvx.save();
-          pvx.translate(x * cw + cw / 2 + Math.cos(ang) * dist, y * ch + ch / 2 + Math.sin(ang) * dist);
-          pvx.rotate((1 - e) * (seed - .5) * 2.4);
-          pvx.scale(e, e);
-          pvx.fillStyle = RAMP[Math.min(6, Math.floor(v * 7))];
-          pvx.globalAlpha = (.22 + v * .78) * e;
-          pvx.beginPath(); pvx.roundRect(-cw / 2 + .6, -ch / 2 + .6, cw - 1.2, ch - 1.2, rr); pvx.fill();
-          pvx.restore();
-        }
-        pvx.globalAlpha = 1;
-      }
-
-      /*── RADAR ──*/
-      const rd = document.getElementById("radar"), rx2 = rd.getContext("2d"); let radarA = 0;
-      function drawRadar() {
-        const w = rd.parentElement.clientWidth, h = rd.parentElement.clientHeight; if (!w || !h) return;
-        const d = Math.min(3, devicePixelRatio || 1);
-        if (rd.width !== Math.round(w * d)) { rd.width = Math.round(w * d); rd.height = Math.round(h * d); rx2.setTransform(d, 0, 0, d, 0, 0); }
-        rx2.clearRect(0, 0, w, h);
-        const cx = w / 2, cy = h / 2, R = Math.min(w, h) * .42;
-        rx2.strokeStyle = "rgba(158,218,217,.2)"; rx2.lineWidth = .8;
-        for (let i = 1; i <= 3; i++) { rx2.beginPath(); rx2.arc(cx, cy, R * i / 3, 0, 6.284); rx2.stroke(); }
-        rx2.beginPath(); rx2.moveTo(cx - R, cy); rx2.lineTo(cx + R, cy); rx2.moveTo(cx, cy - R); rx2.lineTo(cx, cy + R); rx2.stroke();
-        for (let i = 0; i < 24; i++) {
-          const a = h2(i, 3, 5) * 6.284, dd = h2(i, 7, 9) * R, v = h2(i, 11, 13);
-          rx2.fillStyle = v > .74 ? "#c1121f" : (v > .45 ? "#3fa6b2" : "#9edad9");
-          rx2.globalAlpha = .35 + v * .55;
-          rx2.beginPath(); rx2.arc(cx + Math.cos(a) * dd, cy + Math.sin(a) * dd, 1.4 + v * 2.4, 0, 6.284); rx2.fill();
-        }
-        rx2.globalAlpha = 1;
-        if (!RM) {
-          rx2.strokeStyle = "rgba(196,235,230,.5)"; rx2.lineWidth = 1.2;
-          rx2.beginPath(); rx2.moveTo(cx, cy); rx2.lineTo(cx + Math.cos(radarA) * R, cy + Math.sin(radarA) * R); rx2.stroke();
-          radarA += .02;
-        }
-      }
-
-      /*── TIMELINE ──*/
+      /*── TIMELINE — dot/line chart with a projected (dashed) future segment ──*/
+      const TL_START = 1951, TL_ACTUAL_END = 2025, TL_END = 2035;
       const YEARS = [];
-      for (let y = 1951; y <= 2025; y++) {
-        const t = (y - 1951) / 74, base = fbm(y * .13, 3, 17, 4);
-        const exposure = clamp(base * .55 + Math.pow(t, 1.6) * .55 + .12, 0, 1);
+      for (let y = TL_START; y <= TL_END; y++) {
+        const t = (y - TL_START) / (TL_ACTUAL_END - TL_START), base = fbm(y * .13, 3, 17, 4);
+        const exposure = clamp(base * .55 + Math.pow(Math.max(0, t), 1.6) * .55 + .12, 0, 1);
         YEARS.push({
-          year: y, exposure, anomaly: Math.round((exposure - .42) * 180),
+          year: y, exposure, projected: y > TL_ACTUAL_END,
+          anomaly: Math.round((exposure - .42) * 180),
           events: Math.round(4 + exposure * 38 + base * 9), districts: Math.round(18 + exposure * 310)
         });
       }
-      const barsEl = document.getElementById("bars"), popEl = document.getElementById("pop");
-      YEARS.forEach(d => {
-        const b = document.createElement("button");
-        b.className = "ybar" + (d.year >= 1996 ? " hi" : ""); b.type = "button";
-        b.style.height = (14 + d.exposure * 86) + "%";
-        b.setAttribute("aria-label", d.year + ", exposure index " + d.exposure.toFixed(2));
-        const show = () => showPop(d, b);
-        b.addEventListener("pointerenter", show); b.addEventListener("focus", show);
-        b.addEventListener("pointerleave", hidePop); b.addEventListener("blur", hidePop);
-        barsEl.appendChild(b); d.el = b;
-      });
+      const dotsEl = document.getElementById("dots"), popEl = document.getElementById("pop"),
+        pathHist = document.getElementById("tlPathHist"), pathFut = document.getElementById("tlPathFut"),
+        tlxEl = document.getElementById("tlx"), tlChartEl = document.getElementById("tlChart"),
+        granEl = document.getElementById("tlGran");
+      const tlX = y => (y - TL_START) / (TL_END - TL_START) * 100;
+      const tlY = e => 100 - (14 + e * 86);
+      function sampleYears(interval) {
+        const set = new Set();
+        YEARS.forEach(d => { if ((d.year - TL_START) % interval === 0) set.add(d.year); });
+        set.add(TL_START); set.add(TL_ACTUAL_END); set.add(TL_END);
+        return YEARS.filter(d => set.has(d.year));
+      }
+      const pathD = pts => pts.map((d, i) => (i === 0 ? "M" : "L") + tlX(d.year).toFixed(2) + " " + tlY(d.exposure).toFixed(2)).join(" ");
       function showPop(d, el) {
-        document.querySelectorAll(".ybar.sel").forEach(x => x.classList.remove("sel"));
+        document.querySelectorAll(".ydot.sel").forEach(x => x.classList.remove("sel"));
         el.classList.add("sel");
-        popEl.querySelector("h4").textContent = d.year;
+        popEl.querySelector("h4").textContent = d.year + (d.projected ? " · projected" : "");
         popEl.querySelector("dl").innerHTML =
           "<dt>Exposure index</dt><dd>" + d.exposure.toFixed(2) + "</dd><dt>Anomaly</dt><dd>" + (d.anomaly > 0 ? "+" : "") + d.anomaly +
           "%</dd><dt>Events</dt><dd>" + d.events + "</dd><dt>Districts hit</dt><dd>" + d.districts + "</dd>";
@@ -7803,191 +7089,38 @@
         popEl.style.top = (eb.top - tb.top - popEl.offsetHeight - 12) + "px";
         popEl.classList.add("on");
       }
-      function hidePop() { popEl.classList.remove("on"); document.querySelectorAll(".ybar.sel").forEach(x => x.classList.remove("sel")); }
+      function hidePop() { popEl.classList.remove("on"); document.querySelectorAll(".ydot.sel").forEach(x => x.classList.remove("sel")); }
+      function renderTimeline(interval) {
+        const pts = sampleYears(interval);
+        pathHist.setAttribute("d", pathD(pts.filter(d => d.year <= TL_ACTUAL_END)));
+        pathFut.setAttribute("d", pathD(pts.filter(d => d.year >= TL_ACTUAL_END)));
+        dotsEl.innerHTML = "";
+        pts.forEach(d => {
+          const b = document.createElement("button");
+          b.type = "button"; b.className = "ydot" + (d.projected ? " fut" : "");
+          b.style.left = tlX(d.year) + "%"; b.style.top = tlY(d.exposure) + "%";
+          b.setAttribute("aria-label", d.year + (d.projected ? " projected" : "") + ", exposure index " + d.exposure.toFixed(2));
+          const show = () => showPop(d, b);
+          b.addEventListener("pointerenter", show); b.addEventListener("focus", show);
+          b.addEventListener("pointerleave", hidePop); b.addEventListener("blur", hidePop);
+          dotsEl.appendChild(b);
+        });
+        const labelEvery = Math.max(1, Math.ceil(pts.length / 6));
+        tlxEl.innerHTML = "";
+        pts.forEach((d, i) => {
+          if (i !== 0 && i !== pts.length - 1 && i % labelEvery !== 0) return;
+          const s = document.createElement("span");
+          s.textContent = d.year; if (d.projected) s.className = "fut";
+          tlxEl.appendChild(s);
+        });
+        hidePop();
+      }
+      granEl.addEventListener("change", () => renderTimeline(+granEl.value));
+      renderTimeline(+granEl.value);
       let barsShown = false, barsTop = 0;
       function runBars(y) {
         if (barsShown || y + vh * .8 < barsTop) return; barsShown = true;
-        YEARS.forEach((d, i) => setTimeout(() => d.el.style.transform = "scaleY(1)", RM ? 0 : i * 12));
-      }
-
-      /*── DITHER DECK — driven entirely by scroll ──*/
-      const BAYER = (() => {
-        const m = [0, 32, 8, 40, 2, 34, 10, 42, 48, 16, 56, 24, 50, 18, 58, 26, 12, 44, 4, 36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30, 54, 22, 3, 35, 11, 43, 1, 33, 9, 41, 51, 19, 59, 27, 49, 17, 57, 25, 15, 47, 7, 39, 13, 45, 5, 37, 63, 31, 55, 23, 61, 29, 53, 21];
-        return Float32Array.from(m, v => (v + .5) / 64);
-      })();
-      /* coarser dither grid on phones/tablets — 5 cards re-thresholded per frame
-         was the second-biggest cost after the water field */
-      const AW = 400, AH = 240, PS = LOWPWR ? 6 : 4, GW = Math.round(AW / PS), GH = Math.round(AH / PS);
-      function makeArt(i) {
-        const cv = document.createElement("canvas"); cv.width = AW; cv.height = AH;
-        const c = cv.getContext("2d"), id = c.createImageData(AW, AH), dd = id.data;
-        for (let y = 0; y < AH; y++)for (let x = 0; x < AW; x++) {
-          const o = (y * AW + x) * 4, e = fbm(x / 44, y / 44, i * 37 + 5, 5);
-          let r, g, b;
-          if (i % 2 === 0) { const v = Math.pow(1 - e, 1.9); r = 232 - 150 * v; g = 238 - 140 * v; b = 244 - 96 * v; }
-          else { r = 18 + e * 150; g = 52 + e * 160; b = 88 + e * 150; }
-          if (Math.abs((e * 15) % 1 - .5) < .05) { r *= .82; g *= .82; b *= .84 }
-          dd[o] = clamp(r, 0, 255); dd[o + 1] = clamp(g, 0, 255); dd[o + 2] = clamp(b, 0, 255); dd[o + 3] = 255;
-        }
-        c.putImageData(id, 0, 0); return cv;
-      }
-      /*═══════════════════════════════════════════════════════════════
-        ScrollNarrative (spec §5.1)
-        This IS the old §05 mechanism — same arc radius, same angular step,
-        same easing constant, same Bayer dither, same proximity fade. The
-        only change is that the cards, the stage and the progress bar are
-        passed in, so §01 can drive it with its own content.
-      ═══════════════════════════════════════════════════════════════*/
-      const ALLCARDS = [];                       /* every card, for theme repaints */
-
-      function renderH(c) {
-        const out = c.img.data, D = c.dis;
-        for (let y = 0; y < GH; y++) {
-          const gy = 1 - y / GH;
-          for (let x = 0; x < GW; x++) {
-            const i = y * GW + x, o = i * 4, b = BAYER[(y & 7) * 8 + (x & 7)];
-            const thr = b * .5 + clamp((x / GW) * .45 + gy * .55 + (b - .5) * .4, 0, 1) * .5;
-            if (D >= thr) { out[o + 3] = 0; continue }
-            let r = c.src[o], g = c.src[o + 1], bl = c.src[o + 2];
-            const pa = .5 * D;
-            if (pa > .02) {
-              const lv = Math.max(3, Math.round(40 - 36 * Math.pow(pa, .7))), q = 255 / (lv - 1);
-              r = Math.round(r / q) * q; g = Math.round(g / q) * q; bl = Math.round(bl / q) * q;
-            }
-            const pxx = thr - D;
-            if (pxx < .14) { const k = (1 - pxx / .14) * .22; r += (137 - r) * k; g += (194 - g) * k; bl += (217 - bl) * k; }
-            out[o] = r; out[o + 1] = g; out[o + 2] = bl; out[o + 3] = 255;
-          }
-        }
-        c.sc.putImageData(c.img, 0, 0);
-        const q = c.ctx; q.clearRect(0, 0, c.cv.width, c.cv.height);
-        q.imageSmoothingEnabled = false;
-        q.drawImage(c.sm, 0, 0, GW, GH, 0, 0, c.cv.width, c.cv.height);
-      }
-
-      function createNarrative(o) {
-        const hx = document.getElementById(o.hxId);
-        const stage = document.getElementById(o.stageId);
-        const prog = document.getElementById(o.progId);
-        if (!hx || !stage || !prog) return null;
-        const cards = [];
-        o.items.forEach((it, i) => {
-          const el = document.createElement("article"); el.className = "hc";
-          el.innerHTML = '<div class="top"><canvas></canvas></div><div class="m"><i>' + it.seg + '</i><h4>' + it.t + '</h4><p>' + it.n + '</p></div>';
-          hx.appendChild(el);
-          const cv = el.querySelector("canvas"), sm = document.createElement("canvas");
-          sm.width = GW; sm.height = GH;
-          const sc = sm.getContext("2d", { willReadFrequently: true });
-          sc.drawImage(makeArt(i + (o.seed || 0)), 0, 0, AW, AH, 0, 0, GW, GH);
-          /* DPR cap (spec §4.7): 2 on a mouse, 1.5 on touch. The old code capped
-             at 3, which on a phone is four times the pixels for no visible gain. */
-          const d = Math.min(finePointer() ? 2 : 1.5, devicePixelRatio || 1);
-          cv.width = Math.round(AW * d); cv.height = Math.round(AH * d);
-          const c = {
-            el, cv, ctx: cv.getContext("2d"), sm, sc, src: sc.getImageData(0, 0, GW, GH).data.slice(),
-            img: sc.createImageData(GW, GH), dis: 1, dirty: true
-          };
-          cards.push(c); ALLCARDS.push(c);
-          prog.appendChild(document.createElement("i"));
-        });
-        /* stage width is a layout read; it only changes on resize, and measure()
-           is where resizes are already absorbed */
-        const inst = { cards, stage, prog, pin: o.pin, t: 0, settled: false, stageW: stage.clientWidth || 600 };
-        NARRATIVES.push(inst);
-        return inst;
-      }
-
-      function runNarrative(N, dt) {
-        const P = pins[N.pin];
-        if (!P || (!P.vis && N.settled)) return;
-        const n = N.cards.length;
-        if (!n) return;
-        /* Scroll position IS the carousel position. Never a counter: a trackpad
-           fling skips positions, and a counter would land on the wrong card. */
-        const target = P.p * (n - 1);
-        N.settled = Math.abs(N.t - target) < .001;
-        N.t = RM ? target : lerp(N.t, target, 1 - Math.exp(-dt * 9));
-        const hT = N.t;
-        const w = N.stageW || 600;
-        const sc = clamp(w / 760, .55, 1);
-        /* On a phone the cards are nearly as wide as the stage, so a shallow arc
-           stacks them on top of each other. Push the angle out and fade the
-           neighbours hard so only the focused card is legible. */
-        const narrow = w < 620;
-        const R = narrow ? w * .62 : Math.min(620, w * .5);
-        const AS = narrow ? 58 : clamp(w / 24, 22, 38);
-        const maxA = AS * (narrow ? 1.5 : 2.5);
-        const fade = narrow ? .92 : .62;
-        N.cards.forEach((c, i) => {
-          const off = i - hT, ang = off * AS, rad = ang * Math.PI / 180;
-          const x = Math.sin(rad) * R, z = Math.cos(rad) * R - R, y = off * 18 * sc;
-          const prox = Math.min(1, Math.abs(ang) / maxA);
-          const tgt = Math.pow(prox, 1.35) * .55;
-          if (Math.abs(tgt - c.dis) > .004) { c.dis = tgt; c.dirty = true }
-          c.el.style.transform = `translate3d(${x.toFixed(1)}px,calc(-50% + ${y.toFixed(1)}px),${z.toFixed(1)}px) rotateY(${(-ang * .5).toFixed(1)}deg) scale(${(.84 + .16 * (1 - prox)).toFixed(3)})`;
-          c.el.style.opacity = Math.max(0, 1 - prox * fade).toFixed(3);
-          c.el.style.zIndex = 200 + Math.round(Math.cos(rad) * 100);
-          if (c.dirty) { renderH(c); c.dirty = false }
-        });
-        [...N.prog.children].forEach((el, i) => el.style.setProperty("--f", clamp(hT - i + 1, 0, 1)));
-      }
-
-      /*═══════════════════════════════════════════════════════════════
-        §01 — Rift
-        A second, distinct scroll mechanic sharing the dither-card factory
-        above but not its arc math: cards are thrown in from alternating
-        sides with a hard spin + tilt + depth-dive instead of orbiting a
-        shallow arc, so §01 doesn't just look like a rerun of the carousel
-        now driving §07 Solutions (see runNarrative). Same card build, same
-        proximity-driven dither dissolve — only the transform function
-        differs.
-      ═══════════════════════════════════════════════════════════════*/
-      function runRift(N, dt) {
-        const P = pins[N.pin];
-        if (!P || (!P.vis && N.settled)) return;
-        const n = N.cards.length;
-        if (!n) return;
-        const target = P.p * (n - 1);
-        N.settled = Math.abs(N.t - target) < .001;
-        N.t = RM ? target : lerp(N.t, target, 1 - Math.exp(-dt * 8));
-        const hT = N.t;
-        const w = N.stageW || 600;
-        const narrow = w < 620;
-        const throwX = narrow ? w * .7 : Math.min(460, w * .52);
-        const dropY = narrow ? 70 : 110;
-        const dive = narrow ? 200 : 320;
-        N.cards.forEach((c, i) => {
-          const off = i - hT, a = Math.min(Math.abs(off), 2.2), s = i % 2 === 0 ? -1 : 1;
-          const x = off * s * throwX;
-          const y = a * a * dropY * .4;
-          const z = -a * dive * .6;
-          const spin = off * s * 54;
-          const tilt = off * s * -22;
-          const scale = clamp(1 - a * .32, .38, 1);
-          const prox = Math.min(1, a / 1.15);
-          const tgt = Math.pow(prox, 1.4) * .6;
-          if (Math.abs(tgt - c.dis) > .004) { c.dis = tgt; c.dirty = true }
-          c.el.style.transform = `translate3d(${x.toFixed(1)}px,calc(-50% + ${y.toFixed(1)}px),${z.toFixed(1)}px) rotateZ(${spin.toFixed(1)}deg) rotateX(${tilt.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
-          c.el.style.opacity = clamp(1 - a * 1.05, 0, 1).toFixed(3);
-          c.el.style.zIndex = 300 - Math.round(a * 100);
-          if (c.dirty) { renderH(c); c.dirty = false }
-        });
-        [...N.prog.children].forEach((el, i) => el.style.setProperty("--f", clamp(hT - i + 1, 0, 1)));
-      }
-
-      const NARRATIVES = [];
-      /* §01 — the flood problem. Dither-helix arc carousel (runNarrative), not Rift. */
-      createNarrative({
-        hxId: "problemHx", stageId: "problemStage", progId: "problemProg", pin: 0, seed: 0,
-        items: [
-          { seg: "01", t: "Backward-looking", n: "Past data doesn't fully describe future risk." },
-          { seg: "02", t: "Too coarse", n: "Risk gets lost between the district and the asset." },
-          { seg: "03", t: "Fragmented", n: "The data exists. The intelligence is scattered." }
-        ]
-      });
-      function runDeck(dt) {
-        if (document.body.classList.contains("nopin")) return;
-        for (const N of NARRATIVES) (N.mode === "rift" ? runRift : runNarrative)(N, dt);
+        tlChartEl.classList.add("on");
       }
 
       /*═══════════════════════════════════════════════════════════════
@@ -8511,8 +7644,8 @@
       const TIDE_DRIFT = ["22s", "18s", "27s", "33s"];
       const TIDE_DRIFT2 = ["31s", "24s", "36s", "44s"];
 
-      /* one instance per section using the platform card-reveal: Platform, Sectors */
-      const TIDE_SECTIONS = [["tideBand", "platList", "platGauge"], [null, "secList", "secGauge"]];
+      /* one instance per section using the platform card-reveal: Platform */
+      const TIDE_SECTIONS = [["tideBand", "platList", "platGauge"]];
       let TIDES = [];
       function buildTide() { TIDES = TIDE_SECTIONS.map(s => buildTideOne(...s)).filter(Boolean); }
       function buildTideOne(bandId, listId, gaugeId) {
@@ -9038,24 +8171,6 @@
         });
       }
 
-      /*── PRODUCTS: scrubbed curtain reveal ──*/
-      const PRODS = [...document.querySelectorAll(".prod")].map(el => ({ el, col: [...el.firstElementChild.children], top: 0, last: -1 }));
-      function runProducts(y) {
-        PRODS.forEach((P, i) => {
-          /* offsets cached in measure() — no layout read per frame */
-          const o = clamp((vh * .94 - (P.top - y)) / (vh * .52), 0, 1);
-          if (Math.abs(o - P.last) < .002) return;
-          P.last = o;
-          P.el.style.setProperty("--o", o.toFixed(3));
-          P.col.forEach((c, j) => {                       /* copy lines cascade behind the card */
-            const e = easeOut(clamp((o - j * .07) / .5, 0, 1));
-            c.style.opacity = e.toFixed(3);
-            c.style.transform = "translateY(" + ((1 - e) * 32).toFixed(1) + "px)";
-          });
-          if (i === 0 && Math.abs(o - lastPvProg) > .006) { lastPvProg = o; drawPv(o); }
-        });
-      }
-
       /*═══════════ UI SYSTEMS ═══════════*/
 
       /*── back to top, with scroll depth drawn as a ring around it ──*/
@@ -9141,12 +8256,12 @@
         ["The flood problem", "Why current assessment falls short", "#problem", "problem backward looking coarse fragmented assessment"],
         ["The decision gap", "Data alone doesn't answer the decision", "#gap", "decision gap data rainfall terrain drainage exposure"],
         ["75 years of flood record", "Observed record 1951–2025", "#record", "record history 1951 2025 timeline years observed districts talukas"],
-        ["Explorer", "Free historical district intelligence", "#explorer", "explorer free district taluka historical search map"],
-        ["Atlas", "Historical, current and future in one view", "#atlas", "atlas premium projection 2030 2050 2100 scenario portfolio taluka"],
-        ["Live", "Real-time rainfall, radar and risk", "#live", "live radar rainfall alert monitoring operational response"],
+        ["Explorer", "Free historical district intelligence", "products.html#explorer", "explorer free district taluka historical search map"],
+        ["Atlas", "Historical, current and future in one view", "products.html#atlas", "atlas premium projection 2030 2050 2100 scenario portfolio taluka"],
+        ["Live", "Real-time rainfall, radar and risk", "products.html#live", "live radar rainfall alert monitoring operational response"],
         ["Decision support", "From flood risk to actionable insight", "#decision", "vulnerability atlas portfolio screening drainage capacity property site"],
         ["Platform", "Data in. Intelligence out.", "#platform", "platform data models risk decision technology methodology validation api cmip6"],
-        ["Sectors", "One flood record. Every sector.", "#sectors", "sectors agriculture agri loans lending banking insurance government infrastructure"],
+        ["Sectors", "One flood record. Every sector.", "sectors.html", "sectors agriculture agri loans lending banking insurance government infrastructure"],
         ["Solutions", "Five sectors we serve", "#serve", "insurance banking government infrastructure agriculture reinsurance finance sector"],
         ["Why FloodGuard", "Built on observed data", "#why", "why observed foundation multi scale horizon decision ready"],
         ["About us", "Building India's flood intelligence layer", "#about", "about vision mission principles team company"],
@@ -9166,6 +8281,7 @@
       }
       function go(hash) {
         closeOv(searchOv);
+        if (!hash.startsWith("#")) { location.href = hash; return; }
         const el = document.querySelector(hash); if (!el) return;
         const t = el.getBoundingClientRect().top + scrollY;
         scrollTo({ top: t, behavior: "smooth" });
@@ -9314,15 +8430,13 @@
         cur = scrollY;
         const y = cur;
         runRevs(y); runCounters(y); runPins(y, dt); runHdr(y); runBars(y); runParallax(y, dt);
-        runTree(y); runStack(dt); runProducts(y); runToTop(y); runRail(y, dt); runConfluence(); runTide(); runDeckDepth(); runDroplet(); runDropReveals(y);
+        runTree(y); runStack(dt); runToTop(y); runConfluence(); runTide(); runDeckDepth(); runDroplet(); runDropReveals(y);
         if (mapProg < 1) { mapProg = Math.min(1, mapProg + dt * .45); drawMap(); }
         else if (hoverCell !== lastHover) { lastHover = hoverCell; drawMap(); }
-        /* the radar only needs painting while its product card is on screen */
-        if (y + vh > prodTop - 200 && y < prodTop + prodH + 200) drawRadar();
-        drawWater(dt); runDeck(dt);
+        drawWater(dt);
         requestAnimationFrame(loop);
       }
-      let lastHover = null, prodTop = 0, prodH = 1e9;
+      let lastHover = null;
 
       /*── BOOT ──*/
       if (TOUCH) { const th = document.getElementById("tlHint"); if (th) th.textContent = "Tap"; }

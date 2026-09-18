@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sectors · FloodGuard</title>
+<meta name="description" content="One flood record, shaped around how agriculture, lending, insurance, government and infrastructure teams actually make flood decisions.">
+<link rel="canonical" href="https://floodguard.in/sectors.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/fg-base.css">
+<style>
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--brand);z-index:50;width:0%;
+  transition:width .1s linear}
+
+.crumb{display:flex;align-items:center;gap:.45rem;padding:1.4rem 0 .2rem;font-size:var(--t-xs);color:var(--ink3)}
+.crumb a{color:var(--ink3);text-decoration:none}
+.crumb a:hover{color:var(--brand)}
+
+.head{padding:.6rem 0 clamp(2rem,5vw,3.2rem);max-width:64ch}
+.head h1{font-size:var(--t-4);margin:.6rem 0 .8rem}
+.head p{color:var(--ink2);font-size:var(--t-1)}
+
+.secGrid{display:grid;gap:1.3rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:2.6rem}
+.secCard{padding:clamp(1.4rem,2.6vw,1.9rem)}
+.secTop{display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem}
+.secTop svg{width:26px;height:26px;fill:none;stroke:var(--brand);stroke-width:1.6;flex:none}
+.secCard h2{font-size:1.2rem}
+.secCard p{color:var(--ink2);font-size:var(--t-sm);margin-bottom:1rem}
+.secCard ul{list-style:none;display:grid;gap:.5rem}
+.secCard li{font-size:var(--t-sm);color:var(--ink2);display:flex;gap:.55rem;align-items:flex-start;line-height:1.5}
+.secCard li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--brand);margin-top:.55rem;flex:none}
+
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .55s var(--E),transform .55s var(--E)}
+[data-reveal].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}}
+
+.closing{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.4rem;
+  padding:clamp(1.6rem,3vw,2.2rem);margin-bottom:2.6rem;border-radius:var(--r-l);background:var(--band);color:var(--onBand)}
+.closing p{flex:1 1 260px;font-size:var(--t-sm);opacity:.92}
+.closing b{display:block;font-family:var(--fD);font-size:var(--t-2);margin-bottom:.3rem}
+.closing .btn{background:var(--onBand);color:var(--b950);border-color:transparent}
+.ft{padding:1.6rem 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<div id="prog" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header class="hd">
+    <a class="brand" href="/index.html">
+      <i>ƒ</i><b>FloodGuard</b>
+    </a>
+    <nav style="display:flex;align-items:center;gap:1.4rem">
+      <a href="products.html" style="font-size:var(--t-sm);color:var(--ink2);text-decoration:none">Products</a>
+      <a class="btn bp" href="/index.html#start">Book a demo</a>
+    </nav>
+  </header>
+
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="/index.html">Home</a><span>›</span>
+    <span>Sectors</span>
+  </nav>
+
+  <div class="head">
+    <p class="caps">Where FloodGuard is used</p>
+    <h1>One flood record. Every sector.</h1>
+    <p>The same intelligence, shaped around how each sector actually makes its flood decisions.</p>
+  </div>
+
+  <div class="secGrid">
+    <article class="secCard panel" data-reveal>
+      <div class="secTop">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 21V10"/>
+          <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z"/>
+          <path d="M4 21h16"/>
+        </svg>
+        <h2>Agriculture</h2>
+      </div>
+      <p>Crop, farm and supply-chain decisions timed to the season, with flood exposure mapped down to the
+        taluka a field actually sits in.</p>
+      <ul>
+        <li>Crop loss and sowing-window risk</li>
+        <li>Warehouse and mandi exposure</li>
+        <li>Irrigation and drainage planning</li>
+      </ul>
+    </article>
+
+    <article class="secCard panel" data-reveal>
+      <div class="secTop">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10 12 4l9 6"/>
+          <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>
+        </svg>
+        <h2>Agri loans &amp; lending</h2>
+      </div>
+      <p>Flood risk priced into the loan book — from Kisan credit and farm loans to mortgages and MSME
+        lending.</p>
+      <ul>
+        <li>Agri and KCC loan screening</li>
+        <li>Collateral and mortgage exposure</li>
+        <li>Portfolio stress testing</li>
+      </ul>
+    </article>
+
+    <article class="secCard panel" data-reveal>
+      <div class="secTop">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/>
+          <path d="M9 12h6M12 9v6"/>
+        </svg>
+        <h2>Insurance</h2>
+      </div>
+      <p>Underwriting, pricing and accumulation with an observed flood record behind every policy location.</p>
+      <ul>
+        <li>Crop and parametric insurance</li>
+        <li>Property accumulation</li>
+        <li>Claims triage after an event</li>
+      </ul>
+    </article>
+
+    <article class="secCard panel" data-reveal>
+      <div class="secTop">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 21V9l8-5 8 5v12"/>
+          <path d="M9 21v-6h6v6M2 21h20"/>
+        </svg>
+        <h2>Government</h2>
+      </div>
+      <p>District disaster plans, relief pre-positioning and resilient public spending built on the same
+        numbers.</p>
+      <ul>
+        <li>District disaster management plans</li>
+        <li>Relief and evacuation planning</li>
+        <li>Budget and scheme targeting</li>
+      </ul>
+    </article>
+
+    <article class="secCard panel" data-reveal>
+      <div class="secTop">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16"/>
+          <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1"/>
+        </svg>
+        <h2>Infrastructure</h2>
+      </div>
+      <p>Roads, rail, power and real estate sited and designed for the water they will actually face.</p>
+      <ul>
+        <li>Site selection and due diligence</li>
+        <li>Asset-level flood depth</li>
+        <li>Drainage capacity for new builds</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="closing" data-reveal>
+    <div>
+      <b>Don't see your sector?</b>
+      <p>The same observed record and methodology extend to almost any flood decision — talk to us about yours.</p>
+    </div>
+    <a class="btn" href="/index.html#start">Book a demo</a>
+  </div>
+
+  <footer class="ft">© <span id="fgYear"></span> FloodGuard Solutions Pvt. Ltd. · <a href="/index.html">Back to home</a></footer>
+</div>
+
+<script>
+document.getElementById("fgYear").textContent = new Date().getFullYear();
+
+/* thin top progress bar — a lightweight stand-in for the homepage's gauge */
+const prog = document.getElementById("prog");
+addEventListener("scroll", () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  prog.style.width = (max > 0 ? (scrollY / max) * 100 : 0).toFixed(2) + "%";
+}, { passive: true });
+
+const els = document.querySelectorAll("[data-reveal]");
+els.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + "ms"; });
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: .15 });
+  els.forEach(el => io.observe(el));
+} else {
+  els.forEach(el => el.classList.add("in"));
+}
+</script>
+</body>
+</html>
