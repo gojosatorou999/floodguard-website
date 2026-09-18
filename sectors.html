@@ -11,9 +11,9 @@
 <link rel="stylesheet" href="/assets/fg-base.css">
 <script type="module" src="/assets/js/theme.js" defer></script>
 <style>
-.crumb{display:flex;align-items:center;gap:.45rem;padding:1.6rem 0 .2rem;font-size:var(--t-xs);color:var(--ink3)}
-.crumb a{color:var(--ink3);text-decoration:none}
-.crumb a:hover{color:var(--brand)}
+.crumb{display:flex;align-items:center;gap:.5rem;padding:1.6rem 0 .2rem;font-size:var(--t-sm);color:var(--ink2)}
+.crumb a{color:var(--brand);font-weight:600;text-decoration:none}
+.crumb a:hover{text-decoration:underline;text-underline-offset:3px}
 
 /* page head — the same full-width, word-by-word reveal as the home page */
 .sechead{text-align:center;margin:0 auto clamp(2.6rem,6vw,4.4rem);padding-top:clamp(1.6rem,4vw,3rem)}
@@ -101,7 +101,7 @@ body.still .sechead .snum::before,body.still .sechead .snum::after{opacity:1;tra
 .closing p{flex:1 1 260px;font-size:var(--t-0);opacity:.92}
 .closing b{display:block;font-family:var(--fD);font-size:var(--t-2);font-weight:400;margin-bottom:.4rem}
 .closing .btn{background:#fff;color:var(--b950);border-color:transparent}
-.ft{padding:1.6rem 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--ink3)}
+.ft{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;padding:1.6rem 0;border-top:1px solid var(--line);font-size:var(--t-sm);color:var(--ink3)}
 </style>
 </head>
 <body>
@@ -112,6 +112,7 @@ body.still .sechead .snum::before,body.still .sechead .snum::after{opacity:1;tra
       <img src="/assets/img/logo.jpeg" alt="" aria-hidden="true"><b>FLOODGUARD</b>
     </a>
     <div class="topbarAct">
+      <a class="backHome" href="/index.html" aria-label="Back to home"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg><span>Back to home</span></a>
       <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
@@ -244,7 +245,7 @@ body.still .sechead .snum::before,body.still .sechead .snum::after{opacity:1;tra
     <a class="btn" href="/index.html#start">Book a demo</a>
   </div>
 
-  <footer class="ft">© <span id="fgYear"></span> FloodGuard Solutions Pvt. Ltd. · <a href="/index.html">Back to home</a></footer>
+  <footer class="ft"><span>© <span id="fgYear"></span> FloodGuard Solutions Pvt. Ltd.</span><a class="backHome" href="/index.html"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg><span>Back to home</span></a></footer>
 </div>
 
 <script>

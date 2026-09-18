@@ -187,3 +187,22 @@ h1,h2,h3{font-family:var(--fD);font-weight:450;font-optical-sizing:auto;line-hei
 .themeBtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .themeBtn .moon,.themeBtn[data-mode="dark"] .sun{display:none}
 .themeBtn[data-mode="dark"] .moon{display:block}
+
+/* back to home — lives in the pinned header, so it is always one click away */
+.backHome{display:inline-flex;align-items:center;gap:.5rem;height:44px;padding:0 1.15rem;border-radius:99px;
+  border:1px solid var(--line2);color:var(--ink);text-decoration:none;font:600 var(--t-sm)/1 var(--fS);
+  background:color-mix(in srgb,var(--panelBg) 70%,transparent);
+  transition:background .2s var(--E),border-color .2s var(--E),color .2s var(--E)}
+.backHome:hover{border-color:var(--brand);color:var(--brand)}
+.backHome svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .2s var(--E)}
+.backHome:hover svg{transform:translateX(-3px)}
+.backHome,.topbar .btn{flex:none;white-space:nowrap}
+/* phones: the logo carries the brand, the back button becomes an icon, so all
+   three controls fit on one line without clipping */
+@media (max-width:560px){
+  .backHome{width:44px;padding:0;justify-content:center}.backHome span{display:none}
+  .topbar .brandmark b{display:none}
+  .topbar .btn{padding:.75rem 1rem}
+  .ft .backHome{width:auto;padding:0 1.15rem}.ft .backHome span{display:inline}
+}
