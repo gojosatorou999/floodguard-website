@@ -1888,20 +1888,122 @@
       }
     }
 
-    /*── TIMELINE ──*/
-    .tlhead {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 1.6rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.9rem
+    /*── SECTION HEADS ──
+       Full width and centred. The number's rules draw outward to the edges,
+       then the heading rises in word by word, then the lead follows. One-shot,
+       driven by the page's own reveal loop (.sechead carries data-rv). */
+    .sechead {
+      text-align: center;
+      margin: 0 auto clamp(2.4rem, 5vw, 3.8rem)
     }
 
-    .tlhead h2 {
-      font-size: var(--t-3);
-      max-width: 22ch
+    .sechead[data-rv] {
+      opacity: 1;
+      transform: none
     }
+
+    .sechead .snum {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.1rem;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      transition: opacity .8s var(--E)
+    }
+
+    .sechead .snum::before,
+    .sechead .snum::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      transform: scaleX(0);
+      transition: transform 1.4s var(--E) .1s
+    }
+
+    .sechead .snum::before {
+      background: linear-gradient(90deg, transparent, var(--line2));
+      transform-origin: right
+    }
+
+    .sechead .snum::after {
+      background: linear-gradient(90deg, var(--line2), transparent);
+      transform-origin: left
+    }
+
+    .sechead .eye {
+      justify-content: center;
+      margin-bottom: 1.1rem;
+      opacity: 0;
+      transition: opacity .8s var(--E) .2s
+    }
+
+    .sechead .eye::after {
+      display: none
+    }
+
+    .sechead h2 {
+      font-size: var(--t-4);
+      line-height: 1.06;
+      max-width: 24ch;
+      margin: 0 auto
+    }
+
+    .sechead h2 .w {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(.5em);
+      filter: blur(6px);
+      transition: opacity .8s var(--E), transform .9s var(--E), filter .8s var(--E);
+      transition-delay: calc(var(--i, 0) * 65ms + .2s)
+    }
+
+    .sechead .shLead {
+      color: var(--ink2);
+      font-size: var(--t-1);
+      max-width: 60ch;
+      margin: 1.4rem auto 0;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .9s var(--E) .6s, transform .9s var(--E) .6s
+    }
+
+    .sechead.in .snum,
+    .sechead.in .eye,
+    .sechead.in .shLead,
+    .sechead.in h2 .w {
+      opacity: 1;
+      transform: none;
+      filter: none
+    }
+
+    .sechead.in .snum::before,
+    .sechead.in .snum::after {
+      transform: scaleX(1)
+    }
+
+    body.rm .sechead .snum,
+    body.rm .sechead .eye,
+    body.rm .sechead .shLead,
+    body.rm .sechead h2 .w,
+    body.rm .sechead .snum::before,
+    body.rm .sechead .snum::after {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none
+    }
+
+    /*── TIMELINE ──*/
+    .tlHintTxt {
+      font-size: .58rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--ink3);
+      margin-right: auto
+    }
+
 
     #tl {
       position: relative;
@@ -1912,9 +2014,16 @@
     .tltools {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: .55rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .7rem;
       margin-bottom: 1rem
+    }
+
+    .tltools .tlGranGroup {
+      display: flex;
+      align-items: center;
+      gap: .55rem
     }
 
     .tltools label {
@@ -1969,6 +2078,38 @@
     .tlLineFut {
       stroke: var(--brand2);
       stroke-dasharray: 5 5
+    }
+
+    .tlFill {
+      stroke: none;
+      fill: url(#tlFillGrad)
+    }
+
+    .tlLegend {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.3rem;
+      margin-top: .7rem;
+      font-size: .68rem;
+      color: var(--ink3)
+    }
+
+    .tlLegend span {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .tlLegDot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--b800)
+    }
+
+    .tlLegDot.fut {
+      background: var(--bg);
+      border: 2px solid var(--brand2)
     }
 
     #dots {
@@ -2079,42 +2220,101 @@
     }
 
     /*───────────────────────────────────────────────────────────────
-  §01 — The flood problem: three static cards.
+  §01 — The flood problem: three large cards across the full width.
 ───────────────────────────────────────────────────────────────*/
     .nlist {
       display: grid;
-      gap: 1.1rem;
-      margin-top: 2rem;
+      gap: clamp(1.1rem, 2vw, 1.8rem);
       list-style: none;
       padding: 0;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr))
+    }
+
+    @media(max-width:900px) {
+      .nlist {
+        grid-template-columns: 1fr
+      }
     }
 
     .nlist li {
-      padding: 1.4rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: clamp(300px, 42svh, 400px);
+      padding: clamp(2rem, 3.4vw, 3rem) clamp(1.6rem, 2.8vw, 2.5rem);
       border: 1px solid var(--line);
-      border-radius: var(--r-m);
-      background: var(--dentBg)
+      border-radius: var(--r-xl);
+      background: var(--panelBg);
+      box-shadow: 0 1px 2px rgba(4, 38, 61, .05);
+      transition: opacity 1s var(--E), transform .9s var(--E), box-shadow .4s var(--E), border-color .4s var(--E)
+    }
+
+    .nlist li::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--b400), var(--b800))
+    }
+
+    .nlist li.in:hover {
+      transform: translateY(-8px);
+      border-color: var(--line2);
+      box-shadow: 0 30px 54px -30px rgba(4, 38, 61, .45);
+      transition-delay: 0s
     }
 
     .nlist i {
-      display: block;
+      position: absolute;
+      top: 1.4rem;
+      right: 1.7rem;
       font-style: normal;
-      font-size: .58rem;
-      letter-spacing: .2em;
-      color: var(--brand2);
-      font-weight: 700;
-      margin-bottom: .55rem
+      font-family: var(--fM);
+      font-size: clamp(3rem, 5vw, 4.4rem);
+      font-weight: 600;
+      color: var(--line2);
+      line-height: 1;
+      pointer-events: none
+    }
+
+    .nIcon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      margin-bottom: auto;
+      background: color-mix(in srgb, var(--brand) 12%, transparent)
+    }
+
+    .nIcon svg {
+      width: 32px;
+      height: 32px;
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round
     }
 
     .nlist h3 {
-      font-size: 1.15rem;
-      margin-bottom: .4rem
+      font-size: var(--t-2);
+      margin: 2.2rem 0 .7rem
     }
 
     .nlist p {
-      font-size: .92rem;
+      font-size: var(--t-1);
+      line-height: 1.55;
       color: var(--ink2)
+    }
+
+    .nlist li:nth-child(2) {
+      transition-delay: .12s
+    }
+
+    .nlist li:nth-child(3) {
+      transition-delay: .24s
     }
 
     /*───────────────────────────────────────────────────────────────
@@ -2136,10 +2336,14 @@
       padding-bottom: .6rem
     }
 
-    .conflHead h2 {
+    /* inside a 100svh pin, so a size down from the other section heads */
+    .conflHead.sechead {
+      margin-bottom: 0
+    }
+
+    .conflHead.sechead h2 {
       font-size: var(--t-3);
-      max-width: 18ch;
-      margin-bottom: .9rem
+      max-width: 28ch
     }
 
     .conflLead {
@@ -2172,7 +2376,7 @@
     }
 
     @media (max-height:760px) {
-      .conflHead h2 {
+      .conflHead.sechead h2 {
         font-size: var(--t-2)
       }
     }
@@ -2300,91 +2504,132 @@
     }
 
     /*───────────────────────────────────────────────────────────────
-  §09 — Droplet genesis (spec §5.5)
-  The page's one bold moment: a drop falls, strikes, and its ripple
-  becomes the section. Everything else on the page stays calm.
+  §09 — About: the flood rises and the title rides in on the wave,
+  then settles at the top as the section head.
 ───────────────────────────────────────────────────────────────*/
     #about {
       position: relative;
       padding: 0
     }
 
-    /* Phase D renders below the stage rather than on the disc, so the track only
-   has to carry A-C plus a short beat on the covered screen. A 300svh track
-   would leave roughly a screen and a half of scrolling with nothing left to
-   watch. */
-    .dropTrack {
+    /* A: the flood rises and "About us" rides in on the wave, letter by letter.
+       B: the title shrinks and settles at the top of the stage, where it sits as
+       the section head while the about content scrolls up underneath it.
+       --aboutT is the band the settled title occupies; the content is pulled up
+       to start exactly below it, so there is no empty screen after the pin. */
+    #about {
+      --aboutT: calc(var(--header-h) + 10rem)
+    }
+
+    .aboutTrack {
       position: relative;
-      height: 220svh
+      height: calc(300svh - var(--aboutT))
     }
 
-    @media (max-width:899px) {
-      .dropTrack {
-        height: 170svh
-      }
-    }
-
-    @supports not (height:1svh) {
-      .dropTrack {
-        height: 220vh
-      }
-    }
-
-    .dropStage {
+    .aboutStage {
       position: sticky;
       top: 0;
       height: 100svh;
       overflow: hidden;
-      isolation: isolate
-    }
-
-    @supports not (height:1svh) {
-      .dropStage {
-        height: 100vh
-      }
-    }
-
-    .dropLabel {
-      position: absolute;
-      left: clamp(1.1rem, 4.2vw, 3.2rem);
-      top: calc(var(--header-h) + 24px);
-      z-index: 3
-    }
-
-    .dropScene {
-      position: absolute;
-      inset: 0;
       z-index: 1
     }
 
-    .dropScene svg {
-      width: 100%;
-      height: 100%;
-      display: block
+    .aboutFlood {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-about);
+      transform: translateY(100%);
+      will-change: transform
     }
 
-    .dropDisc {
+    .aboutCrest {
+      position: absolute;
+      left: 0;
+      bottom: calc(100% - 1px);
+      width: 200%;
+      height: clamp(46px, 8svh, 84px);
+      display: block;
+      animation: tbDrift 7s linear infinite
+    }
+
+    .aboutCrest path {
+      fill: var(--surface-about)
+    }
+
+    .aboutCrest .echo {
+      opacity: .4
+    }
+
+    body.nopin .aboutCrest {
+      animation: none
+    }
+
+    .aboutTitle {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      z-index: 2;
+      pointer-events: none;
+      color: var(--ink);
+      transition: color .6s var(--E)
+    }
+
+    .aboutTitle.lit {
+      color: var(--text-on-brand)
+    }
+
+    .aboutNum,
+    .aboutWord {
       position: absolute;
       left: 50%;
-      top: 62%;
-      width: 40px;
-      height: 40px;
-      margin: -20px 0 0 -20px;
-      border-radius: 50%;
-      background: var(--surface-about);
-      z-index: 2;
-      transform: scale(0);
-      will-change: transform;
-      pointer-events: none
+      top: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      will-change: transform
     }
 
-    /* Once the disc has covered the stage, everything below continues on the
-   same surface, so the handoff has no seam to see. */
+    .aboutNum {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      font-family: var(--fM);
+      font-size: var(--t-xs);
+      font-weight: 500;
+      letter-spacing: .24em;
+      opacity: 0
+    }
+
+    .aboutNum::before,
+    .aboutNum::after {
+      content: "";
+      width: clamp(40px, 8vw, 110px);
+      height: 1px;
+      background: currentColor;
+      opacity: .45
+    }
+
+    .aboutWord {
+      font-family: var(--fD);
+      font-size: clamp(3.4rem, 12vw, 10rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -.03em;
+      transform-origin: center
+    }
+
+    .aboutWord .l {
+      display: inline-block;
+      will-change: transform, opacity
+    }
+
+    /* the about content starts directly under the settled title */
     .dropAfter {
       position: relative;
+      z-index: 2;
+      margin-top: calc(var(--aboutT) - 100svh);
       background: var(--surface-about);
       color: var(--text-on-brand);
-      padding-block: var(--section-pad-y) 0
+      padding-block: clamp(1rem, 3svh, 2rem) 0
     }
 
     /* centred, full-width — this is a second hero moment on the brand
@@ -2440,14 +2685,14 @@
     /* the "shared problem" CTA — the first full screen once the drop has turned
    everything blue, centred so it fills the space the same way the copy
    after it does; only after scrolling on does the About copy arrive */
+    /* starts directly under the settled "About us" head — no full-screen gap */
     .dropShared {
-      min-height: calc(100svh - var(--section-pad-y));
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding-block: var(--header-h) clamp(2rem, 6vh, 4rem);
+      padding-block: clamp(1.5rem, 4svh, 3rem) clamp(3rem, 8vh, 5rem);
       position: relative;
       z-index: 1
     }
@@ -2654,23 +2899,49 @@
       height: 100%
     }
 
-    /* Static state (spec §5.5): the section on its own surface, three frozen
-   rings as decoration, everything readable with nothing in motion. */
-    body.nopin .dropTrack {
+    /* Static state: the title already settled on the brand surface, nothing moving. */
+    body.nopin .aboutTrack {
       height: auto
     }
 
-    body.nopin .dropStage {
-      position: static;
-      height: clamp(220px, 34svh, 340px)
+    body.nopin .aboutStage {
+      position: relative;
+      height: auto;
+      padding: calc(var(--header-h) + 2rem) 1rem 1rem;
+      background: var(--surface-about)
     }
 
-    body.nopin .dropDisc {
+    body.nopin .aboutFlood {
       display: none
     }
 
+    body.nopin .aboutTitle {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .8rem;
+      color: var(--text-on-brand)
+    }
+
+    body.nopin .aboutNum,
+    body.nopin .aboutWord {
+      position: static;
+      transform: none !important;
+      opacity: 1 !important
+    }
+
+    body.nopin .aboutWord {
+      font-size: var(--t-4)
+    }
+
+    body.nopin .aboutWord .l {
+      transform: none !important;
+      opacity: 1 !important
+    }
+
     body.nopin .dropAfter {
-      padding-top: clamp(2rem, 5svh, 4rem)
+      margin-top: 0
     }
 
     /*───────────────────────────────────────────────────────────────
@@ -2682,36 +2953,11 @@
       padding-block: var(--section-pad-y)
     }
 
-    .deckGrid {
-      display: grid;
-      gap: clamp(1.6rem, 4vw, 3rem);
-      align-items: start
-    }
-
-    .deckHead h2 {
-      font-size: var(--t-3);
-      max-width: 20ch;
-      margin-bottom: 1rem
-    }
-
-    .deckLead {
-      color: var(--ink2);
-      max-width: 42ch
-    }
-
-    @media (min-width:900px) {
-      .deckGrid {
-        grid-template-columns: minmax(0, 4fr) minmax(0, 7fr)
-      }
-
-      body:not(.nopin) .deckHead {
-        position: sticky;
-        top: calc(var(--header-h) + 48px)
-      }
-    }
-
+    /* the head sits full-width above; the deck is one centred column */
     .deck {
-      position: relative
+      position: relative;
+      max-width: 900px;
+      margin-inline: auto
     }
 
     .deckCard {
@@ -3015,17 +3261,6 @@
       align-items: start
     }
 
-    .platHead h2 {
-      font-size: var(--t-3);
-      max-width: 16ch;
-      margin-bottom: 1rem
-    }
-
-    .platLead {
-      color: var(--ink2);
-      max-width: 44ch
-    }
-
     .platList {
       display: grid;
       gap: clamp(16px, 3svh, 32px);
@@ -3132,7 +3367,7 @@
     /* depth gauge — the water level rises as the list is read */
     .gauge {
       display: none;
-      margin-top: 2rem;
+      margin-top: 1rem;
       gap: .9rem
     }
 
@@ -3255,21 +3490,6 @@
       display: grid;
       gap: clamp(10px, 2vw, 22px);
       align-items: start
-    }
-
-    .isoHead {
-      margin-bottom: clamp(1.5rem, 4vh, 3rem)
-    }
-
-    .isoHead h2 {
-      font-size: var(--t-3);
-      max-width: 16ch;
-      margin-bottom: 1rem
-    }
-
-    .isoLead {
-      color: var(--ink2);
-      max-width: 46ch
     }
 
     .isoStep {
@@ -3443,10 +3663,6 @@
       body:not(.nopin) .isoStageWrap {
         order: -1
       }
-
-      body:not(.nopin) .isoHead {
-        order: -2
-      }
     }
 
     @media (max-width:599px) {
@@ -3490,7 +3706,6 @@
     .briefRow {
       display: grid;
       gap: 1.1rem;
-      margin-top: 2rem;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
     }
 
@@ -3511,20 +3726,129 @@
       color: var(--ink2)
     }
 
-    .briefPanel {
-      margin-top: 1.8rem;
-      padding: clamp(1.6rem, 3vw, 2.4rem);
+    /* sectors: one large brand panel, a brief per sector, one big way through */
+    .secPanel {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--r-xl);
+      background: var(--band);
+      color: var(--onBand);
+      padding: clamp(1.6rem, 4vw, 3.4rem)
+    }
+
+    .secBriefs {
+      display: grid;
+      gap: clamp(.8rem, 1.4vw, 1.2rem);
+      grid-template-columns: repeat(5, minmax(0, 1fr))
+    }
+
+    @media(max-width:1180px) {
+      .secBriefs {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+      }
+    }
+
+    @media(max-width:720px) {
+      .secBriefs {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .secBrief {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      min-height: 250px;
+      padding: 1.7rem 1.4rem 1.4rem;
+      border-radius: var(--r-l);
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .14);
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 1s var(--E), transform .5s var(--E), background .4s var(--E), border-color .4s var(--E)
+    }
+
+    .secBrief:nth-child(2) {
+      transition-delay: .08s
+    }
+
+    .secBrief:nth-child(3) {
+      transition-delay: .16s
+    }
+
+    .secBrief:nth-child(4) {
+      transition-delay: .24s
+    }
+
+    .secBrief:nth-child(5) {
+      transition-delay: .32s
+    }
+
+    .secBrief.in:hover {
+      transform: translateY(-6px);
+      background: rgba(255, 255, 255, .13);
+      border-color: rgba(255, 255, 255, .32);
+      transition-delay: 0s
+    }
+
+    .secBrief svg {
+      width: 34px;
+      height: 34px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-bottom: .4rem
+    }
+
+    .secBrief h3 {
+      font-size: 1.3rem;
+      color: #fff
+    }
+
+    .secBrief p {
+      font-size: .92rem;
+      line-height: 1.55;
+      opacity: .8
+    }
+
+    .secBrief .go {
+      margin-top: auto;
+      font-size: .62rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: .7
+    }
+
+    .secPanelFoot {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 1.6rem 2.2rem;
-      justify-content: space-between
+      justify-content: space-between;
+      gap: 1.2rem 2rem;
+      margin-top: clamp(1.6rem, 3vw, 2.6rem);
+      padding-top: clamp(1.4rem, 3vw, 2.2rem);
+      border-top: 1px solid rgba(255, 255, 255, .16)
     }
 
-    .briefPanel p {
-      color: var(--ink2);
-      max-width: 56ch;
-      flex: 1 1 320px
+    .secPanelFoot p {
+      flex: 1 1 340px;
+      max-width: 58ch;
+      font-size: var(--t-1);
+      opacity: .88
+    }
+
+    .btnXl {
+      padding: 1.2rem 2.3rem;
+      font-size: var(--t-0)
+    }
+
+    .secPanel .btn.bp {
+      background: #fff;
+      color: var(--b950);
+      box-shadow: 0 14px 34px -14px rgba(0, 0, 0, .55)
     }
 
     /*── WHY — unfolding card stack ──*/
@@ -3541,10 +3865,15 @@
       }
     }
 
-    .stackAside h2 {
-      font-size: var(--t-3);
-      max-width: 20ch;
-      margin-bottom: 1.6rem
+    /* the Why head lives above the pinned stack, in normal flow */
+    .shSolo {
+      position: relative;
+      z-index: 1;
+      padding-top: var(--section-pad-y)
+    }
+
+    .shSolo .sechead {
+      margin-bottom: 0
     }
 
     .stackCount {
@@ -3648,13 +3977,6 @@
       margin-top: .7rem;
       line-height: 1.5;
       max-width: 32ch
-    }
-
-    .stackAside .slede {
-      color: var(--ink2);
-      max-width: 36ch;
-      margin-bottom: 2rem;
-      line-height: 1.6
     }
 
     .stackHint {
@@ -5520,21 +5842,42 @@
       <!-- ══ THE FLOOD PROBLEM ══ -->
       <section id="problem">
         <div class="wrap" id="problemPin">
-          <span class="snum">01 — The flood problem</span>
-          <h2 data-rv style="font-size:var(--t-3);max-width:34ch">Flood risk is changing. The way we assess it hasn't.
-          </h2>
-          <p data-rv style="color:var(--ink2);max-width:56ch;margin-top:1rem">Rainfall, exposure and climate are
-            reshaping where floods hit — yet decisions still rest on fragmented, backward-looking data.</p>
+          <div class="sechead" data-rv>
+            <span class="snum">01 — The flood problem</span>
+            <h2>Flood risk is changing. The way we assess it hasn't.</h2>
+            <p class="shLead">Rainfall, exposure and climate are reshaping where floods hit — yet decisions still
+              rest on fragmented, backward-looking data.</p>
+          </div>
           <ol class="nlist" id="problemList">
-            <li><i>01</i>
+            <li data-rv>
+              <i>01</i>
+              <div class="nIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></svg>
+              </div>
               <h3>Backward-looking</h3>
               <p>Past data doesn't fully describe future risk.</p>
             </li>
-            <li><i>02</i>
+            <li data-rv>
+              <i>02</i>
+              <div class="nIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+              </div>
               <h3>Too coarse</h3>
               <p>Risk gets lost between the district and the asset.</p>
             </li>
-            <li><i>03</i>
+            <li data-rv>
+              <i>03</i>
+              <div class="nIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="5" cy="6" r="2" /><circle cx="19" cy="6" r="2" /><circle cx="5" cy="18" r="2" />
+                  <circle cx="19" cy="18" r="2" /><circle cx="12" cy="12" r="2.4" />
+                </svg>
+              </div>
               <h3>Fragmented</h3>
               <p>The data exists. The intelligence is scattered.</p>
             </li>
@@ -5542,37 +5885,48 @@
         </div>
       </section>
 
-      <!-- ══ 75 YEARS ══ -->
+      <!-- ══ 50 YEARS BACK, 50 AHEAD ══ -->
       <section id="record">
         <div class="wrap">
-          <div class="tlhead">
-            <div>
-              <span class="snum">02 — Seventy-five years of floods</span>
-              <p class="eye caps" data-rv><i></i>75 years. One flood story.</p>
-              <h2 data-rv>FloodGuard reconstructs India's flood record from 1951 onward.</h2>
-              <p data-rv style="color:var(--ink2);max-width:46ch;margin-top:1rem">A consistent historical foundation for
-                understanding how risk has evolved — across every district and taluka we cover.</p>
-            </div>
-            <p class="srcline tlhint" data-rv><span id="tlHint">Hover</span> a point — exposure, anomaly, events</p>
+          <div class="sechead" data-rv>
+            <span class="snum">02 — Fifty years back, fifty years ahead</span>
+            <p class="eye caps"><i></i>One flood record, extended</p>
+            <h2>FloodGuard reconstructs 50 years of flood history — and projects 50 more.</h2>
+            <p class="shLead">A consistent foundation for understanding how risk has evolved, and where it's headed,
+              across every district and taluka we cover.</p>
           </div>
           <div id="tl" class="glass" data-rv>
             <div class="tltools">
-              <label for="tlGran">Interval</label>
-              <select id="tlGran" class="tlGran">
-                <option value="3">Every 3 years</option>
-                <option value="5" selected>Every 5 years</option>
-                <option value="10">Every 10 years</option>
-              </select>
+              <span class="tlHintTxt"><span id="tlHint">Hover</span> a point for detail</span>
+              <div class="tlGranGroup">
+                <label for="tlGran">Interval</label>
+                <select id="tlGran" class="tlGran">
+                  <option value="3">Every 3 years</option>
+                  <option value="5" selected>Every 5 years</option>
+                  <option value="10">Every 10 years</option>
+                </select>
+              </div>
             </div>
             <div id="tlChart">
               <svg id="tlSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="tlFillGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--b400)" stop-opacity=".32" />
+                    <stop offset="100%" stop-color="var(--b400)" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <path id="tlFillHist" class="tlFill"></path>
                 <path id="tlPathHist" class="tlLine"></path>
                 <path id="tlPathFut" class="tlLine tlLineFut"></path>
               </svg>
               <div id="dots" role="group"
-                aria-label="Flood exposure by year, 1951 onward. Points from 2026 are a projection."></div>
+                aria-label="Flood exposure by year, 1975 onward. Points from 2026 are a projection."></div>
             </div>
             <div class="tlx" id="tlx"></div>
+            <div class="tlLegend">
+              <span><i class="tlLegDot"></i>Observed</span>
+              <span><i class="tlLegDot fut"></i>Projected</span>
+            </div>
             <div id="pop" role="status">
               <h4>—</h4>
               <dl></dl>
@@ -5584,10 +5938,10 @@
       <!-- ══ DECISION GAP ══ -->
       <section id="gap" class="pinsec" style="height:220svh;padding:0">
         <div class="pin confl" id="gapPin">
-          <div class="wrap conflHead">
+          <div class="wrap conflHead sechead" data-rv>
             <span class="snum">03 — The decision gap</span>
-            <h2 data-rv>Data alone doesn't answer the decision.</h2>
-            <p class="conflLead" data-rv>Seven inputs, one channel. The work isn't collecting them — it's making them
+            <h2>Data alone doesn't answer the decision.</h2>
+            <p class="conflLead shLead">Seven inputs, one channel. The work isn't collecting them — it's making them
               arrive together, at the moment the decision is made.</p>
           </div>
           <div class="conflStage" id="conflStage"></div>
@@ -5609,12 +5963,12 @@
       <!-- ══ PRODUCTS ══ -->
       <section id="products">
         <div class="wrap">
-          <span class="snum">04 — Products</span>
-          <p class="eye caps" data-rv><i></i>Three ways in</p>
-          <h2 data-rv style="font-size:var(--t-3);max-width:20ch;margin-bottom:1rem">Start free. Go deeper. Monitor in
-            real time.</h2>
-          <p data-rv style="color:var(--ink2);max-width:56ch">Explorer, Atlas and Live are the same flood record at
-            three different depths.</p>
+          <div class="sechead" data-rv>
+            <span class="snum">04 — Products</span>
+            <p class="eye caps"><i></i>Three ways in</p>
+            <h2>Start free. Go deeper. Monitor in real time.</h2>
+            <p class="shLead">Explorer, Atlas and Live are the same flood record at three different depths.</p>
+          </div>
           <div class="briefRow" data-rv>
             <div class="briefCard">
               <p class="pkick">Explorer · free</p>
@@ -5641,14 +5995,16 @@
 
       <!-- ══ DECISION SUPPORT ══ -->
       <section id="decision">
+        <div class="wrap">
+          <div class="sechead" data-rv>
+            <span class="snum">05 — Decision support</span>
+            <h2>From flood risk to actionable insight.</h2>
+            <p class="shLead">Each layer resolves the one beneath it. Nothing is inferred from a single source, and
+              every layer stays inspectable on its own.</p>
+          </div>
+        </div>
         <div class="wrap iso" id="isoRoot">
           <div class="isoCol">
-            <div class="isoHead">
-              <span class="snum">05 — Decision support</span>
-              <h2 data-rv>From flood risk to actionable insight.</h2>
-              <p class="isoLead" data-rv>Each layer resolves the one beneath it. Nothing is inferred from a single
-                source, and every layer stays inspectable on its own.</p>
-            </div>
             <!-- i = 0 is the BOTTOM layer. Text order top→bottom == stack order bottom→top. -->
             <div class="isoStep" data-step><i>01</i>
               <h3>Hazard signals</h3>
@@ -5684,13 +6040,17 @@
       <section id="platform">
         <!-- the tide band opens as the section arrives; full-bleed via grid, never 100vw -->
         <div class="tideBand" id="tideBand" aria-hidden="true"></div>
+        <div class="wrap">
+          <div class="sechead" data-rv>
+            <span class="snum">06 — Platform</span>
+            <p class="eye caps"><i></i>The intelligence behind FloodGuard</p>
+            <h2>Data in. Intelligence out.</h2>
+            <p class="shLead">Five parts, each inspectable on its own. Nothing here is a black box — every number we
+              publish can be traced back to the data and the method that produced it.</p>
+          </div>
+        </div>
         <div class="wrap plat">
           <div class="platHead">
-            <span class="snum">06 — Platform</span>
-            <p class="eye caps" data-rv><i></i>The intelligence behind FloodGuard</p>
-            <h2 data-rv>Data in. Intelligence out.</h2>
-            <p class="platLead" data-rv>Five parts, each inspectable on its own. Nothing here is a black box —
-              every number we publish can be traced back to the data and the method that produced it.</p>
             <div class="gauge" id="platGauge" aria-hidden="true">
               <div class="gaugeTrack"><i class="gaugeFill"></i></div>
               <div class="gaugeTicks"></div>
@@ -5803,15 +6163,69 @@
       <!-- ══ SECTORS ══ -->
       <section id="sectors">
         <div class="wrap">
-          <span class="snum">07 — Sectors</span>
-          <p class="eye caps" data-rv><i></i>Where FloodGuard is used</p>
-          <h2 data-rv style="font-size:var(--t-3);max-width:22ch">One flood record. Every sector.</h2>
-          <div class="briefPanel dent" data-rv>
-            <p>The same intelligence, shaped around how each sector actually makes its flood decisions —
-              agriculture, lending, insurance, government and infrastructure.</p>
-            <a class="btn bp" href="sectors.html">See all sectors <svg viewBox="0 0 14 14">
-                <path d="M2 7h10M8 3l4 4-4 4" />
-              </svg></a>
+          <div class="sechead" data-rv>
+            <span class="snum">07 — Sectors</span>
+            <p class="eye caps"><i></i>Where FloodGuard is used</p>
+            <h2>One flood record. Every sector.</h2>
+            <p class="shLead">The same intelligence, shaped around how each sector actually makes its flood
+              decisions.</p>
+          </div>
+          <div class="secPanel">
+            <div class="secBriefs">
+              <a class="secBrief" href="sectors.html#agriculture" data-rv>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 21V10" />
+                  <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z" />
+                  <path d="M4 21h16" />
+                </svg>
+                <h3>Agriculture</h3>
+                <p>Crop loss, sowing windows and mandi exposure, mapped to the taluka a field sits in.</p>
+                <span class="go">Read more</span>
+              </a>
+              <a class="secBrief" href="sectors.html#lending" data-rv>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 10 12 4l9 6" />
+                  <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" />
+                </svg>
+                <h3>Agri loans &amp; lending</h3>
+                <p>Flood risk priced into the loan book — KCC, farm loans, mortgages and MSME credit.</p>
+                <span class="go">Read more</span>
+              </a>
+              <a class="secBrief" href="sectors.html#insurance" data-rv>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" />
+                  <path d="M9 12h6M12 9v6" />
+                </svg>
+                <h3>Insurance</h3>
+                <p>Underwriting, pricing and accumulation with an observed flood record behind every policy.</p>
+                <span class="go">Read more</span>
+              </a>
+              <a class="secBrief" href="sectors.html#government" data-rv>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 21V9l8-5 8 5v12" />
+                  <path d="M9 21v-6h6v6M2 21h20" />
+                </svg>
+                <h3>Government</h3>
+                <p>District disaster plans, relief pre-positioning and resilient public spending.</p>
+                <span class="go">Read more</span>
+              </a>
+              <a class="secBrief" href="sectors.html#infrastructure" data-rv>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16" />
+                  <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1" />
+                </svg>
+                <h3>Infrastructure</h3>
+                <p>Roads, rail, power and real estate sited for the water they will actually face.</p>
+                <span class="go">Read more</span>
+              </a>
+            </div>
+            <div class="secPanelFoot" data-rv>
+              <p>Each sector gets its own view of the same record — the decisions it faces, the exposure that matters
+                to it, and what FloodGuard puts in front of the people making the call.</p>
+              <a class="btn bp btnXl" href="sectors.html">Explore all sectors <svg viewBox="0 0 14 14">
+                  <path d="M2 7h10M8 3l4 4-4 4" />
+                </svg></a>
+            </div>
           </div>
         </div>
       </section>
@@ -5819,9 +6233,10 @@
       <!-- ══ WHO WE SERVE ══ -->
       <section id="serve">
         <div class="wrap">
-          <span class="snum">08 — Solutions</span>
-          <h2 data-rv style="font-size:var(--t-3);max-width:17ch;margin-bottom:clamp(2.5rem,6vw,4.5rem)">Flood
-            intelligence for decisions that matter.</h2>
+          <div class="sechead" data-rv>
+            <span class="snum">08 — Solutions</span>
+            <h2>Flood intelligence for decisions that matter.</h2>
+          </div>
           <div class="tree" id="tree">
             <svg id="treeSvg" aria-hidden="true">
               <defs>
@@ -5837,15 +6252,21 @@
       </section>
 
       <!-- ══ WHY FLOODGUARD ══ -->
+      <!-- the head sits above the pinned stack, not inside it: a full-width
+           heading would eat the stage's 100svh -->
+      <div class="wrap shSolo">
+        <div class="sechead" data-rv>
+          <span class="snum">09 — Why FloodGuard</span>
+          <h2>Built on observed data. Built for better decisions.</h2>
+          <p class="shLead">Four things decide whether flood intelligence is worth acting on: how far back the record
+            runs, how finely it resolves, whether it spans time consistently, and whether it arrives in a form you can
+            actually use.</p>
+        </div>
+      </div>
       <section id="why" class="pinsec" style="height:315svh;padding:0">
         <div class="pin" id="whyPin">
           <div class="wrap stackWrap">
             <div class="stackAside">
-              <span class="snum">09 — Why FloodGuard</span>
-              <h2>Built on observed data. Built for better decisions.</h2>
-              <p class="slede">Four things decide whether flood intelligence is worth acting on: how far
-                back the record runs, how finely it resolves, whether it spans time consistently, and
-                whether it arrives in a form you can actually use.</p>
               <p class="stackCount"><b id="stackI">01</b><span>/ 04</span></p>
               <div class="stackTicks" id="stackTicks"></div>
               <p class="stackHint">Keep scrolling to move through each one.</p>
@@ -5859,13 +6280,13 @@
       <!-- no class="drop" here: .drop is the nav dropdown, which is
      opacity:0/visibility:hidden until opened. -->
       <section id="about">
-        <div class="dropTrack" id="dropTrack">
-          <div class="dropStage" id="dropStage">
-            <span class="snum dropLabel">10 — About us</span>
-            <div class="dropScene" id="dropScene" aria-hidden="true"></div>
-            <!-- the reveal disc is a plain div, not SVG: one composited transform
-           beats scaling a shape inside a slice-fitted viewBox -->
-            <div class="dropDisc" id="dropDisc" aria-hidden="true"></div>
+        <div class="aboutTrack" id="aboutTrack">
+          <div class="aboutStage" id="aboutStage">
+            <div class="aboutFlood" id="aboutFlood" aria-hidden="true"></div>
+            <h2 class="aboutTitle" id="aboutTitle" aria-label="10 — About us">
+              <span class="aboutNum" id="aboutNum" aria-hidden="true">10</span>
+              <span class="aboutWord" id="aboutWord" aria-hidden="true">About us</span>
+            </h2>
           </div>
         </div>
 
@@ -5910,15 +6331,16 @@
 
       <!-- ══ INSIGHTS ══ -->
       <section id="insights">
-        <div class="wrap deckGrid">
-          <div class="deckHead">
+        <div class="wrap">
+          <div class="sechead" data-rv>
             <span class="snum">11 — Insights</span>
-            <p class="eye caps" data-rv><i></i>Understanding flood risk, beyond the map</p>
-            <h2 data-rv>Research, data stories and practical perspectives.</h2>
-            <p class="deckLead" data-rv>Five strands of work, published as the library fills. Each one starts from
-              the same observed record the rest of the platform is built on.</p>
+            <p class="eye caps"><i></i>Understanding flood risk, beyond the map</p>
+            <h2>Research, data stories and practical perspectives.</h2>
+            <p class="shLead">Five strands of work, published as the library fills. Each one starts from the same
+              observed record the rest of the platform is built on.</p>
           </div>
-
+        </div>
+        <div class="wrap">
           <div class="deck" id="insightDeck">
             <article class="deckCard" style="--i:0">
               <div class="deckInner">
@@ -6005,14 +6427,17 @@
 
       <!-- ══ GET STARTED ══ -->
       <section id="start">
+        <div class="wrap">
+          <div class="sechead" data-rv>
+            <span class="snum">12 — Book a demo</span>
+            <p class="eye caps"><i></i>Let's talk flood risk</p>
+            <h2>Ready to understand flood risk differently?</h2>
+            <p class="shLead">Whether you want to explore your district, evaluate FloodGuard, book a product
+              demonstration or collaborate with us — start here.</p>
+          </div>
+        </div>
         <div class="wrap fgrid2">
           <div>
-            <span class="snum">12 — Book a demo</span>
-            <p class="eye caps" data-rv><i></i>Let's talk flood risk</p>
-            <h2 data-rv style="font-size:var(--t-3);max-width:17ch;margin-bottom:1.2rem">Ready to understand flood risk
-              differently?</h2>
-            <p data-rv style="color:var(--ink2);max-width:44ch;margin-bottom:1.6rem">Whether you want to explore your
-              district, evaluate FloodGuard, book a product demonstration or collaborate with us — start here.</p>
             <ul class="intents" data-rv data-stag>
               <li><a class="intentBtn" href="auth.html"><b>Explore flood risk</b><span>Explorer</span></a></li>
               <li><button class="intentBtn" type="button" data-intent="Request early access"><b>Request early
@@ -6606,6 +7031,25 @@
       }
 
       /*── REVEALS ──*/
+      /* section heads rise in word by word, so each h2 is split into word spans */
+      document.querySelectorAll(".sechead h2").forEach(h => {
+        let i = 0;
+        [...h.childNodes].forEach(n => {
+          if (n.nodeType === 3) {
+            const frag = document.createDocumentFragment();
+            n.textContent.split(/(\s+)/).forEach(t => {
+              if (!t) return;
+              if (!t.trim()) { frag.appendChild(document.createTextNode(" ")); return; }
+              const w = document.createElement("span");
+              w.className = "w"; w.style.setProperty("--i", i++); w.textContent = t;
+              frag.appendChild(w);
+            });
+            h.replaceChild(frag, n);
+          } else if (n.nodeType === 1) {
+            n.classList.add("w"); n.style.setProperty("--i", i++);
+          }
+        });
+      });
       const revs = [...document.querySelectorAll("[data-rv],.mask")].map(el => ({ el, top: 0, done: false }));
       function runRevs(y) {
         for (let k = revs.length - 1; k >= 0; k--) {
@@ -6679,6 +7123,7 @@
         /* the inner's transform doesn't affect the section's own box, so no correction needed */
         pins.forEach(P => { const b = P.sec.getBoundingClientRect(); P.top = b.top + base; P.h = b.height; });
         buildTree();
+        measureAbout();
         lastGp = -1; pins.forEach(P => P.lastOff = -1);
         barsTop = document.getElementById("tl").getBoundingClientRect().top + base;
         sizeMap();
@@ -7053,7 +7498,7 @@
 
 
       /*── TIMELINE — dot/line chart with a projected (dashed) future segment ──*/
-      const TL_START = 1951, TL_ACTUAL_END = 2025, TL_END = 2035;
+      const TL_START = 1975, TL_ACTUAL_END = 2025, TL_END = 2075;
       const YEARS = [];
       for (let y = TL_START; y <= TL_END; y++) {
         const t = (y - TL_START) / (TL_ACTUAL_END - TL_START), base = fbm(y * .13, 3, 17, 4);
@@ -7066,17 +7511,26 @@
       }
       const dotsEl = document.getElementById("dots"), popEl = document.getElementById("pop"),
         pathHist = document.getElementById("tlPathHist"), pathFut = document.getElementById("tlPathFut"),
+        fillHist = document.getElementById("tlFillHist"),
         tlxEl = document.getElementById("tlx"), tlChartEl = document.getElementById("tlChart"),
         granEl = document.getElementById("tlGran");
       const tlX = y => (y - TL_START) / (TL_END - TL_START) * 100;
       const tlY = e => 100 - (14 + e * 86);
+      /* every dot sits on a clean multiple of the chosen interval from 1975 —
+         only "today" (the observed/projected split) and the far end are ever
+         pinned on top of that grid, so the spacing reads as one consistent rhythm */
       function sampleYears(interval) {
         const set = new Set();
-        YEARS.forEach(d => { if ((d.year - TL_START) % interval === 0) set.add(d.year); });
-        set.add(TL_START); set.add(TL_ACTUAL_END); set.add(TL_END);
+        for (let y = TL_START; y <= TL_END; y += interval) set.add(y);
+        set.add(TL_ACTUAL_END); set.add(TL_END);
         return YEARS.filter(d => set.has(d.year));
       }
       const pathD = pts => pts.map((d, i) => (i === 0 ? "M" : "L") + tlX(d.year).toFixed(2) + " " + tlY(d.exposure).toFixed(2)).join(" ");
+      const pathFillD = pts => {
+        if (pts.length < 2) return "";
+        const last = pts[pts.length - 1], first = pts[0];
+        return pathD(pts) + " L " + tlX(last.year).toFixed(2) + " 100 L " + tlX(first.year).toFixed(2) + " 100 Z";
+      };
       function showPop(d, el) {
         document.querySelectorAll(".ydot.sel").forEach(x => x.classList.remove("sel"));
         el.classList.add("sel");
@@ -7092,8 +7546,10 @@
       function hidePop() { popEl.classList.remove("on"); document.querySelectorAll(".ydot.sel").forEach(x => x.classList.remove("sel")); }
       function renderTimeline(interval) {
         const pts = sampleYears(interval);
-        pathHist.setAttribute("d", pathD(pts.filter(d => d.year <= TL_ACTUAL_END)));
-        pathFut.setAttribute("d", pathD(pts.filter(d => d.year >= TL_ACTUAL_END)));
+        const histPts = pts.filter(d => d.year <= TL_ACTUAL_END), futPts = pts.filter(d => d.year >= TL_ACTUAL_END);
+        pathHist.setAttribute("d", pathD(histPts));
+        pathFut.setAttribute("d", pathD(futPts));
+        fillHist.setAttribute("d", pathFillD(histPts));
         dotsEl.innerHTML = "";
         pts.forEach(d => {
           const b = document.createElement("button");
@@ -7372,147 +7828,84 @@
       }
 
       /*═══════════════════════════════════════════════════════════════
-        §09 — Droplet genesis (spec §5.5)
-      
-        Phases, all derived from track progress:
-          A 0.00–0.22  fall      B 0.22–0.30  impact
-          C 0.26–0.45  ripple + disc expansion
-          D 0.45–1.00  the surface, handed to the block below
-      
-        Deviation from the spec, deliberate: phase D renders in normal flow
-        underneath the stage rather than on the disc itself. The disc ends
-        covering the viewport in --surface-about and the block below is the
-        same surface, so the seam is invisible — and the about copy is never
-        trapped inside a 100svh box it might outgrow on a short screen.
+        §09 — About: the flood rises, the title rides in on the wave
+        Track progress p runs 0 → 1 from the track reaching the top of the
+        viewport to the about content reaching the bottom of it:
+          0.00–0.50  the flood rises from below and fills the stage
+          0.04–0.60  "About us" arrives letter by letter on a travelling wave
+          0.55–1.00  the wave in the letters dies down; the title shrinks and
+                     settles at the top, where it stays as the section head
+                     while the content (pulled up under it by --aboutT)
+                     scrolls in to meet it.
       ═══════════════════════════════════════════════════════════════*/
-      const DROP_PATH = "M 0 -46 C 16 -20 30 -2 30 16 A 30 30 0 1 1 -30 16 C -30 -2 -16 -20 0 -46 Z";
-      const DROP_WATERLINE = 620;
-
-      let DROP = null;
-      function buildDroplet() {
-        const scene = document.getElementById("dropScene");
-        const disc = document.getElementById("dropDisc");
-        const stage = document.getElementById("dropStage");
-        if (!scene || !disc || !stage) return;
-        const wide = mqValue("(min-width: 900px)");
-        const still = document.body.classList.contains("nopin") || RM;
-
-        const svg = mk("svg", {
-          viewBox: "0 0 1000 1000", preserveAspectRatio: "xMidYMid slice",
+      const ABOUT = (() => {
+        const track = document.getElementById("aboutTrack"), stage = document.getElementById("aboutStage"),
+          flood = document.getElementById("aboutFlood"), title = document.getElementById("aboutTitle"),
+          num = document.getElementById("aboutNum"), word = document.getElementById("aboutWord"),
+          after = document.getElementById("dropAfter");
+        if (!track || !stage || !flood || !title || !num || !word || !after) return null;
+        const crest = mk("svg", {
+          class: "aboutCrest", viewBox: "0 0 2400 80", preserveAspectRatio: "none",
           "aria-hidden": "true", focusable: "false"
         });
-        const defs = mk("defs", {});
-        const grad = mk("linearGradient", { id: "dropGrad", x1: "0", y1: "0", x2: "0", y2: "1" });
-        grad.appendChild(mk("stop", { offset: "0", "stop-color": "var(--b300)" }));
-        grad.appendChild(mk("stop", { offset: "1", "stop-color": "var(--b800)" }));
-        defs.appendChild(grad);
-        const wgrad = mk("linearGradient", { id: "dropWater", x1: "0", y1: "0", x2: "0", y2: "1" });
-        wgrad.appendChild(mk("stop", { offset: "0", "stop-color": "var(--surface-water)", "stop-opacity": "1" }));
-        wgrad.appendChild(mk("stop", { offset: "1", "stop-color": "var(--surface-water)", "stop-opacity": ".35" }));
-        defs.appendChild(wgrad);
-        svg.appendChild(defs);
-
-        svg.appendChild(mk("rect", {
-          x: 0, y: DROP_WATERLINE, width: 1000, height: 1000 - DROP_WATERLINE,
-          fill: "url(#dropWater)", "data-decorative": ""
-        }));
-
-        const rings = [0, 1, 2, 3].map(() => {
-          const e = mk("ellipse", {
-            cx: 500, cy: DROP_WATERLINE, rx: 40, ry: 12, fill: "none",
-            stroke: "rgb(var(--ripple-rgb))", "stroke-width": 2, opacity: 0, "data-decorative": ""
-          });
-          svg.appendChild(e); return e;
+        crest.appendChild(mk("path", { class: "echo", d: waveFill(2400, 80, 14, 300, 30) }));
+        crest.appendChild(mk("path", { d: waveFill(2400, 80, 18, 400, 46) }));
+        flood.appendChild(crest);
+        const letters = [...word.textContent].map(ch => {
+          const s = document.createElement("span");
+          s.className = "l"; s.textContent = ch === " " ? "\u00a0" : ch;
+          return s;
         });
-
-        /* crown splash is desktop-only: six extra animated circles is exactly the
-           kind of cost a mid-range phone should not pay for a flourish */
-        const crown = wide ? [0, 1, 2, 3, 4, 5].map(i => {
-          const c = mk("circle", { r: 3 + (i % 3), fill: "var(--b400)", opacity: 0, "data-decorative": "" });
-          svg.appendChild(c); return c;
-        }) : [];
-
-        const dropG = mk("g", {});
-        dropG.appendChild(mk("path", { d: DROP_PATH, fill: "url(#dropGrad)" }));
-        dropG.appendChild(mk("ellipse", { cx: -10, cy: 6, rx: 6, ry: 10, fill: "#fff", opacity: .45, "data-decorative": "" }));
-        const dropWrap = mk("g", {});
-        dropWrap.appendChild(dropG);
-        svg.appendChild(dropWrap);
-
-        scene.innerHTML = ""; scene.appendChild(svg);
-
-        /* the disc has to cover the stage's diagonal, whatever its shape */
-        let cover = 40;
-        const measureCover = () => {
-          const r = stage.getBoundingClientRect();
-          cover = Math.hypot(r.width, r.height) / 20;
+        word.textContent = "";
+        letters.forEach(s => word.appendChild(s));
+        return {
+          stage, flood, title, num, word, letters, t: 0, lit: null,
+          g: trackGeom(track), ag: trackGeom(after), sh: 0, hh: 64, wh: 0, nh: 0, s1: .35
         };
-        measureCover();
-        if (window.ResizeObserver) {
-          const ro = new ResizeObserver(() => { measureCover(); DROP && (DROP.last = -2); });
-          ro.observe(stage);
-        }
+      })();
 
-        DROP = {
-          scene, disc, stage, svg, rings, crown, dropWrap, dropG, wide, still, last: -2, lastY: -1,
-          g: trackGeom(document.getElementById("dropTrack")),
-          get cover() { return cover; }
-        };
-        paintDroplet(still ? 1 : 0);
+      function measureAbout() {
+        const A = ABOUT;
+        if (!A) return;
+        A.sh = A.stage.clientHeight;
+        A.hh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 64;
+        A.wh = A.word.offsetHeight; A.nh = A.num.offsetHeight;
+        const fs = parseFloat(getComputedStyle(A.word).fontSize) || 100;
+        /* settle at the same size as every other section heading (--t-3) */
+        const target = Math.min(49.6, Math.max(28, 21.6 + innerWidth * .019));
+        A.s1 = Math.min(1, target / fs);
       }
 
-      function paintDroplet(p) {
-        if (!DROP) return;
-        if (Math.abs(p - DROP.last) < .0015) return;
-        DROP.last = p;
-        const { rings, crown, dropWrap, dropG, disc } = DROP;
+      function runAbout(dt) {
+        const A = ABOUT;
+        if (!A || document.body.classList.contains("nopin")) return;
+        const top = A.g.top - cur;
+        if (top > vh || top + A.g.h < -vh) return;
+        const range = Math.max(1, A.ag.top - A.g.top - vh);
+        const p = clamp01(-top / range);
+        A.t += dt;
 
-        /* A · fall — the drop stretches as it accelerates */
-        const fall = seg(p, 0, .22);
-        const y = -80 + fall * 660;
-        const impact = seg(p, .22, .3);
-        const sy = lerp(1, 1.12, fall) * lerp(1, .3, impact);
-        const sx = lerp(1, .94, fall) * lerp(1, 1.6, impact);
-        dropWrap.setAttribute("transform", "translate(500 " + y.toFixed(1) + ") scale(" +
-          sx.toFixed(3) + " " + sy.toFixed(3) + ")");
-        dropG.setAttribute("opacity", (1 - seg(p, .22, .28)).toFixed(3));
+        const rise = easeOut(seg(p, 0, .5));
+        A.flood.style.transform = "translateY(" + ((1 - rise) * 100).toFixed(2) + "%)";
+        const lit = rise > .55;
+        if (lit !== A.lit) { A.lit = lit; A.title.classList.toggle("lit", lit); }
 
-        /* B · crown splash */
-        if (crown.length) {
-          const c = seg(p, .23, .34);
-          crown.forEach((el, i) => {
-            const dir = i < 3 ? -1 : 1, k = (i % 3) + 1;
-            const px = 500 + dir * (20 * k), py = DROP_WATERLINE - (30 + k * 20) * Math.sin(c * Math.PI);
-            el.setAttribute("cx", px.toFixed(1));
-            el.setAttribute("cy", py.toFixed(1));
-            el.setAttribute("opacity", (Math.sin(c * Math.PI) * .8).toFixed(3));
-          });
-        }
-
-        /* C · ripple — each ring staggered, expanding and fading */
-        rings.forEach((el, i) => {
-          const r = seg(p, .26 + i * .03, .45 + i * .03);
-          const k = r * (6 + 3 * i);
-          el.setAttribute("transform", "translate(500 " + DROP_WATERLINE + ") scale(" +
-            (1 + k).toFixed(3) + ") translate(-500 " + (-DROP_WATERLINE) + ")");
-          el.setAttribute("opacity", (r > 0 ? (1 - r) * .9 : 0).toFixed(3));
+        const settle = easeIO(seg(p, .55, 1)), amp = 1 - settle, n = A.letters.length;
+        A.letters.forEach((l, i) => {
+          const a = .04 + i * (.3 / n);
+          const inP = easeOut(seg(p, a, a + .26));
+          const ph = A.t * 3 - i * .7;
+          const y = (1 - inP) * .9 + Math.sin(ph) * .12 * amp;
+          l.style.opacity = inP.toFixed(3);
+          l.style.transform = "translateY(" + y.toFixed(3) + "em) rotate(" + (Math.cos(ph) * 5 * amp).toFixed(2) + "deg)";
         });
 
-        /* C · the disc opens into the section */
-        const d = seg(p, .32, .48);
-        disc.style.transform = "scale(" + (easeIO(d) * DROP.cover).toFixed(2) + ")";
-      }
-
-      function runDroplet() {
-        if (!DROP || DROP.still) return;
-        if (DROP.lastY === cur) return;
-        DROP.lastY = cur;
-        const g = DROP.g, top = g.top - cur;
-        /* The phases finish at 0.48 of their own scale — map scroll onto exactly
-           that range, so the disc finishes covering the screen right as the pin
-           releases into the "shared problem" card. No dead scroll on an already
-           -blue screen before the next content shows up. */
-        paintDroplet(clamp01((-top) / Math.max(1, g.h - vh)) * .48);
+        const sc = lerp(1, A.s1, settle), cy0 = A.sh / 2;
+        const wy = lerp(cy0, A.hh + 48 + A.nh + 12 + A.wh * A.s1 / 2, settle);
+        A.word.style.transform = "translate(-50%, calc(-50% + " + (wy - cy0).toFixed(1) + "px)) scale(" + sc.toFixed(4) + ")";
+        const ny = wy - A.wh * sc / 2 - 12 - A.nh / 2;
+        A.num.style.transform = "translate(-50%, calc(-50% + " + (ny - cy0).toFixed(1) + "px))";
+        A.num.style.opacity = seg(p, .3, .55).toFixed(3);
       }
 
       /* D · the surface rises. One-shot, in DOM order.
@@ -7556,12 +7949,8 @@
         host.innerHTML = ""; host.appendChild(svg);
       }
 
-      buildDroplet();
       buildDropWave();
       dropReveals();
-      onMq("(min-width: 900px)", () => buildDroplet());
-      onMq(TALL_Q, () => buildDroplet());
-      onMq(REDUCE_Q, () => buildDroplet());
 
       /*═══════════════════════════════════════════════════════════════
         §10 — DepthDeck (spec §5.6)
@@ -8430,7 +8819,7 @@
         cur = scrollY;
         const y = cur;
         runRevs(y); runCounters(y); runPins(y, dt); runHdr(y); runBars(y); runParallax(y, dt);
-        runTree(y); runStack(dt); runToTop(y); runConfluence(); runTide(); runDeckDepth(); runDroplet(); runDropReveals(y);
+        runTree(y); runStack(dt); runToTop(y); runConfluence(); runTide(); runDeckDepth(); runAbout(dt); runDropReveals(y);
         if (mapProg < 1) { mapProg = Math.min(1, mapProg + dt * .45); drawMap(); }
         else if (hoverCell !== lastHover) { lastHover = hoverCell; drawMap(); }
         drawWater(dt);

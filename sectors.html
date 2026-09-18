@@ -9,30 +9,77 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/assets/fg-base.css">
 <style>
-#prog{position:fixed;top:0;left:0;height:3px;background:var(--brand);z-index:50;width:0%;
-  transition:width .1s linear}
-
 .crumb{display:flex;align-items:center;gap:.45rem;padding:1.4rem 0 .2rem;font-size:var(--t-xs);color:var(--ink3)}
 .crumb a{color:var(--ink3);text-decoration:none}
 .crumb a:hover{color:var(--brand)}
 
-.head{padding:.6rem 0 clamp(2rem,5vw,3.2rem);max-width:64ch}
-.head h1{font-size:var(--t-4);margin:.6rem 0 .8rem}
-.head p{color:var(--ink2);font-size:var(--t-1)}
+/* page head — the same full-width, word-by-word reveal as the home page */
+.sechead{text-align:center;margin:0 auto clamp(2.6rem,6vw,4.4rem);padding-top:clamp(1.6rem,4vw,3rem)}
+.sechead .snum{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-bottom:1.2rem;
+  font-family:var(--fM);font-size:var(--t-xs);letter-spacing:.2em;color:var(--ink3);opacity:0;transition:opacity .8s var(--E)}
+.sechead .snum::before,.sechead .snum::after{content:"";flex:1;height:1px;transform:scaleX(0);transition:transform 1.4s var(--E) .1s}
+.sechead .snum::before{background:linear-gradient(90deg,transparent,var(--line2));transform-origin:right}
+.sechead .snum::after{background:linear-gradient(90deg,var(--line2),transparent);transform-origin:left}
+.sechead h1{font-size:var(--t-4);line-height:1.06;max-width:24ch;margin:0 auto}
+.sechead h1 .w{display:inline-block;opacity:0;transform:translateY(.5em);filter:blur(6px);
+  transition:opacity .8s var(--E),transform .9s var(--E),filter .8s var(--E);transition-delay:calc(var(--i,0)*65ms + .2s)}
+.sechead .shLead{color:var(--ink2);font-size:var(--t-1);max-width:60ch;margin:1.4rem auto 0;opacity:0;
+  transform:translateY(16px);transition:opacity .9s var(--E) .6s,transform .9s var(--E) .6s}
+.sechead.in .snum,.sechead.in .shLead,.sechead.in h1 .w{opacity:1;transform:none;filter:none}
+.sechead.in .snum::before,.sechead.in .snum::after{transform:scaleX(1)}
 
-.secGrid{display:grid;gap:1.3rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:2.6rem}
-.secCard{padding:clamp(1.4rem,2.6vw,1.9rem)}
-.secTop{display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem}
-.secTop svg{width:26px;height:26px;fill:none;stroke:var(--brand);stroke-width:1.6;flex:none}
-.secCard h2{font-size:1.2rem}
-.secCard p{color:var(--ink2);font-size:var(--t-sm);margin-bottom:1rem}
-.secCard ul{list-style:none;display:grid;gap:.5rem}
-.secCard li{font-size:var(--t-sm);color:var(--ink2);display:flex;gap:.55rem;align-items:flex-start;line-height:1.5}
-.secCard li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--brand);margin-top:.55rem;flex:none}
+/*───────────────────────────────────────────────────────────────
+  The home page's §06 Platform tide reveal, as Sectors originally ran it:
+  a wave cover recedes off each card as it scrolls in, the card body rises
+  up behind it, and the depth gauge fills with a tick lit per card.
+───────────────────────────────────────────────────────────────*/
+.plat{display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:start;padding-bottom:clamp(3rem,8svh,6rem)}
+.platList{display:grid;gap:clamp(16px,3svh,32px);max-width:760px}
+.platCard{position:relative;isolation:isolate;overflow:clip;border-radius:var(--r-l);scroll-margin-top:2rem}
+@supports not (overflow:clip){.platCard{overflow:hidden}}
+.platBody{padding:clamp(1.3rem,3vw,1.8rem);border-radius:var(--r-l);border:1px solid var(--line);background:var(--bg2)}
+.platTop{display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem}
+.platTop svg{width:24px;height:24px;flex:none;fill:none;stroke:var(--brand);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.platTop h2{font-size:var(--t-2);letter-spacing:-.02em}
+.platCard p{color:var(--ink2);max-width:65ch;font-size:var(--t-0)}
+.platCard ul{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.4rem}
+.platCard li{position:relative;padding-left:1.1rem;font-size:var(--t-sm);color:var(--ink2)}
+.platCard li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--brand2)}
 
-[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .55s var(--E),transform .55s var(--E)}
-[data-reveal].in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}}
+/* the receding cover — same colour as the page, so what it uncovers is the card */
+.platCover{position:absolute;left:0;right:0;top:-20%;height:140%;z-index:2;pointer-events:none;will-change:transform}
+.platCover svg{width:200%;height:100%;display:block}
+.platCover .pcDrift{animation:tbDrift 6s linear infinite}
+@keyframes tbDrift{to{transform:translateX(-50%)}}
+
+/* depth gauge — the water level rises as the list is read */
+.gauge{display:none;gap:.9rem}
+.gaugeTrack{position:relative;width:2px;height:240px;background:var(--line2);border-radius:2px;flex:none}
+.gaugeFill{position:absolute;inset:0;background:linear-gradient(180deg,var(--b400),var(--b800));border-radius:2px;
+  transform:scaleY(var(--g,0));transform-origin:top;will-change:transform}
+.gaugeTicks{position:relative;height:240px;flex:1}
+.gaugeTicks b{position:absolute;left:0;transform:translateY(-50%);display:flex;align-items:center;gap:.5rem;
+  font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink3);white-space:nowrap;
+  transition:color .48s var(--E)}
+.gaugeTicks b::before{content:"";width:8px;height:1px;background:var(--line2);flex:none;transition:width .48s var(--E),background .48s var(--E)}
+.gaugeTicks b.on{color:var(--brand)}
+.gaugeTicks b.on::before{background:var(--brand);width:14px}
+
+@media (min-width:1200px){
+  .plat{grid-template-columns:minmax(0,4fr) minmax(0,7fr)}
+  .platHead{position:sticky;top:32px}
+  .gauge{display:flex}
+}
+@media (pointer:coarse){.pcDrift{animation:none}}
+@media (max-width:899px){.platCover svg{width:100%}}
+
+/* static state: no covers, cards fully visible, nothing moving */
+body.still .platCover{display:none}
+body.still .platBody{opacity:1!important;transform:none!important}
+body.still .sechead .snum,body.still .sechead .shLead,body.still .sechead h1 .w,
+body.still .sechead .snum::before,body.still .sechead .snum::after{opacity:1;transform:none;filter:none;transition:none}
+
+[data-paused="true"],[data-paused="true"] *{animation-play-state:paused!important}
 
 .closing{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.4rem;
   padding:clamp(1.6rem,3vw,2.2rem);margin-bottom:2.6rem;border-radius:var(--r-l);background:var(--band);color:var(--onBand)}
@@ -44,17 +91,12 @@
 </head>
 <body>
 
-<div id="prog" aria-hidden="true"></div>
-
 <div class="wrap">
   <header class="hd">
     <a class="brand" href="/index.html">
       <i>ƒ</i><b>FloodGuard</b>
     </a>
-    <nav style="display:flex;align-items:center;gap:1.4rem">
-      <a href="products.html" style="font-size:var(--t-sm);color:var(--ink2);text-decoration:none">Products</a>
-      <a class="btn bp" href="/index.html#start">Book a demo</a>
-    </nav>
+    <a class="btn bp" href="/index.html#start">Book a demo</a>
   </header>
 
   <nav class="crumb" aria-label="Breadcrumb">
@@ -62,99 +104,118 @@
     <span>Sectors</span>
   </nav>
 
-  <div class="head">
-    <p class="caps">Where FloodGuard is used</p>
+  <div class="sechead">
+    <span class="snum">Where FloodGuard is used</span>
     <h1>One flood record. Every sector.</h1>
-    <p>The same intelligence, shaped around how each sector actually makes its flood decisions.</p>
+    <p class="shLead">The same intelligence, shaped around how each sector actually makes its flood decisions.</p>
   </div>
 
-  <div class="secGrid">
-    <article class="secCard panel" data-reveal>
-      <div class="secTop">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 21V10"/>
-          <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z"/>
-          <path d="M4 21h16"/>
-        </svg>
-        <h2>Agriculture</h2>
+  <div class="plat">
+    <div class="platHead">
+      <div class="gauge" id="secGauge" aria-hidden="true">
+        <div class="gaugeTrack"><i class="gaugeFill"></i></div>
+        <div class="gaugeTicks"></div>
       </div>
-      <p>Crop, farm and supply-chain decisions timed to the season, with flood exposure mapped down to the
-        taluka a field actually sits in.</p>
-      <ul>
-        <li>Crop loss and sowing-window risk</li>
-        <li>Warehouse and mandi exposure</li>
-        <li>Irrigation and drainage planning</li>
-      </ul>
-    </article>
+    </div>
 
-    <article class="secCard panel" data-reveal>
-      <div class="secTop">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 10 12 4l9 6"/>
-          <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>
-        </svg>
-        <h2>Agri loans &amp; lending</h2>
-      </div>
-      <p>Flood risk priced into the loan book — from Kisan credit and farm loans to mortgages and MSME
-        lending.</p>
-      <ul>
-        <li>Agri and KCC loan screening</li>
-        <li>Collateral and mortgage exposure</li>
-        <li>Portfolio stress testing</li>
-      </ul>
-    </article>
+    <div class="platList" id="secList">
+      <article class="platCard" id="agriculture">
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 21V10"/>
+              <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z"/>
+              <path d="M4 21h16"/>
+            </svg>
+            <h2>Agriculture</h2>
+          </div>
+          <p>Crop, farm and supply-chain decisions timed to the season, with flood exposure mapped down to the
+            taluka a field actually sits in.</p>
+          <ul>
+            <li>Crop loss and sowing-window risk</li>
+            <li>Warehouse and mandi exposure</li>
+            <li>Irrigation and drainage planning</li>
+          </ul>
+        </div>
+      </article>
 
-    <article class="secCard panel" data-reveal>
-      <div class="secTop">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/>
-          <path d="M9 12h6M12 9v6"/>
-        </svg>
-        <h2>Insurance</h2>
-      </div>
-      <p>Underwriting, pricing and accumulation with an observed flood record behind every policy location.</p>
-      <ul>
-        <li>Crop and parametric insurance</li>
-        <li>Property accumulation</li>
-        <li>Claims triage after an event</li>
-      </ul>
-    </article>
+      <article class="platCard" id="lending">
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M3 10 12 4l9 6"/>
+              <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>
+            </svg>
+            <h2>Agri loans &amp; lending</h2>
+          </div>
+          <p>Flood risk priced into the loan book — from Kisan credit and farm loans to mortgages and MSME
+            lending.</p>
+          <ul>
+            <li>Agri and KCC loan screening</li>
+            <li>Collateral and mortgage exposure</li>
+            <li>Portfolio stress testing</li>
+          </ul>
+        </div>
+      </article>
 
-    <article class="secCard panel" data-reveal>
-      <div class="secTop">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 21V9l8-5 8 5v12"/>
-          <path d="M9 21v-6h6v6M2 21h20"/>
-        </svg>
-        <h2>Government</h2>
-      </div>
-      <p>District disaster plans, relief pre-positioning and resilient public spending built on the same
-        numbers.</p>
-      <ul>
-        <li>District disaster management plans</li>
-        <li>Relief and evacuation planning</li>
-        <li>Budget and scheme targeting</li>
-      </ul>
-    </article>
+      <article class="platCard" id="insurance">
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/>
+              <path d="M9 12h6M12 9v6"/>
+            </svg>
+            <h2>Insurance</h2>
+          </div>
+          <p>Underwriting, pricing and accumulation with an observed flood record behind every policy location.</p>
+          <ul>
+            <li>Crop and parametric insurance</li>
+            <li>Property accumulation</li>
+            <li>Claims triage after an event</li>
+          </ul>
+        </div>
+      </article>
 
-    <article class="secCard panel" data-reveal>
-      <div class="secTop">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16"/>
-          <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1"/>
-        </svg>
-        <h2>Infrastructure</h2>
-      </div>
-      <p>Roads, rail, power and real estate sited and designed for the water they will actually face.</p>
-      <ul>
-        <li>Site selection and due diligence</li>
-        <li>Asset-level flood depth</li>
-        <li>Drainage capacity for new builds</li>
-      </ul>
-    </article>
+      <article class="platCard" id="government">
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 21V9l8-5 8 5v12"/>
+              <path d="M9 21v-6h6v6M2 21h20"/>
+            </svg>
+            <h2>Government</h2>
+          </div>
+          <p>District disaster plans, relief pre-positioning and resilient public spending built on the same
+            numbers.</p>
+          <ul>
+            <li>District disaster management plans</li>
+            <li>Relief and evacuation planning</li>
+            <li>Budget and scheme targeting</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="platCard" id="infrastructure">
+        <div class="platBody">
+          <div class="platTop">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16"/>
+              <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1"/>
+            </svg>
+            <h2>Infrastructure</h2>
+          </div>
+          <p>Roads, rail, power and real estate sited and designed for the water they will actually face.</p>
+          <ul>
+            <li>Site selection and due diligence</li>
+            <li>Asset-level flood depth</li>
+            <li>Drainage capacity for new builds</li>
+          </ul>
+        </div>
+      </article>
+    </div>
   </div>
 
-  <div class="closing" data-reveal>
+  <div class="closing">
     <div>
       <b>Don't see your sector?</b>
       <p>The same observed record and methodology extend to almost any flood decision — talk to us about yours.</p>
@@ -166,25 +227,129 @@
 </div>
 
 <script>
-document.getElementById("fgYear").textContent = new Date().getFullYear();
+(() => {
+  "use strict";
+  document.getElementById("fgYear").textContent = new Date().getFullYear();
 
-/* thin top progress bar — a lightweight stand-in for the homepage's gauge */
-const prog = document.getElementById("prog");
-addEventListener("scroll", () => {
-  const max = document.documentElement.scrollHeight - innerHeight;
-  prog.style.width = (max > 0 ? (scrollY / max) * 100 : 0).toFixed(2) + "%";
-}, { passive: true });
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches || !matchMedia("(min-height: 560px)").matches;
+  if (still) document.body.classList.add("still");
+  const WIDE = matchMedia("(min-width: 900px)");
+  const FINE = matchMedia("(hover: hover) and (pointer: fine)");
+  const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
+  const seg = (p, a, b) => clamp01((p - a) / (b - a));
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const NS = "http://www.w3.org/2000/svg";
+  const mk = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
 
-const els = document.querySelectorAll("[data-reveal]");
-els.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + "ms"; });
-if ("IntersectionObserver" in window) {
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { threshold: .15 });
-  els.forEach(el => io.observe(el));
-} else {
-  els.forEach(el => el.classList.add("in"));
-}
+  /* Closed, horizontally tileable wave fill — width must be a multiple of wavelength. */
+  function waveFill(width, height, amp, wavelength, baseY) {
+    const half = wavelength / 2;
+    let d = "M0 " + baseY;
+    for (let x = 0; x < width; x += wavelength) d += " q " + (half / 2) + " " + (-amp) + " " + half + " 0 t " + half + " 0";
+    return d + " V " + height + " H 0 Z";
+  }
+  const TIDE_COVER = [waveFill(2400, 400, 18, 400, 24), waveFill(2400, 400, 12, 300, 44)];
+
+  /* page head: split into words, reveal on load (it's the first thing on screen) */
+  const head = document.querySelector(".sechead"), h1 = head.querySelector("h1");
+  let wi = 0;
+  const words = h1.textContent.trim().split(/\s+/);
+  h1.textContent = "";
+  words.forEach((t, i) => {
+    if (i) h1.appendChild(document.createTextNode(" "));
+    const w = document.createElement("span");
+    w.className = "w"; w.style.setProperty("--i", wi++); w.textContent = t;
+    h1.appendChild(w);
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => head.classList.add("in")));
+
+  /* one cover per card */
+  const list = document.getElementById("secList");
+  const narrow = !WIDE.matches;
+  const cards = [...list.querySelectorAll(".platCard")].map(card => {
+    const body = card.querySelector(".platBody");
+    const g = { el: card, top: 0, h: 0 };
+    if (still) return { card, body, cover: null, g };
+    const cover = document.createElement("div");
+    cover.className = "platCover";
+    const svg = mk("svg", { viewBox: "0 0 2400 400", preserveAspectRatio: "none", "aria-hidden": "true", focusable: "false" });
+    (narrow ? TIDE_COVER.slice(0, 1) : TIDE_COVER).forEach((d, k) =>
+      svg.appendChild(mk("path", { d, fill: "var(--bg)", opacity: k === 0 ? 1 : .6 })));
+    if (!narrow && FINE.matches) svg.classList.add("pcDrift");
+    cover.appendChild(svg);
+    card.appendChild(cover);
+    return { card, body, cover, g };
+  });
+
+  /* the gauge: one tick per card, lit for the card in the centre band */
+  const gauge = document.getElementById("secGauge");
+  const fill = gauge.querySelector(".gaugeFill"), ticksHost = gauge.querySelector(".gaugeTicks");
+  const ticks = cards.map((c, i) => {
+    const b = document.createElement("b");
+    b.textContent = c.card.querySelector("h2").textContent;
+    b.style.top = ((i / Math.max(1, cards.length - 1)) * 100).toFixed(2) + "%";
+    ticksHost.appendChild(b);
+    return b;
+  });
+  if (still) {
+    fill.style.setProperty("--g", 1);
+    ticks.forEach(t => t.classList.add("on"));
+  } else {
+    const visible = new Set();
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) {
+        const i = cards.findIndex(c => c.card === e.target);
+        if (e.isIntersecting) visible.add(i); else visible.delete(i);
+      }
+      if (!visible.size) return;
+      const k = Math.max(...visible);
+      ticks.forEach((t, i) => t.classList.toggle("on", i === k));
+    }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+    cards.forEach(c => io.observe(c.card));
+
+    /* stop the drift animation while the list is off screen */
+    const pio = new IntersectionObserver(([e]) => list.setAttribute("data-paused", e.isIntersecting ? "false" : "true"),
+      { rootMargin: "200px 0px" });
+    pio.observe(list);
+  }
+
+  if (still) return;
+
+  /* geometry cached on resize, never read inside the frame loop */
+  let vh = innerHeight, cur = scrollY, lastY = -1, lastG = -2;
+  const listG = { el: list, top: 0, h: 0 };
+  function measure() {
+    vh = innerHeight;
+    const base = scrollY;
+    [listG, ...cards.map(c => c.g)].forEach(g => { const b = g.el.getBoundingClientRect(); g.top = b.top + base; g.h = b.height; });
+    lastY = -1;
+  }
+  const offsetProgress = (g, a, b) => clamp01((vh * a - (g.top - cur)) / (vh * a - vh * b));
+
+  function frame() {
+    cur = scrollY;
+    if (cur !== lastY) {
+      lastY = cur;
+      const a = narrow ? .95 : .92, b = narrow ? .65 : .5;
+      for (const c of cards) {
+        const q = offsetProgress(c.g, a, b), qe = easeOut(q);
+        c.cover.style.transform = "translateY(" + (qe * 105).toFixed(2) + "%)";
+        const r = seg(q, .2, 1);
+        c.body.style.opacity = r.toFixed(3);
+        c.body.style.transform = "translateY(" + ((1 - r) * 20).toFixed(1) + "px)";
+      }
+      const g = offsetProgress(listG, .9, -.2);
+      if (Math.abs(g - lastG) > .002) { lastG = g; fill.style.setProperty("--g", g.toFixed(4)); }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  let rt = null;
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(measure, 150); }, { passive: true });
+  addEventListener("load", measure);
+  measure();
+  requestAnimationFrame(frame);
+})();
 </script>
 </body>
 </html>
