@@ -5,6 +5,9 @@
   "installCommand": "npm install",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/sb/:path*", "destination": "https://lywnmsbsnumjahvtflmq.supabase.co/:path*" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -27,6 +27,12 @@ create policy "profiles: read own" on public.profiles
 create policy "profiles: update own" on public.profiles
   for update using (auth.uid() = id);
 
+-- ...but only the display fields. Without this column grant the policy
+-- above would let anyone promote their own `tier` to 'live' straight
+-- from the browser console; tier changes go through the service role.
+revoke update on public.profiles from anon, authenticated;
+grant update (name, org) on public.profiles to authenticated;
+
 -- A new profiles row is created automatically the moment someone signs
 -- up (email/password or Google) — the app never inserts into this
 -- table directly.
@@ -53,12 +59,29 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
--- ── Google sign-in ──────────────────────────────────────────────
--- This file only creates the database side. To turn on the Google
--- button, in the Supabase dashboard: Authentication → Providers →
--- Google → enable it, and paste in a Client ID + Client Secret from
--- a Google Cloud OAuth consent screen (console.cloud.google.com →
--- APIs & Services → Credentials → Create OAuth client ID → Web
--- application). Add these two Authorized redirect URIs there:
---   https://<your-project-ref>.supabase.co/auth/v1/callback
---   http://localhost:5173  (and your production URL, for local dev)
+-- ── Dashboard settings (not SQL — do these by hand) ───────────
+-- Several Indian ISPs block *.supabase.co, so the site never sends a
+-- visitor there: the browser calls /sb/* on our own domain (proxied by
+-- vercel.json / vite.config.ts), and both of the flows below are set up
+-- to stay on our domain too.
+--
+-- 1. Authentication → URL Configuration → Site URL: the production URL
+--    (e.g. https://floodguard.in). Add http://localhost:5173 under
+--    Redirect URLs for dev.
+--
+-- 2. Confirmation email. The default template links to supabase.co's
+--    /verify endpoint, which blocked visitors can't open. Authentication
+--    → Emails → "Confirm signup", replace the link with:
+--      <a href="{{ .SiteURL }}/auth.html?token_hash={{ .TokenHash }}&type=email">Confirm your email</a>
+--    auth.html verifies the token itself. (Or turn off "Confirm email"
+--    under Authentication → Providers → Email, and sign-ups log straight in.)
+--
+-- 3. Google sign-in. console.cloud.google.com → APIs & Services →
+--    Credentials → Create OAuth client ID → Web application:
+--      Authorized JavaScript origins: https://<your production domain>,
+--                                     http://localhost:5173, http://localhost
+--      Authorized redirect URIs:      (none needed — we use ID tokens)
+--    Then in Supabase: Authentication → Providers → Google → enable, and
+--    put that Client ID in "Client IDs" (the secret isn't used by this
+--    flow but the form may ask for it). Put the same Client ID in
+--    VITE_GOOGLE_CLIENT_ID.

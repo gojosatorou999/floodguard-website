@@ -4801,8 +4801,7 @@
       align-items: start
     }
 
-    #modalWrap,
-    #signinWrap {
+    #modalWrap {
       align-items: center;
       z-index: 160
     }
@@ -6698,52 +6697,6 @@
       <div id="sEmpty" hidden>No matches. Try “risk”, “drainage” or “pricing”.</div>
       <div class="sfoot"><span><span class="kbd">↑↓</span> navigate</span><span><span class="kbd">↵</span>
           open</span><span><span class="kbd">Ctrl K</span> anywhere</span></div>
-    </div>
-  </div>
-
-  <div class="ov" id="signinWrap" role="dialog" aria-modal="true" aria-labelledby="siTitle">
-    <div class="ov-panel glass mpad" style="max-width:420px;position:relative">
-      <button class="ovX" type="button" data-close aria-label="Close"><svg viewBox="0 0 24 24">
-          <path d="M5 5l14 14M19 5 5 19" />
-        </svg></button>
-      <h3 class="mtitle" id="siTitle">Sign in</h3>
-      <p class="mbodytxt" style="margin-bottom:1.5rem">Access your Explorer workspace and saved districts.</p>
-      <form id="signinForm" novalidate>
-        <div class="field">
-          <label for="siMail">Email</label>
-          <input class="inp" id="siMail" type="email" placeholder="you@organisation.in" autocomplete="username">
-          <span class="emsg"><svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7v6M12 16.5v.5" stroke-linecap="round" />
-            </svg>Enter a valid email address</span>
-        </div>
-        <div class="field">
-          <label for="siPw">Password</label>
-          <div class="pwWrap">
-            <input class="inp" id="siPw" type="password" placeholder="••••••••" autocomplete="current-password">
-            <button class="pwEye" type="button" id="pwToggle" aria-label="Show password" aria-pressed="false">
-              <svg id="eyeOn" viewBox="0 0 24 24">
-                <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z" />
-                <circle cx="12" cy="12" r="2.8" />
-              </svg>
-              <svg id="eyeOff" viewBox="0 0 24 24" style="display:none">
-                <path
-                  d="M4 4l16 16M9.9 5.7A9.9 9.9 0 0 1 12 5.5c6.4 0 10 6.5 10 6.5a17 17 0 0 1-3.3 4M6.6 7.9A16.7 16.7 0 0 0 2 12s3.6 6.5 10 6.5c1.2 0 2.2-.2 3.2-.5"
-                  stroke-linecap="round" />
-              </svg>
-            </button>
-          </div>
-          <span class="emsg"><svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7v6M12 16.5v.5" stroke-linecap="round" />
-            </svg>Password must be at least 8 characters</span>
-        </div>
-        <button class="btn bp" type="submit" id="siSubmit" style="width:100%;justify-content:center;margin-top:.4rem">
-          <span class="spin"></span><span class="lbl">Sign in</span>
-        </button>
-        <p style="font-size:var(--t-xs);color:var(--ink3);margin-top:1rem;text-align:center;letter-spacing:0">Demo only
-          — no credentials are sent anywhere.</p>
-      </form>
     </div>
   </div>
 
@@ -8744,17 +8697,6 @@
         closeMenu();
         location.href = "/auth.html?next=" + encodeURIComponent(location.pathname + location.search);
       };
-      const pwIn = document.getElementById("siPw"), pwT = document.getElementById("pwToggle"),
-        eyeOn = document.getElementById("eyeOn"), eyeOff = document.getElementById("eyeOff");
-      pwT.onclick = () => {
-        const show = pwIn.type === "password";
-        pwIn.type = show ? "text" : "password";
-        pwT.setAttribute("aria-pressed", String(show));
-        pwT.setAttribute("aria-label", show ? "Hide password" : "Show password");
-        eyeOn.style.display = show ? "none" : ""; eyeOff.style.display = show ? "" : "none";
-        pwIn.focus();
-      };
-
       /*── validation helpers ──*/
       const mailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
       function setErr(input, bad, msg) {
@@ -8765,23 +8707,6 @@
         return !bad;
       }
       function busy(btn, on) { btn.classList.toggle("loading", on); btn.disabled = on; }
-
-      /*── sign-in submit: error → loading → close ──*/
-      const siForm = document.getElementById("signinForm"), siSubmit = document.getElementById("siSubmit");
-      siForm.addEventListener("submit", e => {
-        e.preventDefault();
-        const okMail = setErr(document.getElementById("siMail"), !mailRe.test(document.getElementById("siMail").value.trim()));
-        const okPw = setErr(pwIn, pwIn.value.length < 8);
-        if (!okMail || !okPw) return;
-        busy(siSubmit, true);
-        siSubmit.querySelector(".lbl").textContent = "Signing in…";
-        setTimeout(() => {
-          busy(siSubmit, false);
-          siSubmit.querySelector(".lbl").textContent = "Sign in";
-          setErr(document.getElementById("siMail"), true, "No account found for that address");
-        }, 1500);
-      });
-      [document.getElementById("siMail"), pwIn].forEach(i => i.addEventListener("input", () => i.closest(".field").classList.remove("err")));
 
       /*── demo form: validate → confirm modal → loading → success ──*/
       const dForm = document.getElementById("demoForm"), dSubmit = document.getElementById("demoSubmit"),
@@ -8898,6 +8823,18 @@
         })(performance.now());
       }
     })();
+  </script>
+  <script type="module">
+    /*── header reflects the real Supabase session: signed in → "Sign out" ──*/
+    import { getSession, signOut } from "/assets/js/supabase.js";
+    const btn = document.getElementById("signinBtn");
+    getSession().then(sess => {
+      if (!sess) return;
+      const who = sess.user.user_metadata?.name || sess.user.user_metadata?.full_name || sess.user.email;
+      btn.querySelector("b").textContent = "Sign out";
+      btn.title = "Signed in as " + who;
+      btn.onclick = async () => { await signOut(); location.reload(); };
+    }).catch(() => { });
   </script>
 </body>
 
