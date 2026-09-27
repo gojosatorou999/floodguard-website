@@ -252,9 +252,14 @@ els.forEach(el => io.observe(el));
 const dlg = document.getElementById("pdfDlg");
 const frame = dlg && dlg.querySelector("iframe");
 
-const probe = (url, type) => fetch(url, { method: "HEAD", cache: "no-store" })
-  .then(r => r.ok && (r.headers.get("content-type") || "").includes(type))
-  .catch(() => false);
+/* one request per file, however many cards point at it */
+const probed = new Map();
+const probe = (url, type) => {
+  if (!probed.has(url)) probed.set(url, fetch(url, { method: "HEAD", cache: "no-store" })
+    .then(r => r.ok && (r.headers.get("content-type") || "").includes(type))
+    .catch(() => false));
+  return probed.get(url);
+};
 
 function openPdf(url, title) {
   // phones and browsers without a built-in viewer get the file in a new tab
