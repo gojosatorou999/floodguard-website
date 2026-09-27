@@ -1836,41 +1836,71 @@
       .hmRing { animation: none; opacity: .6 }
     }
 
-    /*── proof strip: the numbers are simply there — no count-up ──*/
+    /*── proof strip: four figures in equal cells; each digit is a reel that
+   rolls with the scroll and lands on the real value (see runProof) ──*/
     .proof {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      border-top: 1px solid var(--line);
-      margin: 0
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: clamp(1.6rem, 4svh, 2.6rem) 0 0;
+      border-block: 1px solid var(--line)
     }
 
-    @media(min-width:820px) { .proof { grid-template-columns: repeat(4, 1fr) } }
+    @media(min-width:820px) { .proof { grid-template-columns: repeat(4, minmax(0, 1fr)) } }
 
-    .proof > div { padding: 1.2rem 1rem 0 0 }
-
-    @media(min-width:820px) {
-      .proof > div + div { padding-left: 1.4rem; border-left: 1px solid var(--line) }
+    .proof > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: clamp(1.1rem, 2.6svh, 1.6rem) .8rem
     }
 
+    /* dividers: between all four in a row; a cross on the 2 × 2 grid */
+    @media(min-width:820px) { .proof > div + div { border-left: 1px solid var(--line) } }
+
+    @media(max-width:819px) {
+      .proof > div:nth-child(even) { border-left: 1px solid var(--line) }
+      .proof > div:nth-child(n+3) { border-top: 1px solid var(--line) }
+    }
+
+    /* flex-end, not baseline: a clipped reel has no usable text baseline, so
+       every piece shares one line box and "Years" is nudged onto the digits */
     .proof dt {
-      font-size: clamp(1.6rem, 1.1rem + 1.4vw, 2.3rem);
-      font-weight: 650;
-      letter-spacing: -.03em;
-      line-height: 1;
+      display: flex;
+      align-items: flex-end;
+      gap: .3rem;
+      font-family: var(--fD);
+      font-size: clamp(2rem, 1.3rem + 1.8vw, 2.9rem);
+      font-weight: 500;
+      letter-spacing: -.01em;
+      line-height: 1.12;
       font-variant-numeric: tabular-nums;
       color: var(--ink)
     }
 
-    .proof dt small { font-size: .5em; font-weight: 600; letter-spacing: 0; color: var(--ink2) }
+    .proof dt small { font-family: var(--fS); font-size: .4em; font-weight: 600; letter-spacing: 0; line-height: 1; margin-bottom: .34em; color: var(--ink2) }
 
     .proof dd {
-      margin: .55rem 0 0;
+      margin: .45rem 0 0;
       font-size: var(--t-xs);
       font-weight: 600;
       color: var(--ink2)
     }
 
     .proof dd span { display: block; font-weight: 500; color: var(--ink3); margin-top: .1rem }
+
+    /* a reel: the digits 0–9 (and 0 again, for the wrap) stacked in a window
+       one line tall, faded at its top and bottom edges */
+    .roll { display: inline-flex; align-items: flex-start }
+    .reel {
+      display: inline-block;
+      height: 1.12em;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent);
+      mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent)
+    }
+    .reel > span { display: block }
+    .reel i { display: block; height: 1.12em; font-style: normal }
 
     .hsub {
       max-width: 45ch;
@@ -3031,27 +3061,27 @@
       border-top: 1px solid rgba(158, 218, 217, .14)
     }
 
-    /* a quiet line in sentence case, with a small ripple mark */
+    /* a quiet line in sentence case between two short hairlines */
     .sharedKick {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: .7rem;
-      font-family: var(--fD);
-      font-size: clamp(1.02rem, .95rem + .3vw, 1.2rem);
-      font-weight: 400;
-      letter-spacing: .01em;
+      justify-content: center;
+      gap: 1rem;
+      font-family: var(--fS);
+      font-size: clamp(.95rem, .9rem + .25vw, 1.08rem);
+      font-weight: 600;
+      letter-spacing: .02em;
       color: var(--b100);
       margin: 0 0 clamp(1.4rem, 3.5svh, 2.2rem)
     }
 
-    .sharedKick svg {
-      width: 30px;
-      height: 12px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      opacity: .8
+    .sharedKick::before,
+    .sharedKick::after {
+      content: "";
+      width: clamp(28px, 5vw, 56px);
+      height: 1px;
+      background: currentColor;
+      opacity: .45
     }
 
     /* the three phrases spread across the row on wide screens and stack one
@@ -6065,10 +6095,10 @@
 
         <div class="wrap">
           <dl class="proof" data-rv>
-            <div><dt>75 <small>Years</small></dt><dd>Observed flood &amp; climate record<span>1951–2025</span></dd></div>
-            <div><dt>766+</dt><dd>Districts<span>Across India</span></dd></div>
-            <div><dt>6,500+</dt><dd>Talukas<span>Granular risk intelligence</span></dd></div>
-            <div><dt>3</dt><dd>Climate scenarios</dd></div>
+            <div><dt><span class="roll" data-roll="75">75</span><small>Years</small></dt><dd>Observed flood &amp; climate record<span>1951–2025</span></dd></div>
+            <div><dt><span class="roll" data-roll="766" data-sfx="+">766+</span></dt><dd>Districts<span>Across India</span></dd></div>
+            <div><dt><span class="roll" data-roll="6500" data-sfx="+">6,500+</span></dt><dd>Talukas<span>Granular risk intelligence</span></dd></div>
+            <div><dt><span class="roll" data-roll="3">3</span></dt><dd>Climate scenarios</dd></div>
           </dl>
         </div>
       </section>
@@ -6673,9 +6703,7 @@
           </div>
 
           <div class="wrap dropShared">
-            <p class="sharedKick"><svg viewBox="0 0 30 12" aria-hidden="true">
-                <path d="M1 6c3.5-4 7-4 10.5 0s7 4 10.5 0 5-3 7-2" />
-              </svg>Flood resilience is a shared problem</p>
+            <p class="sharedKick">Flood resilience is a shared problem</p>
             <h2 class="sharedH"><span>Your sector.</span> <span>Your risk.</span> <span>Your decision.</span></h2>
             <p class="sharedLead">Explore your district for free, request access to Atlas and Live, or start a conversation
               with the team.</p>
@@ -7303,6 +7331,56 @@
         }
       }
 
+      /*── PROOF REELS ──*/
+      /* Each digit of the proof figures is a reel. Scroll progress drives
+         them: at the top of the page and once the strip is in view they
+         read the real value; in between, every reel turns (right-hand reels
+         faster, like an odometer) and settles as the strip arrives. The
+         figure stays as plain text for screen readers. */
+      const rolls = RM ? [] : [...document.querySelectorAll(".proof .roll")].map(el => {
+        const txt = Number(el.dataset.roll).toLocaleString("en-IN");
+        el.setAttribute("aria-label", txt + (el.dataset.sfx || ""));
+        el.textContent = "";
+        const reels = [];
+        const isDigit = ch => ch >= "0" && ch <= "9";
+        const digits = [...txt].filter(isDigit).length;
+        let k = 0;
+        for (const ch of txt) {
+          if (!isDigit(ch)) { const s = document.createElement("span"); s.textContent = ch; s.setAttribute("aria-hidden", "true"); el.appendChild(s); continue; }
+          const reel = document.createElement("span"); reel.className = "reel"; reel.setAttribute("aria-hidden", "true");
+          const strip = document.createElement("span");
+          strip.innerHTML = "<i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i>0</i>";
+          reel.appendChild(strip); el.appendChild(reel);
+          reels.push({ strip, d: +ch, spins: 1 + (digits - 1 - k), last: -1 });
+          k++;
+        }
+        if (el.dataset.sfx) { const s = document.createElement("span"); s.textContent = el.dataset.sfx; s.setAttribute("aria-hidden", "true"); el.appendChild(s); }
+        return reels;
+      }).flat();
+      const proofEl = document.querySelector(".proof");
+      let proofStart = 0, proofEnd = 1, lastProofP = -1;
+      function measureProof() {
+        if (!proofEl) return;
+        const top = proofEl.getBoundingClientRect().top + scrollY;
+        proofStart = Math.max(0, top - vh);
+        proofEnd = Math.max(proofStart + vh * .35, top - vh * .42);
+        lastProofP = -1;
+      }
+      function runProof(y) {
+        if (!rolls.length) return;
+        const p = clamp((y - proofStart) / (proofEnd - proofStart), 0, 1);
+        if (p === lastProofP) return;
+        lastProofP = p;
+        const e = 1 - Math.pow(1 - p, 3);
+        for (const r of rolls) {
+          /* pos ≡ d (mod 10) at both ends, so the resting value is exact */
+          const pos = (r.d + r.spins * 10 * e) % 10;
+          if (Math.abs(pos - r.last) < .002) continue;
+          r.last = pos;
+          r.strip.style.transform = `translateY(${(-pos * 1.12).toFixed(3)}em)`;
+        }
+      }
+
       /*── MANUAL PINNING (sticky can't work inside a transformed wrapper) ──*/
       /* #decision used to live here; it is now an IsoStack driven by
          IntersectionObserver, so it no longer needs scrubbed progress. */
@@ -7336,6 +7414,7 @@
         revs.forEach(r => r.top = r.el.getBoundingClientRect().top + base);
         measureGeom(base);
         counters.forEach(c => c.top = c.el.getBoundingClientRect().top + base);
+        measureProof();
         /* the inner's transform doesn't affect the section's own box, so no correction needed */
         pins.forEach(P => { const b = P.sec.getBoundingClientRect(); P.top = b.top + base; P.h = b.height; });
         buildTree();
@@ -8850,7 +8929,7 @@
         const dt = Math.max(0, Math.min(.05, (now - prevT) / 1000)); prevT = now;
         cur = scrollY;
         const y = cur;
-        runRevs(y); runCounters(y); runPins(y, dt); runHdr(y); runBars(y); runParallax(y, dt);
+        runRevs(y); runCounters(y); runProof(y); runPins(y, dt); runHdr(y); runBars(y); runParallax(y, dt);
         runTree(y); runStack(dt); runToTop(y); runTide(); runDeckDepth();
         drawWater(dt);
         requestAnimationFrame(loop);
