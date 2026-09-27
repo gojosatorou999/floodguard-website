@@ -148,3 +148,80 @@ export function addRain(map, cells, seed = 7, BANDS = RAIN_BANDS) {
   x.putImageData(im, 0, 0);
   return svgEl("image", { href: c.toDataURL("image/png"), x: vx, y: vy, width: vw, height: vh, preserveAspectRatio: "none", class: "fgRain" }, map.svg);
 }
+
+/* ── touch devices: maps as flat pictures ──────────────────────────
+   A district map is hundreds of detailed shapes. On phones and tablets
+   the browser re-rasterises them tile by tile as the page scrolls, and on
+   some Android GPUs that ran out of memory and painted garbage strips
+   across the screen. So on touch devices each map is drawn once, on the
+   CPU, into a plain image at the size it is shown, and the live SVG is
+   hidden behind it. Desktop keeps the live vector map. */
+export const FLAT = matchMedia("(hover: none), (pointer: coarse)").matches;
+let flatCss = null;
+function mapStyles() {
+  if (flatCss !== null) return flatCss;
+  const out = [];
+  for (const sheet of document.styleSheets) {
+    let rules; try { rules = sheet.cssRules; } catch (_) { continue; }
+    for (const r of rules) if (r.selectorText && /\.(fg|sol)[A-Z]/.test(r.selectorText)) out.push(r.cssText);
+  }
+  return (flatCss = ':root{--fS:"Nunito","Segoe UI",Roboto,system-ui,sans-serif;--fD:var(--fS);--fM:var(--fS);--E:ease}' + out.join("\n"));
+}
+const flatHosts = new Set();
+/* host = the element the map was drawn into; call again after changing the SVG */
+export async function flattenMap(host) {
+  if (!FLAT || !host) return;
+  const svg = host.querySelector("svg.fgMap");
+  const r = host.getBoundingClientRect();
+  if (!svg || r.width < 2 || r.height < 2) return;
+  const seq = (host._flatSeq = (host._flatSeq || 0) + 1);
+  if (svg.style.display !== "none") svg.style.visibility = "hidden";
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  let W = Math.round(r.width * dpr), H = Math.round(r.height * dpr);
+  const k = Math.min(1, Math.sqrt(4e6 / (W * H))); // cap at ~4 MP
+  W = Math.max(1, Math.round(W * k)); H = Math.max(1, Math.round(H * k));
+  const clone = svg.cloneNode(true);
+  clone.setAttribute("xmlns", NS); clone.setAttribute("width", W); clone.setAttribute("height", H);
+  clone.removeAttribute("style");
+  const st = document.createElementNS(NS, "style");
+  st.textContent = mapStyles();
+  clone.insertBefore(st, clone.firstChild);
+  const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: "image/svg+xml" }));
+  try {
+    const im = new Image(); im.src = url; await im.decode();
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    // willReadFrequently keeps this canvas on the CPU rasteriser
+    c.getContext("2d", { willReadFrequently: true }).drawImage(im, 0, 0, W, H);
+    const blob = await new Promise(res => c.toBlob(res, "image/png"));
+    if (!blob || seq !== host._flatSeq) return;
+    let img = host.querySelector(":scope > img.fgFlat");
+    if (!img) {
+      img = document.createElement("img");
+      img.className = "fgFlat"; img.decoding = "async";
+      img.alt = svg.getAttribute("aria-label") || "";
+      host.append(img);
+    }
+    const old = img.src;
+    img.src = URL.createObjectURL(blob);
+    await img.decode().catch(() => { });
+    if (old.startsWith("blob:")) URL.revokeObjectURL(old);
+    svg.style.display = "none";
+    flatHosts.add(host);
+  } catch (_) {
+    // anything unexpected: the live SVG simply stays visible
+    if (seq === host._flatSeq) svg.style.visibility = "";
+  } finally { URL.revokeObjectURL(url); }
+}
+/* rotate a phone or tablet and the pictures are redrawn at the new size */
+if (FLAT) {
+  let t = 0, lastW = innerWidth;
+  addEventListener("resize", () => {
+    if (innerWidth === lastW) return; // URL-bar show/hide changes height only
+    lastW = innerWidth;
+    clearTimeout(t);
+    t = setTimeout(() => flatHosts.forEach(h => {
+      const s = h.querySelector("svg.fgMap"); if (s) { s.style.display = ""; s.style.visibility = "hidden"; }
+      flattenMap(h);
+    }), 250);
+  }, { passive: true });
+}

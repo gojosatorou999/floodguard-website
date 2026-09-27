@@ -12,6 +12,24 @@ if ("IntersectionObserver" in window) {
   reveal.forEach(el => io.observe(el));
 } else reveal.forEach(el => el.classList.add("in"));
 
+/* a jump to a section (sub-nav, in-page link, or a #hash from another page)
+   lands on it finished: its content is shown at once, without the fade-in */
+function revealNow(target) {
+  const sec = target.closest("section") || target;
+  sec.classList.add("rvNow");
+  sec.querySelectorAll("[data-reveal]").forEach(el => el.classList.add("in"));
+  clearTimeout(sec._rvT);
+  sec._rvT = setTimeout(() => sec.classList.remove("rvNow"), 2500);
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (!a || a.getAttribute("href").length < 2) return;
+  try { const t = document.querySelector(a.getAttribute("href")); if (t) revealNow(t); } catch (_) { }
+});
+if (location.hash.length > 1) {
+  try { const t = document.querySelector(decodeURIComponent(location.hash)); if (t) revealNow(t); } catch (_) { }
+}
+
 /* the secondary nav marks the section currently under the header */
 const sub = document.querySelector(".subnav");
 if (sub) {

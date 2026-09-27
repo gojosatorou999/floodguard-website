@@ -1,7 +1,7 @@
 /* ── /products: mounts the mock-interface maps ───────────────────
    Every value drawn here is sample data, and each panel says so. */
 import "/assets/js/page.js";
-import { drawIndia, addPoints, addRain, RAMPS, riskClass, loadIndia } from "/assets/js/fg-map.js";
+import { drawIndia, addPoints, addRain, RAMPS, riskClass, loadIndia, flattenMap } from "/assets/js/fg-map.js";
 
 const BAND = v => (v < .34 ? "Low" : v < .64 ? "Moderate" : v < .87 ? "High" : "Very high");
 const chip = (v, ramp) => `<i style="background:${ramp[riskClass(v)]}"></i>${BAND(v)}`;
@@ -82,6 +82,7 @@ loadIndia(); // start the geometry fetch straight away
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
   io.unobserve(e.target);
-  MOUNTS[e.target.dataset.fgmap]?.(e.target).catch(err => console.warn("map", err));
+  const el = e.target;
+  Promise.resolve(MOUNTS[el.dataset.fgmap]?.(el)).then(() => flattenMap(el)).catch(err => console.warn("map", err));
 }), { rootMargin: "300px 0px" });
 els.forEach(el => io.observe(el));

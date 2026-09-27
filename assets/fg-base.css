@@ -57,9 +57,9 @@
 
   /* type — one rounded family (Nunito) for headings and body: soft,
      friendly curves; weight carries the hierarchy */
-  --fD:"Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --fD:"Fredoka","Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
   --fS:"Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
-  --fM:"JetBrains Mono",ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
+  --fM:"Fredoka","Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
 
   --t-xs:clamp(.68rem, .66rem + .08vw, .74rem);
   --t-sm:clamp(.82rem, .8rem + .1vw, .88rem);
@@ -125,7 +125,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(50vw 40vh at 88% 8%,var(--aur2),transparent 72%),
     radial-gradient(40vw 40vh at 50% 100%,var(--aur3),transparent 70%)}
 a{color:var(--brand);text-underline-offset:3px}
-h1,h2,h3{font-family:var(--fD);font-weight:700;font-optical-sizing:auto;line-height:1.08;letter-spacing:-.018em;text-wrap:balance}
+h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-height:1.08;letter-spacing:-.018em;text-wrap:balance}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(1.1rem,4vw,2.4rem)}
 .caps{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink3)}
 
@@ -174,6 +174,11 @@ h1,h2,h3{font-family:var(--fD);font-weight:700;font-optical-sizing:auto;line-hei
   background:linear-gradient(158deg,var(--glassA),var(--glassB));
   -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
   border:1px solid var(--glassEdge);box-shadow:inset 0 1px 0 var(--glassGlow),0 18px 40px -26px var(--glassShade)}
+/* the header's wrapper is what sticks: a sticky element can only travel
+   inside its parent, and the wrapper was exactly the header's height, so the
+   header used to scroll away with it. The wrapper's gutters stay click-through. */
+.topWrap{position:sticky;top:0;z-index:50;pointer-events:none;padding-top:12px}
+.topWrap>.topbar{position:relative;top:auto;margin-top:0;pointer-events:auto}
 .brandmark{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--ink);flex:none}
 .brandmark img{width:40px;height:40px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 0 0 1px var(--line)}
 .brandmark b{font-family:var(--fD);font-size:1.15rem;font-weight:600;letter-spacing:.04em}
@@ -231,3 +236,39 @@ h1,h2,h3{font-family:var(--fD);font-weight:700;font-optical-sizing:auto;line-hei
   .topbar .btn{padding:.75rem 1rem}
   .ft .backHome{width:auto;padding:0 1.15rem}.ft .backHome span{display:inline}
 }
+
+/* back to top — the home page's control, on every content page (assets/js/totop.js) */
+.toTop{position:fixed;z-index:60;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+  right:calc(clamp(1.1rem,2.4vw,1.9rem) + env(safe-area-inset-right));
+  bottom:calc(clamp(1rem,2.4vw,1.8rem) + env(safe-area-inset-bottom));
+  border:0;padding:0;color:var(--onBrand);background:linear-gradient(155deg,var(--brand2),var(--brand));
+  box-shadow:0 10px 30px -8px color-mix(in srgb,var(--brand) 55%,transparent),0 2px 6px rgba(0,0,0,.25);
+  opacity:0;visibility:hidden;transform:translateY(16px) scale(.9);
+  transition:opacity .35s var(--E),visibility .35s,transform .35s var(--E),filter .3s}
+.toTop.on{opacity:1;visibility:visible;transform:none}
+.toTop:hover{transform:translateY(-3px) scale(1.06);filter:brightness(1.08)}
+.toTop:focus-visible{outline:2px solid var(--brand);outline-offset:6px}
+.toTop .arw{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;position:relative}
+.toTop .ring{position:absolute;inset:-7px;transform:rotate(-90deg);pointer-events:none}
+.toTop .ring circle{fill:none;stroke-width:3}
+.toTop .ringBg{stroke:color-mix(in srgb,var(--ink3) 34%,transparent)}
+.toTop .ringFg{stroke:var(--brand);stroke-linecap:round;stroke-dasharray:125.66;stroke-dashoffset:125.66;transition:stroke-dashoffset .18s linear}
+@media (max-width:560px){.toTop{width:50px;height:50px}}
+@media print{.toTop{display:none}}
+
+/* ambient mist (assets/js/mist.js): a tiny canvas the browser stretches to
+   the viewport — the upscaling is the softness, so there is no blur filter */
+.fgMist{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:-1;pointer-events:none}
+
+/* Touch devices (phones, tablets): the same design with less GPU memory.
+   Backdrop blurs over the page's detailed maps exhausted it on Android
+   tablets and Chrome painted garbage strips across the screen, so here the
+   glass goes near-solid and nothing reserves a layer it doesn't need. */
+@media (hover:none),(pointer:coarse){
+  :root{--glassA:rgba(248,253,253,.95);--glassB:rgba(240,248,249,.9)}
+  :root[data-theme="dark"]{--glassA:rgba(10,42,52,.95);--glassB:rgba(6,30,38,.92)}
+  *,*::before,*::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;will-change:auto!important}
+}
+@media (prefers-color-scheme:dark){@media (hover:none),(pointer:coarse){
+  :root:not([data-theme="light"]){--glassA:rgba(10,42,52,.95);--glassB:rgba(6,30,38,.92)}
+}}

@@ -54,13 +54,13 @@ main { display: block }
 .pgHero { padding: clamp(2.4rem, 6vw, 4.6rem) 0 clamp(2.6rem, 6vw, 4.4rem) }
 .pgHero .grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center }
 @media (min-width:1000px) { .pgHero .grid { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr) } }
-.pgHero h1 { font-family: var(--fS); font-weight: 800; letter-spacing: -.035em; line-height: 1.05; font-size: clamp(2.3rem, 1.2rem + 3vw, 3.9rem); margin: 1.1rem 0 0 }
+.pgHero h1 { font-family: var(--fD); font-weight: 500; letter-spacing: -.02em; line-height: 1.05; font-size: clamp(2.3rem, 1.2rem + 3vw, 3.9rem); margin: 1.1rem 0 0 }
 .pgHero .sub { font-size: var(--t-1); color: var(--ink); font-weight: 600; margin-top: 1.1rem; line-height: 1.5 }
 .pgHero .sup { color: var(--ink2); margin-top: .7rem; max-width: 52ch }
 
 /* ── sticky secondary nav ── */
 .subnav {
-  position: sticky; top: 78px; z-index: 40; margin: 0 auto; width: max-content; max-width: 100%;
+  position: sticky; top: 84px; z-index: 40; margin: 0 auto; width: max-content; max-width: 100%;
   display: flex; gap: .15rem; padding: .3rem; border-radius: 99px; overflow-x: auto; scrollbar-width: none;
   background: linear-gradient(158deg, var(--glassA), var(--glassB)); border: 1px solid var(--glassEdge);
   -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
@@ -73,7 +73,7 @@ main { display: block }
 }
 .subnav a:hover { color: var(--ink); background: var(--dentBg) }
 .subnav a[aria-current="true"] { color: var(--onBrand); background: var(--brand) }
-@media (max-width:560px) { .subnav { top: 72px; border-radius: 16px } }
+@media (max-width:560px) { .subnav { top: 82px; border-radius: 16px } }
 
 /* ── instrument panels: the mock product interfaces ── */
 .inst {
@@ -106,6 +106,8 @@ main { display: block }
 .instBody { display: grid; min-height: 0 }
 .instMap { position: relative; min-height: 280px }
 .instMap > svg { position: absolute; inset: 0; width: 100%; height: 100% }
+/* touch devices: the same map as one flat picture (fg-map.js flattenMap) */
+.instMap > .fgFlat { position: absolute; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; user-select: none; -webkit-user-drag: none }
 .instSide, .instPanel { padding: 1rem; font-size: .74rem }
 .instSide { border-right: 1px solid var(--inst-line) }
 .instPanel { border-left: 1px solid var(--inst-line) }
@@ -289,6 +291,16 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .cmp .no::before { content: "—" }
 .cmp .t { font-size: .74rem; color: var(--ink2); font-weight: 600 }
 .cmp tr:last-child td { border-bottom: 0 }
+/* phones: all four columns fit on screen — no sideways scrolling to find Atlas and Live */
+@media (max-width:600px) {
+  .cmp { min-width: 0; font-size: .78rem; table-layout: fixed }
+  .cmp th, .cmp td { padding: .6rem .3rem }
+  .cmp th:first-child, .cmp td:first-child { padding-left: .8rem; width: 44% }
+  .cmp thead th { font-size: .74rem; line-height: 1.2 }
+  .cmp thead th span { font-size: .5rem; letter-spacing: .06em; margin-top: .3rem }
+  .cmp .t { font-size: .64rem; line-height: 1.25 }
+  .cmp .grp td { padding: .5rem .8rem }
+}
 .fine { font-size: .74rem; color: var(--ink3); margin-top: .9rem }
 
 /* ── product finder ── */
@@ -321,6 +333,7 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 /* reveal */
 [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--E), transform .7s var(--E) }
 [data-reveal].in { opacity: 1; transform: none }
+.rvNow [data-reveal] { transition: none !important }
 @media (prefers-reduced-motion:reduce) { [data-reveal] { opacity: 1; transform: none; transition: none } }
 
 /*═══════════════════════════════════════════════════════════════
@@ -333,7 +346,8 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .solTag text { font: 800 23px/1 var(--fS); letter-spacing: .12em; fill: #e6f1ef }
 .solTag line { stroke: rgba(230, 241, 239, .55); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke }
 .solTag circle { fill: #e0c062; stroke: #06151d; stroke-width: 1.2; vector-effect: non-scaling-stroke }
-.fgZone { fill: url(#agriHatch); stroke: rgba(151, 207, 150, .7); stroke-width: .8; vector-effect: non-scaling-stroke }
+/* fill comes from the per-map hatch pattern set in solutions.js */
+.fgZone { stroke: rgba(151, 207, 150, .7); stroke-width: .8; vector-effect: non-scaling-stroke }
 .fgMap-light .fgZone { stroke: rgba(70, 130, 80, .75) }
 .fgHeat circle { fill: #e0c062; fill-opacity: .16; stroke: #e0c062; stroke-opacity: .55; stroke-width: 1; vector-effect: non-scaling-stroke }
 .fgMap-light .fgHeat circle { fill: #d9803f; fill-opacity: .14; stroke: #b86a2c }
@@ -388,7 +402,8 @@ a.solRow:hover svg { transform: translateX(3px) }
 }
 .doc:hover .docPrev { transform: translateY(-3px) rotate(-.4deg); box-shadow: 0 2px 4px rgba(4, 38, 61, .1), 0 26px 44px -26px rgba(4, 38, 61, .65) }
 @media (prefers-reduced-motion:reduce) { .doc:hover .docPrev { transform: none } }
-.docPrev img, .docPrev iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; object-position: top; pointer-events: none; background: #fff }
+/* the real first-page preview only — not the flattened map inside a placeholder cover */
+.docPrev > img, .docPrev > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; object-position: top; pointer-events: none; background: #fff }
 /* placeholder cover — shown until the real PDF is in /public/use-cases */
 .docPh { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 9% 9% 7%; color: #0b2a33; background: linear-gradient(170deg, #f7fbfb, #e7f1f1) }
 .docPh .top { display: flex; align-items: center; gap: .35rem; font: 800 .5rem/1 var(--fS); letter-spacing: .18em; color: #0a5273 }
@@ -396,7 +411,7 @@ a.solRow:hover svg { transform: translateX(3px) }
 .docPh .mapv { position: relative; margin: 10% 0 8%; flex: 1; border-radius: 6px; overflow: hidden; background: #0a1f29 }
 .docPh .mapv .instMap { position: absolute; inset: 0; min-height: 0 }
 .docPh .kind { font: 800 .48rem/1 var(--fS); letter-spacing: .16em; color: #4b7f8a; text-transform: uppercase }
-.docPh .ttl { font: 800 .82rem/1.2 var(--fD); margin-top: .35rem }
+.docPh .ttl { font: 600 .82rem/1.2 var(--fD); margin-top: .35rem }
 .docPh .ph { margin-top: auto; padding-top: .5rem; font: 700 .5rem/1.3 var(--fS); letter-spacing: .06em; color: #8a5a1d; border-top: 1px dashed rgba(4, 38, 61, .2) }
 .docTxt .access { display: block }
 .docTxt h3 { font-size: var(--t-2); margin-top: .55rem }

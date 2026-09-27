@@ -2,7 +2,7 @@
    Every map value is sample data (the illustrative heuristic in
    assets/geo/india-map.json), and each panel says so. */
 import "/assets/js/page.js";
-import { drawIndia, addPoints, addLine, addRain, FLOOD_BANDS, RAMPS, riskClass, loadIndia, svgEl } from "/assets/js/fg-map.js";
+import { drawIndia, addPoints, addLine, addRain, FLOOD_BANDS, RAMPS, riskClass, loadIndia, svgEl, flattenMap, FLAT } from "/assets/js/fg-map.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const BAND = v => (v < .34 ? "Low" : v < .64 ? "Moderate" : v < .87 ? "High" : "Very high");
@@ -206,7 +206,11 @@ const MOUNTS = {
       cells.forEach((p, i) => p.setAttribute("fill", f[i]));
       chips.forEach(c => c.setAttribute("aria-pressed", String(on.has(c.dataset.layer))));
       $("[data-x=\"oneState\"]", root).textContent = [...on].length ? chips.filter(c => on.has(c.dataset.layer)).map(c => c.textContent.trim()).join(" · ") : "No layers";
+      // touch devices show a flat picture of the map: redraw it once the
+      // layer fade has finished (the live SVG is hidden behind it)
+      if (FLAT) { clearTimeout(reflat); reflat = setTimeout(() => flattenMap(el), 80); }
     };
+    let reflat = 0;
     const setLens = btn => {
       lenses.forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
       on.clear(); (btn ? btn.dataset.lens.split(" ") : Object.keys(L).concat("climate")).forEach(k => on.add(k));
@@ -238,7 +242,8 @@ loadIndia();
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
   io.unobserve(e.target);
-  MOUNTS[e.target.dataset.fgmap]?.(e.target).catch?.(err => console.warn("map", err));
+  const el = e.target;
+  Promise.resolve(MOUNTS[el.dataset.fgmap]?.(el)).then(() => flattenMap(el)).catch(err => console.warn("map", err));
 }), { rootMargin: "300px 0px" });
 els.forEach(el => io.observe(el));
 
