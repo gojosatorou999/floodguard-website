@@ -18,14 +18,14 @@
   <meta property="og:locale" content="en_IN">
   <meta name="twitter:card" content="summary_large_image">
   <script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-  <link rel="preload" href="assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/nunito.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
   <style>
     /*═══════════════════════════════════════════════════════════════
   FLOODGUARD — light-first, glass, scroll-driven
+  Type: Nunito (rounded) throughout; JetBrains Mono for figures.
   Palette: ocean depth ramp — abyss navy (b950) through shoal teal (b500)
   to seafoam (b100), hue drifting 205° → 172° as it gets shallower.
   #C1121F = live alert only.
@@ -88,8 +88,8 @@
 
       /* type — display serif echoes the logo's calligraphic ƒ,
      tracked sans caps echo PREDICT · PLAN · PROTECT */
-      --fD: "Newsreader", "Iowan Old Style", "Charter", Cambria, Georgia, serif;
-      --fS: "Manrope", "Inter", ui-sans-serif, "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --fD: "Nunito", ui-rounded, "SF Pro Rounded", "Varela Round", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+      --fS: "Nunito", ui-rounded, "SF Pro Rounded", "Varela Round", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
       --fM: "JetBrains Mono", ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
 
       --t-xs: clamp(.68rem, .66rem + .08vw, .74rem);
@@ -405,14 +405,14 @@
       }
     }
 
-    /* Newsreader is set light: its optical sizes carry the contrast at display
-       sizes, so weight doesn't have to. 600 on a fallback serif read as bold. */
+    /* Nunito is a rounded face: it reads soft and confident at 700, where a
+       lighter weight would look thin against the body text. */
     h1,
     h2,
     h3,
     h4 {
       font-family: var(--fD);
-      font-weight: 450;
+      font-weight: 700;
       font-optical-sizing: auto;
       line-height: 1.06;
       letter-spacing: -.02em;
@@ -1254,46 +1254,590 @@
       display: block
     }
 
-    /*── HERO ──*/
+    .demoErr {
+      margin-top: .8rem;
+      padding: .7rem .9rem;
+      border-radius: 12px;
+      font-size: var(--t-sm);
+      color: var(--ink);
+      background: color-mix(in srgb, #c1121f 8%, transparent);
+      border: 1px solid color-mix(in srgb, #c1121f 26%, transparent)
+    }
+
+    /*── HERO ── copy left (~43%), the India map right (~57%); on phones the
+       map sits between the CTAs and the three time labels ──*/
     #hero {
       min-height: 100svh;
       display: flex;
-      align-items: center;
-      padding-top: clamp(6rem, 10vw, 7.5rem);
-      padding-bottom: clamp(1.6rem, 3.5vw, 3rem)
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(1.8rem, 3.4vw, 2.8rem);
+      padding-top: calc(var(--header-h) + clamp(2rem, 4.5vw, 3.6rem));
+      padding-bottom: clamp(1.4rem, 3vw, 2.4rem)
     }
 
     .hgrid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: clamp(2.4rem, 5vw, 4.5rem);
-      align-items: center;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "copy" "map" "micro";
+      column-gap: clamp(2rem, 4vw, 4rem);
+      row-gap: clamp(1.6rem, 4vw, 2.2rem);
       width: 100%
     }
 
-    @media(min-width:980px) {
+    #hero > .wrap { width: 100% }
+
+    .hcopy { grid-area: copy; align-self: end }
+    .hmap { grid-area: map }
+    .hmicro { grid-area: micro; align-self: start }
+
+    @media(min-width:1024px) {
       .hgrid {
-        grid-template-columns: 1.04fr .96fr
+        grid-template-columns: minmax(0, 43fr) minmax(0, 57fr);
+        grid-template-areas: "copy map" "micro map";
+        grid-template-rows: 1fr auto
       }
     }
 
+    /* one family in the hero: Nunito throughout, weight carries the hierarchy */
     #hero h1 {
-      font-size: var(--t-display);
-      font-weight: 400;
-      letter-spacing: -.03em;
-      line-height: .98
+      font-family: var(--fS);
+      font-size: clamp(2.4rem, 1.1rem + 2.9vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.04
     }
 
-    #hero h1 em {
-      font-style: italic;
-      font-weight: 400;
-      color: var(--brand)
+    #hero .hTime { color: var(--brand) }
+
+    /* the active horizon on the map is underlined in the headline */
+    #hero .hTime [data-hm-echo] { position: relative }
+
+    #hero .hTime [data-hm-echo]::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.02em;
+      height: .07em;
+      border-radius: 99px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .55s var(--E)
     }
 
-    #hero h1 .q {
+    #hero .hTime [data-hm-echo].on::after { transform: scaleX(1) }
+
+    #hero .eye { margin-bottom: 1.3rem }
+
+    /*── three time labels under the CTAs — compact, not cards ──*/
+    .hmicro {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem 1.1rem;
+      margin: 0;
+      padding: 1.1rem 0 0;
+      border-top: 1px solid var(--line)
+    }
+
+    .hmicro button {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem 0;
+      font-size: var(--t-xs);
+      font-weight: 600;
+      color: var(--ink2);
+      transition: color .3s
+    }
+
+    .hmicro svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
       color: var(--ink3);
-      font-weight: 400
+      transition: color .3s
     }
+
+    .hmicro button:hover,
+    .hmicro button.on { color: var(--ink) }
+
+    .hmicro button.on svg { color: var(--brand) }
+
+    /*── HERO MAP ── dark in both themes: it is a product surface, not page chrome ──*/
+    .hmap {
+      --hm-ink: #e6f1ef;
+      --hm-ink2: rgba(230, 241, 239, .7);
+      --hm-ink3: rgba(230, 241, 239, .5);
+      --hm-line: rgba(160, 205, 210, .16);
+      --hm-panel: rgba(6, 22, 30, .8);
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      min-height: clamp(500px, 64svh, 680px);
+      border-radius: var(--r-xl);
+      color: var(--hm-ink);
+      background:
+        radial-gradient(90% 70% at 58% 42%, rgba(24, 92, 108, .32), transparent 70%),
+        linear-gradient(160deg, #0a1f29 0%, #06151d 55%, #041017 100%);
+      border: 1px solid rgba(160, 205, 210, .14);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .06) inset, 0 30px 70px -40px rgba(4, 38, 61, .7);
+      scroll-margin-top: calc(var(--header-h) + 24px)
+    }
+
+    .hmStage {
+      position: absolute;
+      top: 4.4rem;
+      bottom: 1.7rem;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: calc(100% - 1rem);
+      aspect-ratio: 1200 / 1372;
+      opacity: 0;
+      transition: opacity .9s var(--E)
+    }
+
+    .hmap.hmReady .hmStage { opacity: 1 }
+    .hmap.hmFailed .hmStage { display: none }
+
+    .hmStage > svg,
+    .hmStage > canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible
+    }
+
+    .hmTop,
+    .hmRain { pointer-events: none }
+
+    .hmRain {
+      opacity: 0;
+      transition: opacity .6s var(--E);
+      filter: blur(.6px)
+    }
+
+    .hmap.hm-rain .hmRain { opacity: 1 }
+
+    .hmGrat {
+      fill: none;
+      stroke: rgba(150, 200, 210, .07);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke
+    }
+
+    .hmLandFill { fill: #0b2126 }
+
+    .hmShade { opacity: 0; transition: opacity 1.2s var(--E) }
+    .hmap.hmShaded.hm-terrain .hmShade { opacity: .9 }
+
+    .hmRisk { opacity: .9; transition: opacity .6s var(--E) }
+    .hmap[data-mode="now"] .hmRisk { opacity: .74 }
+    .hmap:not(.hm-risk) .hmRisk { opacity: .1 }
+
+    .hmRisk path {
+      fill: #0f2b33;
+      stroke: rgba(180, 222, 228, .13);
+      stroke-width: .6;
+      vector-effect: non-scaling-stroke;
+      transition: fill .8s var(--E);
+      cursor: pointer
+    }
+
+    .hmRisk path.hot { stroke: rgba(240, 250, 248, .9); stroke-width: 1.4 }
+
+    .hmTerrain { opacity: 0; transition: opacity .8s var(--E) }
+    .hmap.hm-terrain .hmTerrain { opacity: 1 }
+
+    .hmCt {
+      fill: none;
+      stroke: rgba(200, 232, 218, calc(.03 + var(--k) * .09));
+      stroke-width: .7;
+      vector-effect: non-scaling-stroke
+    }
+
+    .hmRivers path {
+      fill: none;
+      stroke: #3b8cb4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: .8;
+      vector-effect: non-scaling-stroke
+    }
+
+    .hmOutline {
+      fill: none;
+      stroke: rgba(175, 228, 236, .55);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+      filter: drop-shadow(0 0 10px rgba(70, 180, 200, .35))
+    }
+
+    .hmEvents { opacity: 0; transition: opacity .6s var(--E) }
+    .hmap.hm-history .hmEvents { opacity: 1 }
+    .hmEvents circle { fill: #e0c062 }
+    .hmEvents .hmEvHalo { fill: rgba(224, 192, 98, .16) }
+
+    .hmExposure { opacity: 0; transition: opacity .6s var(--E) }
+    .hmap.hm-exposure .hmExposure { opacity: 1 }
+
+    .hmExposure circle {
+      fill: rgba(230, 243, 240, .07);
+      stroke: rgba(230, 243, 240, .55);
+      stroke-width: .8;
+      vector-effect: non-scaling-stroke
+    }
+
+    .hmRing {
+      fill: none;
+      stroke: #e9d27c;
+      stroke-width: 1.2;
+      vector-effect: non-scaling-stroke;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: hmPulse 2.8s var(--E) infinite
+    }
+
+    @keyframes hmPulse {
+      0% { transform: scale(.6); opacity: .9 }
+      100% { transform: scale(3.2); opacity: 0 }
+    }
+
+    /* callouts: a dot on the place, a short leader, a two-line label */
+    .hmCallouts { position: absolute; inset: 0; pointer-events: none }
+
+    .hmCo {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      transform: translate(-4px, -50%);
+      animation: hmIn .6s var(--E) both
+    }
+
+    .hmCo > i {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--hm-ink);
+      box-shadow: 0 0 0 3px rgba(230, 241, 239, .18);
+      flex: none
+    }
+
+    .hmCo > i::after {
+      content: "";
+      position: absolute;
+      top: 3.5px;
+      left: 11px;
+      width: 16px;
+      height: 1px;
+      background: rgba(230, 241, 239, .5)
+    }
+
+    .hmCoT {
+      margin-left: 22px;
+      padding: .38rem .6rem;
+      border-radius: 6px;
+      background: var(--hm-panel);
+      border: 1px solid var(--hm-line);
+      white-space: nowrap;
+      line-height: 1.25
+    }
+
+    .hmCoT b { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .01em }
+    .hmCoT span { display: block; font-size: .66rem; color: var(--hm-ink2) }
+
+    .hmCo.l { flex-direction: row-reverse; transform: translate(calc(-100% + 4px), -50%) }
+    .hmCo.l > i::after { left: auto; right: 11px }
+    .hmCo.l .hmCoT { margin: 0 22px 0 0 }
+
+    @keyframes hmIn { from { opacity: 0 } to { opacity: 1 } }
+
+    .hmTip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 3;
+      width: 176px;
+      padding: .6rem .7rem;
+      border-radius: 8px;
+      background: rgba(4, 16, 22, .94);
+      border: 1px solid var(--hm-line);
+      pointer-events: none;
+      font-size: .7rem;
+      line-height: 1.35
+    }
+
+    .hmTip b { display: block; font-size: .8rem; font-weight: 700 }
+    .hmTip .s { display: block; color: var(--hm-ink3) }
+
+    .hmTip .r {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: .35rem;
+      color: var(--hm-ink2)
+    }
+
+    .hmTip .r::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--c);
+      flex: none
+    }
+
+    .hmTip .go {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      margin-top: .45rem;
+      color: #7fd3de;
+      font-weight: 600
+    }
+
+    .hmTip .go svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2 }
+
+    /* chrome on the panel: title + horizon switch on top, layers bottom-left,
+       legend bottom-right — over the sea, never over the country */
+    .hmHead {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1rem 0 1.15rem
+    }
+
+    .hmTitle b { display: block; font-size: .78rem; font-weight: 700; letter-spacing: .02em }
+    .hmCap { display: block; font-size: .7rem; color: var(--hm-ink3); margin-top: .15rem }
+
+    /* per-horizon copy: only the active one shows */
+    .hmap [data-cap] { display: none }
+    .hmap[data-mode="history"] [data-cap="history"],
+    .hmap[data-mode="now"] [data-cap="now"],
+    .hmap[data-mode="future"] [data-cap="future"] { display: revert }
+    .hmap[data-mode="now"] .hmLgX[data-cap="now"],
+    .hmap[data-mode="history"] .hmLgX[data-cap="history"],
+    .hmap[data-mode="future"] .hmScen[data-cap="future"] { display: flex }
+
+    .hmSeg {
+      display: flex;
+      flex: none;
+      padding: 3px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--hm-line)
+    }
+
+    .hmSeg button {
+      padding: .45rem .9rem;
+      border-radius: 999px;
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      color: var(--hm-ink2);
+      transition: color .3s, background .35s var(--E)
+    }
+
+    .hmSeg button:hover { color: var(--hm-ink) }
+    .hmSeg button[aria-checked="true"] { color: #04263d; background: #cfeae6 }
+
+    .hmSeg button:focus-visible,
+    .hmLayers button:focus-visible,
+    .hmScen button:focus-visible { outline: 2px solid #7fd3de; outline-offset: 2px }
+
+    .hmLayers,
+    .hmLegend {
+      position: absolute;
+      bottom: 2rem;
+      z-index: 2;
+      padding: .7rem .75rem;
+      border-radius: 10px;
+      background: var(--hm-panel);
+      border: 1px solid var(--hm-line);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px)
+    }
+
+    .hmLayers { left: .85rem; display: grid; gap: 0; min-width: 132px }
+    .hmLegend { right: 1rem; width: 166px }
+
+    .hmLayers p,
+    .hmLgT {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--hm-ink3);
+      margin-bottom: .35rem
+    }
+
+    .hmLayers button {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .2rem 0;
+      font-size: .7rem;
+      color: var(--hm-ink3);
+      text-align: left;
+      transition: color .25s
+    }
+
+    .hmLayers button::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      border: 1px solid rgba(230, 241, 239, .4);
+      flex: none;
+      transition: background .25s, border-color .25s
+    }
+
+    .hmLayers button[aria-pressed="true"] { color: var(--hm-ink) }
+    .hmLayers button[aria-pressed="true"]::before { background: #7fd3de; border-color: #7fd3de }
+    .hmLayers button:hover { color: var(--hm-ink) }
+
+    .hmRamp { display: flex; height: 7px; border-radius: 2px; overflow: hidden }
+    .hmRamp i { flex: 1 }
+
+    .hmRampL {
+      display: flex;
+      justify-content: space-between;
+      font-size: .62rem;
+      color: var(--hm-ink3);
+      margin-top: .25rem
+    }
+
+    .hmLgX {
+      align-items: center;
+      gap: .45rem;
+      margin-top: .55rem;
+      font-size: .68rem;
+      color: var(--hm-ink2)
+    }
+
+    .hmSwRain {
+      width: 22px;
+      height: 7px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, rgba(79, 182, 201, .5), #bff0ea, #e9d27c)
+    }
+
+    .hmSwEv { width: 8px; height: 8px; border-radius: 50%; background: #e0c062; box-shadow: 0 0 0 3px rgba(224, 192, 98, .2) }
+
+    .hmScen {
+      gap: 2px;
+      margin-top: .6rem;
+      padding: 2px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .05)
+    }
+
+    .hmScen button {
+      flex: 1;
+      padding: .3rem 0;
+      border-radius: 4px;
+      font-size: .66rem;
+      font-weight: 700;
+      color: var(--hm-ink3)
+    }
+
+    .hmScen button[aria-pressed="true"] { background: rgba(207, 234, 230, .16); color: var(--hm-ink) }
+
+    .hmNote {
+      display: flex;
+      margin-top: .45rem;
+      align-items: center;
+      gap: .4rem;
+      font-size: .64rem;
+      letter-spacing: .02em;
+      color: var(--hm-ink3)
+    }
+
+    .hmNote i { width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor }
+
+    .hmCredit {
+      position: absolute;
+      left: 1.15rem;
+      right: 1.15rem;
+      bottom: .55rem;
+      z-index: 2;
+      font-size: .56rem;
+      line-height: 1.3;
+      color: rgba(230, 241, 239, .34);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    /* below this the country fills the panel edge to edge: keep the time
+       switch and legend, drop the layer list */
+    @media (max-width:1279px) {
+      .hmLayers { display: none }
+    }
+
+    @media (max-width:640px) {
+      .hmap { min-height: 0; display: flex; flex-direction: column }
+      .hmHead { position: relative; flex-wrap: wrap; order: 0 }
+      .hmStage { position: relative; top: auto; bottom: auto; left: auto; transform: none; width: 100%; max-width: none; order: 2; margin-top: .3rem }
+      .hmLayers { display: none }
+      .hmLegend { position: relative; order: 3; right: auto; bottom: auto; margin: .6rem 1rem 0; width: auto }
+      .hmCredit { position: relative; order: 4; left: 0; right: 0; bottom: 0; padding: .6rem 1.15rem .8rem; white-space: normal }
+      .hmCoT span { display: none }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .hmRing { animation: none; opacity: .6 }
+    }
+
+    /*── proof strip: the numbers are simply there — no count-up ──*/
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--line);
+      margin: 0
+    }
+
+    @media(min-width:820px) { .proof { grid-template-columns: repeat(4, 1fr) } }
+
+    .proof > div { padding: 1.2rem 1rem 0 0 }
+
+    @media(min-width:820px) {
+      .proof > div + div { padding-left: 1.4rem; border-left: 1px solid var(--line) }
+    }
+
+    .proof dt {
+      font-size: clamp(1.6rem, 1.1rem + 1.4vw, 2.3rem);
+      font-weight: 650;
+      letter-spacing: -.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink)
+    }
+
+    .proof dt small { font-size: .5em; font-weight: 600; letter-spacing: 0; color: var(--ink2) }
+
+    .proof dd {
+      margin: .55rem 0 0;
+      font-size: var(--t-xs);
+      font-weight: 600;
+      color: var(--ink2)
+    }
+
+    .proof dd span { display: block; font-weight: 500; color: var(--ink3); margin-top: .1rem }
 
     .hsub {
       max-width: 45ch;
@@ -1363,34 +1907,13 @@
     }
 
     /* map stack */
-    .mstack {
-      position: relative;
-      perspective: 1600px
-    }
 
-    .mcard {
-      padding: .55rem;
-      border-radius: var(--r-xl);
-      overflow: hidden;
-      transform-style: preserve-3d;
-      will-change: transform
-    }
 
-    .mhead {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: .8rem;
-      padding: .55rem .85rem .75rem;
-      flex-wrap: wrap
-    }
 
-    .mhead .caps {
-      color: var(--ink3);
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      font-weight: 600
-    }
+
+
+
+
 
     @keyframes pl {
 
@@ -1406,207 +1929,62 @@
       }
     }
 
-    .mbody {
-      border-radius: var(--r-l);
-      overflow: hidden;
-      position: relative;
-      background: var(--dentBg);
-      box-shadow: inset 0 2px 10px var(--dentIn)
-    }
 
-    #mapC {
-      display: block;
-      width: 100%;
-      height: auto
-    }
 
-    .mfoot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: .8rem;
-      padding: .8rem .85rem .5rem;
-      flex-wrap: wrap
-    }
 
-    .lg {
-      display: flex;
-      align-items: center;
-      gap: .22rem
-    }
 
-    .lg b {
-      width: 17px;
-      height: 6px;
-      border-radius: 99px;
-      display: block
-    }
 
-    .lg span {
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      color: var(--ink3);
-      font-weight: 600;
-      text-transform: uppercase
-    }
 
-    #readout {
-      font-family: var(--fM);
-      font-size: var(--t-micro);
-      color: var(--ink2);
-      letter-spacing: .04em
-    }
 
-    .mbody {
-      isolation: isolate
-    }
 
-    .mapC-hot {
-      cursor: pointer
-    }
+
+
+
+
+
+
+
+
+
 
     /* ── map search ─────────────────────────────────────────────────
    Collapsed it is a 88px pill in the header's dead space; expanded it
    takes the header row and drops a panel *over* the map. Nothing in the
    card reflows either way — the panel is absolute, so the map never
    moves and the layout never grows. */
-    .msBtn[hidden],
-    .msField[hidden],
-    .msPanel[hidden],
-    .mtip[hidden],
-    .msEmpty[hidden] {
-      display: none !important
-    }
 
-    .msearch {
-      position: relative;
-      display: flex;
-      justify-content: flex-end;
-      min-width: 0
-    }
 
-    .msBtn {
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      border: 1px solid var(--line2);
-      background: var(--dentBg);
-      color: var(--ink2);
-      border-radius: 99px;
-      padding: .3rem .6rem;
-      cursor: pointer;
-      font: 600 var(--t-label)/1 var(--fS);
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      transition: .22s var(--E)
-    }
 
-    .msBtn svg {
-      width: 11px;
-      height: 11px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.2
-    }
 
-    .msBtn:hover {
-      color: var(--brand);
-      border-color: var(--brand);
-      background: transparent
-    }
 
-    .msBtn:focus-visible {
-      outline: 2px solid var(--brand);
-      outline-offset: 2px
-    }
 
-    .msField {
-      display: flex;
-      align-items: center;
-      gap: .45rem;
-      width: min(300px, 58vw);
-      border: 1px solid var(--brand);
-      border-radius: 99px;
-      padding: .28rem .5rem .28rem .65rem;
-      background: var(--panelBg);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 15%, transparent)
-    }
 
-    .msField svg {
-      width: 12px;
-      height: 12px;
-      fill: none;
-      stroke: var(--ink3);
-      stroke-width: 2.2;
-      flex: none
-    }
 
-    .msField input {
-      flex: 1 1 auto;
-      min-width: 0;
-      border: 0;
-      background: none;
-      color: var(--ink);
-      font: 500 var(--t-micro)/1.2 var(--fS);
-      letter-spacing: 0;
-      padding: .12rem 0
-    }
 
-    .msField input:focus {
-      outline: none
-    }
 
-    .msField input::placeholder {
-      color: var(--ink3)
-    }
 
-    .msField input::-webkit-search-cancel-button {
-      display: none
-    }
 
-    .msX {
-      border: 0;
-      background: none;
-      padding: 0;
-      cursor: pointer;
-      flex: none;
-      line-height: 0
-    }
 
-    .msPanel {
-      position: absolute;
-      inset: .5rem .5rem auto .5rem;
-      z-index: 6;
-      background: var(--panelBg);
-      border: 1px solid var(--panelEdge);
-      border-radius: var(--r-m);
-      box-shadow: var(--panelShadow);
-      overflow: hidden;
-      max-height: calc(100% - 1rem);
-      display: flex;
-      flex-direction: column
-    }
 
-    .msPanel ul {
-      list-style: none;
-      margin: 0;
-      padding: .3rem;
-      overflow-y: auto;
-      overscroll-behavior: contain
-    }
 
-    .msPanel li {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      padding: .44rem .55rem;
-      border-radius: 10px;
-      cursor: pointer
-    }
 
-    .msPanel li[aria-selected="true"] {
-      background: color-mix(in srgb, var(--brand) 13%, transparent)
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     .msDot {
       width: 9px;
@@ -1641,238 +2019,64 @@
       flex: none
     }
 
-    .msEmpty {
-      margin: 0;
-      padding: .9rem .8rem;
-      font-size: var(--t-micro);
-      color: var(--ink3);
-      text-align: center
-    }
+
 
     /* ── hover card ─────────────────────────────────────────────────
    Reveals on hover, never navigates on hover — the click does that.
    Pointer-events off so it can sit under the cursor without stealing
    the pointermove stream that positions it. */
-    .mtip {
-      position: absolute;
-      z-index: 5;
-      pointer-events: none;
-      width: 172px;
-      display: grid;
-      gap: .3rem;
-      padding: .6rem .7rem .65rem;
-      background: var(--panelBg);
-      border: 1px solid var(--panelEdge);
-      border-radius: 14px;
-      box-shadow: var(--panelShadow);
-      transition: opacity .16s var(--E)
-    }
 
-    .mtip b {
-      font: 450 1rem/1.2 var(--fD);
-      color: var(--ink);
-      letter-spacing: 0
-    }
 
-    .mtipSub {
-      font: 600 var(--t-label)/1 var(--fS);
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--ink3)
-    }
 
-    .mtipMeter {
-      height: 4px;
-      border-radius: 99px;
-      background: var(--dentBg);
-      overflow: hidden;
-      margin-top: .12rem
-    }
 
-    .mtipMeter i {
-      display: block;
-      height: 100%;
-      border-radius: 99px;
-      transition: width .2s var(--E)
-    }
 
-    .mtipRow {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: .5rem
-    }
 
-    .mtipRow span {
-      font: 600 var(--t-label)/1 var(--fS);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--ink2)
-    }
 
-    .mtipRow em {
-      font: 500 var(--t-label)/1 var(--fM);
-      font-style: normal;
-      color: var(--ink3)
-    }
 
-    .mtipGo {
-      display: flex;
-      align-items: center;
-      gap: .3rem;
-      margin-top: .16rem;
-      padding-top: .4rem;
-      border-top: 1px solid var(--line);
-      font: 600 var(--t-label)/1 var(--fS);
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--brand)
-    }
 
-    .mtipGo svg {
-      width: 10px;
-      height: 10px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.4
-    }
 
-    @media (max-width:640px) {
 
-      /* the pill would crowd the header on small screens — the map is
-     tap-to-open there anyway, so search moves to full header width */
-      .msBtn span {
-        display: none
-      }
 
-      .msField {
-        width: min(220px, 64vw)
-      }
 
-      .mtip {
-        width: 150px
-      }
-    }
 
-    @media (prefers-reduced-motion:reduce) {
 
-      .mtip,
-      .mtipMeter i {
-        transition: none
-      }
-    }
+
+
+
+
+
+
+
+
 
     /* floating chips */
-    .chip {
-      position: absolute;
-      padding: .7rem 1rem;
-      border-radius: var(--r-m);
-      z-index: 3;
-      will-change: transform;
-      pointer-events: none
-    }
 
-    .chip b {
-      display: block;
-      font-family: var(--fD);
-      font-size: 1.35rem;
-      font-weight: 450;
-      line-height: 1;
-      font-variant-numeric: tabular-nums
-    }
 
-    .chip span {
-      display: block;
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      color: var(--ink3);
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-top: .3rem
-    }
 
-    #chip1 {
-      top: 6%;
-      right: -3%
-    }
 
-    #chip2 {
-      bottom: 9%;
-      left: -5%
-    }
+
+
+
+
+
 
     /* the chips sat on top of the map header on narrow screens */
-    @media(max-width:820px) {
-      .chip {
-        display: none
-      }
-    }
+
 
     /*── STAT RAIL ──*/
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      border-radius: var(--r-xl);
-      overflow: hidden;
-      padding: 1px
-    }
 
-    @media(min-width:820px) {
-      .stats {
-        grid-template-columns: repeat(4, 1fr)
-      }
-    }
 
-    .stats>div {
-      padding: clamp(1.4rem, 3vw, 2.2rem) clamp(1rem, 2vw, 1.6rem);
-      position: relative
-    }
 
-    .stats>div+div::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 18%;
-      bottom: 18%;
-      width: 1px;
-      background: var(--line)
-    }
 
-    @media(max-width:819px) {
 
-      .stats>div:nth-child(3)::before,
-      .stats>div:nth-child(1)::before {
-        display: none
-      }
 
-      .stats>div:nth-child(3),
-      .stats>div:nth-child(4) {
-        border-top: 1px solid var(--line)
-      }
-    }
 
-    .stats b {
-      display: block;
-      font-family: var(--fM);
-      font-size: clamp(1.9rem, 4.6vw, 3rem);
-      font-weight: 500;
-      letter-spacing: -.02em;
-      line-height: 1;
-      font-variant-numeric: tabular-nums
-    }
 
-    .stats em {
-      display: block;
-      font-family: var(--fS);
-      font-style: normal;
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      color: var(--ink3);
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-top: .8rem
-    }
+
+
+
+
+
 
     /*── PINNED STORY ──*/
     .pinsec {
@@ -1973,7 +2177,7 @@
        balance, so the first line fills out instead of both lines shrinking) */
     .sechead h2 {
       font-size: var(--t-3);
-      font-weight: 400;
+      font-weight: 700;
       line-height: 1.12;
       letter-spacing: -.02em;
       max-width: none;
@@ -2352,180 +2556,454 @@
     }
 
     /*───────────────────────────────────────────────────────────────
-  §02 — Confluence (spec §5.2)
-  A drainage basin: seven tributaries, one hub, one outlet. It is
-  the visual answer to §01's "Fragmented" — scattered inputs settle,
-  draw in, and leave as a single channel.
+  §03 — Decision gap: DATA → FLOODGUARD → INTELLIGENCE → DECISION
+  One SVG diagram, two fixed geometries (by width). Layer surfaces
+  are small procedural rasters coloured from the ocean ramp; every
+  other colour here is a token, so both themes come for free.
 ───────────────────────────────────────────────────────────────*/
+    #gap {
+      --dg-edge: rgba(18, 118, 143, .55);
+      --dg-stream: var(--b500);
+      --dg-side: var(--b900);
+      --dg-core-top: var(--b800);
+      --dg-core-l: var(--b900);
+      --dg-core-r: var(--b950);
+      --dg-core-edge: var(--b300);
+      --dg-core-mark: var(--b100);
+      --dg-glow: var(--b400);
+      --dg-glowA: .3
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) #gap {
+        --dg-edge: rgba(158, 218, 217, .6);
+        --dg-stream: var(--b400);
+        --dg-side: var(--b950);
+        --dg-core-top: var(--b700);
+        --dg-core-l: var(--b800);
+        --dg-core-r: var(--b900);
+        --dg-core-edge: var(--b200);
+        --dg-glowA: .5
+      }
+    }
+
+    :root[data-theme="dark"] #gap {
+      --dg-edge: rgba(158, 218, 217, .6);
+      --dg-stream: var(--b400);
+      --dg-side: var(--b950);
+      --dg-core-top: var(--b700);
+      --dg-core-l: var(--b800);
+      --dg-core-r: var(--b900);
+      --dg-core-edge: var(--b200);
+      --dg-glowA: .5
+    }
+
     /* .pin sets align-items:center for its row layout; in a column that would
    centre the header instead of leaving it flush with the grid. */
-    .confl {
+    .dg {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: stretch;
-      gap: clamp(1rem, 2.4vh, 2rem);
+      gap: clamp(.8rem, 2vh, 1.6rem);
       overflow: hidden;
       padding-top: calc(var(--header-h) + 14px);
-      padding-bottom: .6rem
+      padding-bottom: 1rem
     }
 
     /* inside a 100svh pin: no gap under the head */
-    .conflHead.sechead {
+    .dgHead.sechead {
       margin-bottom: 0
     }
 
-    .conflLead {
-      color: var(--ink2);
-      max-width: 52ch
-    }
-
-    .conflStage {
+    .dgStage {
       position: relative;
       flex: 1;
       min-height: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-inline: clamp(1.1rem, 4.2vw, 3.2rem)
+      padding-inline: var(--gutter)
     }
 
-    .conflStage svg {
+    .dgStage svg {
       display: block;
       height: 100%;
       width: auto;
       max-width: 100%;
-      margin-inline: auto
+      overflow: visible
     }
 
-    @media (max-height:900px) {
-      .conflLead {
-        display: none
-      }
+    /* column heads */
+    .dgH .badge {
+      fill: none;
+      stroke: var(--brand2);
+      stroke-width: 1.5
     }
 
-
-
-    .cflPill rect {
-      fill: var(--glassA);
-      stroke: var(--line2);
-      stroke-width: 1
+    .dgH .num {
+      font-family: var(--fM);
+      font-size: 15px;
+      font-weight: 600;
+      fill: var(--brand2)
     }
 
-    .cflPill text {
+    .dgH .ttl {
+      font-family: var(--fS);
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      fill: var(--ink)
+    }
+
+    .dgH .sub {
       font-family: var(--fS);
       font-size: 16px;
       font-weight: 500;
       fill: var(--ink2)
     }
 
-    .cflStream {
-      fill: none;
-      stroke-width: 2.5;
-      stroke-linecap: round
+    /* chips, process boxes, layer labels */
+    .dgCard rect {
+      fill: var(--glassA);
+      stroke: var(--line2);
+      stroke-width: 1;
+      transition: stroke .2s
     }
 
-    /* draw-on: pathLength is normalised to 1, so one dash covers the whole path
-   and the offset is the progress — no need to measure geometry at runtime */
-    .cflDraw {
+    .dgCard text {
+      font-family: var(--fS);
+      font-size: 17px;
+      font-weight: 500;
+      fill: var(--ink)
+    }
+
+    .dgProc text {
+      font-size: 14px;
+      font-weight: 600;
+      fill: var(--ink2)
+    }
+
+    .dgIco {
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    /* connectors */
+    .dgLink {
+      fill: none;
+      stroke: var(--line2);
+      stroke-width: 1.2
+    }
+
+    .dgDot {
+      fill: var(--brand)
+    }
+
+    .dgStream {
+      fill: none;
+      stroke: var(--dg-stream);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      opacity: .85
+    }
+
+    /* draw-on: pathLength is normalised to 1, so the offset is the progress */
+    .dgDraw {
       stroke-dasharray: 1;
       stroke-dashoffset: 1
     }
 
-    .cflHub circle {
-      fill: var(--brand);
-      stroke: none
-    }
-
-    .cflRing {
-      fill: none;
-      stroke: var(--line2);
-      stroke-width: 1.5;
-      stroke-dasharray: 4 6
-    }
-
-    .cflHub text,
-    .cflOutBox text {
-      font-family: var(--fS);
-      font-weight: 600
-    }
-
-    .cflHub text {
-      fill: var(--onBrand);
-      font-size: 17px
-    }
-
-    .cflOutBox rect {
+    .dgArrow {
       fill: none;
       stroke: var(--brand);
-      stroke-width: 1.5
-    }
-
-    .cflOutBox text {
-      fill: var(--ink);
-      font-size: 18px
-    }
-
-    .cflOutBox .sub {
-      fill: var(--ink3);
-      font-size: 13px;
-      font-weight: 500
-    }
-
-    .cflOutlet {
-      fill: none;
-      stroke: var(--brand);
-      stroke-width: 6;
-      stroke-linecap: round
-    }
-
-    /* ambient flow — a dashed overlay drifting along each drawn path. Starts
-   only once the diagram has finished drawing, and stops off-screen. */
-    .cflFlow {
-      fill: none;
-      stroke-width: 2.5;
+      stroke-width: 2.2;
       stroke-linecap: round;
-      stroke-dasharray: 6 10;
+      stroke-linejoin: round
+    }
+
+    /* ambient flow — dashes drifting along each drawn path once it is built */
+    .dgFlow {
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 4 14;
       opacity: 0
     }
 
-    .cflOn .cflFlow {
+    .dgOn .dgFlow {
       opacity: .9;
-      animation: cflDrift 1.6s linear infinite
+      animation: dgDrift 1.4s linear infinite
     }
 
-    @keyframes cflDrift {
+    @keyframes dgDrift {
       to {
-        stroke-dashoffset: -16
+        stroke-dashoffset: -18
       }
     }
 
-    /* hover/tap focus: the chosen stream keeps its colour, the rest recede */
-    .cflDim {
-      opacity: .35
+    /* map layers */
+    .dgLayer .side {
+      fill: var(--dg-side)
     }
 
-    .cflLit rect {
+    .dgLayer .shadeL {
+      fill: var(--iso-side-left)
+    }
+
+    .dgLayer .shadeR {
+      fill: var(--iso-side-right)
+    }
+
+    .dgLayer .edge {
+      fill: none;
+      stroke: var(--dg-edge);
+      stroke-width: 1.2;
+      transition: stroke .2s, stroke-width .2s
+    }
+
+    .dgLit .edge {
+      stroke: var(--brand);
+      stroke-width: 2.6
+    }
+
+    .dgLit rect {
       stroke: var(--brand)
     }
 
-    .cflLit text {
+    .dgDim {
+      opacity: .3;
+      transition: opacity .25s
+    }
+
+    /* the FloodGuard core */
+    .dgCore .top {
+      fill: var(--dg-core-top)
+    }
+
+    .dgCore .l {
+      fill: var(--dg-core-l)
+    }
+
+    .dgCore .r {
+      fill: var(--dg-core-r)
+    }
+
+    .dgCore .edge,
+    .dgCore .seam {
+      fill: none;
+      stroke: var(--dg-core-edge);
+      stroke-width: 1.2;
+      stroke-opacity: .8
+    }
+
+    .dgCore .seam {
+      stroke-opacity: .28
+    }
+
+    .dgCore .mark {
+      fill: none;
+      stroke: var(--dg-core-mark);
+      stroke-width: 2;
+      stroke-linecap: round
+    }
+
+    .dgG0 {
+      stop-color: var(--dg-glow);
+      stop-opacity: var(--dg-glowA)
+    }
+
+    .dgG1 {
+      stop-color: var(--dg-glow);
+      stop-opacity: 0
+    }
+
+    .dgRing {
+      fill: none;
+      stroke: var(--brand2);
+      stroke-width: 1.2;
+      stroke-dasharray: 3 7;
+      opacity: .55
+    }
+
+    .dgOn .dgRing {
+      animation: dgRing 14s linear infinite
+    }
+
+    @keyframes dgRing {
+      to {
+        stroke-dashoffset: -200
+      }
+    }
+
+    /* decision panel */
+    .dgPanel {
+      fill: var(--glassA);
+      stroke: var(--line2);
+      stroke-width: 1
+    }
+
+    .dgDiv {
+      stroke: var(--line);
+      stroke-width: 1
+    }
+
+    .dgRow text {
+      font-family: var(--fS);
+      font-size: 17px;
+      font-weight: 500;
       fill: var(--ink)
     }
 
-    /* Static state: no pin, no scrub — the finished diagram, drawn once. */
-    body.nopin .confl {
+    .dgRow .hit {
+      fill: transparent;
+      transition: fill .2s
+    }
+
+    .dgRow .chev {
+      fill: none;
+      stroke: var(--ink3);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke .2s, transform .2s
+    }
+
+    .dgRow:hover .hit {
+      fill: var(--dentBg)
+    }
+
+    .dgRow:hover .chev {
+      stroke: var(--brand);
+      transform: translateX(3px)
+    }
+
+    /* feature strip under the diagram */
+    .dgFeat {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      width: min(var(--wrap), calc(100% - 2 * var(--gutter)));
+      margin: 0 auto;
+      padding: 1.1rem 0;
+      border: 1px solid var(--line2);
+      border-radius: var(--r-m);
+      background: var(--glassB);
+      transition: opacity .7s var(--E), transform .7s var(--E)
+    }
+
+    body:not(.nopin) .dgFeat:not(.on) {
+      opacity: 0;
+      transform: translateY(14px)
+    }
+
+    .dgFeat li {
+      display: flex;
+      gap: .9rem;
+      align-items: flex-start;
+      padding: .2rem 1.4rem;
+      border-left: 1px solid var(--line)
+    }
+
+    .dgFeat li:first-child {
+      border-left: 0
+    }
+
+    .dgFeat svg {
+      width: 30px;
+      height: 30px;
+      flex: none;
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .dgFeat b {
+      display: block;
+      font-size: var(--t-0);
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink)
+    }
+
+    .dgFeat span {
+      display: block;
+      font-size: var(--t-sm);
+      line-height: 1.45;
+      color: var(--ink2)
+    }
+
+    /* pinned on a short screen: the diagram gets the room */
+    @media (min-width:900px) and (max-height:900px) {
+      body:not(.nopin) .dgHead .shLead {
+        display: none
+      }
+    }
+
+    @media (min-width:900px) and (max-height:800px) {
+      body:not(.nopin) .dgFeat {
+        display: none
+      }
+    }
+
+    /* <900: no pin — the diagram runs vertically and scrubs by scroll position */
+    @media (max-width:899px) {
+      #gap {
+        height: auto !important
+      }
+
+      #gapPin {
+        position: static;
+        height: auto;
+        display: block;
+        padding-block: var(--section-pad-y)
+      }
+
+      .dgStage {
+        margin-block: 1.6rem 2rem
+      }
+
+      .dgStage svg {
+        width: 100%;
+        height: auto;
+        max-width: 480px
+      }
+
+      .dgFeat {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 1.2rem
+      }
+
+      .dgFeat li:nth-child(3) {
+        border-left: 0
+      }
+    }
+
+    @media (max-width:520px) {
+      .dgFeat {
+        grid-template-columns: 1fr
+      }
+
+      .dgFeat li {
+        border-left: 0
+      }
+    }
+
+    /* Static state: no pin, no scrub — the finished diagram. */
+    body.nopin .dg {
       padding-block: var(--section-pad-y);
       gap: 1.6rem
     }
 
-    body.nopin .conflStage {
-      height: clamp(320px, 54vh, 520px);
-      flex: none
-    }
-
-    body.nopin .conflLead {
-      display: block
+    body.nopin .dgStage svg {
+      width: 100%;
+      height: auto
     }
 
     /*───────────────────────────────────────────────────────────────
@@ -2636,7 +3114,7 @@
     .aboutWord {
       font-family: var(--fD);
       font-size: clamp(3.4rem, 12vw, 10rem);
-      font-weight: 400;
+      font-weight: 800;
       line-height: 1;
       letter-spacing: -.03em;
       transform-origin: center
@@ -2685,7 +3163,7 @@
       margin-inline: auto;
       margin-bottom: 1.2rem;
       color: var(--text-on-brand);
-      font-weight: 400
+      font-weight: 700
     }
 
     .dropText p {
@@ -2729,7 +3207,7 @@
       margin-inline: auto;
       margin-bottom: 1.2rem;
       color: #fff;
-      font-weight: 400
+      font-weight: 700
     }
 
     .dropShared p {
@@ -3296,6 +3774,7 @@
 
     .platCard {
       position: relative;
+      scroll-margin-top: calc(var(--header-h) + 40px);
       isolation: isolate;
       overflow: clip;
       border-radius: var(--r-l)
@@ -3923,7 +4402,7 @@
 
     .stackCount b {
       font-size: 2.6rem;
-      font-weight: 450;
+      font-weight: 700;
       color: var(--brand);
       letter-spacing: -.04em;
       font-variant-numeric: tabular-nums
@@ -4000,7 +4479,7 @@
       display: block;
       font-family: var(--fD);
       font-size: clamp(2rem, 5vw, 2.8rem);
-      font-weight: 450;
+      font-weight: 700;
       letter-spacing: -.04em;
       line-height: 1;
       font-variant-numeric: tabular-nums
@@ -4427,45 +4906,13 @@
     }
 
     /*── scroll-down cue ──*/
-    #down {
-      position: absolute;
-      left: 0;
-      right: 0;
-      width: max-content;
-      margin-inline: auto;
-      bottom: clamp(1rem, 3vw, 2.2rem);
-      z-index: 4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: .5rem;
-      color: var(--ink3)
-    }
 
-    #down span {
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      font-weight: 600;
-      text-transform: uppercase
-    }
 
-    #down i {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--line2);
-      animation: bob 2.4s var(--E) infinite
-    }
 
-    #down svg {
-      width: 13px;
-      height: 13px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2
-    }
+
+
+
+
 
     @keyframes bob {
 
@@ -4479,9 +4926,7 @@
       }
     }
 
-    body.rm #down i {
-      animation: none
-    }
+
 
     /*── back to top + floating contact ──*/
     #fabs {
@@ -5194,48 +5639,17 @@
     /*═══════════ CONTENT-MASTER COMPONENTS ═══════════*/
 
     /*── time spine: historical → current → future ──*/
-    .tspine {
-      display: flex;
-      align-items: center;
-      gap: .7rem;
-      padding: .8rem .9rem .2rem;
-      border-top: 1px solid var(--line);
-      margin-top: .4rem
-    }
 
-    .tspine i {
-      font-style: normal;
-      font-family: var(--fS);
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      font-weight: 600;
-      color: var(--ink3);
-      white-space: nowrap
-    }
 
-    .tspine i:nth-of-type(2) {
-      color: var(--brand)
-    }
 
-    .tspine span {
-      flex: 1 1 auto;
-      min-width: 14px;
-      height: 1px;
-      background: linear-gradient(90deg, var(--line2), var(--brand))
-    }
 
-    .tspine.flat {
-      border-top: 0;
-      padding: 0;
-      margin: 0 0 1.7rem
-    }
 
-    .tspine.flat i {
-      font-size: var(--t-label);
-      font-weight: 600;
-      letter-spacing: .1em
-    }
+
+
+
+
+
+
 /*── the flood problem ──*/
 
     /*── product kickers, disclaimer, explorer band ──*/
@@ -5380,25 +5794,36 @@
       color: var(--ink)
     }
 
-    @media(max-width:1280px) {
-      .cta-sm.ghost {
+    /*── header sign in / sign out — a quiet text button beside the CTAs ──*/
+    .hsign {
+      padding: .6rem .7rem;
+      border-radius: 999px;
+      font-size: var(--t-sm);
+      font-weight: 600;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--ink2);
+      transition: color .25s, background .25s
+    }
+
+    .hsign:hover {
+      color: var(--ink);
+      background: var(--dentBg)
+    }
+
+    /* below this the six-item nav no longer fits beside all three; the
+       Menu still carries Request a demo and Sign in */
+    @media(max-width:1400px) {
+      .cta-sm.ghost,
+      .hsign {
         display: none
       }
     }
 
     /*── three-up stat rail ──*/
-    @media(min-width:820px) {
-      .stats {
-        grid-template-columns: repeat(3, 1fr)
-      }
-    }
 
-    @media(max-width:819px) {
-      .stats>div:nth-child(3) {
-        grid-column: 1/-1;
-        border-top: 1px solid var(--line)
-      }
-    }
+
+
 
     /*── PHONE/TABLET TUNING ──*/
     @media(max-width:760px) {
@@ -5408,10 +5833,6 @@
 
       #a3 {
         display: none
-      }
-
-      #gap {
-        height: 200svh !important
       }
 
       #why {
@@ -5462,18 +5883,11 @@
         letter-spacing: .14em
       }
 
-      .mfoot,
-      .mhead {
-        gap: .4rem
-      }
 
-    #readout {
-      font-size: var(--t-micro)
-    }
 
-      #down {
-        display: none
-      }
+
+
+
 
       .explorerBand {
         flex-direction: column;
@@ -5505,18 +5919,14 @@
       #fabs,
       #cookie,
       #pre,
-      #down,
       header,
       #menuPanel,
       .ov,
-      .chip,
-      #readout,
-      .lg,
       .copy,
       .pwEye,
       .btn,
       .cta-sm,
-      .sw {
+      .sw{
         display: none !important
       }
 
@@ -5697,8 +6107,6 @@
           <b>FLOODGUARD</b>
         </a>
         <nav class="main" aria-label="Primary">
-          <div class="ni"><a href="#hero">Home</a></div>
-          <div class="ni"><a href="#about">About Us</a></div>
           <div class="ni"><button type="button" aria-expanded="false">Products <svg viewBox="0 0 12 12">
                 <path d="M2 4.5 6 8.5 10 4.5" />
               </svg></button>
@@ -5708,35 +6116,41 @@
               <a href="products.html#live"><b>Live</b><em>Real-time rainfall, radar, risk and alerts</em></a>
             </div>
           </div>
-          <div class="ni"><button type="button" aria-expanded="false">Platform <svg viewBox="0 0 12 12">
-                <path d="M2 4.5 6 8.5 10 4.5" />
-              </svg></button>
-            <div class="drop">
-              <a href="#platform"><b>Platform overview</b></a>
-              <a href="#platform"><b>Technology</b></a>
-              <a href="#platform"><b>Data</b></a>
-              <a href="#platform"><b>Methodology</b></a>
-              <a href="#platform"><b>Validation</b></a>
-              <a href="#platform"><b>API</b></a>
-            </div>
-          </div>
           <div class="ni"><button type="button" aria-expanded="false">Solutions <svg viewBox="0 0 12 12">
                 <path d="M2 4.5 6 8.5 10 4.5" />
               </svg></button>
             <div class="drop">
-              <a href="#serve"><b>Insurance &amp; Reinsurance</b></a>
-              <a href="#serve"><b>Banking &amp; Finance</b></a>
-              <a href="#serve"><b>Government &amp; Disaster Management</b></a>
-              <a href="#serve"><b>Infrastructure &amp; Engineering</b></a>
-              <a href="#serve"><b>Agriculture &amp; Food Security</b></a>
+              <a href="solutions.html#insurance"><b>Insurance &amp; Reinsurance</b></a>
+              <a href="solutions.html#banking"><b>Banking &amp; Finance</b></a>
+              <a href="solutions.html#agriculture"><b>Agriculture</b></a>
+              <a href="solutions.html#infrastructure"><b>Infrastructure</b></a>
+              <a href="solutions.html#government"><b>Government</b></a>
             </div>
           </div>
-          <div class="ni"><a href="#insights">Insights</a></div>
-          <div class="ni"><a href="#start">Contact</a></div>
+          <div class="ni"><button type="button" aria-expanded="false">Platform <svg viewBox="0 0 12 12">
+                <path d="M2 4.5 6 8.5 10 4.5" />
+              </svg></button>
+            <div class="drop">
+              <a href="#plat-data"><b>Data</b><em>Observed, satellite, terrain and projections</em></a>
+              <a href="#plat-technology"><b>Technology</b></a>
+              <a href="#plat-methodology"><b>Methodology</b></a>
+            </div>
+          </div>
+          <div class="ni"><button type="button" aria-expanded="false">Insights <svg viewBox="0 0 12 12">
+                <path d="M2 4.5 6 8.5 10 4.5" />
+              </svg></button>
+            <div class="drop">
+              <a href="#ins-research"><b>Research</b></a>
+              <a href="#ins-data-stories"><b>Data Stories</b></a>
+              <a href="#ins-reports"><b>Reports</b></a>
+            </div>
+          </div>
+          <div class="ni"><a href="#about">About</a></div>
         </nav>
         <div class="hact">
-          <a class="cta-sm" href="products.html#explorer">Explore district risk</a>
-          <a class="cta-sm ghost" href="#start" data-utm>Book a demo</a>
+          <a class="cta-sm" href="#hmap">Explore Free Data</a>
+          <a class="cta-sm ghost" href="#start" data-utm>Request a Demo</a>
+          <button class="hsign" type="button" data-signin>Sign in</button>
           <div class="menuWrap">
             <button id="menuBtn" type="button" aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
               <span class="mIcon"><i></i><i></i><i></i></span><span class="mWord">Menu</span>
@@ -5770,21 +6184,22 @@
 
               <div class="mSec">
                 <p class="mLbl">Navigate</p>
-                <a href="#problem"><b>The flood problem</b></a>
-                <a href="#record"><b>75 years of flood record</b></a>
-                <a href="#decision"><b>Decision support</b></a>
-                <a href="#platform"><b>Platform</b></a>
-                <a href="sectors.html"><b>Sectors</b></a>
-                <a href="#serve"><b>Solutions</b></a>
-                <a href="#about"><b>About us</b></a>
+                <a href="#problem"><b>The challenge</b></a>
+                <a href="#record"><b>History and projections</b></a>
+                <a href="#gap"><b>The decision gap</b></a>
+                <a href="#decision"><b>The FloodGuard approach</b></a>
+                <a href="#products"><b>Products</b></a>
+                <a href="#sectors"><b>Sectors</b></a>
+                <a href="#why"><b>Why FloodGuard</b></a>
                 <a href="#insights"><b>Insights</b></a>
+                <a href="#about"><b>About us</b></a>
               </div>
 
               <div class="mSec">
                 <p class="mLbl">Actions</p>
                 <button type="button" id="sBtn"><b>Search</b><span class="kbd">Ctrl K</span></button>
-                <button type="button" id="signinBtn"><b>Sign in</b></button>
-                <a class="mCta" href="#start" data-utm>Book a demo
+                <button type="button" id="signinBtn" data-signin><b>Sign in</b></button>
+                <a class="mCta" href="#start" data-utm>Request a demo
                   <svg viewBox="0 0 14 14">
                     <path d="M2 7h10M8 3l4 4-4 4" />
                   </svg></a>
@@ -5802,101 +6217,99 @@
       <!-- ══ HERO ══ -->
       <section id="hero">
         <div class="wrap hgrid">
-          <div>
-            <p class="eye caps" data-rv><i></i>Enterprise flood intelligence · India · Private preview</p>
+          <div class="hcopy">
+            <p class="eye caps" data-rv><i></i>India's flood intelligence platform</p>
             <h1>
-              <span class="mask"><span>Know the flood</span></span>
-              <span class="mask"><span>before it <em>arrives</em>.</span></span>
+              <span class="mask"><span>One view of flood risk.</span></span>
+              <span class="mask"><span class="hTime"><span data-hm-echo="history">Past</span>, <span
+                    data-hm-echo="now">present</span> and <span data-hm-echo="future">future</span>.</span></span>
             </h1>
-            <p class="hsub" data-rv>FloodGuard turns decades of observed climate and flood data into forward-looking
-              flood intelligence — helping organizations understand risk across India's districts and talukas.</p>
+            <p class="hsub" data-rv>FloodGuard brings historical intelligence, real-time flood conditions and future
+              risk scenarios together in one platform — helping you understand, assess and act on flood risk across
+              India.</p>
             <div class="hcta" data-rv>
-              <a class="btn bp" href="products.html#explorer">Explore district risk <svg viewBox="0 0 14 14">
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg></a>
-              <a class="btn bg2" href="#start" data-utm>Book a demo</a>
+              <a class="btn bp" href="products.html#explorer">Explore Flood Risk <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
+              <a class="btn bg2" href="#start" data-utm>Request a Demo</a>
             </div>
           </div>
 
-          <div class="mstack" data-rv>
-            <div class="mcard glass" id="mcard">
-              <div class="mhead">
-                <span class="caps">Telangana district risk · observed record</span>
-                <div class="msearch" id="msearch">
-                  <button class="msBtn" type="button" id="msBtn" aria-expanded="false" aria-controls="msPanel"
-                    aria-label="Search Telangana by district">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="11" cy="11" r="7" />
-                      <path d="m16.5 16.5 4 4" stroke-linecap="round" />
-                    </svg>
-                    <span>Search</span>
-                  </button>
-                  <div class="msField" id="msField" hidden>
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="11" cy="11" r="7" />
-                      <path d="m16.5 16.5 4 4" stroke-linecap="round" />
-                    </svg>
-                    <input id="msInput" type="search" placeholder="Search a Telangana district…" autocomplete="off"
-                      spellcheck="false" role="combobox" aria-expanded="false" aria-controls="msList"
-                      aria-autocomplete="list" aria-label="Search the map">
-                    <button class="msX" type="button" id="msX" aria-label="Close map search"><span
-                        class="kbd">ESC</span></button>
-                  </div>
-                </div>
+          <!-- the product visual: India across History · Now · Future (assets/js/hero-map.js) -->
+          <div class="hmap" id="hmap" data-mode="now" data-rv>
+            <div class="hmHead">
+              <div class="hmTitle">
+                <b>India · District flood risk</b>
+                <span class="hmCap"><span data-cap="history">Observed record · 1951–2025</span><span
+                    data-cap="now">Current conditions</span><span data-cap="future">Climate scenario · 2050</span></span>
+                <span class="hmNote"><i></i>Illustrative data · not live conditions</span>
               </div>
-              <div class="mbody">
-                <canvas id="mapC"
-                  aria-label="Schematic dot-density map of Telangana showing relative flood exposure by district"></canvas>
-                <div class="msPanel" id="msPanel" hidden>
-                  <ul id="msList" role="listbox" aria-label="Map search results"></ul>
-                  <p class="msEmpty" id="msEmpty" hidden>No match. Try “Hyderabad”, “Warangal” or “Khammam”.</p>
-                </div>
-                <div class="mtip" id="mtip" hidden>
-                  <b id="mtipName"></b>
-                  <span class="mtipSub" id="mtipSub"></span>
-                  <span class="mtipMeter"><i id="mtipBar"></i></span>
-                  <span class="mtipRow"><span id="mtipBand"></span><em id="mtipIdx"></em></span>
-                  <span class="mtipGo">Open district data <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></span>
-                </div>
+              <div class="hmSeg" role="radiogroup" aria-label="Time horizon">
+                <button type="button" role="radio" data-hm-set="history" aria-checked="false" tabindex="-1">History</button>
+                <button type="button" role="radio" data-hm-set="now" aria-checked="true">Now</button>
+                <button type="button" role="radio" data-hm-set="future" aria-checked="false" tabindex="-1">Future</button>
               </div>
-              <div class="mfoot">
-                <div class="lg"><span>Lower</span>
-                  <b style="background:var(--b100)"></b><b style="background:var(--b200)"></b><b
-                    style="background:var(--b300)"></b>
-                  <b style="background:var(--b400)"></b><b style="background:var(--b600)"></b><b
-                    style="background:var(--b800)"></b><b style="background:var(--b950)"></b>
-                  <span style="margin-left:.3rem">Higher</span>
-                </div>
-                <span id="readout">Hover a cell · click to open</span>
-              </div>
-              <div class="tspine" aria-hidden="true">
-                <i>Historical</i><span></span><i>Current</i><span></span><i>Future</i></div>
             </div>
+            <div class="hmStage">
+              <svg class="hmBase" role="img"
+                aria-label="Map of India with an illustrative district flood-risk layer, rivers and terrain"></svg>
+              <canvas class="hmRain" aria-hidden="true"></canvas>
+              <svg class="hmTop" aria-hidden="true"></svg>
+              <div class="hmCallouts" aria-hidden="true"></div>
+              <div class="hmTip" hidden><b></b><span class="s"></span><span class="r"></span><span class="go">Open
+                  district data <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></span></div>
+            </div>
+            <div class="hmLayers" role="group" aria-label="Map layers">
+              <p>Layers</p>
+              <button type="button" data-hm-layer="risk" aria-pressed="true">Flood Risk</button>
+              <button type="button" data-hm-layer="rain" aria-pressed="true">Rainfall (Live)</button>
+              <button type="button" data-hm-layer="history" aria-pressed="false">Flood History</button>
+              <button type="button" data-hm-layer="scenario" aria-pressed="false">Climate Scenario</button>
+              <button type="button" data-hm-layer="terrain" aria-pressed="true">Terrain</button>
+              <button type="button" data-hm-layer="exposure" aria-pressed="false">Exposure</button>
+            </div>
+            <div class="hmLegend">
+              <p class="hmLgT"><span data-cap="history">Historical flood risk</span><span data-cap="now">Flood
+                  risk</span><span data-cap="future">Projected flood risk</span></p>
+              <div class="hmRamp" aria-hidden="true"><i style="background:#0f2b33"></i><i style="background:#133f4f"></i><i style="background:#175a73"></i><i style="background:#1f7d98"></i><i style="background:#36a6b8"></i><i style="background:#7cc4a0"></i><i style="background:#e0c062"></i><i style="background:#e38c4a"></i></div>
+              <div class="hmRampL"><span>Low</span><span>High</span></div>
+              <p class="hmLgX" data-cap="now"><i class="hmSwRain"></i>Rainfall, light → heavy</p>
+              <p class="hmLgX" data-cap="history"><i class="hmSwEv"></i>Major recorded flood</p>
+              <div class="hmScen" data-cap="future" role="group" aria-label="Emissions scenario">
+                <button type="button" data-hm-scen="low" aria-pressed="false">Low</button>
+                <button type="button" data-hm-scen="mid" aria-pressed="true">Mid</button>
+                <button type="button" data-hm-scen="high" aria-pressed="false">High</button>
+              </div>
+            </div>
+            <p class="hmCredit"></p>
           </div>
+
+          <ul class="hmicro" data-rv aria-label="Switch the map's time horizon">
+            <li><button type="button" data-hm-echo="history"><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" /><path d="M3 4v4h4M12 7.5V12l3 2" />
+                </svg>Historical datasets</button></li>
+            <li><button type="button" data-hm-echo="now"><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="2" /><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 16.2a6 6 0 0 0 0-8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 19.1a10 10 0 0 0 0-14.2" />
+                </svg>Real-time conditions</button></li>
+            <li><button type="button" data-hm-echo="future"><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" />
+                </svg>Future scenarios</button></li>
+          </ul>
         </div>
-        <a id="down" href="#problem" aria-label="Scroll to content">
-          <span>Scroll</span>
-          <i><svg viewBox="0 0 14 14">
-              <path d="M7 2v10M3 8l4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
-            </svg></i>
-        </a>
+
+        <div class="wrap">
+          <dl class="proof" data-rv>
+            <div><dt>75 <small>Years</small></dt><dd>Observed flood &amp; climate record<span>1951–2025</span></dd></div>
+            <div><dt>766+</dt><dd>Districts<span>Across India</span></dd></div>
+            <div><dt>6,500+</dt><dd>Talukas<span>Granular risk intelligence</span></dd></div>
+            <div><dt>3</dt><dd>Climate scenarios</dd></div>
+          </dl>
+        </div>
       </section>
-
-      <div class="wrap">
-        <div class="stats dent" id="stats" data-rv>
-          <div><b class="tab" data-count="75" data-suffix="+">0</b><em>Years observed</em></div>
-          <div><b class="tab" data-count="766">0</b><em>Districts analysed</em></div>
-          <div><b class="tab" data-count="6512">0</b><em>Talukas mapped</em></div>
-        </div>
-      </div>
 
       <!-- ══ THE FLOOD PROBLEM ══ -->
       <section id="problem">
         <div class="wrap" id="problemPin">
           <div class="sechead" data-rv>
-            <span class="snum">01 — The flood problem</span>
+            <span class="snum">01 — The challenge</span>
             <h2>Flood risk is changing. The way we assess it hasn't.</h2>
             <p class="shLead">Rainfall, exposure and climate are reshaping where floods hit — yet decisions still
               rest on fragmented, backward-looking data.</p>
@@ -5989,59 +6402,48 @@
 
       <!-- ══ DECISION GAP ══ -->
       <section id="gap" class="pinsec" style="height:220svh;padding:0">
-        <div class="pin confl" id="gapPin">
-          <div class="wrap conflHead sechead" data-rv>
+        <div class="pin dg" id="gapPin">
+          <div class="wrap dgHead sechead" data-rv>
             <span class="snum">03 — The decision gap</span>
             <h2>Data alone doesn't answer the decision.</h2>
-            <p class="conflLead shLead">Seven inputs, one channel. The work isn't collecting them — it's making them
-              arrive together, at the moment the decision is made.</p>
+            <p class="shLead">FloodGuard brings diverse flood-risk signals together into one clear picture of hazard,
+              exposure and risk — so the answer arrives at the moment the decision is made.</p>
           </div>
-          <div class="conflStage" id="conflStage"></div>
+          <div class="dgStage" id="dgStage"></div>
+          <ul class="dgFeat" id="dgFeat">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0" />
+              </svg>
+              <div><b>Integrated view</b><span>Many data sources, one intelligence layer.</span></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5" />
+              </svg>
+              <div><b>Granular insights</b><span>From district to taluka, down to asset and portfolio.</span></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 5l7 7-7 7M12 5l7 7-7 7" />
+              </svg>
+              <div><b>Forward-looking</b><span>Current conditions and future scenarios.</span></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M8 12.5l2.8 2.8 5.7-5.8" />
+              </svg>
+              <div><b>Built for decisions</b><span>Designed for real-world use cases.</span></div>
+            </li>
+          </ul>
           <!-- The diagram is decorative; this is the content of record. -->
-          <ol class="sr" id="conflList">
-            <li>Rainfall</li>
-            <li>Flood history</li>
-            <li>Terrain</li>
-            <li>Drainage</li>
-            <li>Satellite data</li>
-            <li>Climate projections</li>
-            <li>Exposure</li>
-            <li>All seven converge in FloodGuard</li>
-            <li>One decision leaves it</li>
+          <ol class="sr">
+            <li>Data: rainfall, flood history, terrain, drainage, satellite data, climate projections and exposure.</li>
+            <li>FloodGuard: geospatial processing, risk modelling and scenario analysis.</li>
+            <li>Intelligence: hazard, exposure, risk and scenarios.</li>
+            <li>Decision: assess risk, plan and prepare, monitor conditions, underwrite and price, prioritise
+              investments, respond and build resilience.</li>
           </ol>
-        </div>
-      </section>
-
-      <!-- ══ PRODUCTS ══ -->
-      <section id="products">
-        <div class="wrap">
-          <div class="sechead" data-rv>
-            <span class="snum">04 — Products</span>
-            <h2>Start free. Go deeper. Monitor in real time.</h2>
-            <p class="shLead">Explorer, Atlas and Live are the same flood record at three different depths.</p>
-          </div>
-          <div class="briefRow" data-rv>
-            <div class="briefCard">
-              <p class="pkick">Explorer · free</p>
-              <h3>First read on flood risk</h3>
-              <p>District-level risk score, free for every visitor.</p>
-            </div>
-            <div class="briefCard">
-              <p class="pkick">Atlas · premium</p>
-              <h3>Risk across time</h3>
-              <p>Historical, current and future flood intelligence in one view.</p>
-            </div>
-            <div class="briefCard">
-              <p class="pkick">Live · operational</p>
-              <h3>What's happening now</h3>
-              <p>Real-time rainfall, radar and flood-risk signals.</p>
-            </div>
-          </div>
-          <div class="briefCta" data-rv>
-            <a class="btn bp btnXl" href="products.html">See all products <svg viewBox="0 0 14 14">
-                <path d="M2 7h10M8 3l4 4-4 4" />
-              </svg></a>
-          </div>
         </div>
       </section>
 
@@ -6049,7 +6451,7 @@
       <section id="decision">
         <div class="wrap">
           <div class="sechead" data-rv>
-            <span class="snum">05 — Decision support</span>
+            <span class="snum">04 — The FloodGuard approach</span>
             <h2>From flood risk to actionable insight.</h2>
             <p class="shLead">Each layer resolves the one beneath it. Nothing is inferred from a single source, and
               every layer stays inspectable on its own.</p>
@@ -6094,7 +6496,7 @@
         <div class="tideBand" id="tideBand" aria-hidden="true"></div>
         <div class="wrap">
           <div class="sechead" data-rv>
-            <span class="snum">06 — Platform</span>
+            <span class="snum">05 — Platform</span>
             <h2>Data in. Intelligence out.</h2>
             <p class="shLead">Five parts, each inspectable on its own. Nothing here is a black box — every number we
               publish can be traced back to the data and the method that produced it.</p>
@@ -6109,7 +6511,7 @@
           </div>
 
           <div class="platList" id="platList">
-            <article class="platCard" data-step>
+            <article class="platCard" id="plat-data" data-step>
               <div class="platBody">
                 <div class="platTop">
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -6129,7 +6531,7 @@
               </div>
             </article>
 
-            <article class="platCard" data-step>
+            <article class="platCard" id="plat-technology" data-step>
               <div class="platBody">
                 <div class="platTop">
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -6148,7 +6550,7 @@
               </div>
             </article>
 
-            <article class="platCard" data-step>
+            <article class="platCard" id="plat-methodology" data-step>
               <div class="platBody">
                 <div class="platTop">
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -6167,7 +6569,7 @@
               </div>
             </article>
 
-            <article class="platCard" data-step>
+            <article class="platCard" id="plat-validation" data-step>
               <div class="platBody">
                 <div class="platTop">
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -6186,7 +6588,7 @@
               </div>
             </article>
 
-            <article class="platCard" data-step>
+            <article class="platCard" id="plat-api" data-step>
               <div class="platBody">
                 <div class="platTop">
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -6211,6 +6613,39 @@
             </svg></a></div>
       </section>
 
+      <!-- ══ PRODUCTS ══ -->
+      <section id="products">
+        <div class="wrap">
+          <div class="sechead" data-rv>
+            <span class="snum">06 — Products</span>
+            <h2>Start free. Go deeper. Monitor in real time.</h2>
+            <p class="shLead">Explorer, Atlas and Live are the same flood record at three different depths.</p>
+          </div>
+          <div class="briefRow" data-rv>
+            <div class="briefCard">
+              <p class="pkick">Explorer · free</p>
+              <h3>First read on flood risk</h3>
+              <p>District-level risk score, free for every visitor.</p>
+            </div>
+            <div class="briefCard">
+              <p class="pkick">Atlas · premium</p>
+              <h3>Risk across time</h3>
+              <p>Historical, current and future flood intelligence in one view.</p>
+            </div>
+            <div class="briefCard">
+              <p class="pkick">Live · operational</p>
+              <h3>What's happening now</h3>
+              <p>Real-time rainfall, radar and flood-risk signals.</p>
+            </div>
+          </div>
+          <div class="briefCta" data-rv>
+            <a class="btn bp btnXl" href="products.html">See all products <svg viewBox="0 0 14 14">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg></a>
+          </div>
+        </div>
+      </section>
+
       <!-- ══ SECTORS ══ -->
       <section id="sectors">
         <div class="wrap">
@@ -6222,7 +6657,7 @@
           </div>
           <div class="secPanel">
             <div class="secBriefs">
-              <a class="secBrief" href="sectors.html#agriculture" data-rv>
+              <a class="secBrief" href="solutions.html#agriculture" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 21V10" />
                   <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z" />
@@ -6232,7 +6667,7 @@
                 <p>Crop loss, sowing windows and mandi exposure, mapped to the taluka a field sits in.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="sectors.html#lending" data-rv>
+              <a class="secBrief" href="solutions.html#banking" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 10 12 4l9 6" />
                   <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" />
@@ -6241,7 +6676,7 @@
                 <p>Flood risk priced into the loan book — KCC, farm loans, mortgages and MSME credit.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="sectors.html#insurance" data-rv>
+              <a class="secBrief" href="solutions.html#insurance" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" />
                   <path d="M9 12h6M12 9v6" />
@@ -6250,7 +6685,7 @@
                 <p>Underwriting, pricing and accumulation with an observed flood record behind every policy.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="sectors.html#government" data-rv>
+              <a class="secBrief" href="solutions.html#government" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 21V9l8-5 8 5v12" />
                   <path d="M9 21v-6h6v6M2 21h20" />
@@ -6259,7 +6694,7 @@
                 <p>District disaster plans, relief pre-positioning and resilient public spending.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="sectors.html#infrastructure" data-rv>
+              <a class="secBrief" href="solutions.html#infrastructure" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16" />
                   <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1" />
@@ -6272,7 +6707,7 @@
             <div class="secPanelFoot" data-rv>
               <p>Each sector gets its own view of the same record — the decisions it faces, the exposure that matters
                 to it, and what FloodGuard puts in front of the people making the call.</p>
-              <a class="btn bp btnXl" href="sectors.html">Explore all sectors <svg viewBox="0 0 14 14">
+              <a class="btn bp btnXl" href="solutions.html">Explore all solutions <svg viewBox="0 0 14 14">
                   <path d="M2 7h10M8 3l4 4-4 4" />
                 </svg></a>
             </div>
@@ -6326,6 +6761,101 @@
         </div>
       </section>
 
+      <!-- ══ INSIGHTS ══ -->
+      <section id="insights">
+        <div class="wrap">
+          <div class="sechead" data-rv>
+            <span class="snum">10 — Insights</span>
+            <h2>Research, data stories and practical perspectives.</h2>
+            <p class="shLead">Five strands of work, published as the library fills. Each one starts from the same
+              observed record the rest of the platform is built on.</p>
+          </div>
+        </div>
+        <div class="wrap">
+          <div class="deck" id="insightDeck">
+            <article class="deckCard" id="ins-research" style="--i:0">
+              <div class="deckInner">
+                <div class="deckText">
+                  <span class="deckKind">Research</span>
+                  <h3>Flood risk, climate data and India's changing risk landscape</h3>
+                  <p>How the observed record and climate projections disagree, where they agree, and what
+                    that means for anyone pricing or planning around flood.</p>
+                  <a class="deckLink" href="#start">Request research <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a>
+                </div>
+                <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
+              </div>
+              <i class="deckDim" aria-hidden="true"></i>
+            </article>
+
+            <article class="deckCard" id="ins-reports" style="--i:1">
+              <div class="deckInner">
+                <div class="deckText">
+                  <span class="deckKind">White paper</span>
+                  <h3>Exposure and decision support</h3>
+                  <p>Detailed method notes on how exposure is resolved from district to site, and how the
+                    result is meant to be read by the people making the call.</p>
+                  <a class="deckLink" href="#start">Request paper <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a>
+                </div>
+                <div class="deckMedia" data-tex="grid" aria-hidden="true"></div>
+              </div>
+              <i class="deckDim" aria-hidden="true"></i>
+            </article>
+
+            <article class="deckCard" style="--i:2">
+              <div class="deckInner">
+                <div class="deckText">
+                  <span class="deckKind">Use case</span>
+                  <h3>Sector-specific applications</h3>
+                  <p>What insurance, banking, government, infrastructure and agriculture each actually ask
+                    of a flood model — and where those questions diverge.</p>
+                  <a class="deckLink" href="#serve">See solutions <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a>
+                </div>
+                <div class="deckMedia" data-tex="hatch" aria-hidden="true"></div>
+              </div>
+              <i class="deckDim" aria-hidden="true"></i>
+            </article>
+
+            <article class="deckCard" id="ins-data-stories" style="--i:3">
+              <div class="deckInner">
+                <div class="deckText">
+                  <span class="deckKind">Data story</span>
+                  <h3>Seventy-five years of rainfall, drawn</h3>
+                  <p>Visual explorations of the flood history and rainfall record behind the platform,
+                    built from the same series the timeline above reads from.</p>
+                  <a class="deckLink" href="#record">See the record <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a>
+                </div>
+                <div class="deckMedia" data-tex="contours" aria-hidden="true"></div>
+              </div>
+              <i class="deckDim" aria-hidden="true"></i>
+            </article>
+
+            <article class="deckCard" style="--i:4">
+              <div class="deckInner">
+                <div class="deckText">
+                  <span class="deckKind">Article</span>
+                  <h3>Perspectives on flood science and resilience</h3>
+                  <p>Shorter pieces on flood science, technology and resilience, written for people who
+                    have to act on the answer rather than publish it.</p>
+                  <a class="deckLink" href="#start">Get notified <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a>
+                </div>
+                <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
+              </div>
+              <i class="deckDim" aria-hidden="true"></i>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <!-- ══ ABOUT ══ -->
       <!-- no class="drop" here: .drop is the nav dropdown, which is
      opacity:0/visibility:hidden until opened. -->
@@ -6333,8 +6863,8 @@
         <div class="aboutTrack" id="aboutTrack">
           <div class="aboutStage" id="aboutStage">
             <div class="aboutFlood" id="aboutFlood" aria-hidden="true"></div>
-            <h2 class="aboutTitle" id="aboutTitle" aria-label="10 — About us">
-              <span class="aboutNum" id="aboutNum" aria-hidden="true">10</span>
+            <h2 class="aboutTitle" id="aboutTitle" aria-label="11 — About us">
+              <span class="aboutNum" id="aboutNum" aria-hidden="true">11</span>
               <span class="aboutWord" id="aboutWord" aria-hidden="true">About us</span>
             </h2>
           </div>
@@ -6376,101 +6906,6 @@
             </div>
           </div>
           <div class="dropWave" aria-hidden="true"></div>
-        </div>
-      </section>
-
-      <!-- ══ INSIGHTS ══ -->
-      <section id="insights">
-        <div class="wrap">
-          <div class="sechead" data-rv>
-            <span class="snum">11 — Insights</span>
-            <h2>Research, data stories and practical perspectives.</h2>
-            <p class="shLead">Five strands of work, published as the library fills. Each one starts from the same
-              observed record the rest of the platform is built on.</p>
-          </div>
-        </div>
-        <div class="wrap">
-          <div class="deck" id="insightDeck">
-            <article class="deckCard" style="--i:0">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Research</span>
-                  <h3>Flood risk, climate data and India's changing risk landscape</h3>
-                  <p>How the observed record and climate projections disagree, where they agree, and what
-                    that means for anyone pricing or planning around flood.</p>
-                  <a class="deckLink" href="#start">Request research <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-
-            <article class="deckCard" style="--i:1">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">White paper</span>
-                  <h3>Exposure and decision support</h3>
-                  <p>Detailed method notes on how exposure is resolved from district to site, and how the
-                    result is meant to be read by the people making the call.</p>
-                  <a class="deckLink" href="#start">Request paper <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="grid" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-
-            <article class="deckCard" style="--i:2">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Use case</span>
-                  <h3>Sector-specific applications</h3>
-                  <p>What insurance, banking, government, infrastructure and agriculture each actually ask
-                    of a flood model — and where those questions diverge.</p>
-                  <a class="deckLink" href="#serve">See solutions <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="hatch" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-
-            <article class="deckCard" style="--i:3">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Data story</span>
-                  <h3>Seventy-five years of rainfall, drawn</h3>
-                  <p>Visual explorations of the flood history and rainfall record behind the platform,
-                    built from the same series the timeline above reads from.</p>
-                  <a class="deckLink" href="#record">See the record <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="contours" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-
-            <article class="deckCard" style="--i:4">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Article</span>
-                  <h3>Perspectives on flood science and resilience</h3>
-                  <p>Shorter pieces on flood science, technology and resilience, written for people who
-                    have to act on the answer rather than publish it.</p>
-                  <a class="deckLink" href="#start">Get notified <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-          </div>
         </div>
       </section>
 
@@ -6588,6 +7023,7 @@
                   <path d="M2 7h10M8 3l4 4-4 4" />
                 </svg>
               </button>
+              <p class="demoErr" id="demoErr" role="alert" hidden></p>
               <p class="next caps">We read it → the right person responds → we explore the fit</p>
             </form>
 
@@ -6596,8 +7032,7 @@
                   <path d="m5 12.5 4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg></div>
               <h3>Enquiry received</h3>
-              <p>We've sent a confirmation to <b id="okMail">your inbox</b>. We aim to respond within two business days.
-              </p>
+              <p>Your enquiry has reached the FloodGuard team. We'll reply to <b id="okMail">you</b>.</p>
               <button class="btn bg2" type="button" id="demoReset">Send another enquiry</button>
             </div>
           </div>
@@ -6641,11 +7076,12 @@
             <div class="site-footer__col">
               <h2 class="site-footer__heading">Solutions</h2>
               <ul role="list">
-                <li><a href="#serve">Insurance</a></li>
-                <li><a href="#serve">Banking</a></li>
-                <li><a href="#serve">Government</a></li>
-                <li><a href="#serve">Infrastructure</a></li>
-                <li><a href="#serve">Agriculture</a></li>
+                <li><a href="solutions.html#insurance">Insurance</a></li>
+                <li><a href="solutions.html#banking">Banking</a></li>
+                <li><a href="solutions.html#government">Government</a></li>
+                <li><a href="solutions.html#infrastructure">Infrastructure</a></li>
+                <li><a href="solutions.html#agriculture">Agriculture</a></li>
+                <li><a href="solutions.html#library">Use case library</a></li>
               </ul>
             </div>
             <div class="site-footer__col">
@@ -6706,7 +7142,7 @@
           <path d="M5 5l14 14M19 5 5 19" />
         </svg></button>
       <h3 class="mtitle" id="cTitle">Send this enquiry?</h3>
-      <p class="mbodytxt" id="cBody">We'll email your enquiry to the FloodGuard team and copy you in.</p>
+      <p class="mbodytxt" id="cBody">We'll send your enquiry to the FloodGuard team.</p>
       <div class="mfootrow">
         <button class="btn-xs bx-g" type="button" data-close>Cancel</button>
         <button class="btn-xs bx-p" type="button" id="cOk">Yes, send it</button>
@@ -7128,7 +7564,6 @@
         measureAbout();
         lastGp = -1; pins.forEach(P => P.lastOff = -1);
         barsTop = document.getElementById("tl").getBoundingClientRect().top + base;
-        sizeMap();
       }
       /* Mobile browsers fire resize constantly as the URL bar slides in and out.
          Re-measuring on every one of those is what made scrolling stutter, so
@@ -7187,317 +7622,27 @@
         if (menuPanel.classList.contains("on") && !e.target.closest(".menuWrap")) closeMenu();
         if (openNi && !e.target.closest(".ni")) closeNi();
       });
+      /* sections carry their own top padding, so they land flush; anything
+         smaller (a platform or insight card) keeps its scroll-margin clear
+         of the fixed header */
+      function anchorTop(el) {
+        const off = el.matches("section") ? 0 : parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+        return el.getBoundingClientRect().top + scrollY - off;
+      }
       document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
         const id = a.getAttribute("href"); if (!id || id === "#") return;
         const el = document.querySelector(id); if (!el) return;
         e.preventDefault(); closeMenu();
-        const t = el.getBoundingClientRect().top + scrollY;
-        scrollTo({ top: t, behavior: "smooth" });
+        scrollTo({ top: anchorTop(el), behavior: "smooth" });
       }));
 
       /*── PARALLAX ──*/
       const a1 = document.getElementById("a1"), a2 = document.getElementById("a2"), a3 = document.getElementById("a3");
-      const mcard = document.getElementById("mcard"), chip1 = document.getElementById("chip1"), chip2 = document.getElementById("chip2");
-      let tiltX = 0, tiltY = 0;
       function runParallax(y, dt) {
         a1.style.transform = `translate3d(${-y * .045}px,${y * .09}px,0)`;
         a2.style.transform = `translate3d(${y * .05}px,${-y * .06}px,0)`;
         a3.style.transform = `translate3d(0,${-y * .11}px,0)`;
-        if (RM) return;
-        const nx = TOUCH ? 0 : (px / innerWidth - .5), ny = TOUCH ? 0 : (py / innerHeight - .5);
-        tiltX = lerp(tiltX, ny, 1 - Math.exp(-dt * 3)); tiltY = lerp(tiltY, nx, 1 - Math.exp(-dt * 3));
-        if (mcard) mcard.style.transform = `rotateX(${(-tiltX * 4).toFixed(2)}deg) rotateY(${(tiltY * 5).toFixed(2)}deg) translateZ(0)`;
-        if (chip1) chip1.style.transform = `translate3d(${(tiltY * 22).toFixed(1)}px,${(tiltX * 16 - y * .03).toFixed(1)}px,0)`;
-        if (chip2) chip2.style.transform = `translate3d(${(-tiltY * 18).toFixed(1)}px,${(-tiltX * 14 - y * .05).toFixed(1)}px,0)`;
       }
-
-      /*── TELANGANA DOT MAP ──*/
-      const INDIA = [[77.5, 19.85], [78.35, 19.9], [79.3, 19.55], [79.95, 19.25], [80.3, 18.75], [80.25, 18.2], [81.15, 17.85],
-      [80.95, 17.35], [80.55, 17.55], [80.2, 17.0], [79.85, 16.55], [79.55, 16.35], [78.9, 16.0], [78.35, 15.85],
-      [77.85, 15.85], [77.55, 16.3], [77.2, 16.75], [77.25, 17.45], [77.05, 17.85], [77.35, 18.35], [77.5, 18.9]];
-      function inPoly(x, y, p) {
-        let c = false;
-        for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
-          const [xi, yi] = p[i], [xj, yj] = p[j];
-          if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c;
-        }
-        return c;
-      }
-      const LON0 = 76.9, LON1 = 81.4, LAT0 = 15.6, LAT1 = 20.1, STEP = .075;
-      const cells = [];
-      for (let lat = LAT0; lat <= LAT1; lat += STEP)for (let lon = LON0; lon <= LON1; lon += STEP) {
-        if (!inPoly(lon, lat, INDIA)) continue;
-        const south = 1 - (lat - LAT0) / (LAT1 - LAT0);
-        cells.push({ lon, lat, risk: clamp(fbm(lon * .42, lat * .42, 7, 5) * .72 + fbm(lon * .35, lat * .35, 3, 4) * .2 + south * .22, 0, 1), ph: h2(lon, lat, 11) });
-      }
-
-      /*── PLACES · Telangana + its 33 districts ─────────────────────────
-         The dot grid is schematic, so cells carry no boundary identity of
-         their own. Each cell is labelled by its NEAREST reference district —
-         stated as "nearest" in the UI rather than claiming the cell sits
-         inside that district. Swap this for real geometry when
-         src/data/geo/india-districts.json lands and the labels become exact. */
-      const FG_ST = [["Telangana", "TG", 79.02, 18.11]];
-      const FG_CI = [
-        ["Hyderabad", "TG", 78.49, 17.39], ["Rangareddy", "TG", 78.35, 17.25], ["Medchal-Malkajgiri", "TG", 78.55, 17.62],
-        ["Vikarabad", "TG", 77.90, 17.34], ["Sangareddy", "TG", 78.09, 17.62], ["Medak", "TG", 78.27, 18.04],
-        ["Siddipet", "TG", 78.85, 18.10], ["Kamareddy", "TG", 78.34, 18.32], ["Nizamabad", "TG", 78.09, 18.67],
-        ["Jagtial", "TG", 78.91, 18.79], ["Rajanna Sircilla", "TG", 78.83, 18.39], ["Karimnagar", "TG", 79.12, 18.44],
-        ["Peddapalli", "TG", 79.37, 18.61], ["Mancherial", "TG", 79.44, 18.87], ["Nirmal", "TG", 78.34, 19.10],
-        ["Adilabad", "TG", 78.53, 19.67], ["Kumuram Bheem Asifabad", "TG", 79.28, 19.36], ["Jayashankar Bhupalpally", "TG", 79.88, 18.44],
-        ["Mulugu", "TG", 80.00, 18.19], ["Hanamkonda", "TG", 79.59, 17.98], ["Warangal", "TG", 79.55, 17.90],
-        ["Jangaon", "TG", 79.15, 17.72], ["Bhadradri Kothagudem", "TG", 80.62, 17.55], ["Khammam", "TG", 80.15, 17.25],
-        ["Mahabubabad", "TG", 80.00, 17.60], ["Suryapet", "TG", 79.62, 17.14], ["Nalgonda", "TG", 79.27, 17.05],
-        ["Yadadri Bhuvanagiri", "TG", 78.89, 17.52], ["Nagarkurnool", "TG", 78.32, 16.48], ["Wanaparthy", "TG", 78.06, 16.36],
-        ["Mahabubnagar", "TG", 77.99, 16.74], ["Jogulamba Gadwal", "TG", 77.80, 16.23], ["Narayanpet", "TG", 77.49, 16.74]];
-
-      const ST_NAME = {}; FG_ST.forEach(s => ST_NAME[s[1]] = s[0]);
-      const BANDS = ["Very low", "Low", "Moderate", "Elevated", "High", "Severe", "Extreme"];
-      const fgSlug = n => n.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-      const band = r => BANDS[Math.min(6, Math.floor(r * 7))];
-
-      /* lon degrees shrink toward the poles — without the cos correction the
-         nearest-city test skews east/west in the north */
-      function nearCity(lon, lat) {
-        let b = FG_CI[0], bd = 1e9;
-        for (const c of FG_CI) {
-          const dx = (c[2] - lon) * Math.cos(lat * Math.PI / 180), dy = c[3] - lat, d = dx * dx + dy * dy;
-          if (d < bd) { bd = d; b = c }
-        }
-        return b;
-      }
-      for (const c of cells) {
-        const n = nearCity(c.lon, c.lat);
-        c.city = n[0]; c.stc = n[1]; c.state = ST_NAME[n[1]] || n[1]; c.slug = fgSlug(n[0]);
-      }
-      /* search index: every state and every city, cities carrying their state
-         so "kerala" surfaces Kochi and Alappuzha too */
-      const FG_PLACES = [
-        ...FG_ST.map(s => ({ name: s[0], kind: "State", st: s[0], stc: s[1], lon: s[2], lat: s[3] })),
-        ...FG_CI.map(c => ({ name: c[0], kind: "District", st: ST_NAME[c[1]] || c[1], stc: c[1], lon: c[2], lat: c[3] }))
-      ];
-      function cellAt(lon, lat) {
-        let b = null, bd = 1e9;
-        for (const c of cells) {
-          const dx = (c.lon - lon) * Math.cos(lat * Math.PI / 180), dy = c.lat - lat, d = dx * dx + dy * dy;
-          if (d < bd) { bd = d; b = c }
-        }
-        return b;
-      }
-      FG_PLACES.forEach(p => { const c = cellAt(p.lon, p.lat); p.risk = c ? c.risk : .5; p.cell = c; });
-      function fgHref(p, risk) {
-        return "district.html?place=" + encodeURIComponent(fgSlug(p.name)) +
-          "&name=" + encodeURIComponent(p.name) + "&state=" + encodeURIComponent(p.st || p.state) +
-          "&idx=" + risk.toFixed(3) + "&lat=" + (p.lat).toFixed(2) + "&lon=" + (p.lon).toFixed(2);
-      }
-
-      const mc = document.getElementById("mapC"), mx2 = mc.getContext("2d");
-      let mapProg = 0, hoverCell = null, geo = null, pinCell = null;
-      function sizeMap() {
-        const w = mc.parentElement.clientWidth; if (!w) return;
-        const h = Math.round(w * .84), d = Math.min(3, devicePixelRatio || 1);   /* up to 3× for crispness */
-        const nw = Math.round(w * d), nh = Math.round(h * d);
-        if (mc.width === nw && mc.height === nh) return;
-        mc.width = nw; mc.height = nh;
-        mc.style.height = h + "px";
-        mx2.setTransform(d, 0, 0, d, 0, 0);
-        drawMap();     /* resizing wipes the canvas — repaint or the map shows blank */
-      }
-      function drawMap() {
-        const d = Math.min(3, devicePixelRatio || 1);
-        const w = mc.width / d, h = mc.height / d; if (!w) return;
-        mx2.clearRect(0, 0, w, h);
-        const pad = 16, s = Math.min((w - pad * 2) / (LON1 - LON0), (h - pad * 2) / (LAT1 - LAT0));
-        const ox = pad + ((w - pad * 2) - s * (LON1 - LON0)) / 2, oy = pad + ((h - pad * 2) - s * (LAT1 - LAT0)) / 2;
-        geo = { ox, oy, s };
-        const r = Math.max(1.05, s * STEP * .31);
-        for (const c of cells) {
-          const app = clamp((mapProg - c.ph * .4) * 2.4, 0, 1); if (app <= 0) continue;
-          const x = ox + (c.lon - LON0) * s, y = oy + (LAT1 - c.lat) * s;
-          const lit = clamp((mapProg - .32 - c.ph * .28) * 2.6, 0, 1);
-          mx2.fillStyle = lit > .15 ? RAMP[Math.min(6, Math.floor(c.risk * 7))] : DOTOFF;
-          mx2.globalAlpha = app * (lit > .15 ? .5 + c.risk * .5 : .55);
-          mx2.beginPath(); mx2.arc(x, y, r * app * (c === hoverCell ? 2 : 1), 0, 6.284); mx2.fill();
-        }
-        mx2.globalAlpha = 1;
-        /* focus ring for the cell the search pinned */
-        if (pinCell) {
-          const x = ox + (pinCell.lon - LON0) * s, y = oy + (LAT1 - pinCell.lat) * s;
-          mx2.strokeStyle = RAMP[6]; mx2.lineWidth = 1.6; mx2.globalAlpha = .9;
-          mx2.beginPath(); mx2.arc(x, y, Math.max(7, r * 3.2), 0, 6.284); mx2.stroke();
-          mx2.globalAlpha = .28;
-          mx2.beginPath(); mx2.arc(x, y, Math.max(11, r * 5), 0, 6.284); mx2.stroke();
-          mx2.globalAlpha = 1;
-        }
-      }
-      /*── map hover card · click-through · in-card search ──────────────
-         Hover reveals, click navigates. Navigating on hover would fire on
-         every accidental sweep across the map and is unreachable by keyboard,
-         so the cell is a real activation target instead. */
-      const mtip = document.getElementById("mtip"), mtipName = document.getElementById("mtipName"),
-        mtipSub = document.getElementById("mtipSub"), mtipBar = document.getElementById("mtipBar"),
-        mtipBand = document.getElementById("mtipBand"), mtipIdx = document.getElementById("mtipIdx"),
-        readout = document.getElementById("readout");
-
-      function cellXY(c) { return [geo.ox + (c.lon - LON0) * geo.s, geo.oy + (LAT1 - c.lat) * geo.s]; }
-      function hitCell(qx, qy) {
-        let best = null, bd = 1e9;
-        for (const c of cells) { const [x, y] = cellXY(c); const d = (x - qx) ** 2 + (y - qy) ** 2; if (d < bd) { bd = d; best = c } }
-        /* the Telangana grid packs cells only a few px apart on screen, so the
-           nearest neighbour flips constantly on the smallest mouse jitter —
-           hysteresis: stay on the currently hovered cell unless another one is
-           clearly (not just marginally) closer, and size the hit radius to the
-           grid's own spacing instead of a fixed px figure tuned for a sparser map */
-        const thresh = Math.pow(Math.max(9, (geo.s * STEP || 14) * .68), 2);
-        if (bd >= thresh) return null;
-        if (hoverCell && hoverCell !== best) {
-          const [hx, hy] = cellXY(hoverCell);
-          const hd = (hx - qx) ** 2 + (hy - qy) ** 2;
-          if (hd < thresh && hd < bd * 1.4) return hoverCell;
-        }
-        return best;
-      }
-      function showTip(c, px, py) {
-        mtipName.textContent = c.city;
-        mtipSub.textContent = c.state;
-        mtipBand.textContent = band(c.risk);
-        mtipIdx.textContent = "idx " + c.risk.toFixed(2);
-        mtipBar.style.width = (c.risk * 100).toFixed(0) + "%";
-        mtipBar.style.background = RAMP[Math.min(6, Math.floor(c.risk * 7))];
-        mtip.hidden = false;
-        const b = mc.getBoundingClientRect(), w = 172, h = mtip.offsetHeight || 104;
-        /* clamp inside the map body so the card never spills out of the card */
-        let x = px + 14, y = py - h - 10;
-        if (x + w > b.width - 6) x = px - w - 14;
-        if (x < 6) x = 6;
-        if (y < 6) y = py + 16;
-        if (y + h > b.height - 6) y = Math.max(6, b.height - h - 6);
-        mtip.style.left = x + "px"; mtip.style.top = y + "px";
-      }
-      function hideTip() { mtip.hidden = true; }
-
-      mc.addEventListener("pointermove", e => {
-        if (!geo) return;
-        const b = mc.getBoundingClientRect(), qx = e.clientX - b.left, qy = e.clientY - b.top;
-        const hit = hitCell(qx, qy);
-        hoverCell = hit;
-        mc.classList.toggle("mapC-hot", !!hit);
-        if (hit) {
-          showTip(hit, qx, qy);
-          readout.textContent = "Nearest " + hit.city + " · " + hit.state + " · idx " + hit.risk.toFixed(2);
-        } else if (!pinCell) {
-          hideTip(); readout.textContent = "Hover a cell · click to open";
-        }
-      });
-      mc.addEventListener("pointerleave", () => {
-        hoverCell = null; mc.classList.remove("mapC-hot");
-        if (pinCell) { const [x, y] = cellXY(pinCell); showTip(pinCell, x, y); }
-        else { hideTip(); readout.textContent = "Hover a cell · click to open"; }
-      });
-      mc.addEventListener("click", e => {
-        if (!geo) return;
-        const b = mc.getBoundingClientRect();
-        const hit = hitCell(e.clientX - b.left, e.clientY - b.top);
-        if (!hit) return;
-        location.href = fgHref({ name: hit.city, st: hit.state, lat: hit.lat, lon: hit.lon }, hit.risk);
-      });
-      /* keyboard equivalent: the canvas is focusable and Enter opens whatever
-         the search or a previous hover pinned */
-      mc.setAttribute("tabindex", "0");
-      mc.setAttribute("role", "application");
-      mc.addEventListener("keydown", e => {
-        if ((e.key === "Enter" || e.key === " ") && (pinCell || hoverCell)) {
-          e.preventDefault(); const c = pinCell || hoverCell;
-          location.href = fgHref({ name: c.city, st: c.state, lat: c.lat, lon: c.lon }, c.risk);
-        }
-      });
-
-      /*── in-card search ──*/
-      const msBtn = document.getElementById("msBtn"), msField = document.getElementById("msField"),
-        msInput = document.getElementById("msInput"), msX = document.getElementById("msX"),
-        msPanel = document.getElementById("msPanel"), msList = document.getElementById("msList"),
-        msEmpty = document.getElementById("msEmpty");
-      let msHits = [], msIdx = 0, msOpen = false;
-
-      function msSet(open) {
-        msOpen = open;
-        msBtn.hidden = open; msField.hidden = !open;
-        msBtn.setAttribute("aria-expanded", String(open));
-        msInput.setAttribute("aria-expanded", String(open));
-        if (open) { msInput.focus(); msInput.select(); }
-        else { msPanel.hidden = true; msInput.value = ""; }
-      }
-      function msRender() {
-        msList.innerHTML = "";
-        msEmpty.hidden = msHits.length > 0;
-        msPanel.hidden = !msOpen || !msInput.value.trim();
-        const q = msInput.value.trim();
-        msHits.slice(0, 7).forEach((p, i) => {
-          const li = document.createElement("li");
-          li.setAttribute("role", "option");
-          li.setAttribute("aria-selected", String(i === msIdx));
-          li.id = "msopt" + i;
-          const dot = document.createElement("span");
-          dot.className = "msDot";
-          dot.style.background = RAMP[Math.min(6, Math.floor(p.risk * 7))];
-          const nm = document.createElement("span");
-          nm.className = "msName";
-          /* highlight the matched span without innerHTML on user input */
-          const hay = p.name, lo = hay.toLowerCase().indexOf(q.toLowerCase());
-          if (q && lo >= 0) {
-            nm.append(hay.slice(0, lo));
-            const em = document.createElement("em"); em.textContent = hay.slice(lo, lo + q.length);
-            nm.append(em, hay.slice(lo + q.length));
-          } else nm.textContent = hay;
-          if (p.kind === "District") {
-            const s = document.createElement("span"); s.textContent = " · " + p.st;
-            s.style.color = "var(--ink3)"; s.style.fontWeight = "500"; nm.append(s);
-          }
-          const kd = document.createElement("span"); kd.className = "msKind"; kd.textContent = p.kind;
-          li.append(dot, nm, kd);
-          li.onclick = () => msPick(p);
-          li.onmouseenter = () => { msIdx = i; msRender(); };
-          msList.append(li);
-        });
-        msInput.setAttribute("aria-activedescendant", msHits.length ? "msopt" + msIdx : "");
-      }
-      function msPick(p) {
-        const c = p.cell || cellAt(p.lon, p.lat);
-        if (c) {
-          pinCell = c; hoverCell = c; drawMap();
-          const [x, y] = cellXY(c); showTip(c, x, y);
-          readout.textContent = (p.kind === "State"
-            ? p.name + " · nearest " + c.city
-            : p.name + " · " + p.st) + " · idx " + c.risk.toFixed(2) + " · press Enter to open";
-        }
-        msPanel.hidden = true;
-        mc.focus();
-      }
-      msInput.addEventListener("input", () => {
-        const q = msInput.value.trim().toLowerCase();
-        msHits = q ? FG_PLACES.filter(p => p.name.toLowerCase().includes(q) || p.st.toLowerCase().includes(q)) : [];
-        /* exact prefix first, then state matches — "kera" should land on the
-           state before any of its cities */
-        msHits.sort((a, b) => {
-          const ap = a.name.toLowerCase().startsWith(q) ? 0 : 1, bp = b.name.toLowerCase().startsWith(q) ? 0 : 1;
-          if (ap !== bp) return ap - bp;
-          if ((a.kind === "State") !== (b.kind === "State")) return a.kind === "State" ? -1 : 1;
-          return a.name.localeCompare(b.name);
-        });
-        msIdx = 0; msRender();
-      });
-      msInput.addEventListener("keydown", e => {
-        if (e.key === "ArrowDown") { e.preventDefault(); msIdx = Math.min(Math.min(msHits.length, 7) - 1, msIdx + 1); msRender(); }
-        else if (e.key === "ArrowUp") { e.preventDefault(); msIdx = Math.max(0, msIdx - 1); msRender(); }
-        else if (e.key === "Enter") { e.preventDefault(); if (msHits[msIdx]) msPick(msHits[msIdx]); }
-        else if (e.key === "Escape") { e.preventDefault(); msSet(false); }
-      });
-      msBtn.onclick = () => msSet(true);
-      msX.onclick = () => msSet(false);
-      document.addEventListener("pointerdown", e => {
-        if (msOpen && !document.getElementById("msearch").contains(e.target) && !msPanel.contains(e.target)) msSet(false);
-      });
-
 
       /*── TIMELINE — dot/line chart with a projected (dashed) future segment ──*/
       const TL_START = 1975, TL_ACTUAL_END = 2025, TL_END = 2075;
@@ -7584,237 +7729,447 @@
       }
 
       /*═══════════════════════════════════════════════════════════════
-        §02 — Confluence (spec §5.2)
-        Geometry is two fixed viewBoxes, chosen by width, both computed at
-        module scope. The scroll timeline reads pin progress; nothing here
-        counts events, so a fling lands in the right state.
+        §03 — Decision gap: DATA → FLOODGUARD → INTELLIGENCE → DECISION
+        One SVG, two fixed geometries chosen by width, both computed at
+        module scope. Desktop is scrubbed by the pin; under 900px the
+        section doesn't pin and the same timeline is read from how far the
+        stage has scrolled into view. Every value is derived from p and
+        nothing is latched, so scrolling back up reverses exactly.
       ═══════════════════════════════════════════════════════════════*/
-      const CFL_INPUTS = [
-        { id: "rainfall", label: "Rainfall", group: "hazard" },
-        { id: "history", label: "Flood history", group: "observed" },
-        { id: "terrain", label: "Terrain", group: "physical" },
-        { id: "drainage", label: "Drainage", group: "physical" },
-        { id: "satellite", label: "Satellite data", group: "observed" },
-        { id: "climate", label: "Climate projections", group: "hazard" },
-        { id: "exposure", label: "Exposure", group: "exposure" }
-      ];
-      const CFL_STROKE = {
-        hazard: "var(--stream-hazard)", observed: "var(--stream-observed)",
-        physical: "var(--stream-physical)", exposure: "var(--stream-exposure)"
+      const DG_ICON = {
+        rain: "M7 15.5a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17 7.8a3.6 3.6 0 0 1 .4 7.7H7zM9 18.5l-1 2M13 18.5l-1 2M17 18.5l-1 2",
+        clock: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3.5 2",
+        terrain: "M2.5 19.5l6-10 4 6 3-4 6 8z",
+        drain: "M5 3c0 5 4 6 7 9s3 6 3 9M12 12c2-2 5-3 7-3M8 7.5C6 9 4 9.5 3 9.5",
+        sat: "M13.5 6.5l3-3 4 4-3 3zM3.5 16.5l3-3 4 4-3 3zM8.5 15.5l7-7M15 20a5 5 0 0 0 5-5",
+        climate: "M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0zM12 9v8",
+        bldg: "M3 21h18M5 21V9l6-3v15M11 21V11h8v10M14 14h2M14 17h2M7 11.5h2M7 15h2",
+        globe: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M3 12h18M12 3c3.2 3.4 3.2 14.6 0 18M12 3c-3.2 3.4-3.2 14.6 0 18",
+        nodes: "M10 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M7.5 7.5l3 3M16.5 7.5l-3 3M7.5 16.5l3-3M16.5 16.5l-3-3",
+        bars: "M4 20h16M7 20v-6M12 20V8M17 20V11",
+        layers: "M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5",
+        risk: "M4 20h16M6 20v-4M10 20v-8M14 20v-6M18 20V6",
+        trend: "M4 20h16M4 16l5-5 4 3 7-7M15.5 7H20v4.5",
+        search: "M4 11a7 7 0 1 0 14 0a7 7 0 1 0-14 0M20.5 20.5l-4.5-4.5",
+        doc: "M6 3h9l4 4v14H6zM15 3v4h4M9 11h7M9 15h7",
+        pulse: "M3 12h4l3-7 4 14 3-7h4",
+        shield: "M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6zM8.8 12l2.2 2.2 4.2-4.4",
+        target: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0",
+        people: "M6 8a3 3 0 1 0 6 0a3 3 0 1 0-6 0M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.3c2 .7 3.5 2.9 3.5 5.7"
       };
+      const DG_HEAD = [
+        ["01", "Data", "Bring the right data together."],
+        ["02", "FloodGuard", "Process, model and analyse."],
+        ["03", "Intelligence", "Turn data into actionable insight."],
+        ["04", "Decision", "Support real-world action."]
+      ];
+      /* label, icon, surface */
+      const DG_DATA = [
+        ["Rainfall", "rain", "rain"], ["Flood history", "clock", "history"], ["Terrain", "terrain", "terrain"],
+        ["Drainage", "drain", "drainage"], ["Satellite", "sat", "satellite"], ["Climate", "climate", "climate"],
+        ["Exposure", "bldg", "exposure"]
+      ];
+      const DG_PROC = [["Geospatial", "processing", "globe"], ["Risk", "modelling", "nodes"], ["Scenario", "analysis", "bars"]];
+      const DG_INTEL = [["Hazard", "layers", "hazard"], ["Exposure", "bldg", "expo2"], ["Risk", "risk", "risk"], ["Scenarios", "trend", "scen"]];
+      /* label, icon, optional second line (desktop wraps it) */
+      const DG_DECIDE = [
+        ["Assess risk", "search"], ["Plan and prepare", "doc"], ["Monitor conditions", "pulse"],
+        ["Underwrite and price", "shield"], ["Prioritise investments", "target"], ["Respond and build", "people", "resilience"]
+      ];
 
-      /* The 7 inputs are one evenly spaced horizontal row of equal, transparent
-         boxes. On scroll they drop in together — every box moves by the same
-         amount at the same moment, so the row stays perfectly aligned — then the
-         streams flow down from each box into the hub. Deterministic, so
-         scrolling back up reverses exactly. */
-      function cflRowStart(pills) { return pills.map(() => ({ dx: 0, dy: -28, s: 1 })); }
-
-      const CFL_DESKTOP = (() => {
-        const W = 1200, H = 560, pw = 156, ph = 44, gap = 10;
-        const x0 = (W - (CFL_INPUTS.length * pw + (CFL_INPUTS.length - 1) * gap)) / 2, cy = 56;
-        const pills = CFL_INPUTS.map((it, i) => {
-          const x = x0 + i * (pw + gap);
-          return { x, y: cy - ph / 2, cy, w: pw, h: ph, tx: x + pw / 2, ty: cy + 5, mid: true };
+      const DG_DESKTOP = (() => {
+        const W = 1720, H = 530;
+        const heads = [0, 640, 1020, 1420].map(x => ({ x, y: 0 }));
+        const chips = DG_DATA.map((_, i) => ({ x: 0, y: 92 + i * 56, w: 176, h: 42 }));
+        const ds = { cx: 412, hw: 122, hh: 50, d: 7, cys: DG_DATA.map((_, i) => 128 + i * 53) };
+        const chipLinks = chips.map((c, i) => {
+          const x0 = c.x + c.w, y0 = c.y + c.h / 2, x1 = ds.cx - ds.hw, y1 = ds.cys[i];
+          return `M ${x0} ${y0} C ${x0 + 50} ${y0}, ${x1 - 56} ${y1}, ${x1 - 2} ${y1}`;
         });
-        const hub = [600, 300];
+        const core = { cx: 830, cy: 300, hw: 104, hh: 48, ht: 64 };
+        const base = { cx: 830, cy: 364, rx: 190, ry: 88 };
+        const procs = DG_PROC.map((_, i) => ({ x: 656 + i * 120, y: 86, w: 108, h: 84 }));
+        const procLinks = procs.map(b => {
+          const x = b.x + b.w / 2, y = b.y + b.h, ty = core.cy - core.hh + 8;
+          return `M ${x} ${y} C ${x} ${y + 46}, ${core.cx} ${ty - 40}, ${core.cx} ${ty}`;
+        });
+        const inAt = [714, 340], outAt = [958, 340];
+        const inStreams = ds.cys.map(y => {
+          const x0 = ds.cx + ds.hw;
+          return `M ${x0} ${y} C ${x0 + 70} ${y}, ${inAt[0] - 80} ${inAt[1]}, ${inAt[0] - 6} ${inAt[1]}`;
+        });
+        const is = { cx: 1142, hw: 104, hh: 44, d: 7, cys: [140, 220, 300, 380] };
+        const outStreams = is.cys.map(y => {
+          const x1 = is.cx - is.hw;
+          return `M ${outAt[0]} ${outAt[1]} C ${outAt[0] + 50} ${outAt[1]}, ${x1 - 50} ${y}, ${x1 - 2} ${y}`;
+        });
+        const pills = is.cys.map(y => ({ x: 1258, y: y - 20, w: 132, h: 40 }));
+        const pillLinks = is.cys.map((y, i) => `M ${is.cx + is.hw} ${y} L ${pills[i].x} ${y}`);
         return {
-          W, H, pills, rowStart: cflRowStart(pills), hub, hubR: 64, ringR: 84,
-          streams: pills.map(q => {
-            const sx = q.x + pw / 2, sy = q.cy + ph / 2;
-            return "M " + sx + " " + sy + " C " + sx + " " + (sy + 110) + ", 600 " + (hub[1] - 150) + ", 600 " + (hub[1] - 64);
-          }),
-          outlet: "M 600 364 L 600 424",
-          card: { x: 510, y: 430, w: 180, h: 96, rx: 14, tx: 600, ty: 470, sy: 492 }
+          W, H, heads, chips, chipLinks, ds, core, base, procs, procLinks, inStreams, is, outStreams, pills, pillLinks,
+          inArrow: `M ${inAt[0] - 11} ${inAt[1] - 9} L ${inAt[0]} ${inAt[1]} L ${inAt[0] - 11} ${inAt[1] + 9}`,
+          outArrow: `M 944 331 L 955 340 L 944 349`,
+          decLine: "M 1394 300 L 1410 300", decArrow: "M 1402 292 L 1410 300 L 1402 308",
+          panel: { x: 1420, y: 78, w: 300, rowH: 72, wrap: true }
         };
       })();
 
-      const CFL_MOBILE = (() => {
-        const W = 360, H = 720, pw = 190, ph = 40;
-        const pills = CFL_INPUTS.map((it, i) => {
-          const y = 24 + i * 52;
-          return { x: 16, y, cy: y + ph / 2, w: pw, h: ph, tx: 34, ty: y + 26 };
+      const DG_MOBILE = (() => {
+        const W = 390, H = 1896;
+        const heads = [0, 628, 1034, 1446].map(y => ({ x: 16, y }));
+        const chips = DG_DATA.map((_, i) => ({
+          x: i === DG_DATA.length - 1 && i % 2 === 0 ? 108.5 : i % 2 ? 201 : 16,
+          y: 72 + Math.floor(i / 2) * 52, w: 173, h: 42
+        }));
+        const ds = { cx: 195, hw: 132, hh: 54, d: 7, cys: DG_DATA.map((_, i) => 344 + i * 30) };
+        const core = { cx: 195, cy: 856, hw: 96, hh: 44, ht: 58 };
+        const base = { cx: 195, cy: 914, rx: 172, ry: 72 };
+        const procs = DG_PROC.map((_, i) => ({ x: 16 + i * 122, y: 694, w: 114, h: 84 }));
+        const procLinks = procs.map(b => {
+          const x = b.x + b.w / 2, y = b.y + b.h, ty = core.cy - core.hh + 8;
+          return `M ${x} ${y} C ${x} ${y + 20}, ${core.cx} ${ty - 20}, ${core.cx} ${ty}`;
         });
+        const is = { cx: 148, hw: 108, hh: 44, d: 7, cys: [1150, 1214, 1278, 1342] };
+        const pills = is.cys.map(y => ({ x: 264, y: y - 19, w: 112, h: 38 }));
+        const pillLinks = is.cys.map((y, i) => `M ${is.cx + is.hw} ${y} L ${pills[i].x} ${y}`);
         return {
-          W, H, pills, rowStart: cflRowStart(pills), hub: [180, 548], hubR: 48, ringR: 66,
-          streams: pills.map(q => "M 206 " + (q.y + 20) + " C 290 " + (q.y + 20) + ", 300 380, 300 420"),
-          trunk: "M 300 420 C 300 470, 180 450, 180 500",
-          outlet: "M 180 596 L 180 620",
-          card: { x: 80, y: 620, w: 200, h: 72, rx: 12, tx: 180, ty: 658, sy: 678 }
+          W, H, heads, chips, chipLinks: [], ds, core, base, procs, procLinks, is, pills, pillLinks,
+          inStreams: ["M 195 592 L 195 614"], inArrow: "M 187 606 L 195 616 L 203 606",
+          outStreams: ["M 195 992 L 195 1014"], outArrow: "M 187 1008 L 195 1018 L 203 1008",
+          decLine: "M 195 1404 L 195 1426", decArrow: "M 187 1420 L 195 1430 L 203 1420",
+          panel: { x: 16, y: 1512, w: 358, rowH: 62, wrap: false }
         };
       })();
 
-      let CFL = null;
-      function buildConfluence() {
-        const host = document.getElementById("conflStage");
+      /* Layer surfaces: one small procedural raster per layer, coloured from the
+         ocean ramp. The ramp is the same in both themes, so each is built once
+         and cached across rebuilds. */
+      const DG_TN = 112, DG_TEX = new Map();
+      let DG_RGB = null;
+      function dgRgb() {
+        if (DG_RGB) return DG_RGB;
+        const s = getComputedStyle(document.documentElement);
+        DG_RGB = ["--b950", "--b900", "--b800", "--b700", "--b600", "--b500", "--b400", "--b300", "--b200", "--b100"].map(n => {
+          const h = s.getPropertyValue(n).trim();
+          return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+        });
+        return DG_RGB;
+      }
+      const dgFrac = x => x - Math.floor(x);
+      const dgSt = (n, lo, hi) => clamp01((n - lo) / (hi - lo));
+      /* each returns a 0..1 position on the ramp (dark → light); g = greyness */
+      const DG_FIELD = {
+        rain: { g: 0, f: (u, v) => { const n = dgSt(fbm(u * 3.2, v * 3.2, 3, 4), .25, .7), q = Math.floor(n * 7) / 7; return .12 + q * .85 + (dgFrac(n * 7) < .06 ? .08 : 0); } },
+        history: {
+          g: 0, f: (u, v) => {
+            const n = dgSt(fbm(u * 4, v * 4, 7, 4), .25, .7), r = Math.abs(v - .5 - .16 * Math.sin(u * 7 + 1.3) - (n - .5) * .12);
+            return r < .03 ? .92 : n > .62 ? .62 + (n - .62) * .8 : .1 + n * .25;
+          }
+        },
+        terrain: {
+          g: .15, f: (u, v) => {
+            const n = fbm(u * 3, v * 3, 11, 5), e = fbm(u * 3 + .03, v * 3 + .03, 11, 5), m = dgSt(n, .25, .7);
+            return .18 + m * .45 + (clamp01(.5 + (e - n) * 14) - .5) * .3 + (dgFrac(m * 10) < .06 ? .07 : 0);
+          }
+        },
+        drainage: {
+          g: 0, f: (u, v) => {
+            const n = fbm(u * 3.5, v * 3.5, 23, 4), m = fbm(u * 7, v * 7, 29, 3);
+            return Math.abs(n - .47) < .012 ? .9 : Math.abs(m - .47) < .008 ? .7 : .06 + dgSt(n, .25, .7) * .22;
+          }
+        },
+        satellite: {
+          g: .35, f: (u, v) => {
+            const w = fbm(u * 2, v * 2, 31, 2), r = h2(Math.floor(u * 8 + w * 1.6), Math.floor(v * 8 + w * 1.6), 5);
+            return .18 + r * .5 + (fbm(u * 16, v * 16, 37, 3) - .45) * .5;
+          }
+        },
+        climate: {
+          g: 0, f: (u, v) => {
+            const n = fbm(u * 2, v * 2, 41, 3), b = u * .9 + v * .7 + n * 1.1;
+            return .15 + .75 * (.5 + .5 * Math.sin(b * 8)) * (.6 + .4 * dgSt(n, .25, .7));
+          }
+        },
+        exposure: {
+          g: .75, f: (u, v) => {
+            const fu = u * 12, fv = v * 12;
+            if (dgFrac(fu) < .14 || dgFrac(fv) < .14) return .06;
+            if (fbm(u * 3, v * 3, 43, 2) > .56) return .42;
+            return .55 + h2(Math.floor(fu), Math.floor(fv), 9) * .42;
+          }
+        },
+        hazard: { g: 0, f: (u, v) => .08 + dgSt(fbm(u * 2.6, v * 2.6, 51, 4), .22, .72) * .92 },
+        expo2: {
+          g: .2, f: (u, v) => {
+            const fu = u * 10, fv = v * 10;
+            if (dgFrac(fu) < .13 || dgFrac(fv) < .13) return .08;
+            return .2 + dgSt(fbm(u * 2.4, v * 2.4, 55, 3), .25, .7) * .55 + h2(Math.floor(fu), Math.floor(fv), 11) * .2;
+          }
+        },
+        risk: { g: 0, f: (u, v) => .05 + Math.pow(dgSt(fbm(u * 3, v * 3, 61, 4), .25, .72), 1.8) * 1.05 },
+        scen: {
+          g: 0, f: (u, v) => {
+            const n = dgSt(fbm(u * 2.2, v * 2.2, 71, 3), .25, .7);
+            return .1 + Math.floor((n * .8 + u * .35) * 8) / 8 * .95;
+          }
+        }
+      };
+      function dgTexture(kind) {
+        let url = DG_TEX.get(kind);
+        if (url) return url;
+        const N = DG_TN, cv = document.createElement("canvas"); cv.width = cv.height = N;
+        const cx = cv.getContext("2d"), img = cx.createImageData(N, N), px = img.data, R = dgRgb(), F = DG_FIELD[kind];
+        for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+          const t = clamp01(F.f(x / N, y / N)) * (R.length - 1), i = Math.min(R.length - 2, t | 0), k = t - i, a = R[i], b = R[i + 1];
+          let r = a[0] + (b[0] - a[0]) * k, g = a[1] + (b[1] - a[1]) * k, bl = a[2] + (b[2] - a[2]) * k;
+          if (F.g) { const l = r * .3 + g * .59 + bl * .11; r += (l - r) * F.g; g += (l - g) * F.g; bl += (l - bl) * F.g; }
+          const o = (y * N + x) * 4; px[o] = r; px[o + 1] = g; px[o + 2] = bl; px[o + 3] = 255;
+        }
+        cx.putImageData(img, 0, 0);
+        url = cv.toDataURL(); DG_TEX.set(kind, url);
+        return url;
+      }
+
+      /* own point helper: the IsoStack's ptsOf is declared further down (TDZ) */
+      const dgPts = (...p) => p.map(q => q[0] + "," + q[1]).join(" ");
+      const dgDiamond = (cx, cy, hw, hh) => [[cx, cy - hh], [cx + hw, cy], [cx, cy + hh], [cx - hw, cy]];
+      function dgText(parent, x, y, str, attrs) {
+        const t = mk("text", Object.assign({ x, y }, attrs || {}));
+        t.textContent = str; parent.appendChild(t); return t;
+      }
+      function dgIcon(parent, name, x, y, s) {
+        const g = mk("g", { transform: `translate(${x} ${y}) scale(${s || 1})` });
+        g.appendChild(mk("path", { d: DG_ICON[name], class: "dgIco" }));
+        parent.appendChild(g); return g;
+      }
+      /* a map layer: two shaded sides and the raster mapped onto the diamond.
+         matrix() carries the N×N image square exactly onto the top face. */
+      function dgSlab(cx, cy, hw, hh, dep, kind) {
+        const g = mk("g", { class: "dgLayer" }), [T, R, B, L] = dgDiamond(cx, cy, hw, hh), N = DG_TN;
+        const left = dgPts(L, B, [B[0], B[1] + dep], [L[0], L[1] + dep]), right = dgPts(B, R, [R[0], R[1] + dep], [B[0], B[1] + dep]);
+        g.appendChild(mk("polygon", { points: left, class: "side" }));
+        g.appendChild(mk("polygon", { points: left, class: "shadeL", "data-decorative": "" }));
+        g.appendChild(mk("polygon", { points: right, class: "side" }));
+        g.appendChild(mk("polygon", { points: right, class: "shadeR", "data-decorative": "" }));
+        g.appendChild(mk("image", {
+          href: dgTexture(kind), width: N, height: N, preserveAspectRatio: "none",
+          transform: `matrix(${hw / N} ${hh / N} ${-hw / N} ${hh / N} ${cx} ${cy - hh})`
+        }));
+        g.appendChild(mk("polygon", { points: dgPts(T, R, B, L), class: "edge" }));
+        return g;
+      }
+      function dgCard(x, y, w, h, icon, label, rx) {
+        const g = mk("g", { class: "dgCard" });
+        g.appendChild(mk("rect", { x, y, width: w, height: h, rx: rx || 10 }));
+        dgIcon(g, icon, x + 13, y + h / 2 - 11, .92);
+        dgText(g, x + 46, y + h / 2 + 6, label);
+        return g;
+      }
+
+      let DG = null;
+      function buildDecisionGap() {
+        const host = document.getElementById("dgStage");
         if (!host) return;
-        const G = mqValue("(min-width: 900px)") ? CFL_DESKTOP : CFL_MOBILE;
+        const G = mqValue("(min-width: 900px)") ? DG_DESKTOP : DG_MOBILE;
         const svg = mk("svg", {
           viewBox: "0 0 " + G.W + " " + G.H, "aria-hidden": "true", focusable: "false",
           preserveAspectRatio: "xMidYMid meet"
         });
+        const defs = mk("defs", {}), rg = mk("radialGradient", { id: "dgGlow" });
+        rg.appendChild(mk("stop", { offset: "0%", class: "dgG0" }));
+        rg.appendChild(mk("stop", { offset: "100%", class: "dgG1" }));
+        defs.appendChild(rg); svg.appendChild(defs);
 
-        /* streams first, so the pills and the hub occlude their ends */
-        const streams = [], flows = [], sg = mk("g", {});
-        G.streams.forEach((d, i) => {
-          const col = CFL_STROKE[CFL_INPUTS[i].group];
-          const base = mk("path", { d, class: "cflStream cflDraw", stroke: col, pathLength: 1 });
-          const flow = mk("path", { d, class: "cflFlow", stroke: col, "data-decorative": "" });
-          sg.appendChild(base); sg.appendChild(flow);
-          streams.push(base); flows.push(flow);
-        });
-        let trunk = null, trunkFlow = null;
-        if (G.trunk) {
-          trunk = mk("path", { d: G.trunk, class: "cflStream cflDraw", stroke: "var(--stream-observed)", pathLength: 1 });
-          trunkFlow = mk("path", { d: G.trunk, class: "cflFlow", stroke: "var(--stream-observed)", "data-decorative": "" });
-          sg.appendChild(trunk); sg.appendChild(trunkFlow);
+        /* fades: opacity (+ optional drop / scale) over [a,b] of p.
+           draws: stroke draw-on over [a,b]. */
+        const fades = [], draws = [];
+        const fade = (el, a, b, dy, sc) => { fades.push({ el, a, b, dy: dy || 0, sc }); return el; };
+        const line = (parent, d, a, b, cls, flow) => {
+          const el = mk("path", { d, class: "dgDraw " + cls, pathLength: 1 });
+          parent.appendChild(el); draws.push({ el, a, b });
+          let fl = null;
+          if (flow) { fl = mk("path", { d, class: "dgFlow", "data-decorative": "" }); parent.appendChild(fl); }
+          return { el, fl };
+        };
+
+        /* ── core base: glow + rings, under everything ── */
+        const B0 = G.base, baseG = fade(mk("g", { "data-decorative": "" }), .40, .52);
+        baseG.appendChild(mk("ellipse", { cx: B0.cx, cy: B0.cy, rx: B0.rx * 1.25, ry: B0.ry * 1.25, fill: "url(#dgGlow)" }));
+        baseG.appendChild(mk("ellipse", { cx: B0.cx, cy: B0.cy, rx: B0.rx, ry: B0.ry, class: "dgRing" }));
+        baseG.appendChild(mk("ellipse", { cx: B0.cx, cy: B0.cy, rx: B0.rx * .72, ry: B0.ry * .72, class: "dgRing" }));
+        svg.appendChild(baseG);
+
+        /* ── connectors, so layers, cards and the core occlude their ends ── */
+        const lg = mk("g", {}); svg.appendChild(lg);
+        const chipLinks = G.chipLinks.map((d, i) => line(lg, d, .06 + i * .02, .12 + i * .02, "dgLink"));
+        const inStreams = G.inStreams.map((d, i) => line(lg, d, .26 + i * .012, .34 + i * .012, "dgStream", true));
+        const procLinks = G.procLinks.map(d => line(lg, d, .38, .46, "dgStream", true));
+        const outStreams = G.outStreams.map((d, i) => line(lg, d, .53 + i * .015, .60 + i * .015, "dgStream", true));
+        const pillLinks = G.pillLinks.map((d, j) => line(lg, d, .60 + j * .035, .67 + j * .035, "dgLink"));
+        line(lg, G.decLine, .74, .78, "dgStream");
+
+        /* ── data layers: painted bottom-up so each one overlaps the one below ── */
+        const ds = G.ds, dataLayers = [];
+        for (let i = DG_DATA.length - 1; i >= 0; i--) {
+          const s = dgSlab(ds.cx, ds.cys[i], ds.hw, ds.hh, ds.d, DG_DATA[i][2]);
+          fade(s, .05 + i * .025, .13 + i * .025, -24);
+          svg.appendChild(s); dataLayers[i] = s;
         }
-        svg.appendChild(sg);
+        const dots = G.chipLinks.length ? ds.cys.map((y, i) => {
+          const c = fade(mk("circle", { cx: ds.cx - ds.hw, cy: y, r: 3.5, class: "dgDot" }), .10 + i * .02, .14 + i * .02);
+          svg.appendChild(c); return c;
+        }) : [];
 
-        const pills = G.pills.map((pp, i) => {
-          const g = mk("g", { class: "cflPill" });
-          g.appendChild(mk("rect", { x: pp.x, y: pp.y, width: pp.w, height: pp.h, rx: pp.h / 2 }));
-          const t = mk("text", pp.mid ? { x: pp.tx, y: pp.ty, "text-anchor": "middle", style: "font-size:14px" } : { x: pp.tx, y: pp.ty });
-          t.textContent = CFL_INPUTS[i].label;
-          g.appendChild(t);
-          svg.appendChild(g);
-          return g;
+        /* ── the FloodGuard core ── */
+        const C = G.core, [T, R, Bt, L] = dgDiamond(C.cx, C.cy, C.hw, C.hh), dn = p => [p[0], p[1] + C.ht];
+        const coreG = fade(mk("g", { class: "dgCore" }), .42, .52, 0, [C.cx, C.cy + C.ht / 2]);
+        coreG.appendChild(mk("polygon", { points: dgPts(L, Bt, dn(Bt), dn(L)), class: "l" }));
+        coreG.appendChild(mk("polygon", { points: dgPts(Bt, R, dn(R), dn(Bt)), class: "r" }));
+        [.36, .7].forEach(k => {
+          const o = C.ht * k;
+          coreG.appendChild(mk("path", { d: `M ${L[0]} ${L[1] + o} L ${Bt[0]} ${Bt[1] + o} L ${R[0]} ${R[1] + o}`, class: "seam", "data-decorative": "" }));
         });
+        coreG.appendChild(mk("polygon", { points: dgPts(T, R, Bt, L), class: "top" }));
+        coreG.appendChild(mk("polygon", { points: dgPts(...dgDiamond(C.cx, C.cy, C.hw * .8, C.hh * .8)), class: "seam", "data-decorative": "" }));
+        coreG.appendChild(mk("path", { d: `M ${L[0]} ${L[1]} L ${T[0]} ${T[1]} L ${R[0]} ${R[1]} L ${dn(R)[0]} ${dn(R)[1]} L ${dn(Bt)[0]} ${dn(Bt)[1]} L ${dn(L)[0]} ${dn(L)[1]} Z M ${L[0]} ${L[1]} L ${Bt[0]} ${Bt[1]} L ${R[0]} ${R[1]} M ${Bt[0]} ${Bt[1]} L ${dn(Bt)[0]} ${dn(Bt)[1]}`, class: "edge" }));
+        /* the logo mark, laid flat on the top face */
+        const ms = .62, mark = mk("g", {
+          transform: `matrix(${ms * C.hw / 24} ${ms * C.hh / 24} ${-ms * C.hw / 24} ${ms * C.hh / 24} ${C.cx} ${C.cy - ms * C.hh})`
+        });
+        mark.appendChild(mk("path", { d: "M2 12a10 10 0 1 0 20 0a10 10 0 1 0-20 0M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2", class: "mark" }));
+        coreG.appendChild(mark);
+        svg.appendChild(coreG);
 
-        const ring = mk("circle", { cx: G.hub[0], cy: G.hub[1], r: G.ringR, class: "cflRing", "data-decorative": "" });
-        svg.appendChild(ring);
-        const hubG = mk("g", { class: "cflHub" });
-        hubG.appendChild(mk("circle", { cx: G.hub[0], cy: G.hub[1], r: G.hubR }));
-        const ht = mk("text", { x: G.hub[0], y: G.hub[1] + 6, "text-anchor": "middle" });
-        ht.textContent = "FloodGuard";
-        hubG.appendChild(ht);
-        svg.appendChild(hubG);
+        /* ── intelligence layers ── */
+        const is = G.is, intelLayers = [];
+        for (let j = DG_INTEL.length - 1; j >= 0; j--) {
+          const s = dgSlab(is.cx, is.cys[j], is.hw, is.hh, is.d, DG_INTEL[j][2]);
+          fade(s, .56 + j * .035, .64 + j * .035, -20);
+          svg.appendChild(s); intelLayers[j] = s;
+        }
 
-        const outlet = mk("path", { d: G.outlet, class: "cflOutlet cflDraw", pathLength: 1 });
-        svg.appendChild(outlet);
+        /* ── cards, heads, arrows, decision panel — always on top ── */
+        const chips = G.chips.map((c, i) => {
+          const g = fade(dgCard(c.x, c.y, c.w, c.h, DG_DATA[i][1], DG_DATA[i][0]), .02 + i * .02, .08 + i * .02, 10);
+          svg.appendChild(g); return g;
+        });
+        G.procs.forEach((b, i) => {
+          const g = mk("g", { class: "dgCard dgProc" });
+          g.appendChild(mk("rect", { x: b.x, y: b.y, width: b.w, height: b.h, rx: 10 }));
+          dgIcon(g, DG_PROC[i][2], b.x + b.w / 2 - 13, b.y + 13, 1.08);
+          dgText(g, b.x + b.w / 2, b.y + 60, DG_PROC[i][0], { "text-anchor": "middle" });
+          dgText(g, b.x + b.w / 2, b.y + 76, DG_PROC[i][1], { "text-anchor": "middle" });
+          svg.appendChild(fade(g, .30 + i * .03, .37 + i * .03, 10));
+        });
+        const pills = G.pills.map((c, j) => {
+          const g = fade(dgCard(c.x, c.y, c.w, c.h, DG_INTEL[j][1], DG_INTEL[j][0]), .60 + j * .035, .67 + j * .035);
+          svg.appendChild(g); return g;
+        });
+        const headAt = [[0, .06], [.28, .34], [.52, .58], [.74, .80]];
+        G.heads.forEach((h, i) => {
+          const g = mk("g", { class: "dgH" });
+          g.appendChild(mk("rect", { x: h.x, y: h.y + 4, width: 46, height: 30, rx: 15, class: "badge" }));
+          dgText(g, h.x + 23, h.y + 24.5, DG_HEAD[i][0], { class: "num", "text-anchor": "middle" });
+          dgText(g, h.x + 60, h.y + 26, DG_HEAD[i][1].toUpperCase(), { class: "ttl" });
+          dgText(g, h.x + 60, h.y + 52, DG_HEAD[i][2], { class: "sub" });
+          svg.appendChild(fade(g, headAt[i][0], headAt[i][1], 8));
+        });
+        svg.appendChild(fade(mk("path", { d: G.inArrow, class: "dgArrow" }), .36, .41));
+        svg.appendChild(fade(mk("path", { d: G.outArrow, class: "dgArrow" }), .52, .56));
+        svg.appendChild(fade(mk("path", { d: G.decArrow, class: "dgArrow" }), .76, .79));
 
-        const c = G.card, cardG = mk("g", { class: "cflOutBox" });
-        cardG.appendChild(mk("rect", { x: c.x, y: c.y, width: c.w, height: c.h, rx: c.rx }));
-        const ct = mk("text", { x: c.tx, y: c.ty, "text-anchor": "middle" }); ct.textContent = "Decision";
-        cardG.appendChild(ct);
-        const cs = mk("text", { x: c.tx, y: c.sy, "text-anchor": "middle", class: "sub" });
-        cs.textContent = "One channel out";
-        cardG.appendChild(cs);
-        svg.appendChild(cardG);
+        const P = G.panel, n = DG_DECIDE.length;
+        svg.appendChild(fade(mk("rect", { x: P.x, y: P.y, width: P.w, height: n * P.rowH, rx: 16, class: "dgPanel" }), .76, .82));
+        DG_DECIDE.forEach((d, r) => {
+          const y = P.y + r * P.rowH, g = mk("g", { class: "dgRow" });
+          g.appendChild(mk("rect", { x: P.x + 8, y: y + 5, width: P.w - 16, height: P.rowH - 10, rx: 10, class: "hit" }));
+          if (r < n - 1) g.appendChild(mk("line", { x1: P.x + 20, y1: y + P.rowH, x2: P.x + P.w - 20, y2: y + P.rowH, class: "dgDiv" }));
+          dgIcon(g, d[1], P.x + 22, y + P.rowH / 2 - 12, 1);
+          if (d[2] && P.wrap) {
+            dgText(g, P.x + 62, y + P.rowH / 2 - 4, d[0]);
+            dgText(g, P.x + 62, y + P.rowH / 2 + 17, d[2]);
+          } else dgText(g, P.x + 62, y + P.rowH / 2 + 6, d[2] ? d[0] + " " + d[2] : d[0]);
+          const cy = y + P.rowH / 2;
+          g.appendChild(mk("path", { d: `M ${P.x + P.w - 30} ${cy - 6} l 6 6 -6 6`, class: "chev" }));
+          svg.appendChild(fade(g, .78 + r * .022, .84 + r * .022, 8));
+        });
 
         host.innerHTML = ""; host.appendChild(svg);
-        CFL = { svg, host, streams, flows, trunk, trunkFlow, pills, ring, hubG, outlet, cardG, G, last: -1 };
+        const still = document.body.classList.contains("nopin") || RM;
+        const pinned = !still && mqValue("(min-width: 900px)");
+        const geom = trackGeom(host), hb = host.getBoundingClientRect();
+        geom.top = hb.top + scrollY; geom.h = hb.height;
+        DG = { svg, host, fades, draws, feat: document.getElementById("dgFeat"), still, pinned, geom, last: -1 };
 
-        /* Fine pointer: hovering a pill lights its stream and dims the rest.
-           Touch: tap toggles, tapping elsewhere clears. The pills stay
-           unfocusable — they are decorative, and the visually-hidden list
-           already carries the same content in reading order. */
-        let lit = -1;
-        const setLit = i => {
-          if (lit === i) return;
-          lit = i;
-          pills.forEach((g, k) => {
-            g.classList.toggle("cflDim", i >= 0 && k !== i);
-            g.classList.toggle("cflLit", k === i);
-          });
-          streams.forEach((el, k) => el.classList.toggle("cflDim", i >= 0 && k !== i));
-          flows.forEach((el, k) => el.classList.toggle("cflDim", i >= 0 && k !== i));
+        /* Fine pointer: hovering an input or an insight lights its layer and
+           its stream, and the rest recede. Only once the diagram is built, so
+           it can't un-hide anything the timeline hasn't revealed yet. */
+        const sets = {
+          data: DG_DATA.map((_, i) => ({ card: chips[i], layer: dataLayers[i], els: [chipLinks[i], inStreams[i], dots[i]] })),
+          intel: DG_INTEL.map((_, j) => ({ card: pills[j], layer: intelLayers[j], els: [pillLinks[j], outStreams[j]] }))
         };
-        pills.forEach((g, i) => {
-          if (finePointer()) {
-            g.addEventListener("pointerenter", () => setLit(i));
-            g.addEventListener("pointerleave", () => setLit(-1));
-          } else {
-            g.addEventListener("click", e => { e.stopPropagation(); setLit(lit === i ? -1 : i); });
-          }
-        });
-        if (!finePointer()) host.addEventListener("click", () => setLit(-1));
+        const setLit = (key, idx) => {
+          if (idx >= 0 && !svg.classList.contains("dgOn") && !still) return;
+          sets[key].forEach((s, k) => {
+            const dim = idx >= 0 && k !== idx, lit = k === idx;
+            [s.card, s.layer].forEach(el => { el.classList.toggle("dgDim", dim); el.classList.toggle("dgLit", lit); });
+            s.els.forEach(e => {
+              if (!e) return;
+              const list = e.el ? [e.el, e.fl] : [e];
+              list.forEach(x => x && x.classList.toggle("dgDim", dim));
+            });
+          });
+        };
+        if (finePointer()) Object.keys(sets).forEach(key => sets[key].forEach((s, i) => {
+          [s.card, s.layer].forEach(el => {
+            el.addEventListener("pointerenter", () => setLit(key, i));
+            el.addEventListener("pointerleave", () => setLit(key, -1));
+          });
+        }));
 
         inViewPause(host);
-        paintConfluence(document.body.classList.contains("nopin") || RM ? 1 : 0);
+        paintDecisionGap(still ? 1 : 0, true);
       }
 
-      /* p = track progress. Every value below is derived from it and nothing is
-         latched, so scrolling back up reverses the whole sequence exactly. */
-      function paintConfluence(p) {
-        if (!CFL) return;
-        if (Math.abs(p - CFL.last) < .0015) return;
-        CFL.last = p;
-        const { streams, flows, trunk, trunkFlow, pills, ring, hubG, outlet, cardG, G } = CFL;
-
-        /* 0.00–0.22 — the horizontal row pulls apart into its column/funnel
-           position: each pill travels from its row slot (G.rowStart) down to
-           its resting column position, not just a small in-place jitter. */
-        const settle = seg(p, 0, .22), se = easeOut(settle), k = 1 - se;
-        pills.forEach((g, i) => {
-          const r = G.rowStart[i], cx = G.pills[i].x + G.pills[i].w / 2, cy = G.pills[i].cy, sc = 1 - (1 - r.s) * k;
-          g.setAttribute("transform", "translate(" + (r.dx * k).toFixed(2) + " " + (r.dy * k).toFixed(2) +
-            ") translate(" + cx + " " + cy + ") scale(" + sc.toFixed(4) + ") translate(" + (-cx) + " " + (-cy) + ")");
-          g.setAttribute("opacity", (.35 + .65 * settle).toFixed(3));
-        });
-
-        /* 0.22–0.67 — the tributaries draw, staggered by index */
-        streams.forEach((el, i) => {
-          el.style.strokeDashoffset = String(1 - seg(p, .22 + i * .045, .40 + i * .045));
-        });
-        if (trunk) trunk.style.strokeDashoffset = String(1 - seg(p, .55, .70));
-
-        /* 0.60–0.75 — the hub takes */
-        const hub = seg(p, .6, .75);
-        ring.setAttribute("transform", "rotate(" + (hub * 60).toFixed(2) + " " + G.hub[0] + " " + G.hub[1] + ")");
-        hubG.setAttribute("opacity", hub.toFixed(3));
-        hubG.setAttribute("transform", "translate(" + G.hub[0] + " " + G.hub[1] + ") scale(" +
-          (.9 + .1 * hub).toFixed(3) + ") translate(" + (-G.hub[0]) + " " + (-G.hub[1]) + ")");
-
-        /* 0.73–0.87 — one channel leaves */
-        const out = seg(p, .73, .87);
-        outlet.style.strokeDashoffset = String(1 - out);
-        cardG.setAttribute("opacity", out.toFixed(3));
-        cardG.setAttribute("transform", "translate(0 " + (-12 * (1 - out)).toFixed(2) + ")");
-
-        /* 0.87–1.00 — hold, and the water starts moving */
-        CFL.svg.classList.toggle("cflOn", p >= .87 && !RM);
+      function paintDecisionGap(p, force) {
+        if (!DG) return;
+        if (!force && Math.abs(p - DG.last) < .0015) return;
+        DG.last = p;
+        for (const f of DG.fades) {
+          const e = easeOut(seg(p, f.a, f.b));
+          f.el.setAttribute("opacity", e.toFixed(3));
+          let tr = "";
+          if (f.dy) tr += "translate(0 " + (f.dy * (1 - e)).toFixed(2) + ")";
+          if (f.sc) tr += " translate(" + f.sc[0] + " " + f.sc[1] + ") scale(" + (.86 + .14 * e).toFixed(4) + ") translate(" + (-f.sc[0]) + " " + (-f.sc[1]) + ")";
+          if (tr) f.el.setAttribute("transform", tr);
+        }
+        for (const d of DG.draws) d.el.style.strokeDashoffset = String(1 - seg(p, d.a, d.b));
+        DG.svg.classList.toggle("dgOn", p >= .95 && !RM);
+        if (DG.feat) DG.feat.classList.toggle("on", p > .9);
       }
 
-      /* Not pinned: play the same order once on a timer when the section is 40%
-         in view, then hand over to the ambient flow (spec §5.2). */
-      function conflOneShot() {
-        const host = document.getElementById("conflStage");
-        if (!host) return;
-        let played = false;
-        const io = new IntersectionObserver(([e]) => {
-          if (played) return;
-          /* scrolled clean past without ever intersecting — show the finished
-             diagram rather than an empty stage */
-          if (!e.isIntersecting) {
-            if (e.boundingClientRect.bottom > 0) return;
-            played = true; io.disconnect(); paintConfluence(1); return;
-          }
-          played = true; io.disconnect();
-          if (RM) { paintConfluence(1); return; }
-          const t0 = performance.now(), dur = 1800;
-          (function tick(t) {
-            const q = clamp((t - t0) / dur, 0, 1);
-            paintConfluence(q);
-            if (q < 1) requestAnimationFrame(tick);
-          })(performance.now());
-        }, { threshold: .4 });
-        io.observe(host);
+      /* Pinned: pin progress, finishing at 85% so the built diagram holds for
+         the last stretch. Narrow: the fraction of the stage that has passed
+         82% of the viewport, so each part builds as it comes into view. */
+      function runDecisionGap() {
+        if (!DG || DG.still) return;
+        if (DG.pinned) {
+          const P = pins[PIN_GAP];
+          if (!P || !P.vis) return;
+          paintDecisionGap(Math.min(1, P.ps / .85));
+        } else {
+          const g = DG.geom;
+          if (!g.h) return;
+          paintDecisionGap(clamp01((cur + vh * .82 - g.top) / (g.h * .94)));
+        }
       }
 
-      /* The pinned path reads scroll progress every frame; the unpinned one plays
-         once. Only one of the two is ever live. */
-      function runConfluence() {
-        if (!CFL || document.body.classList.contains("nopin")) return;
-        const P = pins[PIN_GAP];
-        if (!P || !P.vis) return;
-        paintConfluence(P.ps);
-      }
-
-      if (!document.body.classList.contains("nopin")) buildConfluence();
-      else conflOneShot();
-      /* the two viewBoxes are different diagrams, so crossing 900px rebuilds */
-      onMq("(min-width: 900px)", () => { if (!document.body.classList.contains("nopin")) buildConfluence(); });
+      buildDecisionGap();
+      /* the two viewBoxes are different diagrams, and the pin policy decides
+         between scrubbed and static — any of these changing rebuilds */
+      onMq("(min-width: 900px)", () => buildDecisionGap());
+      onMq(TALL_Q, () => buildDecisionGap());
+      onMq(REDUCE_Q, () => buildDecisionGap());
 
 
       /*── Footer: year, and back-to-top (spec §5.7) ──*/
@@ -8654,7 +9009,7 @@
         ["Live", "Real-time rainfall, radar and risk", "products.html#live", "live radar rainfall alert monitoring operational response"],
         ["Decision support", "From flood risk to actionable insight", "#decision", "vulnerability atlas portfolio screening drainage capacity property site"],
         ["Platform", "Data in. Intelligence out.", "#platform", "platform data models risk decision technology methodology validation api cmip6"],
-        ["Sectors", "One flood record. Every sector.", "sectors.html", "sectors agriculture agri loans lending banking insurance government infrastructure"],
+        ["Solutions", "Flood intelligence for decisions that matter.", "solutions.html", "solutions sectors agriculture crop insurance agri loans lending banking finance insurance reinsurance government disaster management infrastructure use case pdf"],
         ["Solutions", "Five sectors we serve", "#serve", "insurance banking government infrastructure agriculture reinsurance finance sector"],
         ["Why FloodGuard", "Built on observed data", "#why", "why observed foundation multi scale horizon decision ready"],
         ["About us", "Building India's flood intelligence layer", "#about", "about vision mission principles team company"],
@@ -8676,8 +9031,7 @@
         closeOv(searchOv);
         if (!hash.startsWith("#")) { location.href = hash; return; }
         const el = document.querySelector(hash); if (!el) return;
-        const t = el.getBoundingClientRect().top + scrollY;
-        scrollTo({ top: t, behavior: "smooth" });
+        scrollTo({ top: anchorTop(el), behavior: "smooth" });
       }
       sInput.addEventListener("input", () => {
         const q = sInput.value.trim().toLowerCase();
@@ -8693,10 +9047,10 @@
       renderSearch();
 
       /*── sign in: the real gate lives at auth.html (Supabase-backed) ──*/
-      document.getElementById("signinBtn").onclick = () => {
+      document.querySelectorAll("[data-signin]").forEach(b => b.onclick = () => {
         closeMenu();
         location.href = "/auth.html?next=" + encodeURIComponent(location.pathname + location.search);
-      };
+      });
       /*── validation helpers ──*/
       const mailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
       function setErr(input, bad, msg) {
@@ -8722,19 +9076,30 @@
         const d = setErr(fIntent, !fIntent.value);
         if (!(a && b && c && d)) { dForm.querySelector(".field.err .inp")?.focus(); return; }
         document.getElementById("cBody").textContent =
-          "We'll send your enquiry to the FloodGuard team and copy " + fMail.value.trim() + ".";
+          "We'll send your enquiry to the FloodGuard team. They'll reply to " + fMail.value.trim() + ".";
         openOv(modalOv);
       });
-      document.getElementById("cOk").onclick = () => {
+      /* sent for real: public.enquiries in Supabase, via assets/js/enquiry.js */
+      const dErr = document.getElementById("demoErr");
+      document.getElementById("cOk").onclick = async () => {
         closeOv(modalOv);
+        dErr.hidden = true;
         busy(dSubmit, true);
         dSubmit.querySelector(".lbl").textContent = "Sending…";
-        setTimeout(() => {
-          busy(dSubmit, false);
-          dSubmit.querySelector(".lbl").textContent = "Book a demo";
+        try {
+          if (!window.fgSendEnquiry) throw new Error("Enquiries aren't available right now — please try again in a moment.");
+          await window.fgSendEnquiry({
+            name: fName.value, email: fMail.value, organisation: document.getElementById("fOrgName").value,
+            geography: document.getElementById("fGeo").value, sector: fOrg.value, intent: fIntent.value, source: "/#start"
+          });
           document.getElementById("okMail").textContent = fMail.value.trim();
           dForm.style.display = "none"; dOk.classList.add("on");
-        }, 1600);
+        } catch (err) {
+          dErr.textContent = err.message; dErr.hidden = false;
+        } finally {
+          busy(dSubmit, false);
+          dSubmit.querySelector(".lbl").textContent = "Book a demo";
+        }
       };
       document.getElementById("demoReset").onclick = () => {
         dForm.reset(); dForm.style.display = ""; dOk.classList.remove("on"); fName.focus();
@@ -8795,13 +9160,10 @@
         cur = scrollY;
         const y = cur;
         runRevs(y); runCounters(y); runPins(y, dt); runHdr(y); runBars(y); runParallax(y, dt);
-        runTree(y); runStack(dt); runToTop(y); runConfluence(); runTide(); runDeckDepth(); runAbout(dt); runDropReveals(y);
-        if (mapProg < 1) { mapProg = Math.min(1, mapProg + dt * .45); drawMap(); }
-        else if (hoverCell !== lastHover) { lastHover = hoverCell; drawMap(); }
+        runTree(y); runStack(dt); runToTop(y); runDecisionGap(); runTide(); runDeckDepth(); runAbout(dt); runDropReveals(y);
         drawWater(dt);
         requestAnimationFrame(loop);
       }
-      let lastHover = null;
 
       /*── BOOT ──*/
       if (TOUCH) { const th = document.getElementById("tlHint"); if (th) th.textContent = "Tap"; }
@@ -8824,18 +9186,9 @@
       }
     })();
   </script>
-  <script type="module">
-    /*── header reflects the real Supabase session: signed in → "Sign out" ──*/
-    import { getSession, signOut } from "/assets/js/supabase.js";
-    const btn = document.getElementById("signinBtn");
-    getSession().then(sess => {
-      if (!sess) return;
-      const who = sess.user.user_metadata?.name || sess.user.user_metadata?.full_name || sess.user.email;
-      btn.querySelector("b").textContent = "Sign out";
-      btn.title = "Signed in as " + who;
-      btn.onclick = async () => { await signOut(); location.reload(); };
-    }).catch(() => { });
-  </script>
+  <script type="module" src="/assets/js/signin.js"></script>
+  <script type="module" src="/assets/js/hero-map.js"></script>
+  <script type="module" src="/assets/js/home-enquiry.js"></script>
 </body>
 
 </html>

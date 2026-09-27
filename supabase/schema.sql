@@ -59,6 +59,38 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
+-- ── Enquiries: demo requests + contact form ───────────────────
+-- Written by /contact and the homepage "Book a demo" form. Anyone can
+-- submit; nobody can read, edit or delete through the public API — the
+-- team reads them in the dashboard (Table Editor → enquiries) or with the
+-- service role. user_id is filled from the session, never from the form.
+create table if not exists public.enquiries (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null check (char_length(name) between 2 and 120),
+  email text not null check (char_length(email) between 5 and 200 and email like '%@%'),
+  organisation text check (char_length(organisation) <= 200),
+  role text check (char_length(role) <= 120),
+  product text check (char_length(product) <= 60),
+  sector text check (char_length(sector) <= 80),
+  geography text check (char_length(geography) <= 200),
+  message text check (char_length(message) <= 4000),
+  intent text check (char_length(intent) <= 80),
+  source text check (char_length(source) <= 80),
+  user_id uuid default auth.uid() references auth.users(id) on delete set null
+);
+
+alter table public.enquiries enable row level security;
+
+drop policy if exists "enquiries: anyone can submit" on public.enquiries;
+create policy "enquiries: anyone can submit" on public.enquiries
+  for insert to anon, authenticated with check (true);
+
+-- insert only, and only the form's own columns
+revoke all on public.enquiries from anon, authenticated;
+grant insert (name, email, organisation, role, product, sector, geography, message, intent, source)
+  on public.enquiries to anon, authenticated;
+
 -- ── Dashboard settings (not SQL — do these by hand) ───────────
 -- Several Indian ISPs block *.supabase.co, so the site never sends a
 -- visitor there: the browser calls /sb/* on our own domain (proxied by

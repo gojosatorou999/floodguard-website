@@ -90,7 +90,9 @@ function loadGsi() {
     s.src = "https://accounts.google.com/gsi/client";
     s.async = true;
     s.onload = resolve;
-    s.onerror = () => { gsiLoad = null; reject(new Error("Couldn't load Google sign-in — check your connection and try again.")); };
+    // a failed load here is nearly always a privacy / ad-blocking extension
+    // (or Brave Shields) blocking accounts.google.com, not the network
+    s.onerror = () => { gsiLoad = null; reject(new Error("Google sign-in was blocked by your browser — usually a privacy or ad-blocking extension. Allow accounts.google.com for this site, or sign in with email below.")); };
     document.head.append(s);
   });
   return gsiLoad;
@@ -101,12 +103,19 @@ async function sha256Hex(str) {
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
+/* Only the latest draw may initialise. The auth page redraws on every theme
+   flip; two draws in flight would each call initialize() with their own
+   nonce, and whichever landed last would own the button — possibly not the
+   one whose callback holds the matching raw nonce. */
+let drawSeq = 0;
 export async function renderGoogleButton(container, { onSignedIn, onError, dark = false }) {
   if (!configured) throw NOT_CONFIGURED;
   if (!googleClientId) throw new Error("Google sign-in isn't set up yet — VITE_GOOGLE_CLIENT_ID is not set.");
+  const seq = ++drawSeq;
   await loadGsi();
   const nonce = crypto.randomUUID();
   const hashed = await sha256Hex(nonce);
+  if (seq !== drawSeq) return;
   google.accounts.id.initialize({
     client_id: googleClientId,
     nonce: hashed,
@@ -147,6 +156,12 @@ export function friendlyAuthError(err) {
   if (/invalid login credentials/i.test(m)) return "That email or password doesn't match our records.";
   if (/email not confirmed/i.test(m)) return "Confirm your email first — check your inbox for the link we sent.";
   if (/password should be at least/i.test(m)) return "Password must be at least 8 characters.";
+  /* Google ID-token exchange: these come back from Supabase when the Google
+     provider's settings don't match this site's OAuth client */
+  if (/unacceptable audience|audience/i.test(m)) return "Google sign-in isn't fully set up — this site's Google client ID must be added under Supabase → Authentication → Providers → Google → Client IDs.";
+  if (/nonce/i.test(m)) return "Google sign-in couldn't be verified — reload the page and try again.";
+  if (/provider is not enabled|unsupported provider/i.test(m)) return "Google sign-in is switched off for this project — enable it under Supabase → Authentication → Providers → Google.";
+  if (/bad id token|invalid id token/i.test(m)) return "Google's sign-in response couldn't be verified — reload the page and try again.";
   if (/expired|invalid.*(otp|token)|otp.*(expired|invalid)/i.test(m)) return "That confirmation link has expired or was already used — sign in, or create your account again to get a new one.";
   if (/failed to fetch|networkerror|load failed|internal server error|bad gateway|service unavailable|gateway time-?out/i.test(m)) return "Couldn't reach FloodGuard's servers — check your connection and try again.";
   return m;

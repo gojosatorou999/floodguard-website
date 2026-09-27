@@ -55,10 +55,10 @@
   --onBand:#eaf7f7;
   --noise:.035;
 
-  /* type — display serif echoes the logo's calligraphic ƒ,
-     tracked sans caps echo PREDICT · PLAN · PROTECT */
-  --fD:"Newsreader","Iowan Old Style","Charter",Cambria,Georgia,serif;
-  --fS:"Manrope","Inter",ui-sans-serif,"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  /* type — one rounded family (Nunito) for headings and body: soft,
+     friendly curves; weight carries the hierarchy */
+  --fD:"Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --fS:"Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
   --fM:"JetBrains Mono",ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
 
   --t-xs:clamp(.68rem, .66rem + .08vw, .74rem);
@@ -125,7 +125,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(50vw 40vh at 88% 8%,var(--aur2),transparent 72%),
     radial-gradient(40vw 40vh at 50% 100%,var(--aur3),transparent 70%)}
 a{color:var(--brand);text-underline-offset:3px}
-h1,h2,h3{font-family:var(--fD);font-weight:450;font-optical-sizing:auto;line-height:1.08;letter-spacing:-.018em;text-wrap:balance}
+h1,h2,h3{font-family:var(--fD);font-weight:700;font-optical-sizing:auto;line-height:1.08;letter-spacing:-.018em;text-wrap:balance}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(1.1rem,4vw,2.4rem)}
 .caps{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink3)}
 
@@ -174,10 +174,26 @@ h1,h2,h3{font-family:var(--fD);font-weight:450;font-optical-sizing:auto;line-hei
   background:linear-gradient(158deg,var(--glassA),var(--glassB));
   -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
   border:1px solid var(--glassEdge);box-shadow:inset 0 1px 0 var(--glassGlow),0 18px 40px -26px var(--glassShade)}
-.brandmark{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--ink)}
+.brandmark{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--ink);flex:none}
 .brandmark img{width:40px;height:40px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 0 0 1px var(--line)}
 .brandmark b{font-family:var(--fD);font-size:1.15rem;font-weight:600;letter-spacing:.04em}
-.topbarAct{display:flex;align-items:center;gap:.5rem}
+.topbarAct{display:flex;align-items:center;gap:.5rem;flex:none}
+
+/* primary nav, shared across every page so the way through the site never
+   disappears when you move from one page to another */
+.tnav{display:flex;align-items:center;gap:.1rem;flex:1;justify-content:center;min-width:0}
+.tnav a{padding:.55rem .6rem;border-radius:99px;white-space:nowrap;text-decoration:none;
+  font:600 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
+.tnav a:hover{background:var(--dentBg);color:var(--ink)}
+.tnav a[aria-current="page"]{color:var(--brand);background:var(--dentBg)}
+@media (max-width:1240px){.tnav{display:none}}
+/* header buttons sit a size down from page buttons, so six nav links,
+   the arrow, theme, two CTAs and sign in share one line */
+.topbar .btn{height:40px;padding:0 1rem;font-size:var(--t-sm)}
+/* sign in / sign out (wired by assets/js/signin.js) — quiet, like a nav link */
+.tsign{flex:none;padding:.55rem .6rem;border-radius:99px;white-space:nowrap;text-decoration:none;
+  font:600 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
+.tsign:hover{background:var(--dentBg);color:var(--ink)}
 
 /* light / dark toggle (wired by assets/js/theme.js) */
 .themeBtn{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;cursor:pointer;
@@ -198,6 +214,15 @@ h1,h2,h3{font-family:var(--fD);font-weight:450;font-optical-sizing:auto;line-hei
   transition:transform .2s var(--E)}
 .backHome:hover svg{transform:translateX(-3px)}
 .backHome,.topbar .btn{flex:none;white-space:nowrap}
+/* while the full nav is showing, it and the logo already lead home, so the
+   back button folds to its arrow to leave the nav room; it keeps its label
+   on tablets, where it is the main way back */
+@media (min-width:1241px){
+  .topbar .backHome{width:44px;padding:0;justify-content:center}.topbar .backHome span{display:none}
+  .topbar{gap:.6rem}.topbarAct{gap:.35rem}
+}
+@media (max-width:760px){.tExplore{display:none}}
+@media (max-width:560px){.tsign{display:none}}
 /* phones: the logo carries the brand, the back button becomes an icon, so all
    three controls fit on one line without clipping */
 @media (max-width:560px){

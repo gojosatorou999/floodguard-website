@@ -41,6 +41,10 @@ export default defineConfig(({ mode }) => {
           // Full Products / Sectors detail, split out of the homepage.
           products: resolve(here, "products.html"),
           sectors: resolve(here, "sectors.html"),
+          // Solutions: sector applications + use-case PDF library.
+          solutions: resolve(here, "solutions.html"),
+          // Demo / contact form (writes to Supabase public.enquiries).
+          contact: resolve(here, "contact.html"),
         },
       },
     },
