@@ -482,3 +482,663 @@ a.solRow:hover svg { transform: translateX(3px) }
 .closer .btn.bp { background: var(--onBand); color: #04263d; box-shadow: none }
 .closer .btn.bg2 { color: var(--onBand); border-color: rgba(234, 247, 247, .35) }
 .closer small { display: block; margin-top: 1.4rem; font: 800 .7rem/1 var(--fS); letter-spacing: .24em; text-transform: uppercase; opacity: .7 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   /about and /insights — moved off the home page with their styles
+   and effects intact. Tokens the home page defines for itself are
+   set here for these two pages.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --header-h: 74px;            /* the pinned header: 12px inset + 62px bar */
+  --stage-h: calc(100svh - var(--header-h));
+  --section-pad-y: clamp(64px, 10svh, 140px);
+  --deck-top: 24px;
+  --deck-step: 20px;
+  --surface-about: var(--b950);
+  --text-on-brand: #eaf7f7;
+  --t-card: clamp(1.2rem, 1.05rem + .5vw, 1.45rem);
+  --t-micro: .8125rem;
+  --t-label: .75rem;
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1)
+}
+@media (max-width:760px) { :root { --deck-top: 16px; --deck-step: 12px } }
+
+/* About: the brand surface runs up behind the pinned header */
+.aboutMain { margin-top: calc(-12px - 62px) }
+
+/*───────────────────────────────────────────────────────────────
+  §09 — About: heading, team and the shared-problem CTA, all on the
+  brand surface and all visible as soon as the section is — clicking
+  "About" lands on the finished section, nothing is scroll-revealed.
+───────────────────────────────────────────────────────────────*/
+#about {
+  position: relative;
+  padding: 0;
+  /* the drifting glows reach past the edges */
+  overflow: hidden;
+  overflow: clip
+}
+
+.dropAfter {
+  position: relative;
+  background: var(--surface-about);
+  color: var(--text-on-brand);
+  /* the fixed header sits over the top of a section reached by anchor */
+  padding-top: calc(var(--header-h) + clamp(1.4rem, 5svh, 3.4rem))
+}
+
+.aboutHead {
+  position: relative;
+  z-index: 1;
+  text-align: center
+}
+
+.aboutNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .9rem;
+  font-family: var(--fS);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: rgba(234, 247, 247, .72)
+}
+
+.aboutNum::before,
+.aboutNum::after {
+  content: "";
+  width: clamp(40px, 8vw, 110px);
+  height: 1px;
+  background: currentColor;
+  opacity: .45
+}
+
+.aboutHead h1 {
+  font-size: var(--t-4);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: #fff;
+  margin: .9rem 0 0
+}
+
+.aboutLead {
+  max-width: 60ch;
+  margin: 1.1rem auto 0;
+  font-size: var(--t-1);
+  line-height: 1.6;
+  color: rgba(234, 247, 247, .84)
+}
+
+.dropPrinciples {
+  margin-top: 1rem;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: rgba(234, 247, 247, .6)
+}
+
+/* the founding team: three cards side by side, compact rows on phones */
+.aboutTeam {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(1.8rem, 5svh, 3rem)
+}
+
+.teamKick {
+  text-align: center;
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(234, 247, 247, .62);
+  margin-bottom: 1rem
+}
+
+.teamCards {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 980px;
+  display: grid;
+  gap: clamp(.7rem, 1.6vw, 1.1rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr))
+}
+
+.teamCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .9rem;
+  padding: clamp(1.2rem, 2.6vw, 1.8rem) 1rem;
+  border-radius: var(--r-l);
+  border: 1px solid rgba(158, 218, 217, .2);
+  background: rgba(158, 218, 217, .07)
+}
+
+.teamAv {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--fS);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: #04263d;
+  background: linear-gradient(145deg, var(--b100), var(--b300))
+}
+
+.teamCard h3 {
+  font-size: var(--t-card);
+  color: #fff;
+  line-height: 1.2
+}
+
+.teamCard p {
+  margin-top: .25rem;
+  font-size: var(--t-sm);
+  color: rgba(234, 247, 247, .72)
+}
+
+@media (max-width:640px) {
+  .teamCards {
+    grid-template-columns: 1fr
+  }
+
+  .teamCard {
+    flex-direction: row;
+    text-align: left;
+    padding: .85rem 1rem
+  }
+
+  .teamAv {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem
+  }
+}
+
+/* the "shared problem" CTA, straight after the team */
+.dropShared {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(3.5rem, 10svh, 7rem);
+  padding-block: clamp(3rem, 9svh, 6rem) clamp(2.5rem, 7svh, 4.5rem);
+  border-top: 1px solid rgba(158, 218, 217, .14)
+}
+
+/* a quiet line in sentence case between two short hairlines */
+.sharedKick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-family: var(--fS);
+  font-size: clamp(.95rem, .9rem + .25vw, 1.08rem);
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--b100);
+  margin: 0 0 clamp(1.4rem, 3.5svh, 2.2rem)
+}
+
+.sharedKick::before,
+.sharedKick::after {
+  content: "";
+  width: clamp(28px, 5vw, 56px);
+  height: 1px;
+  background: currentColor;
+  opacity: .45
+}
+
+/* the three phrases spread across the row on wide screens and stack one
+   per line on narrow ones — each one gets its own beat */
+.sharedH {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .1em clamp(.9rem, 3vw, 2.6rem);
+  margin: 0;
+  font-family: var(--fD);
+  font-size: clamp(2.3rem, 1.2rem + 2.6vw, 3.9rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -.01em;
+  color: #fff
+}
+
+.sharedH span {
+  white-space: nowrap
+}
+
+.sharedH span+span::before {
+  content: "";
+  display: inline-block;
+  width: .18em;
+  height: .18em;
+  margin-right: clamp(.9rem, 3vw, 2.6rem);
+  vertical-align: .22em;
+  border-radius: 50%;
+  background: var(--b200);
+  opacity: .7
+}
+
+.sharedLead {
+  max-width: 46ch;
+  margin: clamp(1.6rem, 4svh, 2.4rem) auto 0;
+  font-size: clamp(1.05rem, 1rem + .3vw, 1.22rem);
+  line-height: 1.75;
+  color: rgba(234, 247, 247, .8)
+}
+
+.dropShared .hcta {
+  display: flex;
+  gap: .9rem 1.1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: clamp(2.2rem, 5svh, 3.2rem)
+}
+
+.dropShared .bp {
+  background: #fff;
+  color: #04263d;
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .5)
+}
+
+.dropShared .bg2 {
+  border-color: rgba(255, 255, 255, .34);
+  color: #fff
+}
+
+.dropShared .bg2:hover {
+  background: rgba(255, 255, 255, .12)
+}
+
+@media (max-width:1099px) {
+  .sharedH {
+    flex-direction: column;
+    gap: .05em
+  }
+
+  .sharedH span+span::before {
+    display: none
+  }
+}
+
+@media (max-width:640px) {
+  .dropShared .hcta .btn {
+    flex: 1 1 100%;
+    justify-content: center
+  }
+}
+
+/* ambient caustics — two slow radial blobs, fine pointers only */
+.dropAfter::before,
+.dropAfter::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: .08;
+  z-index: 0
+}
+
+.dropAfter::before {
+  width: 60%;
+  padding-bottom: 60%;
+  left: -10%;
+  top: 10%;
+  background: radial-gradient(circle, var(--b200), transparent 62%)
+}
+
+.dropAfter::after {
+  width: 52%;
+  padding-bottom: 52%;
+  right: -8%;
+  bottom: 6%;
+  background: radial-gradient(circle, var(--b400), transparent 62%)
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .dropAfter::before {
+    animation: dropDrift1 20s var(--ease-in-out) infinite alternate
+  }
+
+  .dropAfter::after {
+    animation: dropDrift2 26s var(--ease-in-out) infinite alternate
+  }
+}
+
+@keyframes dropDrift1 {
+  to {
+    transform: translate3d(6%, -4%, 0) scale(1.12)
+  }
+}
+
+@keyframes dropDrift2 {
+  to {
+    transform: translate3d(-5%, 5%, 0) scale(1.08)
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .dropAfter::before,
+  .dropAfter::after {
+    animation: none
+  }
+}
+
+/* a single wave hands §09's surface over to §10's background */
+/* waveFill closes downward, so the drawn shape is what sits BELOW the wave
+   line — that part is the next section's ground, and the band behind it
+   stays on §09's surface. */
+.dropWave {
+  position: relative;
+  z-index: 1;
+  height: clamp(48px, 7svh, 96px);
+  margin-top: clamp(1rem, 3svh, 2rem);
+  background: var(--surface-about)
+}
+
+.dropWave svg {
+  display: block;
+  width: 100%;
+  height: 100%
+}
+
+/*───────────────────────────────────────────────────────────────
+  §10 — DepthDeck (spec §5.6)
+  Every card is a direct child of .deck: sticky only works between
+  siblings of the same parent, so no wrapper may come between them.
+───────────────────────────────────────────────────────────────*/
+/* the page hero sits right above, so the deck starts close under it */
+#insights {
+  padding-block: clamp(.5rem, 2svh, 1.5rem) var(--section-pad-y)
+}
+
+/* the head sits full-width above; the deck is one centred column */
+.deck {
+  position: relative;
+  max-width: 900px;
+  margin-inline: auto
+}
+
+/* A sticky card is released when its MARGIN box reaches the end of the
+   deck — so the scroll room between cards must not be card margin (a
+   40svh margin released every card 40svh early, and the stack had
+   already left by the time the last card landed). The room lives in
+   .deckGap spacers instead, and each card carries just enough margin
+   to cancel its smaller sticky offset: every card then releases on the
+   same scroll pixel, and the whole stack leaves together. */
+.deckCard {
+  position: relative;
+  margin-bottom: calc((var(--n, 5) - 1 - var(--i)) * var(--deck-step))
+}
+
+.deckGap {
+  height: 40svh
+}
+
+/* after the last card: long enough to see the finished stack settle */
+.deckGap.end {
+  height: 30svh
+}
+
+.deckCard {
+  position: sticky;
+  top: calc(var(--header-h) + var(--deck-top) + var(--i) * var(--deck-step))
+}
+
+@media (max-width:899px) {
+  .deckGap {
+    height: 28svh
+  }
+
+  .deckGap.end {
+    height: 22svh
+  }
+}
+
+.deckInner {
+  position: relative;
+  display: grid;
+  gap: 0;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg2);
+  transform-origin: top center;
+  will-change: transform
+}
+
+/* the stacked top edges have to read as distinct layers, so each card steps
+   one stop along the ocean ramp */
+.deckCard:nth-of-type(1) .deckInner {
+  background: var(--bg2)
+}
+
+.deckCard:nth-of-type(2) .deckInner {
+  background: color-mix(in srgb, var(--b100) 22%, var(--bg2))
+}
+
+.deckCard:nth-of-type(3) .deckInner {
+  background: color-mix(in srgb, var(--b200) 22%, var(--bg2))
+}
+
+.deckCard:nth-of-type(4) .deckInner {
+  background: color-mix(in srgb, var(--b300) 20%, var(--bg2))
+}
+
+.deckCard:nth-of-type(5) .deckInner {
+  background: color-mix(in srgb, var(--b400) 18%, var(--bg2))
+}
+
+.deckCard:nth-of-type(6) .deckInner {
+  background: color-mix(in srgb, var(--b500) 16%, var(--bg2))
+}
+
+@supports not (background:color-mix(in srgb, red, blue)) {
+  .deckInner {
+    background: var(--bg2)
+  }
+}
+
+.deckText {
+  padding: clamp(1.3rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0
+}
+/* --brand2 lands at 3.7:1 against the deepest card tint; --brand clears 6:1
+   on every step of the stack, in both themes. */
+.deckKind {
+  display: inline-block;
+  font-family: var(--fS);
+  font-size: var(--t-label);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--brand);
+  font-weight: 600;
+  margin-bottom: .7rem
+}
+
+.deckText h3 {
+  font-size: var(--t-2);
+  letter-spacing: -.022em;
+  margin-bottom: .6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden
+}
+
+.deckText p {
+  color: var(--ink2);
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden
+}
+
+.deckLink {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-top: 1.1rem;
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--brand)
+}
+
+.deckLink svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round
+}
+
+/* one stretched link per card — the whole card is the target */
+.deckLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3
+}
+
+.deckCard:focus-within .deckInner {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px
+}
+
+/* no image, so a brand texture tile — never a grey placeholder box */
+.deckMedia {
+  position: relative;
+  background: var(--dentBg);
+  aspect-ratio: 16/9;
+  background-image: var(--tex);
+  background-size: 14px 14px
+}
+
+.deckMedia[data-tex="dots"] {
+  --tex: radial-gradient(circle at 3px 3px, var(--dotOff) 1.6px, transparent 1.7px)
+}
+
+.deckMedia[data-tex="grid"] {
+  --tex: linear-gradient(var(--dotOff) 1px, transparent 1px), linear-gradient(90deg, var(--dotOff) 1px, transparent 1px)
+}
+
+.deckMedia[data-tex="hatch"] {
+  --tex: repeating-linear-gradient(45deg, var(--dotOff) 0 1px, transparent 1px 9px)
+}
+
+.deckMedia[data-tex="contours"] {
+  --tex: repeating-radial-gradient(circle at 50% 120%, transparent 0 10px, var(--dotOff) 10px 11px)
+}
+
+/* the dimming overlay for cards that have receded behind the next one */
+.deckDim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: var(--r-l);
+  pointer-events: none;
+  background: var(--bg);
+  opacity: 0
+}
+
+@media (min-width:900px) {
+  .deckInner {
+    grid-template-columns: 55% 45%
+  }
+
+
+  .deckInner {
+    min-height: min(480px, calc(var(--stage-h) - 120px))
+  }
+
+  .deckMedia {
+    aspect-ratio: 4/3;
+    height: 100%
+  }
+}
+
+@media (max-width:899px) {
+  .deckInner {
+    grid-template-columns: 1fr
+  }
+
+  .deckMedia {
+    order: -1
+  }
+
+  .deckText h3 {
+    -webkit-line-clamp: 4
+  }
+
+  .deckText p {
+    -webkit-line-clamp: 2
+  }
+
+  /* one height for every card, so they all release together here too;
+     the picture keeps its natural 16:9 row and the text takes the rest
+     (a stretched picture row would widen it past the card) */
+  .deckInner {
+    height: min(440px, 66svh);
+    max-height: none;
+    grid-template-rows: auto minmax(0, 1fr)
+  }
+}
+
+/* short screens: no sticky, no depth — an ordinary list of cards */
+@media (max-height:559px) {
+  .deckInner {
+    height: auto;
+    min-height: 0
+  }
+
+  .deckCard {
+    position: static;
+    margin-bottom: 1.2rem
+  }
+
+  .deckGap {
+    display: none
+  }
+
+  .deckInner {
+    transform: none !important
+  }
+
+  .deckDim {
+    display: none
+  }
+}
+
+/* reduced motion keeps the stacking, drops the depth */
+@media (prefers-reduced-motion:reduce) {
+  .deckInner {
+    transform: none !important
+  }
+
+  .deckDim {
+    opacity: 0 !important
+  }
+}
+.insCta { justify-content: center; margin-top: 1.6rem }

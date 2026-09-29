@@ -43,6 +43,9 @@ export default defineConfig(({ mode }) => {
           sectors: resolve(here, "sectors.html"),
           // Solutions: sector applications + use-case PDF library.
           solutions: resolve(here, "solutions.html"),
+          // Insights (the depth deck) and About, split out of the homepage.
+          insights: resolve(here, "insights.html"),
+          about: resolve(here, "about.html"),
           // Demo / contact form (writes to Supabase public.enquiries).
           contact: resolve(here, "contact.html"),
         },

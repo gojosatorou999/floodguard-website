@@ -159,15 +159,9 @@
       --stream-physical: var(--b600);
       --stream-exposure: var(--b400);
 
-      /* water surfaces (§06, §09) */
+      /* water surface (§06) */
       --surface-water: var(--bg2);
-      --surface-about: var(--b950);
-      /* deep brand in BOTH themes */
-      --text-on-brand: #eaf7f7;
 
-      /* deck (§10) */
-      --deck-top: 32px;
-      --deck-step: 20px;
 
       /* ripple background (§5.8) — rgb triplets; the canvas parses these */
       --ripple-rgb: 10 82 115;
@@ -287,9 +281,7 @@
     @media (max-width:899px) {
       :root {
         --header-h: 56px;
-        --step-h: 60svh;
-        --deck-top: 16px;
-        --deck-step: 12px
+        --step-h: 60svh
       }
     }
 
@@ -2895,627 +2887,6 @@
     }
 
     /*───────────────────────────────────────────────────────────────
-  §09 — About: heading, team and the shared-problem CTA, all on the
-  brand surface and all visible as soon as the section is — clicking
-  "About" lands on the finished section, nothing is scroll-revealed.
-───────────────────────────────────────────────────────────────*/
-    #about {
-      position: relative;
-      padding: 0
-    }
-
-    .dropAfter {
-      position: relative;
-      background: var(--surface-about);
-      color: var(--text-on-brand);
-      /* the fixed header sits over the top of a section reached by anchor */
-      padding-top: calc(var(--header-h) + clamp(1.4rem, 5svh, 3.4rem))
-    }
-
-    .aboutHead {
-      position: relative;
-      z-index: 1;
-      text-align: center
-    }
-
-    .aboutNum {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: .9rem;
-      font-family: var(--fS);
-      font-size: var(--t-micro);
-      font-weight: 600;
-      letter-spacing: .06em;
-      color: rgba(234, 247, 247, .72)
-    }
-
-    .aboutNum::before,
-    .aboutNum::after {
-      content: "";
-      width: clamp(40px, 8vw, 110px);
-      height: 1px;
-      background: currentColor;
-      opacity: .45
-    }
-
-    .aboutHead h2 {
-      font-size: var(--t-4);
-      font-weight: 500;
-      line-height: 1;
-      letter-spacing: -.03em;
-      color: #fff;
-      margin: .9rem 0 0
-    }
-
-    .aboutLead {
-      max-width: 60ch;
-      margin: 1.1rem auto 0;
-      font-size: var(--t-1);
-      line-height: 1.6;
-      color: rgba(234, 247, 247, .84)
-    }
-
-    .dropPrinciples {
-      margin-top: 1rem;
-      font-size: var(--t-sm);
-      font-weight: 600;
-      letter-spacing: .02em;
-      color: rgba(234, 247, 247, .6)
-    }
-
-    /* the founding team: three cards side by side, compact rows on phones */
-    .aboutTeam {
-      position: relative;
-      z-index: 1;
-      margin-top: clamp(1.8rem, 5svh, 3rem)
-    }
-
-    .teamKick {
-      text-align: center;
-      font-size: var(--t-label);
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: rgba(234, 247, 247, .62);
-      margin-bottom: 1rem
-    }
-
-    .teamCards {
-      list-style: none;
-      margin: 0 auto;
-      padding: 0;
-      max-width: 980px;
-      display: grid;
-      gap: clamp(.7rem, 1.6vw, 1.1rem);
-      grid-template-columns: repeat(3, minmax(0, 1fr))
-    }
-
-    .teamCard {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: .9rem;
-      padding: clamp(1.2rem, 2.6vw, 1.8rem) 1rem;
-      border-radius: var(--r-l);
-      border: 1px solid rgba(158, 218, 217, .2);
-      background: rgba(158, 218, 217, .07)
-    }
-
-    .teamAv {
-      width: 64px;
-      height: 64px;
-      flex: none;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-family: var(--fS);
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: .02em;
-      color: #04263d;
-      background: linear-gradient(145deg, var(--b100), var(--b300))
-    }
-
-    .teamCard h3 {
-      font-size: var(--t-card);
-      color: #fff;
-      line-height: 1.2
-    }
-
-    .teamCard p {
-      margin-top: .25rem;
-      font-size: var(--t-sm);
-      color: rgba(234, 247, 247, .72)
-    }
-
-    @media (max-width:640px) {
-      .teamCards {
-        grid-template-columns: 1fr
-      }
-
-      .teamCard {
-        flex-direction: row;
-        text-align: left;
-        padding: .85rem 1rem
-      }
-
-      .teamAv {
-        width: 48px;
-        height: 48px;
-        font-size: 1rem
-      }
-    }
-
-    /* the "shared problem" CTA, straight after the team */
-    .dropShared {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-      margin-top: clamp(3.5rem, 10svh, 7rem);
-      padding-block: clamp(3rem, 9svh, 6rem) clamp(2.5rem, 7svh, 4.5rem);
-      border-top: 1px solid rgba(158, 218, 217, .14)
-    }
-
-    /* a quiet line in sentence case between two short hairlines */
-    .sharedKick {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      font-family: var(--fS);
-      font-size: clamp(.95rem, .9rem + .25vw, 1.08rem);
-      font-weight: 600;
-      letter-spacing: .02em;
-      color: var(--b100);
-      margin: 0 0 clamp(1.4rem, 3.5svh, 2.2rem)
-    }
-
-    .sharedKick::before,
-    .sharedKick::after {
-      content: "";
-      width: clamp(28px, 5vw, 56px);
-      height: 1px;
-      background: currentColor;
-      opacity: .45
-    }
-
-    /* the three phrases spread across the row on wide screens and stack one
-       per line on narrow ones — each one gets its own beat */
-    .sharedH {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: .1em clamp(.9rem, 3vw, 2.6rem);
-      margin: 0;
-      font-family: var(--fD);
-      font-size: clamp(2.3rem, 1.2rem + 2.6vw, 3.9rem);
-      font-weight: 400;
-      line-height: 1.12;
-      letter-spacing: -.01em;
-      color: #fff
-    }
-
-    .sharedH span {
-      white-space: nowrap
-    }
-
-    .sharedH span+span::before {
-      content: "";
-      display: inline-block;
-      width: .18em;
-      height: .18em;
-      margin-right: clamp(.9rem, 3vw, 2.6rem);
-      vertical-align: .22em;
-      border-radius: 50%;
-      background: var(--b200);
-      opacity: .7
-    }
-
-    .sharedLead {
-      max-width: 46ch;
-      margin: clamp(1.6rem, 4svh, 2.4rem) auto 0;
-      font-size: clamp(1.05rem, 1rem + .3vw, 1.22rem);
-      line-height: 1.75;
-      color: rgba(234, 247, 247, .8)
-    }
-
-    .dropShared .hcta {
-      display: flex;
-      gap: .9rem 1.1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: clamp(2.2rem, 5svh, 3.2rem)
-    }
-
-    .dropShared .bp {
-      background: #fff;
-      color: #04263d;
-      box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .5)
-    }
-
-    .dropShared .bg2 {
-      border-color: rgba(255, 255, 255, .34);
-      color: #fff
-    }
-
-    .dropShared .bg2:hover {
-      background: rgba(255, 255, 255, .12)
-    }
-
-    @media (max-width:1099px) {
-      .sharedH {
-        flex-direction: column;
-        gap: .05em
-      }
-
-      .sharedH span+span::before {
-        display: none
-      }
-    }
-
-    @media (max-width:640px) {
-      .dropShared .hcta .btn {
-        flex: 1 1 100%;
-        justify-content: center
-      }
-    }
-
-    /* ambient caustics — two slow radial blobs, fine pointers only */
-    .dropAfter::before,
-    .dropAfter::after {
-      content: "";
-      position: absolute;
-      pointer-events: none;
-      border-radius: 50%;
-      opacity: .08;
-      z-index: 0
-    }
-
-    .dropAfter::before {
-      width: 60%;
-      padding-bottom: 60%;
-      left: -10%;
-      top: 10%;
-      background: radial-gradient(circle, var(--b200), transparent 62%)
-    }
-
-    .dropAfter::after {
-      width: 52%;
-      padding-bottom: 52%;
-      right: -8%;
-      bottom: 6%;
-      background: radial-gradient(circle, var(--b400), transparent 62%)
-    }
-
-    @media (hover:hover) and (pointer:fine) {
-      .dropAfter::before {
-        animation: dropDrift1 20s var(--ease-in-out) infinite alternate
-      }
-
-      .dropAfter::after {
-        animation: dropDrift2 26s var(--ease-in-out) infinite alternate
-      }
-    }
-
-    @keyframes dropDrift1 {
-      to {
-        transform: translate3d(6%, -4%, 0) scale(1.12)
-      }
-    }
-
-    @keyframes dropDrift2 {
-      to {
-        transform: translate3d(-5%, 5%, 0) scale(1.08)
-      }
-    }
-
-    @media (prefers-reduced-motion:reduce) {
-
-      .dropAfter::before,
-      .dropAfter::after {
-        animation: none
-      }
-    }
-
-    /* a single wave hands §09's surface over to §10's background */
-    /* waveFill closes downward, so the drawn shape is what sits BELOW the wave
-   line — that part is the next section's ground, and the band behind it
-   stays on §09's surface. */
-    .dropWave {
-      position: relative;
-      z-index: 1;
-      height: clamp(48px, 7svh, 96px);
-      margin-top: clamp(1rem, 3svh, 2rem);
-      background: var(--surface-about)
-    }
-
-    .dropWave svg {
-      display: block;
-      width: 100%;
-      height: 100%
-    }
-
-    /*───────────────────────────────────────────────────────────────
-  §10 — DepthDeck (spec §5.6)
-  Every card is a direct child of .deck: sticky only works between
-  siblings of the same parent, so no wrapper may come between them.
-───────────────────────────────────────────────────────────────*/
-    #insights {
-      padding-block: var(--section-pad-y)
-    }
-
-    /* the head sits full-width above; the deck is one centred column */
-    .deck {
-      position: relative;
-      max-width: 900px;
-      margin-inline: auto
-    }
-
-    /* A sticky card is released when its MARGIN box reaches the end of the
-       deck — so the scroll room between cards must not be card margin (a
-       40svh margin released every card 40svh early, and the stack had
-       already left by the time the last card landed). The room lives in
-       .deckGap spacers instead, and each card carries just enough margin
-       to cancel its smaller sticky offset: every card then releases on the
-       same scroll pixel, and the whole stack leaves together. */
-    .deckCard {
-      position: relative;
-      margin-bottom: calc((var(--n, 5) - 1 - var(--i)) * var(--deck-step))
-    }
-
-    .deckGap {
-      height: 40svh
-    }
-
-    /* after the last card: long enough to see the finished stack settle */
-    .deckGap.end {
-      height: 30svh
-    }
-
-    body:not(.nopin) .deckCard {
-      position: sticky;
-      top: calc(var(--header-h) + var(--deck-top) + var(--i) * var(--deck-step))
-    }
-
-    @media (max-width:899px) {
-      .deckGap {
-        height: 28svh
-      }
-
-      .deckGap.end {
-        height: 22svh
-      }
-    }
-
-    .deckInner {
-      position: relative;
-      display: grid;
-      gap: 0;
-      border-radius: var(--r-l);
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: var(--bg2);
-      transform-origin: top center;
-      will-change: transform
-    }
-
-    /* the stacked top edges have to read as distinct layers, so each card steps
-   one stop along the ocean ramp */
-    .deckCard:nth-of-type(1) .deckInner {
-      background: var(--bg2)
-    }
-
-    .deckCard:nth-of-type(2) .deckInner {
-      background: color-mix(in srgb, var(--b100) 22%, var(--bg2))
-    }
-
-    .deckCard:nth-of-type(3) .deckInner {
-      background: color-mix(in srgb, var(--b200) 22%, var(--bg2))
-    }
-
-    .deckCard:nth-of-type(4) .deckInner {
-      background: color-mix(in srgb, var(--b300) 20%, var(--bg2))
-    }
-
-    .deckCard:nth-of-type(5) .deckInner {
-      background: color-mix(in srgb, var(--b400) 18%, var(--bg2))
-    }
-
-    .deckCard:nth-of-type(6) .deckInner {
-      background: color-mix(in srgb, var(--b500) 16%, var(--bg2))
-    }
-
-    @supports not (background:color-mix(in srgb, red, blue)) {
-      .deckInner {
-        background: var(--bg2)
-      }
-    }
-
-    .deckText {
-      padding: clamp(1.3rem, 3vw, 2rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-width: 0
-    }
-/* --brand2 lands at 3.7:1 against the deepest card tint; --brand clears 6:1
-   on every step of the stack, in both themes. */
-    .deckKind {
-  display: inline-block;
-  font-family: var(--fS);
-  font-size: var(--t-label);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--brand);
-  font-weight: 600;
-  margin-bottom: .7rem
-}
-
-    .deckText h3 {
-      font-size: var(--t-2);
-      letter-spacing: -.022em;
-      margin-bottom: .6rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden
-    }
-
-    .deckText p {
-      color: var(--ink2);
-      font-size: var(--t-sm);
-      line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden
-    }
-
-    .deckLink {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      margin-top: 1.1rem;
-      font-size: var(--t-sm);
-      font-weight: 600;
-      color: var(--brand)
-    }
-
-    .deckLink svg {
-      width: 13px;
-      height: 13px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round
-    }
-
-    /* one stretched link per card — the whole card is the target */
-    .deckLink::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 3
-    }
-
-    .deckCard:focus-within .deckInner {
-      outline: 2px solid var(--brand);
-      outline-offset: 3px
-    }
-
-    /* no image, so a brand texture tile — never a grey placeholder box */
-    .deckMedia {
-      position: relative;
-      background: var(--dentBg);
-      aspect-ratio: 16/9;
-      background-image: var(--tex);
-      background-size: 14px 14px
-    }
-
-    .deckMedia[data-tex="dots"] {
-      --tex: radial-gradient(circle at 3px 3px, var(--dotOff) 1.6px, transparent 1.7px)
-    }
-
-    .deckMedia[data-tex="grid"] {
-      --tex: linear-gradient(var(--dotOff) 1px, transparent 1px), linear-gradient(90deg, var(--dotOff) 1px, transparent 1px)
-    }
-
-    .deckMedia[data-tex="hatch"] {
-      --tex: repeating-linear-gradient(45deg, var(--dotOff) 0 1px, transparent 1px 9px)
-    }
-
-    .deckMedia[data-tex="contours"] {
-      --tex: repeating-radial-gradient(circle at 50% 120%, transparent 0 10px, var(--dotOff) 10px 11px)
-    }
-
-    /* the dimming overlay for cards that have receded behind the next one */
-    .deckDim {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      border-radius: var(--r-l);
-      pointer-events: none;
-      background: var(--bg);
-      opacity: 0
-    }
-
-    @media (min-width:900px) {
-      .deckInner {
-        grid-template-columns: 55% 45%
-      }
-
-
-      body:not(.nopin) .deckInner {
-        min-height: min(480px, calc(var(--stage-h) - 120px))
-      }
-
-      .deckMedia {
-        aspect-ratio: 4/3;
-        height: 100%
-      }
-    }
-
-    @media (max-width:899px) {
-      .deckInner {
-        grid-template-columns: 1fr
-      }
-
-      .deckMedia {
-        order: -1
-      }
-
-      .deckText h3 {
-        -webkit-line-clamp: 4
-      }
-
-      .deckText p {
-        -webkit-line-clamp: 2
-      }
-
-      /* one height for every card, so they all release together here too;
-         the picture keeps its natural 16:9 row and the text takes the rest
-         (a stretched picture row would widen it past the card) */
-      body:not(.nopin) .deckInner {
-        height: min(440px, 66svh);
-        max-height: none;
-        grid-template-rows: auto minmax(0, 1fr)
-      }
-    }
-
-    /* Static state: no sticky, no scale, no dim — an ordinary list of cards. */
-    body.nopin .deckCard {
-      position: static;
-      margin-bottom: 1.2rem
-    }
-
-    body.nopin .deckGap {
-      display: none
-    }
-
-    body.nopin .deckInner {
-      transform: none !important
-    }
-
-    body.nopin .deckDim {
-      display: none
-    }
-
-    /* reduced motion keeps the stacking, drops the depth */
-    body.rm .deckInner {
-      transform: none !important
-    }
-
-    body.rm .deckDim {
-      opacity: 0 !important
-    }
-
-    /*───────────────────────────────────────────────────────────────
   §06 — Platform tide reveal (spec §5.4)
   The water recedes and the platform surfaces. Cards read top to
   bottom in one column: readable first, animated second.
@@ -5938,12 +5309,12 @@
                 <path d="M2 4.5 6 8.5 10 4.5" />
               </svg></button>
             <div class="drop">
-              <a href="#ins-research"><b>Research</b></a>
-              <a href="#ins-data-stories"><b>Data Stories</b></a>
-              <a href="#ins-reports"><b>Reports</b></a>
+              <a href="insights.html#ins-research"><b>Research</b></a>
+              <a href="insights.html#ins-data-stories"><b>Data Stories</b></a>
+              <a href="insights.html#ins-reports"><b>Reports</b></a>
             </div>
           </div>
-          <div class="ni"><a href="#about">About</a></div>
+          <div class="ni"><a href="about.html">About</a></div>
         </nav>
         <div class="hact">
           <a class="cta-sm" href="#hmap">Explore Free Data</a>
@@ -5989,8 +5360,8 @@
                 <a href="#products"><b>Products</b></a>
                 <a href="#sectors"><b>Sectors</b></a>
                 <a href="#why"><b>Why FloodGuard</b></a>
-                <a href="#insights"><b>Insights</b></a>
-                <a href="#about"><b>About us</b></a>
+                <a href="insights.html"><b>Insights</b></a>
+                <a href="about.html"><b>About us</b></a>
               </div>
 
               <div class="mSec">
@@ -6559,170 +5930,11 @@
         </div>
       </section>
 
-      <!-- ══ INSIGHTS ══ -->
-      <section id="insights">
-        <div class="wrap">
-          <div class="sechead" data-rv>
-            <span class="snum">10 — Insights</span>
-            <h2>Research, data stories and practical perspectives.</h2>
-            <p class="shLead">Five strands of work, published as the library fills. Each one starts from the same
-              observed record the rest of the platform is built on.</p>
-          </div>
-        </div>
-        <div class="wrap">
-          <div class="deck" id="insightDeck" style="--n:5">
-            <article class="deckCard" id="ins-research" style="--i:0">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Research</span>
-                  <h3>Flood risk, climate data and India's changing risk landscape</h3>
-                  <p>How the observed record and climate projections disagree, where they agree, and what
-                    that means for anyone pricing or planning around flood.</p>
-                  <a class="deckLink" href="#start">Request research <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-            <div class="deckGap" aria-hidden="true"></div>
-
-            <article class="deckCard" id="ins-reports" style="--i:1">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">White paper</span>
-                  <h3>Exposure and decision support</h3>
-                  <p>Detailed method notes on how exposure is resolved from district to site, and how the
-                    result is meant to be read by the people making the call.</p>
-                  <a class="deckLink" href="#start">Request paper <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="grid" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-            <div class="deckGap" aria-hidden="true"></div>
-
-            <article class="deckCard" style="--i:2">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Use case</span>
-                  <h3>Sector-specific applications</h3>
-                  <p>What insurance, banking, government, infrastructure and agriculture each actually ask
-                    of a flood model — and where those questions diverge.</p>
-                  <a class="deckLink" href="#serve">See solutions <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="hatch" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-            <div class="deckGap" aria-hidden="true"></div>
-
-            <article class="deckCard" id="ins-data-stories" style="--i:3">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Data story</span>
-                  <h3>Seventy-five years of rainfall, drawn</h3>
-                  <p>Visual explorations of the flood history and rainfall record behind the platform,
-                    built from the same series the timeline above reads from.</p>
-                  <a class="deckLink" href="#record">See the record <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="contours" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-            <div class="deckGap" aria-hidden="true"></div>
-
-            <article class="deckCard" style="--i:4">
-              <div class="deckInner">
-                <div class="deckText">
-                  <span class="deckKind">Article</span>
-                  <h3>Perspectives on flood science and resilience</h3>
-                  <p>Shorter pieces on flood science, technology and resilience, written for people who
-                    have to act on the answer rather than publish it.</p>
-                  <a class="deckLink" href="#start">Get notified <svg viewBox="0 0 14 14" aria-hidden="true">
-                      <path d="M2 7h10M8 3l4 4-4 4" />
-                    </svg></a>
-                </div>
-                <div class="deckMedia" data-tex="dots" aria-hidden="true"></div>
-              </div>
-              <i class="deckDim" aria-hidden="true"></i>
-            </article>
-            <div class="deckGap end" aria-hidden="true"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ══ ABOUT ══ -->
-      <!-- Everything here is visible the moment the section is on screen —
-     clicking "About" lands on the heading, the team and the CTA, with no
-     scroll-driven reveal to wait for. -->
-      <section id="about">
-        <div class="dropAfter" id="dropAfter">
-          <div class="wrap aboutHead">
-            <span class="aboutNum">11</span>
-            <h2>About us</h2>
-            <p class="aboutLead">Building India's flood intelligence layer — a team working across climate science,
-              geospatial intelligence and data systems to make flood risk more understandable, accessible and
-              actionable.</p>
-            <p class="dropPrinciples">Science first · Built for India · Decision-ready · Honest about uncertainty</p>
-          </div>
-
-          <div class="wrap aboutTeam">
-            <p class="teamKick">A small team. A big problem.</p>
-            <!-- names and roles as listed in README §1.2 (team from the current About page) -->
-            <ul class="teamCards" role="list">
-              <li class="teamCard">
-                <span class="teamAv" aria-hidden="true">DB</span>
-                <div>
-                  <h3>Dhanya Bulla</h3>
-                  <p>Founder</p>
-                </div>
-              </li>
-              <li class="teamCard">
-                <span class="teamAv" aria-hidden="true">V</span>
-                <div>
-                  <h3>Vasuprada</h3>
-                  <p>GIS Developer</p>
-                </div>
-              </li>
-              <li class="teamCard">
-                <span class="teamAv" aria-hidden="true">S</span>
-                <div>
-                  <h3>Sagar</h3>
-                  <p>DevOps</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div class="wrap dropShared">
-            <p class="sharedKick">Flood resilience is a shared problem</p>
-            <h2 class="sharedH"><span>Your sector.</span> <span>Your risk.</span> <span>Your decision.</span></h2>
-            <p class="sharedLead">Explore your district for free, request access to Atlas and Live, or start a conversation
-              with the team.</p>
-            <div class="hcta">
-              <a class="btn bp" href="#start" data-utm>Book a demo <svg viewBox="0 0 14 14">
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg></a>
-              <a class="btn bg2" href="products.html#explorer">Explore district risk</a>
-            </div>
-          </div>
-          <div class="dropWave" aria-hidden="true"></div>
-        </div>
-      </section>
-
       <!-- ══ GET STARTED ══ -->
       <section id="start">
         <div class="wrap">
           <div class="sechead" data-rv>
-            <span class="snum">12 — Book a demo</span>
+            <span class="snum">10 — Book a demo</span>
             <h2>Ready to understand flood risk differently?</h2>
             <p class="shLead">Whether you want to explore your district, evaluate FloodGuard, book a product
               demonstration or collaborate with us — start here.</p>
@@ -6896,17 +6108,17 @@
             <div class="site-footer__col">
               <h2 class="site-footer__heading">Insights</h2>
               <ul role="list">
-                <li><a href="#insights">Research</a></li>
-                <li><a href="#insights">White papers</a></li>
-                <li><a href="#insights">Use cases</a></li>
-                <li><a href="#insights">Data stories</a></li>
-                <li><a href="#insights">Articles</a></li>
+                <li><a href="insights.html#ins-research">Research</a></li>
+                <li><a href="insights.html#ins-reports">White papers</a></li>
+                <li><a href="insights.html#ins-use-cases">Use cases</a></li>
+                <li><a href="insights.html#ins-data-stories">Data stories</a></li>
+                <li><a href="insights.html#ins-articles">Articles</a></li>
               </ul>
             </div>
             <div class="site-footer__col">
               <h2 class="site-footer__heading">Company</h2>
               <ul role="list">
-                <li><a href="#about">About us</a></li>
+                <li><a href="about.html">About us</a></li>
                 <li><a href="#start">Contact</a></li>
                 <li><a href="#start">Careers</a></li>
               </ul>
@@ -7479,22 +6691,9 @@
         if (openNi && !e.target.closest(".ni")) closeNi();
       });
       /* sections carry their own top padding, so they land flush; anything
-         smaller (a platform or insight card) keeps its scroll-margin clear
+         smaller (a platform card) keeps its scroll-margin clear
          of the fixed header */
       function anchorTop(el) {
-        /* a sticky deck card reports where it is pinned right now, not where
-           it lives — measure its place in the deck instead, and land at the
-           moment it arrives on top of the cards before it */
-        if (el.classList.contains("deckCard") && !document.body.classList.contains("nopin")) {
-          const deck = el.parentElement;
-          let acc = 0;
-          for (const c of deck.children) {
-            if (c === el) break;
-            acc += c.offsetHeight + (parseFloat(getComputedStyle(c).marginBottom) || 0);
-          }
-          const pin = parseFloat(getComputedStyle(el).top) || 0;
-          return deck.getBoundingClientRect().top + scrollY + acc - pin;
-        }
         const off = el.matches("section") ? 0 : parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
         return el.getBoundingClientRect().top + scrollY - off;
       }
@@ -8054,69 +7253,6 @@
         });
       }
 
-      /*═══════════════════════════════════════════════════════════════
-        §09 — About. Static: heading, team and CTA are ordinary content,
-        visible the moment the section is on screen. Only the wave that
-        hands the brand surface over to the next section is built here.
-      ═══════════════════════════════════════════════════════════════*/
-      /* the handoff wave, drawn with the same tileable generator as §06 */
-      function buildDropWave() {
-        const host = document.querySelector(".dropWave");
-        if (!host) return;
-        const svg = mk("svg", {
-          viewBox: "0 0 2400 120", preserveAspectRatio: "none",
-          "aria-hidden": "true", focusable: "false"
-        });
-        svg.appendChild(mk("path", {
-          d: waveFill(2400, 120, 16, 600, 52),
-          fill: "var(--bg)", "data-decorative": ""
-        }));
-        host.innerHTML = ""; host.appendChild(svg);
-      }
-
-      buildDropWave();
-
-      /*═══════════════════════════════════════════════════════════════
-        §10 — DepthDeck (spec §5.6)
-        Sticky does the stacking; this only adds depth. Each card scales
-        down and dims as the cards after it arrive, so the stack reads as
-        receding rather than as a pile of equal rectangles.
-      ═══════════════════════════════════════════════════════════════*/
-      let DECKV = null;
-      function buildDeck() {
-        const deck = document.getElementById("insightDeck");
-        if (!deck) return;
-        const cards = [...deck.querySelectorAll(".deckCard")].map(card => ({
-          card, inner: card.querySelector(".deckInner"), dim: card.querySelector(".deckDim")
-        }));
-        DECKV = { deck, cards, n: cards.length, last: -2, lastY: -1, g: trackGeom(deck) };
-        if (document.body.classList.contains("nopin") || RM) {
-          cards.forEach(c => { c.inner.style.transform = ""; c.dim.style.opacity = 0; });
-        }
-      }
-      function runDeckDepth() {
-        if (!DECKV) return;
-        if (document.body.classList.contains("nopin") || RM) return;
-        if (DECKV.lastY === cur) return;
-        DECKV.lastY = cur;
-        const { cards, n, g } = DECKV;
-        const top = g.top - cur;
-        /* progress across the whole deck, 'start start' -> 'end end' */
-        const p = clamp01((-top) / Math.max(1, g.h - vh));
-        if (Math.abs(p - DECKV.last) < .0015) return;
-        DECKV.last = p;
-        cards.forEach((c, i) => {
-          const target = 1 - (n - 1 - i) * .05;
-          const t = clamp01((p - i / n) / (1 - i / n));
-          const sc = lerp(1, target, t);
-          const dim = lerp(0, i === n - 1 ? 0 : .25, t);
-          c.inner.style.transform = "scale(" + sc.toFixed(4) + ")";
-          c.dim.style.opacity = dim.toFixed(3);
-        });
-      }
-      buildDeck();
-      onMq(TALL_Q, () => buildDeck());
-      onMq(REDUCE_Q, () => buildDeck());
 
       /*═══════════════════════════════════════════════════════════════
         §06 — Tide reveal (spec §5.4)
@@ -8782,8 +7918,8 @@
         ["Solutions", "Flood intelligence for decisions that matter.", "solutions.html", "solutions sectors agriculture crop insurance agri loans lending banking finance insurance reinsurance government disaster management infrastructure use case pdf"],
         ["Solutions", "Five sectors we serve", "#serve", "insurance banking government infrastructure agriculture reinsurance finance sector"],
         ["Why FloodGuard", "Built on observed data", "#why", "why observed foundation multi scale horizon decision ready"],
-        ["About us", "Building India's flood intelligence layer", "#about", "about vision mission principles team company"],
-        ["Insights", "Research, white papers and data stories", "#insights", "insights research white paper use case data story article"],
+        ["About us", "Building India's flood intelligence layer", "about.html", "about vision mission principles team company"],
+        ["Insights", "Research, white papers and data stories", "insights.html", "insights research white paper use case data story article"],
         ["Book a demo", "Let's talk flood risk", "#start", "get started contact demo early access partner enquiry form"]];
       let sIdx = 0, sHits = INDEX.slice();
       function renderSearch() {
@@ -8930,7 +8066,7 @@
         cur = scrollY;
         const y = cur;
         runRevs(y); runCounters(y); runProof(y); runPins(y, dt); runHdr(y); runBars(y); runParallax(y, dt);
-        runTree(y); runStack(dt); runToTop(y); runTide(); runDeckDepth();
+        runTree(y); runStack(dt); runToTop(y); runTide();
         drawWater(dt);
         requestAnimationFrame(loop);
       }
