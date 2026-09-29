@@ -491,18 +491,14 @@ a.solRow:hover svg { transform: translateX(3px) }
    ═══════════════════════════════════════════════════════════════ */
 :root {
   --header-h: 74px;            /* the pinned header: 12px inset + 62px bar */
-  --stage-h: calc(100svh - var(--header-h));
   --section-pad-y: clamp(64px, 10svh, 140px);
-  --deck-top: 24px;
   --deck-step: 20px;
-  --surface-about: var(--b950);
-  --text-on-brand: #eaf7f7;
   --t-card: clamp(1.2rem, 1.05rem + .5vw, 1.45rem);
   --t-micro: .8125rem;
   --t-label: .75rem;
   --ease-in-out: cubic-bezier(.65, 0, .35, 1)
 }
-@media (max-width:760px) { :root { --deck-top: 16px; --deck-step: 12px } }
+@media (max-width:760px) { :root { --deck-step: 12px } }
 
 /* About: the brand surface runs up behind the pinned header */
 .aboutMain { margin-top: calc(-12px - 62px) }
@@ -512,7 +508,19 @@ a.solRow:hover svg { transform: translateX(3px) }
   brand surface and all visible as soon as the section is — clicking
   "About" lands on the finished section, nothing is scroll-revealed.
 ───────────────────────────────────────────────────────────────*/
+/* light by default, the deep brand surface in dark — the same pairing
+   the rest of the site uses, so the toggle changes this page too */
 #about {
+  --ab-bg: color-mix(in srgb, var(--b100) 26%, var(--bg));
+  --ab-ink: var(--ink);
+  --ab-ink2: var(--ink2);
+  --ab-ink3: var(--ink3);
+  --ab-line: var(--line);
+  --ab-line2: var(--line2);
+  --ab-card: var(--panelBg);
+  --ab-kick: var(--brand);
+  --ab-btn: var(--brand);
+  --ab-btnInk: var(--onBrand);
   position: relative;
   padding: 0;
   /* the drifting glows reach past the edges */
@@ -522,8 +530,8 @@ a.solRow:hover svg { transform: translateX(3px) }
 
 .dropAfter {
   position: relative;
-  background: var(--surface-about);
-  color: var(--text-on-brand);
+  background: var(--ab-bg);
+  color: var(--ab-ink);
   /* the fixed header sits over the top of a section reached by anchor */
   padding-top: calc(var(--header-h) + clamp(1.4rem, 5svh, 3.4rem))
 }
@@ -543,7 +551,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   font-size: var(--t-micro);
   font-weight: 600;
   letter-spacing: .06em;
-  color: rgba(234, 247, 247, .72)
+  color: var(--ab-ink3)
 }
 
 .aboutNum::before,
@@ -560,7 +568,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   font-weight: 500;
   line-height: 1;
   letter-spacing: -.03em;
-  color: #fff;
+  color: var(--ab-ink);
   margin: .9rem 0 0
 }
 
@@ -569,7 +577,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   margin: 1.1rem auto 0;
   font-size: var(--t-1);
   line-height: 1.6;
-  color: rgba(234, 247, 247, .84)
+  color: var(--ab-ink2)
 }
 
 .dropPrinciples {
@@ -577,7 +585,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   font-size: var(--t-sm);
   font-weight: 600;
   letter-spacing: .02em;
-  color: rgba(234, 247, 247, .6)
+  color: var(--ab-ink3)
 }
 
 /* the founding team: three cards side by side, compact rows on phones */
@@ -593,7 +601,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: rgba(234, 247, 247, .62);
+  color: var(--ab-ink3);
   margin-bottom: 1rem
 }
 
@@ -615,8 +623,8 @@ a.solRow:hover svg { transform: translateX(3px) }
   gap: .9rem;
   padding: clamp(1.2rem, 2.6vw, 1.8rem) 1rem;
   border-radius: var(--r-l);
-  border: 1px solid rgba(158, 218, 217, .2);
-  background: rgba(158, 218, 217, .07)
+  border: 1px solid var(--ab-line);
+  background: var(--ab-card)
 }
 
 .teamAv {
@@ -636,14 +644,14 @@ a.solRow:hover svg { transform: translateX(3px) }
 
 .teamCard h3 {
   font-size: var(--t-card);
-  color: #fff;
+  color: var(--ab-ink);
   line-height: 1.2
 }
 
 .teamCard p {
   margin-top: .25rem;
   font-size: var(--t-sm);
-  color: rgba(234, 247, 247, .72)
+  color: var(--ab-ink2)
 }
 
 @media (max-width:640px) {
@@ -674,7 +682,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   z-index: 1;
   margin-top: clamp(3.5rem, 10svh, 7rem);
   padding-block: clamp(3rem, 9svh, 6rem) clamp(2.5rem, 7svh, 4.5rem);
-  border-top: 1px solid rgba(158, 218, 217, .14)
+  border-top: 1px solid var(--ab-line)
 }
 
 /* a quiet line in sentence case between two short hairlines */
@@ -687,7 +695,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   font-size: clamp(.95rem, .9rem + .25vw, 1.08rem);
   font-weight: 600;
   letter-spacing: .02em;
-  color: var(--b100);
+  color: var(--ab-kick);
   margin: 0 0 clamp(1.4rem, 3.5svh, 2.2rem)
 }
 
@@ -713,7 +721,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   font-weight: 400;
   line-height: 1.12;
   letter-spacing: -.01em;
-  color: #fff
+  color: var(--ab-ink)
 }
 
 .sharedH span {
@@ -737,7 +745,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   margin: clamp(1.6rem, 4svh, 2.4rem) auto 0;
   font-size: clamp(1.05rem, 1rem + .3vw, 1.22rem);
   line-height: 1.75;
-  color: rgba(234, 247, 247, .8)
+  color: var(--ab-ink2)
 }
 
 .dropShared .hcta {
@@ -749,18 +757,18 @@ a.solRow:hover svg { transform: translateX(3px) }
 }
 
 .dropShared .bp {
-  background: #fff;
-  color: #04263d;
+  background: var(--ab-btn);
+  color: var(--ab-btnInk);
   box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .5)
 }
 
 .dropShared .bg2 {
-  border-color: rgba(255, 255, 255, .34);
-  color: #fff
+  border-color: var(--ab-line2);
+  color: var(--ab-ink)
 }
 
 .dropShared .bg2:hover {
-  background: rgba(255, 255, 255, .12)
+  background: var(--ab-card)
 }
 
 @media (max-width:1099px) {
@@ -779,6 +787,36 @@ a.solRow:hover svg { transform: translateX(3px) }
     flex: 1 1 100%;
     justify-content: center
   }
+}
+
+:root[data-theme="dark"] #about {
+  --ab-bg: var(--b950);
+  --ab-ink: #fff;
+  --ab-ink2: rgba(234, 247, 247, .82);
+  --ab-ink3: rgba(234, 247, 247, .62);
+  --ab-line: rgba(158, 218, 217, .18);
+  --ab-line2: rgba(255, 255, 255, .34);
+  --ab-card: rgba(158, 218, 217, .07);
+  --ab-kick: var(--b100);
+  --ab-btn: #fff;
+  --ab-btnInk: #04263d
+}
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) #about {
+    --ab-bg: var(--b950);
+    --ab-ink: #fff;
+    --ab-ink2: rgba(234, 247, 247, .82);
+    --ab-ink3: rgba(234, 247, 247, .62);
+    --ab-line: rgba(158, 218, 217, .18);
+    --ab-line2: rgba(255, 255, 255, .34);
+    --ab-card: rgba(158, 218, 217, .07);
+    --ab-kick: var(--b100);
+    --ab-btn: #fff;
+    --ab-btnInk: #04263d
+  }
+}
+@supports not (background: color-mix(in srgb, red, blue)) {
+  #about { --ab-bg: var(--bg2) }
 }
 
 /* ambient caustics — two slow radial blobs, fine pointers only */
@@ -847,7 +885,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   z-index: 1;
   height: clamp(48px, 7svh, 96px);
   margin-top: clamp(1rem, 3svh, 2rem);
-  background: var(--surface-about)
+  background: var(--ab-bg)
 }
 
 .dropWave svg {
@@ -857,60 +895,46 @@ a.solRow:hover svg { transform: translateX(3px) }
 }
 
 /*───────────────────────────────────────────────────────────────
-  §10 — DepthDeck (spec §5.6)
-  Every card is a direct child of .deck: sticky only works between
-  siblings of the same parent, so no wrapper may come between them.
+§10 — Insights deck. A stack that advances on a button, not on scroll:
+scrolling passes straight by. "Next" brings the next card up onto the
+stack and the cards beneath step back and dim (assets/js/insights.js).
 ───────────────────────────────────────────────────────────────*/
-/* the page hero sits right above, so the deck starts close under it */
 #insights {
   padding-block: clamp(.5rem, 2svh, 1.5rem) var(--section-pad-y)
 }
 
-/* the head sits full-width above; the deck is one centred column */
+/* the stage is as tall as one card plus the stepped edges above it */
 .deck {
+  --card-h: min(480px, 64svh);
   position: relative;
   max-width: 900px;
-  margin-inline: auto
-}
-
-/* A sticky card is released when its MARGIN box reaches the end of the
-   deck — so the scroll room between cards must not be card margin (a
-   40svh margin released every card 40svh early, and the stack had
-   already left by the time the last card landed). The room lives in
-   .deckGap spacers instead, and each card carries just enough margin
-   to cancel its smaller sticky offset: every card then releases on the
-   same scroll pixel, and the whole stack leaves together. */
-.deckCard {
-  position: relative;
-  margin-bottom: calc((var(--n, 5) - 1 - var(--i)) * var(--deck-step))
-}
-
-.deckGap {
-  height: 40svh
-}
-
-/* after the last card: long enough to see the finished stack settle */
-.deckGap.end {
-  height: 30svh
+  margin-inline: auto;
+  height: calc(var(--card-h) + (var(--n, 5) - 1) * var(--deck-step))
 }
 
 .deckCard {
-  position: sticky;
-  top: calc(var(--header-h) + var(--deck-top) + var(--i) * var(--deck-step))
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--i) * var(--deck-step));
+  /* one layer per card, in deal order: each card's dimming veil stays
+     under the cards dealt after it */
+  z-index: calc(var(--i) + 1);
+  transition: transform .6s var(--E), opacity .45s var(--E), visibility 0s
 }
 
-@media (max-width:899px) {
-  .deckGap {
-    height: 28svh
-  }
-
-  .deckGap.end {
-    height: 22svh
-  }
+/* cards not yet dealt wait just below, invisible */
+.deckCard[data-state="ahead"] {
+  transform: translateY(56px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform .5s var(--E), opacity .3s var(--E), visibility 0s .5s
 }
 
 .deckInner {
   position: relative;
+  height: var(--card-h);
   display: grid;
   gap: 0;
   border-radius: var(--r-l);
@@ -918,7 +942,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   border: 1px solid var(--line);
   background: var(--bg2);
   transform-origin: top center;
-  will-change: transform
+  transition: transform .6s var(--E)
 }
 
 /* the stacked top edges have to read as distinct layers, so each card steps
@@ -1060,7 +1084,9 @@ a.solRow:hover svg { transform: translateX(3px) }
   border-radius: var(--r-l);
   pointer-events: none;
   background: var(--bg);
-  opacity: 0
+  opacity: 0;
+  transform-origin: top center;
+  transition: opacity .6s var(--E), transform .6s var(--E)
 }
 
 @media (min-width:900px) {
@@ -1068,20 +1094,21 @@ a.solRow:hover svg { transform: translateX(3px) }
     grid-template-columns: 55% 45%
   }
 
-
-  .deckInner {
-    min-height: min(480px, calc(var(--stage-h) - 120px))
-  }
-
   .deckMedia {
-    aspect-ratio: 4/3;
+    aspect-ratio: auto;
     height: 100%
   }
 }
 
 @media (max-width:899px) {
+  .deck {
+    --card-h: min(440px, 66svh)
+  }
+
   .deckInner {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
+    /* the picture keeps its natural 16:9 row and the text takes the rest */
+    grid-template-rows: auto minmax(0, 1fr)
   }
 
   .deckMedia {
@@ -1095,50 +1122,37 @@ a.solRow:hover svg { transform: translateX(3px) }
   .deckText p {
     -webkit-line-clamp: 2
   }
-
-  /* one height for every card, so they all release together here too;
-     the picture keeps its natural 16:9 row and the text takes the rest
-     (a stretched picture row would widen it past the card) */
-  .deckInner {
-    height: min(440px, 66svh);
-    max-height: none;
-    grid-template-rows: auto minmax(0, 1fr)
-  }
 }
 
-/* short screens: no sticky, no depth — an ordinary list of cards */
-@media (max-height:559px) {
-  .deckInner {
-    height: auto;
-    min-height: 0
-  }
-
-  .deckCard {
-    position: static;
-    margin-bottom: 1.2rem
-  }
-
-  .deckGap {
-    display: none
-  }
-
-  .deckInner {
-    transform: none !important
-  }
-
-  .deckDim {
-    display: none
-  }
+.deckNav {
+  justify-content: center;
+  margin-top: clamp(1.2rem, 3svh, 1.8rem)
 }
 
-/* reduced motion keeps the stacking, drops the depth */
 @media (prefers-reduced-motion:reduce) {
-  .deckInner {
-    transform: none !important
-  }
-
+  .deckCard,
+  .deckCard[data-state="ahead"],
+  .deckInner,
   .deckDim {
-    opacity: 0 !important
+    transition: none
   }
 }
+
+/* stepper controls — shared look for every stack that advances on a button */
+.stepNav { display: flex; align-items: center; gap: .6rem }
+.stepCount { min-width: 4.5ch; text-align: center; font: 500 var(--t-sm)/1 var(--fD); color: var(--ink2); font-variant-numeric: tabular-nums }
+.stepBtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  height: 44px; min-width: 44px; padding: 0 1.15rem; border-radius: 99px; cursor: pointer;
+  border: 1px solid var(--line2); background: var(--panelBg); color: var(--ink);
+  font: 600 var(--t-sm)/1 var(--fS);
+  transition: background .2s var(--E), border-color .2s var(--E), color .2s var(--E), opacity .2s, filter .2s
+}
+.stepBtn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round }
+.stepBtn.prev { padding: 0 }
+.stepBtn.next { background: var(--brand); border-color: var(--brand); color: var(--onBrand) }
+.stepBtn:hover:not(:disabled) { border-color: var(--brand) }
+.stepBtn.next:hover:not(:disabled) { filter: brightness(1.08) }
+.stepBtn:disabled { opacity: .4; cursor: default }
+.stepBtn:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px }
 .insCta { justify-content: center; margin-top: 1.6rem }

@@ -51,8 +51,8 @@
     </div>
   </section>
 
-  <!-- the depth deck: every card is a direct child of .deck (sticky only
-       works between siblings), with .deckGap spacers giving the scroll room -->
+  <!-- the deck: a stack that advances on the buttons below; scrolling
+       passes straight by (assets/js/insights.js) -->
   <section id="insights">
     <div class="wrap">
       <div class="deck" id="insightDeck" style="--n:5">
@@ -68,7 +68,6 @@
         </div>
         <i class="deckDim" aria-hidden="true"></i>
       </article>
-      <div class="deckGap" aria-hidden="true"></div>
 
       <article class="deckCard" id="ins-reports" style="--i:1">
         <div class="deckInner">
@@ -82,7 +81,6 @@
         </div>
         <i class="deckDim" aria-hidden="true"></i>
       </article>
-      <div class="deckGap" aria-hidden="true"></div>
 
       <article class="deckCard" id="ins-use-cases" style="--i:2">
         <div class="deckInner">
@@ -96,7 +94,6 @@
         </div>
         <i class="deckDim" aria-hidden="true"></i>
       </article>
-      <div class="deckGap" aria-hidden="true"></div>
 
       <article class="deckCard" id="ins-data-stories" style="--i:3">
         <div class="deckInner">
@@ -110,7 +107,6 @@
         </div>
         <i class="deckDim" aria-hidden="true"></i>
       </article>
-      <div class="deckGap" aria-hidden="true"></div>
 
       <article class="deckCard" id="ins-articles" style="--i:4">
         <div class="deckInner">
@@ -124,7 +120,11 @@
         </div>
         <i class="deckDim" aria-hidden="true"></i>
       </article>
-      <div class="deckGap end" aria-hidden="true"></div>
+      </div>
+      <div class="stepNav deckNav" id="deckNav">
+        <button class="stepBtn prev" type="button" data-dir="-1" aria-label="Previous card"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+        <span class="stepCount" id="deckCount" aria-live="polite">1 / 5</span>
+        <button class="stepBtn next" type="button" data-dir="1"><span>Next card</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
       </div>
     </div>
   </section>

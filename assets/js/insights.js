@@ -1,45 +1,47 @@
-/* ── /insights: the depth deck ───────────────────────────────────
-   Sticky does the stacking; this only adds depth. Each card scales down
-   and dims as the cards after it arrive, so the stack reads as receding
-   rather than as a pile of equal rectangles. Same effect as it had on the
-   home page; short screens and reduced motion get a plain list (CSS). */
+/* ── /insights: the deck ─────────────────────────────────────────
+   A stack that advances on a button, not on scroll — scrolling passes
+   straight by. "Next card" deals the next card onto the stack; the cards
+   beneath step back and dim, as they did when the stack was scroll-driven.
+   Only the top card is interactive; the ones under it and the ones still
+   to come are inert. */
 import "/assets/js/page.js";
 
 const deck = document.getElementById("insightDeck");
-const PIN = matchMedia("(min-height: 560px)");
-const RM = matchMedia("(prefers-reduced-motion: reduce)");
+const nav = document.getElementById("deckNav");
 
-if (deck) {
-  const cards = [...deck.querySelectorAll(".deckCard")].map(card => ({
-    inner: card.querySelector(".deckInner"), dim: card.querySelector(".deckDim")
+if (deck && nav) {
+  const cards = [...deck.querySelectorAll(".deckCard")].map(el => ({
+    el, inner: el.querySelector(".deckInner"), dim: el.querySelector(".deckDim")
   }));
   const n = cards.length;
-  const clamp01 = v => Math.min(1, Math.max(0, v));
-  let last = -1, raf = 0;
+  const prev = nav.querySelector('[data-dir="-1"]'), next = nav.querySelector('[data-dir="1"]');
+  const count = document.getElementById("deckCount");
+  let cur = 0;
 
-  function paint() {
-    raf = 0;
-    if (!PIN.matches || RM.matches) {
-      cards.forEach(c => { c.inner.style.transform = ""; c.dim.style.opacity = 0; });
-      last = -1;
-      return;
-    }
-    const r = deck.getBoundingClientRect();
-    /* progress across the whole deck, 'start start' → 'end end' */
-    const p = clamp01(-r.top / Math.max(1, r.height - innerHeight));
-    if (Math.abs(p - last) < .0015) return;
-    last = p;
-    cards.forEach((c, i) => {
-      const target = 1 - (n - 1 - i) * .05;
-      const t = clamp01((p - i / n) / (1 - i / n));
-      c.inner.style.transform = `scale(${(1 + (target - 1) * t).toFixed(4)})`;
-      c.dim.style.opacity = ((i === n - 1 ? 0 : .25) * t).toFixed(3);
+  function show(i) {
+    cur = Math.max(0, Math.min(n - 1, i));
+    cards.forEach((c, k) => {
+      const dealt = k <= cur;
+      c.el.dataset.state = dealt ? "in" : "ahead";
+      c.el.inert = k !== cur;
+      /* the veil scales with its card, so it never shows past the card's edges */
+      const scale = dealt ? `scale(${(1 - (cur - k) * .05).toFixed(3)})` : "";
+      c.inner.style.transform = c.dim.style.transform = scale;
+      c.dim.style.opacity = k < cur ? .25 : 0;
     });
+    prev.disabled = cur === 0;
+    next.querySelector("span").textContent = cur === n - 1 ? "Back to first" : "Next card";
+    count.textContent = `${cur + 1} / ${n}`;
   }
-  const queue = () => { if (!raf) raf = requestAnimationFrame(paint); };
-  addEventListener("scroll", queue, { passive: true });
-  addEventListener("resize", () => { last = -1; queue(); });
-  PIN.addEventListener("change", () => { last = -1; queue(); });
-  RM.addEventListener("change", () => { last = -1; queue(); });
-  paint();
+
+  prev.addEventListener("click", () => show(cur - 1));
+  next.addEventListener("click", () => show(cur === n - 1 ? 0 : cur + 1));
+  /* a jump to a card (e.g. /insights#ins-data-stories) deals up to it */
+  const fromHash = () => {
+    const k = cards.findIndex(c => c.el.id && "#" + c.el.id === location.hash);
+    if (k >= 0) { show(k); deck.scrollIntoView({ block: "center" }); }
+  };
+  addEventListener("hashchange", fromHash);
+  show(0);
+  fromHash();
 }
