@@ -165,7 +165,7 @@ function mapStyles() {
     let rules; try { rules = sheet.cssRules; } catch (_) { continue; }
     for (const r of rules) if (r.selectorText && /\.(fg|sol)[A-Z]/.test(r.selectorText)) out.push(r.cssText);
   }
-  return (flatCss = ':root{--fS:"Nunito","Segoe UI",Roboto,system-ui,sans-serif;--fD:var(--fS);--fM:var(--fS);--E:ease}' + out.join("\n"));
+  return (flatCss = ':root{--fS:"Rubik","Segoe UI",Roboto,system-ui,sans-serif;--fD:var(--fS);--fM:var(--fS);--E:ease}' + out.join("\n"));
 }
 const flatHosts = new Set();
 /* host = the element the map was drawn into; call again after changing the SVG */

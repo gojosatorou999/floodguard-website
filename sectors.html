@@ -9,19 +9,20 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="preload" href="/assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fg-base.css">
 <script type="module" src="/assets/js/theme.js" defer></script>
 <script type="module" src="/assets/js/mist.js"></script>
 <script type="module" src="/assets/js/totop.js"></script>
 <style>
 .crumb{display:flex;align-items:center;gap:.5rem;padding:1.6rem 0 .2rem;font-size:var(--t-sm);color:var(--ink2)}
-.crumb a{color:var(--brand);font-weight:600;text-decoration:none}
+.crumb a{color:var(--brand);font-weight:500;text-decoration:none}
 .crumb a:hover{text-decoration:underline;text-underline-offset:3px}
 
 /* page head — the same full-width, word-by-word reveal as the home page */
 .sechead{text-align:center;margin:0 auto clamp(2.6rem,6vw,4.4rem);padding-top:clamp(1.6rem,4vw,3rem)}
 .sechead .snum{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-bottom:1.2rem;
-  font-family:var(--fS);font-size:.8125rem;font-weight:600;letter-spacing:.06em;color:var(--brand2);opacity:0;transition:opacity .8s var(--E)}
+  font-family:var(--fS);font-size:.8125rem;font-weight:500;letter-spacing:.06em;color:var(--brand2);opacity:0;transition:opacity .8s var(--E)}
 .sechead .snum::before,.sechead .snum::after{content:"";flex:1;height:1px;transform:scaleX(0);transition:transform 1.4s var(--E) .1s}
 .sechead .snum::before{background:linear-gradient(90deg,transparent,var(--line2));transform-origin:right}
 .sechead .snum::after{background:linear-gradient(90deg,var(--line2),transparent);transform-origin:left}
@@ -77,7 +78,7 @@
   transform:scaleY(var(--g,0));transform-origin:top;will-change:transform}
 .gaugeTicks{position:relative;height:240px;flex:1}
 .gaugeTicks b{position:absolute;left:0;transform:translateY(-50%);display:flex;align-items:center;gap:.5rem;
-  font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink3);white-space:nowrap;
+  font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--ink3);white-space:nowrap;
   transition:color .48s var(--E)}
 .gaugeTicks b::before{content:"";width:8px;height:1px;background:var(--line2);flex:none;transition:width .48s var(--E),background .48s var(--E)}
 .gaugeTicks b.on{color:var(--brand)}

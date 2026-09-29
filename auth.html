@@ -7,6 +7,7 @@
 <title>Sign in · FloodGuard</title>
 <script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="preload" href="/assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fg-base.css">
 <script type="module" src="/assets/js/theme.js" defer></script>
 <script type="module" src="/assets/js/mist.js"></script>
@@ -22,12 +23,12 @@
   border-radius:var(--r-s);background:var(--dentBg);border:1px solid var(--line)}
 .dest i{width:8px;height:8px;border-radius:99px;background:var(--brand);flex:none}
 .dest span{font-size:var(--t-xs);color:var(--ink2);line-height:1.4}
-.dest b{color:var(--ink);font-weight:700}
+.dest b{color:var(--ink);font-weight:600}
 
 .tabs{display:flex;gap:.25rem;padding:.25rem;margin-bottom:1.5rem;
   background:var(--dentBg);border-radius:99px;box-shadow:inset 0 1px 4px var(--dentIn)}
 .tabs button{flex:1;padding:.55rem;border:0;border-radius:99px;background:none;cursor:pointer;
-  font:700 var(--t-sm)/1 var(--fS);color:var(--ink3);transition:.22s var(--E)}
+  font:600 var(--t-sm)/1 var(--fS);color:var(--ink3);transition:.22s var(--E)}
 .tabs button[aria-selected="true"]{background:var(--panelBg);color:var(--ink);
   box-shadow:0 1px 3px rgba(4,38,61,.14)}
 .tabs button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}

@@ -25,7 +25,7 @@ main { display: block }
 .sec + .sec { border-top: 1px solid var(--line) }
 .eyebrow {
   display: flex; align-items: center; gap: .6rem;
-  font: 700 .72rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink3)
+  font: 600 .72rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink3)
 }
 .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); flex: none }
 .eyebrow .hz { color: var(--brand) }
@@ -36,16 +36,16 @@ main { display: block }
 .secHead.center .eyebrow { justify-content: center }
 .secHead.center p:not(.eyebrow) { margin-inline: auto }
 .lede { color: var(--ink2); font-size: var(--t-1); line-height: 1.6 }
-.arrowLink { display: inline-flex; align-items: center; gap: .45rem; font-weight: 700; text-decoration: none; color: var(--brand) }
+.arrowLink { display: inline-flex; align-items: center; gap: .45rem; font-weight: 600; text-decoration: none; color: var(--brand) }
 .arrowLink svg, .btn svg.ar { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.2; transition: transform .25s var(--E) }
 .arrowLink:hover svg { transform: translateX(3px) }
 .ctaRow { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.8rem }
 
 /* time-horizon chips: PAST / NOW / FUTURE */
-.hz { display: inline-flex; align-items: center; gap: .4rem; font: 700 .68rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase }
+.hz { display: inline-flex; align-items: center; gap: .4rem; font: 600 .68rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase }
 .hzChip {
   display: inline-flex; align-items: center; gap: .45rem; padding: .42rem .7rem; border-radius: 99px;
-  border: 1px solid var(--line2); font: 700 .66rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink2)
+  border: 1px solid var(--line2); font: 600 .66rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink2)
 }
 .hzChip i { width: 7px; height: 7px; border-radius: 50%; flex: none }
 .hzChip .p { background: var(--c-past) } .hzChip .n { background: var(--c-now) } .hzChip .f { background: var(--c-future) }
@@ -55,7 +55,7 @@ main { display: block }
 .pgHero .grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center }
 @media (min-width:1000px) { .pgHero .grid { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr) } }
 .pgHero h1 { font-family: var(--fD); font-weight: 500; letter-spacing: -.02em; line-height: 1.05; font-size: clamp(2.3rem, 1.2rem + 3vw, 3.9rem); margin: 1.1rem 0 0 }
-.pgHero .sub { font-size: var(--t-1); color: var(--ink); font-weight: 600; margin-top: 1.1rem; line-height: 1.5 }
+.pgHero .sub { font-size: var(--t-1); color: var(--ink); font-weight: 500; margin-top: 1.1rem; line-height: 1.5 }
 .pgHero .sup { color: var(--ink2); margin-top: .7rem; max-width: 52ch }
 
 /* ── sticky secondary nav ── */
@@ -69,7 +69,7 @@ main { display: block }
 .subnav::-webkit-scrollbar { display: none }
 .subnav a {
   flex: none; padding: .5rem .9rem; border-radius: 99px; text-decoration: none; white-space: nowrap;
-  font: 700 .78rem/1 var(--fS); color: var(--ink2); transition: background .2s, color .2s
+  font: 600 .78rem/1 var(--fS); color: var(--ink2); transition: background .2s, color .2s
 }
 .subnav a:hover { color: var(--ink); background: var(--dentBg) }
 .subnav a[aria-current="true"] { color: var(--onBrand); background: var(--brand) }
@@ -90,9 +90,9 @@ main { display: block }
   display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; padding: .75rem 1rem;
   border-bottom: 1px solid var(--inst-line); font-size: .74rem
 }
-.instBar .app { font-weight: 800; letter-spacing: .02em }
+.instBar .app { font-weight: 700; letter-spacing: .02em }
 .instBar .crumbs { color: var(--inst-ink3) }
-.instBar .crumbs b { color: var(--inst-ink2); font-weight: 600 }
+.instBar .crumbs b { color: var(--inst-ink2); font-weight: 500 }
 .instBar .sp { flex: 1 }
 .instTag {
   display: inline-flex; align-items: center; gap: .35rem; padding: .28rem .55rem; border-radius: 99px;
@@ -100,7 +100,7 @@ main { display: block }
 }
 .instTag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor }
 .seg { display: inline-flex; padding: 2px; border-radius: 99px; border: 1px solid var(--inst-line); background: rgba(255, 255, 255, .05) }
-.seg span { padding: .3rem .65rem; border-radius: 99px; font-size: .68rem; font-weight: 700; color: var(--inst-ink3) }
+.seg span { padding: .3rem .65rem; border-radius: 99px; font-size: .68rem; font-weight: 600; color: var(--inst-ink3) }
 .seg span.on { background: #cfeae6; color: #04263d }
 .inst.paper .seg span.on { background: #0a5273; color: #fff }
 .instBody { display: grid; min-height: 0 }
@@ -111,7 +111,7 @@ main { display: block }
 .instSide, .instPanel { padding: 1rem; font-size: .74rem }
 .instSide { border-right: 1px solid var(--inst-line) }
 .instPanel { border-left: 1px solid var(--inst-line) }
-.instH { font-size: .6rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--inst-ink3); margin-bottom: .55rem }
+.instH { font-size: .6rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--inst-ink3); margin-bottom: .55rem }
 .lyr { display: grid; gap: .1rem }
 .lyr span { display: flex; align-items: center; gap: .5rem; padding: .2rem 0; color: var(--inst-ink3) }
 .lyr span::before { content: ""; width: 7px; height: 7px; border-radius: 2px; border: 1px solid currentColor; flex: none }
@@ -121,7 +121,7 @@ main { display: block }
 .kv { display: flex; justify-content: space-between; gap: .6rem; padding: .45rem 0; border-bottom: 1px solid var(--inst-line) }
 .kv:last-child { border-bottom: 0 }
 .kv span { color: var(--inst-ink3) }
-.kv b { font-weight: 700; display: inline-flex; align-items: center; gap: .35rem }
+.kv b { font-weight: 600; display: inline-flex; align-items: center; gap: .35rem }
 .kv b i { width: 8px; height: 8px; border-radius: 2px }
 .rampBar { display: flex; height: 6px; border-radius: 2px; overflow: hidden; margin-top: .5rem }
 .rampBar i { flex: 1 }
@@ -168,10 +168,10 @@ main { display: block }
 .ptl { padding: clamp(1.2rem, 3vw, 2rem); border-radius: var(--r-l); background: var(--panelBg); border: 1px solid var(--panelEdge); box-shadow: var(--elev-1) }
 .ptlAxis, .ptlRow { display: grid; grid-template-columns: 96px minmax(0, 1fr) minmax(0, .42fr) minmax(0, 1fr); align-items: center; gap: .5rem }
 .ptlAxis { padding-bottom: .9rem; margin-bottom: .5rem; border-bottom: 1px solid var(--line) }
-.ptlAxis span { font: 700 .66rem/1 var(--fS); letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); text-align: center }
+.ptlAxis span { font: 600 .66rem/1 var(--fS); letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); text-align: center }
 .ptlAxis span.now { color: var(--ink) }
 .ptlRow { padding: .55rem 0 }
-.ptlRow > b { font-size: .86rem; font-weight: 700 }
+.ptlRow > b { font-size: .86rem; font-weight: 600 }
 .ptlRow .bar { height: 12px; border-radius: 99px }
 .ptlRow .pst { grid-column: 2 } .ptlRow .nw { grid-column: 3 } .ptlRow .ftr { grid-column: 4 } .ptlRow .all { grid-column: 2 / 5 }
 .ptlRow .bar.p { background: var(--c-past) }
@@ -202,10 +202,10 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .pOver .hzChip { align-self: flex-start }
 .pOver .txt { padding: 1.4rem 1.4rem 1.5rem; display: flex; flex-direction: column; gap: .6rem; flex: 1 }
 .pOver h3 { font-size: var(--t-2) }
-.pOver .d { color: var(--ink); font-weight: 600; line-height: 1.5 }
+.pOver .d { color: var(--ink); font-weight: 500; line-height: 1.5 }
 .pOver .s { color: var(--ink2); font-size: var(--t-sm); line-height: 1.55 }
 .pOver .foot { margin-top: auto; padding-top: .8rem; display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap }
-.access { font: 700 .62rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink3) }
+.access { font: 600 .62rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink3) }
 
 /* ── product sections ── */
 .prodSplit { display: grid; gap: clamp(1.6rem, 4vw, 3rem); align-items: start }
@@ -228,11 +228,11 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .talk .btn { background: var(--onBand); color: #04263d }
 
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 1.6rem }
-.flow span { padding: .55rem .9rem; border-radius: 99px; border: 1px solid var(--line2); font: 700 .7rem/1 var(--fS); letter-spacing: .14em; color: var(--ink) }
+.flow span { padding: .55rem .9rem; border-radius: 99px; border: 1px solid var(--line2); font: 600 .7rem/1 var(--fS); letter-spacing: .14em; color: var(--ink) }
 .flow svg { width: 16px; height: 16px; fill: none; stroke: var(--ink3); stroke-width: 1.8 }
 
 /* live mock bits */
-.livePill { display: inline-flex; align-items: center; gap: .4rem; padding: .28rem .6rem; border-radius: 99px; background: rgba(224, 178, 79, .14); color: #f0cf7e; font-weight: 800; font-size: .66rem; letter-spacing: .14em }
+.livePill { display: inline-flex; align-items: center; gap: .4rem; padding: .28rem .6rem; border-radius: 99px; background: rgba(224, 178, 79, .14); color: #f0cf7e; font-weight: 700; font-size: .66rem; letter-spacing: .14em }
 .livePill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #e0b24f; animation: blink 1.6s steps(2, start) infinite }
 @keyframes blink { to { opacity: .25 } }
 @media (prefers-reduced-motion:reduce) { .livePill::before { animation: none } }
@@ -240,7 +240,7 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .alertL div { padding: .6rem .65rem; border-radius: 8px; background: rgba(255, 255, 255, .04); border: 1px solid var(--inst-line) }
 .alertL b { display: block; font-size: .74rem }
 .alertL div > span { display: block; font-size: .66rem; color: var(--inst-ink3); margin-top: .1rem }
-.sev { display: inline-block; margin-right: .35rem; padding: .12rem .4rem; border-radius: 4px; font-size: .58rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; vertical-align: 1px }
+.sev { display: inline-block; margin-right: .35rem; padding: .12rem .4rem; border-radius: 4px; font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; vertical-align: 1px }
 .sev.h { background: rgba(227, 140, 74, .2); color: #f1a877 }
 .sev.e { background: rgba(224, 192, 98, .18); color: #ecd28a }
 .sev.w { background: rgba(127, 211, 222, .14); color: #9fe0e8 }
@@ -264,8 +264,8 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .axis::before { content: ""; position: absolute; left: 16.6%; right: 16.6%; top: 7px; height: 2px; background: linear-gradient(90deg, var(--c-past), var(--c-now) 50%, #9ec9e4) }
 .axis > div { position: relative; display: flex; flex-direction: column; align-items: center; gap: .55rem }
 .axis .dot { width: 16px; height: 16px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, .12) }
-.axis .t { font: 800 .72rem/1 var(--fS); letter-spacing: .2em }
-.axis .p { font-size: 1.05rem; font-weight: 700; margin-top: .6rem }
+.axis .t { font: 700 .72rem/1 var(--fS); letter-spacing: .2em }
+.axis .p { font-size: 1.05rem; font-weight: 600; margin-top: .6rem }
 .axis .q { font-size: .8rem; opacity: .75 }
 .span { position: relative; margin: 1.8rem 16.6% 0; height: 38px }
 .span .atlas { position: absolute; inset: 0 0 auto; height: 22px; border: 2px solid #9ec9e4; border-top: 0; border-radius: 0 0 14px 14px }
@@ -282,14 +282,14 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .cmp th, .cmp td { padding: .8rem 1rem; text-align: center; border-bottom: 1px solid var(--line) }
 .cmp th:first-child, .cmp td:first-child { text-align: left }
 .cmp thead th { position: sticky; top: 0; background: var(--panelBg); font-size: .8rem; vertical-align: bottom }
-.cmp thead th span { display: block; font: 700 .6rem/1 var(--fS); letter-spacing: .14em; color: var(--ink3); margin-top: .35rem }
+.cmp thead th span { display: block; font: 600 .6rem/1 var(--fS); letter-spacing: .14em; color: var(--ink3); margin-top: .35rem }
 .cmp tbody tr:hover { background: var(--dentBg) }
-.cmp .grp td { text-align: left; font: 700 .64rem/1 var(--fS); letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); background: var(--dentBg); padding: .6rem 1rem }
-.cmp .y { color: var(--brand); font-weight: 800 }
+.cmp .grp td { text-align: left; font: 600 .64rem/1 var(--fS); letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); background: var(--dentBg); padding: .6rem 1rem }
+.cmp .y { color: var(--brand); font-weight: 700 }
 .cmp .y::before { content: "✓" }
 .cmp .no { color: var(--ink3) }
 .cmp .no::before { content: "—" }
-.cmp .t { font-size: .74rem; color: var(--ink2); font-weight: 600 }
+.cmp .t { font-size: .74rem; color: var(--ink2); font-weight: 500 }
 .cmp tr:last-child td { border-bottom: 0 }
 /* phones: all four columns fit on screen — no sideways scrolling to find Atlas and Live */
 @media (max-width:600px) {
@@ -309,7 +309,7 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 @media (min-width:1180px) { .finder { grid-template-columns: repeat(4, 1fr) } }
 .finder a { display: flex; flex-direction: column; gap: .8rem; padding: 1.4rem }
 .finder q { quotes: none; font-family: var(--fD); font-size: 1.28rem; line-height: 1.25; color: var(--ink) }
-.finder .use { margin-top: auto; display: flex; align-items: center; gap: .45rem; font-weight: 800; color: var(--brand) }
+.finder .use { margin-top: auto; display: flex; align-items: center; gap: .45rem; font-weight: 700; color: var(--brand) }
 .finder .use svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.2 }
 .finder .d { color: var(--ink2); font-size: var(--t-sm) }
 .finder .hzs { display: flex; gap: .3rem; flex-wrap: wrap }
@@ -343,7 +343,7 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .solHeroMap { position: relative; aspect-ratio: 1 / 1.02; max-height: 640px; width: 100% }
 .solHeroMap .instMap { position: absolute; inset: 0; min-height: 0 }
 .solTag rect { fill: rgba(6, 22, 30, .86); stroke: rgba(175, 228, 236, .38); stroke-width: 1; vector-effect: non-scaling-stroke }
-.solTag text { font: 800 23px/1 var(--fS); letter-spacing: .12em; fill: #e6f1ef }
+.solTag text { font: 700 23px/1 var(--fS); letter-spacing: .12em; fill: #e6f1ef }
 .solTag line { stroke: rgba(230, 241, 239, .55); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke }
 .solTag circle { fill: #e0c062; stroke: #06151d; stroke-width: 1.2; vector-effect: non-scaling-stroke }
 /* fill comes from the per-map hatch pattern set in solutions.js */
@@ -362,9 +362,9 @@ a.card:hover, .card.lift:hover { transform: translateY(-3px); box-shadow: var(--
 .solTable { border-radius: var(--r-l); border: 1px solid var(--line); background: var(--panelBg); box-shadow: var(--elev-1); overflow: hidden }
 .solRow { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) 250px 28px; align-items: center; gap: 1rem 1.6rem; padding: 1.05rem 1.4rem; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; transition: background .2s var(--E) }
 .solRow:last-child { border-bottom: 0 }
-.solRow.head { padding-block: .8rem; background: var(--dentBg); font: 700 .64rem/1 var(--fS); letter-spacing: .16em; text-transform: uppercase; color: var(--ink3) }
+.solRow.head { padding-block: .8rem; background: var(--dentBg); font: 600 .64rem/1 var(--fS); letter-spacing: .16em; text-transform: uppercase; color: var(--ink3) }
 a.solRow:hover { background: var(--dentBg) }
-.solRow b { font-size: 1.02rem; font-weight: 800 }
+.solRow b { font-size: 1.02rem; font-weight: 700 }
 .solRow > span { color: var(--ink2) }
 .solRow .hzs { display: flex; gap: .3rem; flex-wrap: wrap; justify-content: flex-end }
 .solRow svg { width: 14px; height: 14px; fill: none; stroke: var(--brand); stroke-width: 2.2; transition: transform .25s var(--E) }
@@ -380,13 +380,13 @@ a.solRow:hover svg { transform: translateX(3px) }
 /* horizon path: PAST → FUTURE etc., per sector */
 .hzPath { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin-top: 1.2rem }
 .hzPath > svg { width: 14px; height: 14px; fill: none; stroke: var(--ink3); stroke-width: 1.8 }
-.hzPath .lbl { font: 700 .62rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink3); margin-right: .3rem }
+.hzPath .lbl { font: 600 .62rem/1 var(--fS); letter-spacing: .14em; text-transform: uppercase; color: var(--ink3); margin-right: .3rem }
 
 /* compact analytical use cases */
 .ucList { list-style: none; display: grid; margin-top: 1.5rem; border-top: 1px solid var(--line) }
 .ucList li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: .1rem .6rem; padding: .85rem 0; border-bottom: 1px solid var(--line) }
 .ucList .n { grid-row: span 2; font: 600 .7rem/1.6 var(--fM); color: var(--ink3) }
-.ucList b { font-size: .98rem; font-weight: 800 }
+.ucList b { font-size: .98rem; font-weight: 700 }
 .ucList p { color: var(--ink2); font-size: var(--t-sm); line-height: 1.5 }
 .capGrid.c3 > div, .capGrid.c6 > div { min-height: 100% }
 @media (min-width:1080px) { .capGrid.c3 { grid-template-columns: repeat(3, 1fr) } }
@@ -406,13 +406,13 @@ a.solRow:hover svg { transform: translateX(3px) }
 .docPrev > img, .docPrev > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; object-position: top; pointer-events: none; background: #fff }
 /* placeholder cover — shown until the real PDF is in /public/use-cases */
 .docPh { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 9% 9% 7%; color: #0b2a33; background: linear-gradient(170deg, #f7fbfb, #e7f1f1) }
-.docPh .top { display: flex; align-items: center; gap: .35rem; font: 800 .5rem/1 var(--fS); letter-spacing: .18em; color: #0a5273 }
+.docPh .top { display: flex; align-items: center; gap: .35rem; font: 700 .5rem/1 var(--fS); letter-spacing: .18em; color: #0a5273 }
 .docPh .top i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #0a5273 }
 .docPh .mapv { position: relative; margin: 10% 0 8%; flex: 1; border-radius: 6px; overflow: hidden; background: #0a1f29 }
 .docPh .mapv .instMap { position: absolute; inset: 0; min-height: 0 }
-.docPh .kind { font: 800 .48rem/1 var(--fS); letter-spacing: .16em; color: #4b7f8a; text-transform: uppercase }
+.docPh .kind { font: 700 .48rem/1 var(--fS); letter-spacing: .16em; color: #4b7f8a; text-transform: uppercase }
 .docPh .ttl { font: 600 .82rem/1.2 var(--fD); margin-top: .35rem }
-.docPh .ph { margin-top: auto; padding-top: .5rem; font: 700 .5rem/1.3 var(--fS); letter-spacing: .06em; color: #8a5a1d; border-top: 1px dashed rgba(4, 38, 61, .2) }
+.docPh .ph { margin-top: auto; padding-top: .5rem; font: 600 .5rem/1.3 var(--fS); letter-spacing: .06em; color: #8a5a1d; border-top: 1px dashed rgba(4, 38, 61, .2) }
 .docTxt .access { display: block }
 .docTxt h3 { font-size: var(--t-2); margin-top: .55rem }
 .docTxt p { color: var(--ink2); margin-top: .5rem; font-size: var(--t-sm); line-height: 1.55; max-width: 54ch }
@@ -436,7 +436,7 @@ a.solRow:hover svg { transform: translateX(3px) }
 .pdfDlg::backdrop { background: rgba(3, 20, 28, .66); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px) }
 .pdfDlg[open] { display: flex; flex-direction: column }
 .pdfBar { display: flex; align-items: center; gap: .6rem; padding: .7rem .8rem .7rem 1.2rem; border-bottom: 1px solid var(--line) }
-.pdfBar b { flex: 1; min-width: 0; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.pdfBar b { flex: 1; min-width: 0; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .pdfBar .btn { height: 40px; padding: 0 1rem }
 .pdfBar .x { width: 40px; height: 40px; flex: none; border-radius: 50%; border: 1px solid var(--line2); background: transparent; color: var(--ink); cursor: pointer; display: grid; place-items: center }
 .pdfBar .x svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2 }
@@ -450,17 +450,17 @@ a.solRow:hover svg { transform: translateX(3px) }
 .lens .instH { color: var(--ink3); margin: 0 0 .2rem }
 .lensBtn {
   display: flex; align-items: center; justify-content: space-between; gap: .6rem; width: 100%; padding: .75rem .95rem; border-radius: 14px;
-  border: 1px solid var(--line2); background: var(--panelBg); color: var(--ink); font: 700 .88rem/1.2 var(--fS); text-align: left; cursor: pointer;
+  border: 1px solid var(--line2); background: var(--panelBg); color: var(--ink); font: 600 .88rem/1.2 var(--fS); text-align: left; cursor: pointer;
   transition: border-color .2s var(--E), background .2s var(--E)
 }
-.lensBtn small { display: block; font-weight: 600; font-size: .7rem; color: var(--ink3); margin-top: .2rem }
+.lensBtn small { display: block; font-weight: 500; font-size: .7rem; color: var(--ink3); margin-top: .2rem }
 .lensBtn:hover { border-color: var(--brand) }
 .lensBtn[aria-pressed="true"] { background: var(--brand); color: var(--onBrand); border-color: var(--brand) }
 .lensBtn[aria-pressed="true"] small { color: inherit; opacity: .8 }
 .layerChips { display: flex; flex-wrap: wrap; gap: .35rem; padding: .7rem .9rem; border-top: 1px solid var(--inst-line) }
 .layerChip {
   display: inline-flex; align-items: center; gap: .4rem; min-height: 32px; padding: .38rem .65rem; border-radius: 99px; cursor: pointer;
-  border: 1px solid var(--inst-line); background: transparent; color: var(--inst-ink3); font: 800 .6rem/1 var(--fS); letter-spacing: .12em; text-transform: uppercase;
+  border: 1px solid var(--inst-line); background: transparent; color: var(--inst-ink3); font: 700 .6rem/1 var(--fS); letter-spacing: .12em; text-transform: uppercase;
   transition: color .2s, background .2s, border-color .2s
 }
 .layerChip i { width: 7px; height: 7px; border-radius: 2px; background: currentColor; opacity: .5 }
@@ -481,7 +481,7 @@ a.solRow:hover svg { transform: translateX(3px) }
 .closer .ctaRow { justify-content: center }
 .closer .btn.bp { background: var(--onBand); color: #04263d; box-shadow: none }
 .closer .btn.bg2 { color: var(--onBand); border-color: rgba(234, 247, 247, .35) }
-.closer small { display: block; margin-top: 1.4rem; font: 800 .7rem/1 var(--fS); letter-spacing: .24em; text-transform: uppercase; opacity: .7 }
+.closer small { display: block; margin-top: 1.4rem; font: 700 .7rem/1 var(--fS); letter-spacing: .24em; text-transform: uppercase; opacity: .7 }
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -549,7 +549,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   gap: .9rem;
   font-family: var(--fS);
   font-size: var(--t-micro);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: .06em;
   color: var(--ab-ink3)
 }
@@ -583,7 +583,7 @@ a.solRow:hover svg { transform: translateX(3px) }
 .dropPrinciples {
   margin-top: 1rem;
   font-size: var(--t-sm);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: .02em;
   color: var(--ab-ink3)
 }
@@ -598,7 +598,7 @@ a.solRow:hover svg { transform: translateX(3px) }
 .teamKick {
   text-align: center;
   font-size: var(--t-label);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--ab-ink3);
@@ -636,7 +636,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   place-items: center;
   font-family: var(--fS);
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: .02em;
   color: #04263d;
   background: linear-gradient(145deg, var(--b100), var(--b300))
@@ -693,7 +693,7 @@ a.solRow:hover svg { transform: translateX(3px) }
   gap: 1rem;
   font-family: var(--fS);
   font-size: clamp(.95rem, .9rem + .25vw, 1.08rem);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: .02em;
   color: var(--ab-kick);
   margin: 0 0 clamp(1.4rem, 3.5svh, 2.2rem)
@@ -993,7 +993,7 @@ stack and the cards beneath step back and dim (assets/js/insights.js).
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--brand);
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: .7rem
 }
 
@@ -1024,7 +1024,7 @@ stack and the cards beneath step back and dim (assets/js/insights.js).
   gap: .45rem;
   margin-top: 1.1rem;
   font-size: var(--t-sm);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--brand)
 }
 
@@ -1145,7 +1145,7 @@ stack and the cards beneath step back and dim (assets/js/insights.js).
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   height: 44px; min-width: 44px; padding: 0 1.15rem; border-radius: 99px; cursor: pointer;
   border: 1px solid var(--line2); background: var(--panelBg); color: var(--ink);
-  font: 600 var(--t-sm)/1 var(--fS);
+  font: 500 var(--t-sm)/1 var(--fS);
   transition: background .2s var(--E), border-color .2s var(--E), color .2s var(--E), opacity .2s, filter .2s
 }
 .stepBtn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round }

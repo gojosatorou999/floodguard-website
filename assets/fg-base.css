@@ -55,11 +55,10 @@
   --onBand:#eaf7f7;
   --noise:.035;
 
-  /* type — one rounded family (Nunito) for headings and body: soft,
-     friendly curves; weight carries the hierarchy */
-  --fD:"Fredoka","Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
-  --fS:"Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
-  --fM:"Fredoka","Nunito",ui-rounded,"SF Pro Rounded","Varela Round","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  /* type — Fredoka for headings and figures, Rubik for body and UI */
+  --fD:"Fredoka","Rubik",ui-rounded,"SF Pro Rounded","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --fS:"Rubik","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --fM:"Fredoka","Rubik",ui-rounded,"SF Pro Rounded","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
 
   --t-xs:clamp(.68rem, .66rem + .08vw, .74rem);
   --t-sm:clamp(.82rem, .8rem + .1vw, .88rem);
@@ -124,10 +123,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(60vw 50vh at 12% 0%,var(--aur1),transparent 70%),
     radial-gradient(50vw 40vh at 88% 8%,var(--aur2),transparent 72%),
     radial-gradient(40vw 40vh at 50% 100%,var(--aur3),transparent 70%)}
+b,strong{font-weight:600}
 a{color:var(--brand);text-underline-offset:3px}
 h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-height:1.08;letter-spacing:-.018em;text-wrap:balance}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(1.1rem,4vw,2.4rem)}
-.caps{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink3)}
+.caps{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--ink3)}
 
 /* header */
 .hd{display:flex;align-items:center;justify-content:space-between;gap:1rem;
@@ -136,14 +136,14 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .brand i{width:30px;height:30px;border-radius:99px;display:grid;place-items:center;flex:none;
   background:var(--band);color:var(--onBand);font-family:var(--fD);font-style:normal;
   font-size:.95rem;font-weight:700}
-.brand b{font-family:var(--fS);font-size:.875rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
-.brand span{display:block;font-size:.75rem;letter-spacing:.1em;color:var(--ink3);font-weight:600;text-transform:uppercase}
+.brand b{font-family:var(--fS);font-size:.875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.brand span{display:block;font-size:.75rem;letter-spacing:.1em;color:var(--ink3);font-weight:500;text-transform:uppercase}
 
 /* panel + form */
 .panel{background:var(--panelBg);border:1px solid var(--panelEdge);
   border-radius:var(--r-l);box-shadow:var(--panelShadow)}
 .field{margin-bottom:1rem}
-.field label{display:block;font-size:.75rem;font-weight:600;letter-spacing:.1em;
+.field label{display:block;font-size:.75rem;font-weight:500;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink2);margin-bottom:.4rem}
 .inp{width:100%;padding:.8rem 1rem;border-radius:var(--r-s);border:1px solid var(--line2);
   background:var(--bg);color:var(--ink);font:500 var(--t-0)/1.4 var(--fS);transition:.2s var(--E)}
@@ -152,13 +152,13 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .inp::placeholder{color:var(--ink3)}
 .field.err .inp{border-color:var(--alert);box-shadow:0 0 0 3px color-mix(in srgb,var(--alert) 16%,transparent)}
 .emsg{display:none;align-items:center;gap:.35rem;margin-top:.4rem;
-  font-size:var(--t-xs);color:var(--alert);font-weight:600}
+  font-size:var(--t-xs);color:var(--alert);font-weight:500}
 .field.err .emsg{display:flex}
 .emsg svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;flex:none}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
   padding:.85rem 1.5rem;border-radius:99px;border:1px solid transparent;cursor:pointer;
-  font:600 var(--t-sm)/1 var(--fS);letter-spacing:.01em;text-decoration:none;
+  font:500 var(--t-sm)/1 var(--fS);letter-spacing:.01em;text-decoration:none;
   transition:.22s var(--E)}
 .btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2}
 .bp{background:var(--brand);color:var(--onBrand);box-shadow:0 10px 26px -12px rgba(10,82,115,.6)}
@@ -188,7 +188,7 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
    disappears when you move from one page to another */
 .tnav{display:flex;align-items:center;gap:.1rem;flex:1;justify-content:center;min-width:0}
 .tnav a{padding:.55rem .6rem;border-radius:99px;white-space:nowrap;text-decoration:none;
-  font:600 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
+  font:500 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
 .tnav a:hover{background:var(--dentBg);color:var(--ink)}
 .tnav a[aria-current="page"]{color:var(--brand);background:var(--dentBg)}
 @media (max-width:1240px){.tnav{display:none}}
@@ -197,7 +197,7 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .topbar .btn{height:40px;padding:0 1rem;font-size:var(--t-sm)}
 /* sign in / sign out (wired by assets/js/signin.js) — quiet, like a nav link */
 .tsign{flex:none;padding:.55rem .6rem;border-radius:99px;white-space:nowrap;text-decoration:none;
-  font:600 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
+  font:500 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
 .tsign:hover{background:var(--dentBg);color:var(--ink)}
 
 /* light / dark toggle (wired by assets/js/theme.js) */
@@ -211,7 +211,7 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 
 /* back to home — lives in the pinned header, so it is always one click away */
 .backHome{display:inline-flex;align-items:center;gap:.5rem;height:44px;padding:0 1.15rem;border-radius:99px;
-  border:1px solid var(--line2);color:var(--ink);text-decoration:none;font:600 var(--t-sm)/1 var(--fS);
+  border:1px solid var(--line2);color:var(--ink);text-decoration:none;font:500 var(--t-sm)/1 var(--fS);
   background:color-mix(in srgb,var(--panelBg) 70%,transparent);
   transition:background .2s var(--E),border-color .2s var(--E),color .2s var(--E)}
 .backHome:hover{border-color:var(--brand);color:var(--brand)}
