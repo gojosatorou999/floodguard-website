@@ -55,10 +55,10 @@
   --onBand:#eaf7f7;
   --noise:.035;
 
-  /* type — Fredoka for headings and figures, Rubik for body and UI */
-  --fD:"Fredoka","Rubik",ui-rounded,"SF Pro Rounded","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
-  --fS:"Rubik","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
-  --fM:"Fredoka","Rubik",ui-rounded,"SF Pro Rounded","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  /* type — Newsreader for headings; Manrope for body, UI and every number */
+  --fD:"Newsreader","Iowan Old Style","Charter",Cambria,Georgia,serif;
+  --fS:"Manrope","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --fM:"Manrope","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
 
   --t-xs:clamp(.68rem, .66rem + .08vw, .74rem);
   --t-sm:clamp(.82rem, .8rem + .1vw, .88rem);
@@ -116,8 +116,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--fS);
-  font-size:var(--t-0);font-weight:400;line-height:1.65;min-height:100vh;
-  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  font-size:var(--t-0);font-weight:450;line-height:1.65;min-height:100vh;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-variant-numeric:lining-nums}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
     radial-gradient(60vw 50vh at 12% 0%,var(--aur1),transparent 70%),
@@ -133,6 +133,8 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .hd{display:flex;align-items:center;justify-content:space-between;gap:1rem;
   padding:1.15rem 0;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit}
+/* the FloodGuard mark: assets/img/logo-mark.png, the original logo trimmed of its margin */
+.brand img{width:40px;height:40px;flex:none;border-radius:50%;background:#fff;padding:2px;object-fit:contain;box-shadow:0 0 0 1px var(--line)}
 .brand i{width:30px;height:30px;border-radius:99px;display:grid;place-items:center;flex:none;
   background:var(--band);color:var(--onBand);font-family:var(--fD);font-style:normal;
   font-size:.95rem;font-weight:700}
@@ -180,18 +182,51 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .topWrap{position:sticky;top:0;z-index:50;pointer-events:none;padding-top:12px}
 .topWrap>.topbar{position:relative;top:auto;margin-top:0;pointer-events:auto}
 .brandmark{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--ink);flex:none}
-.brandmark img{width:40px;height:40px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 0 0 1px var(--line)}
+.brandmark img{width:46px;height:46px;flex:none;border-radius:50%;background:#fff;padding:2px;object-fit:contain;box-shadow:0 0 0 1px var(--line),0 4px 12px -6px rgba(4,38,61,.35)}
 .brandmark b{font-family:var(--fD);font-size:1.15rem;font-weight:600;letter-spacing:.04em}
 .topbarAct{display:flex;align-items:center;gap:.5rem;flex:none}
 
 /* primary nav, shared across every page so the way through the site never
    disappears when you move from one page to another */
 .tnav{display:flex;align-items:center;gap:.1rem;flex:1;justify-content:center;min-width:0}
-.tnav a{padding:.55rem .6rem;border-radius:99px;white-space:nowrap;text-decoration:none;
+.tnav>a,.tni>button{display:flex;align-items:center;gap:.32rem;padding:.55rem .7rem;border-radius:99px;white-space:nowrap;
+  text-decoration:none;border:0;background:transparent;cursor:pointer;
   font:500 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
-.tnav a:hover{background:var(--dentBg);color:var(--ink)}
-.tnav a[aria-current="page"]{color:var(--brand);background:var(--dentBg)}
+.tnav>a:hover,.tni>button:hover,.tni.open>button{background:var(--dentBg);color:var(--ink)}
+.tnav [aria-current="page"]{color:var(--brand);background:var(--dentBg)}
+.tni{position:relative}
+.tni>button svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:2.2;transition:transform .3s var(--E)}
+.tni.open>button svg{transform:rotate(180deg)}
+/* Products / Solutions dropdowns (assets/js/nav.js) */
+.tdrop{position:absolute;top:calc(100% + 10px);left:-.35rem;min-width:270px;z-index:96;padding:.4rem;
+  border-radius:var(--r-m);background:var(--panelBg);border:1px solid var(--panelEdge);box-shadow:var(--panelShadow);
+  opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transform-origin:top left;
+  transition:opacity .24s var(--E),transform .3s var(--E),visibility .3s}
+.tni.open .tdrop{opacity:1;visibility:visible;transform:none}
+.tdrop a{display:block;padding:.6rem .75rem;border-radius:var(--r-s);text-decoration:none;color:var(--ink);
+  transition:background .22s,transform .22s var(--E)}
+.tdrop a:hover{background:var(--dentBg);transform:translateX(2px)}
+.tdrop b{display:block;font-size:var(--t-sm);font-weight:500}
+.tdrop em{display:block;font-style:normal;font-size:var(--t-xs);color:var(--ink3);margin-top:.15rem;line-height:1.4}
+.tdrop .all{margin-top:.25rem;border-top:1px solid var(--line);border-radius:0 0 var(--r-s) var(--r-s);
+  font-size:var(--t-xs);font-weight:600;color:var(--brand)}
 @media (max-width:1240px){.tnav{display:none}}
+
+/* phone / tablet menu — the same links as the bar, stacked */
+.tmenu{display:none;width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line2);background:transparent;
+  cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--ink)}
+.tmenu i{display:block;width:16px;height:1.6px;border-radius:2px;background:currentColor}
+@media (max-width:1240px){.tmenu{display:flex}}
+.tmenuPanel{position:absolute;top:calc(100% + 10px);right:0;width:min(360px,calc(100vw - 2.2rem));max-height:calc(100svh - 110px);
+  overflow:auto;padding:.6rem;border-radius:var(--r-l);background:var(--panelBg);border:1px solid var(--panelEdge);box-shadow:var(--panelShadow)}
+.tmenuPanel[hidden]{display:none}
+.tmenuPanel p{padding:.7rem .7rem .3rem;font:600 .66rem/1 var(--fS);letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.tmenuPanel a{display:flex;align-items:center;min-height:44px;padding:.4rem .7rem;border-radius:var(--r-s);text-decoration:none;
+  color:var(--ink);font:500 var(--t-sm)/1.3 var(--fS)}
+.tmenuPanel a:hover,.tmenuPanel a[aria-current="page"]{background:var(--dentBg);color:var(--brand)}
+.tmenuPanel hr{border:0;border-top:1px solid var(--line);margin:.4rem .3rem}
+.tmenuPanel .btn{width:100%;margin-top:.5rem;color:var(--onBrand)}
+.tmenuPanel .btn:hover{color:var(--onBrand)}
 /* header buttons sit a size down from page buttons, so six nav links,
    the arrow, theme, two CTAs and sign in share one line */
 .topbar .btn{height:40px;padding:0 1rem;font-size:var(--t-sm)}
@@ -209,33 +244,57 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .themeBtn .moon,.themeBtn[data-mode="dark"] .sun{display:none}
 .themeBtn[data-mode="dark"] .moon{display:block}
 
-/* back to home — lives in the pinned header, so it is always one click away */
-.backHome{display:inline-flex;align-items:center;gap:.5rem;height:44px;padding:0 1.15rem;border-radius:99px;
-  border:1px solid var(--line2);color:var(--ink);text-decoration:none;font:500 var(--t-sm)/1 var(--fS);
-  background:color-mix(in srgb,var(--panelBg) 70%,transparent);
-  transition:background .2s var(--E),border-color .2s var(--E),color .2s var(--E)}
-.backHome:hover{border-color:var(--brand);color:var(--brand)}
-.backHome svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
-  transition:transform .2s var(--E)}
-.backHome:hover svg{transform:translateX(-3px)}
-.backHome,.topbar .btn{flex:none;white-space:nowrap}
-/* while the full nav is showing, it and the logo already lead home, so the
-   back button folds to its arrow to leave the nav room; it keeps its label
-   on tablets, where it is the main way back */
-@media (min-width:1241px){
-  .topbar .backHome{width:44px;padding:0;justify-content:center}.topbar .backHome span{display:none}
-  .topbar{gap:.6rem}.topbarAct{gap:.35rem}
-}
+/* the logo is the way home — there is no separate "back to home" button */
+.topbar .btn{flex:none;white-space:nowrap}
+@media (min-width:1241px){.topbar{gap:.6rem}.topbarAct{gap:.35rem}}
 @media (max-width:760px){.tExplore{display:none}}
 @media (max-width:560px){.tsign{display:none}}
-/* phones: the logo carries the brand, the back button becomes an icon, so all
-   three controls fit on one line without clipping */
+/* phones: the logo and name always show; the theme switch moves into the menu */
 @media (max-width:560px){
-  .backHome{width:44px;padding:0;justify-content:center}.backHome span{display:none}
-  .topbar .brandmark b{display:none}
-  .topbar .btn{padding:.75rem 1rem}
-  .ft .backHome{width:auto;padding:0 1.15rem}.ft .backHome span{display:inline}
+  .topbar .themeBtn{display:none}
+  .topbar .brandmark{gap:.5rem}
+  .topbar .brandmark img{width:40px;height:40px}
+  .topbar .brandmark b{font-size:.98rem;letter-spacing:.03em}
+  .topbar .btn{padding:0 .85rem;font-size:.8rem}
 }
+@media (max-width:420px){
+  .topWrap{padding-inline:.75rem}
+  .topbar{padding:.4rem .45rem .4rem .45rem;gap:.4rem}
+  .topbar .brandmark b{font-size:.88rem;letter-spacing:.02em}
+  .topbar .btn{height:38px;padding:0 .7rem;font-size:.76rem}
+  .tmenu{width:40px;height:40px}
+}
+@media (max-width:340px){.topbar .btn.bp{display:none}}
+.tmenuPanel .themeRow{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.4rem .7rem;min-height:44px;font:500 var(--t-sm)/1.3 var(--fS)}
+@media (min-width:561px){.tmenuPanel .themeRow{display:none}}
+
+/*── site footer: one footer on every page, stamped by scripts/shell.mjs ──*/
+.site-footer{padding-top:clamp(64px,10svh,140px);position:relative;z-index:1}
+.site-footer a{text-decoration:none}
+.site-footer__top{display:grid;gap:clamp(32px,5vw,64px);grid-template-columns:1fr;align-items:start}
+.site-footer__logo{display:flex;align-items:center;gap:.8rem;color:var(--ink)}
+.site-footer__logo img{width:52px;height:52px;border-radius:50%;flex:none;background:#fff;padding:2px;object-fit:contain;box-shadow:0 0 0 1px var(--line)}
+.site-footer__wordmark{display:block;font-family:var(--fD);font-size:1.05rem;font-weight:600;letter-spacing:-.01em}
+.site-footer__desc{font-size:var(--t-sm);color:var(--ink2);max-width:36ch;margin:1.2rem 0 0;line-height:1.6}
+.site-footer__contact{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:.55rem;font-size:var(--t-sm);color:var(--ink2);font-style:normal}
+.site-footer__contact li{display:flex;gap:.6rem;align-items:flex-start;line-height:1.5}
+.site-footer__contact svg{width:16px;height:16px;flex:none;margin-top:.2rem;fill:none;stroke:var(--brand);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.site-footer__contact a{color:var(--ink2)}
+.site-footer__contact a:hover{color:var(--brand)}
+.site-footer__nav{display:grid;gap:32px 24px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:600px){.site-footer__nav{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:900px){.site-footer__nav{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:1200px){.site-footer__top{grid-template-columns:minmax(260px,4fr) 8fr}}
+@media (max-width:339px){.site-footer__nav{grid-template-columns:1fr}}
+.site-footer__heading{font-family:var(--fS);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin:0 0 12px;font-weight:500}
+.site-footer__col ul{list-style:none;margin:0;padding:0;display:grid;gap:.2rem}
+.site-footer__nav a{display:inline-flex;align-items:center;min-height:44px;font-size:var(--t-sm);color:var(--ink2);transition:color .22s}
+@media (hover:hover) and (pointer:fine){.site-footer__nav a{min-height:32px}.site-footer__nav a:hover{color:var(--brand)}}
+.site-footer__bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;
+  margin-top:clamp(40px,6vw,72px);padding-block:24px calc(24px + env(safe-area-inset-bottom));border-top:1px solid var(--line);
+  font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--ink3)}
+.site-footer__bottom p{margin:0}
+@media (max-width:599px){.site-footer__bottom{flex-direction:column;align-items:flex-start}}
 
 /* back to top — the home page's control, on every content page (assets/js/totop.js) */
 .toTop{position:fixed;z-index:60;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;cursor:pointer;

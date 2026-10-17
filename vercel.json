@@ -5,6 +5,9 @@
   "installCommand": "npm install",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/sectors", "destination": "/solutions", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/sb/:path*", "destination": "https://lywnmsbsnumjahvtflmq.supabase.co/:path*" }
   ],

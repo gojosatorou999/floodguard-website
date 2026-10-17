@@ -4,34 +4,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>About us — the FloodGuard team | FloodGuard</title>
-<meta name="description" content="FloodGuard is building India's flood intelligence layer — a team working across climate science, geospatial intelligence and data systems.">
+<meta name="description" content="FloodGuard is building India's flood intelligence layer. Backed by T-Hub, WE Hub and Bower Capital, founded by Dhanya Bulla, with a team across GIS, AI and DevOps.">
 <link rel="canonical" href="https://floodguard.in/about">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
 <script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-<link rel="preload" href="/assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fg-base.css">
 <link rel="stylesheet" href="/assets/fg-pages.css">
 <script type="module" src="/assets/js/theme.js" defer></script>
+<script type="module" src="/assets/js/nav.js"></script>
 <script type="module" src="/assets/js/mist.js"></script>
 <script type="module" src="/assets/js/totop.js"></script>
 </head>
-<body>
+<body data-nav="about">
 
+<!-- shell:header -->
 <div class="wrap topWrap">
   <header class="topbar">
-    <a class="brandmark" href="/index.html">
-      <img src="/assets/img/logo.jpeg" alt="" aria-hidden="true"><b>FLOODGUARD</b>
+    <a class="brandmark" href="/index.html" aria-label="FloodGuard — home">
+      <img src="/assets/img/logo-mark.png" alt="" aria-hidden="true"><b>FLOODGUARD</b>
     </a>
     <nav class="tnav" aria-label="Primary">
-      <a href="/products.html">Products</a>
-      <a href="/solutions.html">Solutions</a>
-      <a href="/index.html#platform">Platform</a>
+      <div class="tni">
+        <button type="button" aria-expanded="false" aria-controls="dd-products">Products <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="tdrop" id="dd-products">
+          <a href="/products.html#explorer"><b>Explorer</b><em>Free district-level flood history</em></a>
+          <a href="/products.html#atlas"><b>Atlas</b><em>Historical and future flood risk, in depth</em></a>
+          <a href="/products.html#live"><b>Live</b><em>Real-time rainfall, radar and alerts</em></a>
+          <a class="all" href="/products.html">All products →</a>
+        </div>
+      </div>
+      <div class="tni">
+        <button type="button" aria-expanded="false" aria-controls="dd-solutions">Solutions <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="tdrop" id="dd-solutions">
+          <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b><em>Underwriting, accumulation and claims</em></a>
+          <a href="/solutions/banking.html"><b>Banking &amp; Finance</b><em>Collateral and portfolio screening</em></a>
+          <a href="/solutions/agriculture.html"><b>Agriculture</b><em>Crop and agricultural flood risk</em></a>
+          <a href="/solutions/infrastructure.html"><b>Infrastructure</b><em>Sites, assets and corridors</em></a>
+          <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b><em>Prepare, monitor and respond</em></a>
+          <a class="all" href="/solutions.html">Solutions overview →</a>
+        </div>
+      </div>
+      <a href="/platform.html">Platform</a>
       <a href="/insights.html">Insights</a>
       <a href="/about.html" aria-current="page">About</a>
     </nav>
     <div class="topbarAct">
-      <a class="backHome" href="/index.html" aria-label="Back to home" title="Back to home"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg><span>Back to home</span></a>
       <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
@@ -39,15 +58,40 @@
       <a class="btn bg2 tExplore" href="/index.html#hmap">Explore Free Data</a>
       <a class="btn bp" href="/contact.html">Request a Demo</a>
       <a class="tsign" href="/auth.html" data-signin>Sign in</a>
+      <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
+    </div>
+    <div class="tmenuPanel" id="tmenuPanel" hidden>
+      <p>Products</p>
+      <a href="/products.html#explorer">Explorer</a>
+      <a href="/products.html#atlas">Atlas</a>
+      <a href="/products.html#live">Live</a>
+      <p>Solutions</p>
+      <a href="/solutions.html">Overview</a>
+      <a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a>
+      <a href="/solutions/banking.html">Banking &amp; Finance</a>
+      <a href="/solutions/agriculture.html">Agriculture</a>
+      <a href="/solutions/infrastructure.html">Infrastructure</a>
+      <a href="/solutions/government.html">Government &amp; Disaster Management</a>
+      <hr>
+      <a href="/platform.html">Platform</a>
+      <a href="/insights.html">Insights</a>
+      <a href="/about.html" aria-current="page">About us</a>
+      <a href="/contact.html">Contact us</a>
+      <div class="themeRow"><span>Appearance</span>
+        <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+        </button>
+      </div>
+      <a class="btn bp" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
   </header>
 </div>
+<!-- /shell:header -->
 
 <main class="aboutMain">
-  <!-- Everything here is visible on arrival: heading, team and the CTA,
-       with no scroll-driven reveal to wait for. -->
   <section id="about">
-    <div class="dropAfter" id="dropAfter">
+    <div class="dropAfter">
       <div class="wrap aboutHead">
         <span class="aboutNum">About us</span>
         <h1>Building India's flood intelligence layer.</h1>
@@ -55,51 +99,211 @@
         <p class="dropPrinciples">Science first · Built for India · Decision-ready · Honest about uncertainty</p>
       </div>
 
-      <div class="wrap aboutTeam">
-        <p class="teamKick">A small team. A big problem.</p>
-        <!-- names and roles as listed in README §1.2 -->
-        <ul class="teamCards" role="list">
-          <li class="teamCard">
-            <span class="teamAv" aria-hidden="true">DB</span>
-            <div>
-              <h3>Dhanya Bulla</h3>
-              <p>Founder</p>
-            </div>
-          </li>
-          <li class="teamCard">
-            <span class="teamAv" aria-hidden="true">V</span>
-            <div>
-              <h3>Vasuprada</h3>
-              <p>GIS Developer</p>
-            </div>
-          </li>
-          <li class="teamCard">
-            <span class="teamAv" aria-hidden="true">S</span>
-            <div>
-              <h3>Sagar</h3>
-              <p>DevOps</p>
-            </div>
-          </li>
+      <!-- backed by -->
+      <div class="wrap backers">
+        <p class="teamKick">Backed by</p>
+        <ul class="backerRow" role="list">
+          <li class="backer"><b>T-Hub</b><span>Innovation hub · Hyderabad</span></li>
+          <li class="backer"><b>WE Hub</b><span>Women entrepreneurs hub · Telangana</span></li>
+          <li class="backer"><b>Bower Capital</b><span>Investor</span></li>
         </ul>
-      </div>
-
-      <div class="wrap dropShared">
-        <p class="sharedKick">Flood resilience is a shared problem</p>
-        <h2 class="sharedH"><span>Your sector.</span> <span>Your risk.</span> <span>Your decision.</span></h2>
-        <p class="sharedLead">Explore your district for free, request access to Atlas and Live, or start a conversation with the team.</p>
-        <div class="hcta">
-          <a class="btn bp" href="/contact.html">Book a demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-          <a class="btn bg2" href="/products.html#explorer">Explore district risk</a>
-        </div>
       </div>
       <div class="dropWave" aria-hidden="true"></div>
     </div>
   </section>
+
+  <!-- the company -->
+  <section class="sec aboutSec">
+    <div class="wrap aboutCo">
+      <div class="secHead" style="margin-bottom:0">
+        <p class="eyebrow"><i></i>Who we are</p>
+        <h2>A flood-risk company, built in Hyderabad, for India.</h2>
+        <p>Flood is India's most frequent natural hazard — yet most decisions about it still rest on fragmented, backward-looking data. FloodGuard exists to change that: one consistent flood record, modelled into intelligence that insurers, lenders, planners and governments can act on.</p>
+      </div>
+      <dl class="coFacts" data-reveal>
+        <div><dt>Company</dt><dd>FloodGuard Solutions Pvt. Ltd.</dd></div>
+        <div><dt>Founded</dt><dd>2025</dd></div>
+        <div><dt>Based in</dt><dd>Hyderabad, Telangana</dd></div>
+        <div><dt>Backed by</dt><dd>T-Hub · WE Hub · Bower Capital</dd></div>
+        <div><dt>What we build</dt><dd>Flood intelligence across time — historical, current and future</dd></div>
+        <div><dt>Who we serve</dt><dd>Insurance, banking, agriculture, infrastructure and government</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- the team -->
+  <section class="sec" id="team">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>The team</p>
+        <h2>The people behind FloodGuard.</h2>
+      </div>
+
+      <article class="founder" data-reveal>
+        <div class="founderAv" aria-hidden="true"><span>DB</span></div>
+        <div class="founderTxt">
+          <span class="access">Founder</span>
+          <h3>Dhanya Bulla</h3>
+          <p class="role">Founder, FloodGuard</p>
+          <p>Dhanya founded FloodGuard to close the gap between the flood data India already has and the decisions that depend on it. She leads the company's vision, product and research direction — bringing climate data, geospatial intelligence and risk modelling together into a platform built for the people who have to make the call — and its partnerships with insurers, lenders and government.</p>
+          <a class="inBtn" href="https://www.linkedin.com/in/dhanya-bulla/" target="_blank" rel="noopener" data-linkedin="Dhanya Bulla">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4z"/></svg>
+            Dhanya on LinkedIn
+          </a>
+        </div>
+      </article>
+
+      <ul class="teamGrid" role="list">
+        <li class="member" data-reveal>
+          <span class="memberAv" aria-hidden="true">VR</span>
+          <div>
+            <h3>Varun Ramavath</h3>
+            <p class="role">Multi-stack Developer</p>
+            <p>Builds the FloodGuard platform end to end — from the data pipelines and APIs to the maps and dashboards people use every day.</p>
+            <a class="inBtn sm" href="https://www.linkedin.com/in/ramavathvarun/" target="_blank" rel="noopener" data-linkedin="Varun Ramavath">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4z"/></svg>
+              LinkedIn
+            </a>
+          </div>
+        </li>
+        <li class="member" data-reveal>
+          <span class="memberAv" aria-hidden="true">RP</span>
+          <div>
+            <h3>Rishanth Patkar</h3>
+            <p class="role">ML &amp; AI Analyst · Research</p>
+            <p>Develops and evaluates the machine-learning and AI models behind FloodGuard's risk intelligence, and leads research into new methods and data.</p>
+            <a class="inBtn sm" href="https://www.linkedin.com/in/rishanth-patkar/" target="_blank" rel="noopener" data-linkedin="Rishanth Patkar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4z"/></svg>
+              LinkedIn
+            </a>
+          </div>
+        </li>
+        <li class="member diverse" data-reveal>
+          <ul class="skills" role="list" aria-label="Areas of expertise"><li>GIS</li><li>AI</li><li>DevOps</li></ul>
+          <div>
+            <h3>A diverse team of specialists</h3>
+            <p>Beyond the people above, FloodGuard is a diverse team with experts across GIS, AI and DevOps — the disciplines it takes to turn raw flood data into intelligence you can rely on.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- how we work -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>What we hold ourselves to</p>
+        <h2>Principles you can check us against.</h2>
+      </div>
+      <div class="capGrid c4" data-reveal>
+        <div><span class="n">01</span><b>Science first</b><p>Every product starts from an observed record and a documented method — never from a guess dressed up as a score.</p></div>
+        <div><span class="n">02</span><b>Built for India</b><p>Resolved to the districts and talukas where Indian decisions are actually made.</p></div>
+        <div><span class="n">03</span><b>Decision-ready</b><p>Intelligence shaped around the decision in front of you, not a dataset to decode.</p></div>
+        <div><span class="n">04</span><b>Honest about uncertainty</b><p>Confidence is reported with every figure. Where we're less sure, we say so.</p></div>
+      </div>
+      <div class="talk" data-reveal>
+        <div>
+          <h3><a href="/contact.html">Talk to the team →</a></h3>
+          <p>COHORT Coworking, Kondapur, Hyderabad · +91 90307 62494 · dhanyabulla@floodguard.in</p>
+        </div>
+        <a class="btn" href="/contact.html">Contact us <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- shell:cta -->
+<section class="sec getStarted" id="get-started">
+  <div class="wrap">
+    <div class="secHead">
+      <p class="eyebrow"><i></i>Get started</p>
+      <h2>Ready to explore FloodGuard?</h2>
+    </div>
+    <div class="paths">
+      <div class="card" data-reveal>
+        <span class="access">Explorer</span>
+        <h3>Explore for free.</h3>
+        <p>Access district-level historical flood risk and begin exploring India's flood record. No sales conversation required.</p>
+        <div class="ctaRow"><a class="btn bp" href="/index.html#hmap">Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+      </div>
+      <div class="card ent" data-reveal>
+        <span class="access">Atlas + Live</span>
+        <h3>Talk to the FloodGuard team.</h3>
+        <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
+        <div class="ctaRow">
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="/contact.html?intent=sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /shell:cta -->
 </main>
 
-<div class="wrap">
-  <footer class="ft"><span>© <span id="fgYear"></span> FloodGuard Solutions Pvt. Ltd.</span><a class="backHome" href="/index.html"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg><span>Back to home</span></a></footer>
-</div>
+<!-- shell:footer -->
+<footer class="site-footer">
+  <div class="wrap site-footer__top">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="/index.html" aria-label="FloodGuard home">
+        <img src="/assets/img/logo-mark.png" alt="">
+        <b class="site-footer__wordmark">FloodGuard</b>
+      </a>
+      <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated into decision-ready insight for organisations exposed to flood risk.</p>
+      <address>
+        <ul class="site-footer__contact" role="list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>COHORT Coworking, Kondapur, Hyderabad, Telangana</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+919030762494">+91 90307 62494</a></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><a href="mailto:dhanyabulla@floodguard.in">dhanyabulla@floodguard.in</a></li>
+        </ul>
+      </address>
+    </div>
+    <nav class="site-footer__nav" aria-label="Footer">
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Products</h2>
+        <ul role="list">
+          <li><a href="/products.html#explorer">Explorer</a></li>
+          <li><a href="/products.html#atlas">Atlas</a></li>
+          <li><a href="/products.html#live">Live</a></li>
+          <li><a href="/products.html#compare">Compare products</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Solutions</h2>
+        <ul role="list">
+          <li><a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a></li>
+          <li><a href="/solutions/banking.html">Banking &amp; Finance</a></li>
+          <li><a href="/solutions/agriculture.html">Agriculture</a></li>
+          <li><a href="/solutions/infrastructure.html">Infrastructure</a></li>
+          <li><a href="/solutions/government.html">Government</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Platform</h2>
+        <ul role="list">
+          <li><a href="/platform.html#data">Data</a></li>
+          <li><a href="/platform.html#technology">Technology</a></li>
+          <li><a href="/platform.html#methodology">Methodology</a></li>
+          <li><a href="/platform.html#validation">Validation</a></li>
+          <li><a href="/platform.html#api">API</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Company</h2>
+        <ul role="list">
+          <li><a href="/insights.html">Insights</a></li>
+          <li><a href="/about.html">About us</a></li>
+          <li><a href="/contact.html">Contact us</a></li>
+          <li><a href="/contact.html?intent=demo">Request a demo</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap site-footer__bottom">
+    <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
+  </div>
+</footer>
+<!-- /shell:footer -->
 
 <script type="module" src="/assets/js/about.js"></script>
 <script type="module" src="/assets/js/signin.js"></script>

@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Platform — data, models and methodology | FloodGuard</title>
+<meta name="description" content="How FloodGuard turns 75 years of observed data, terrain, satellite observations and climate projections into flood intelligence you can inspect, trust and act on.">
+<link rel="canonical" href="https://floodguard.in/platform">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preload" href="/assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fg-base.css">
+<link rel="stylesheet" href="/assets/fg-pages.css">
+<script type="module" src="/assets/js/theme.js" defer></script>
+<script type="module" src="/assets/js/nav.js"></script>
+<script type="module" src="/assets/js/mist.js"></script>
+<script type="module" src="/assets/js/totop.js"></script>
+</head>
+<body data-nav="platform">
+
+<!-- shell:header -->
+<div class="wrap topWrap">
+  <header class="topbar">
+    <a class="brandmark" href="/index.html" aria-label="FloodGuard — home">
+      <img src="/assets/img/logo-mark.png" alt="" aria-hidden="true"><b>FLOODGUARD</b>
+    </a>
+    <nav class="tnav" aria-label="Primary">
+      <div class="tni">
+        <button type="button" aria-expanded="false" aria-controls="dd-products">Products <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="tdrop" id="dd-products">
+          <a href="/products.html#explorer"><b>Explorer</b><em>Free district-level flood history</em></a>
+          <a href="/products.html#atlas"><b>Atlas</b><em>Historical and future flood risk, in depth</em></a>
+          <a href="/products.html#live"><b>Live</b><em>Real-time rainfall, radar and alerts</em></a>
+          <a class="all" href="/products.html">All products →</a>
+        </div>
+      </div>
+      <div class="tni">
+        <button type="button" aria-expanded="false" aria-controls="dd-solutions">Solutions <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="tdrop" id="dd-solutions">
+          <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b><em>Underwriting, accumulation and claims</em></a>
+          <a href="/solutions/banking.html"><b>Banking &amp; Finance</b><em>Collateral and portfolio screening</em></a>
+          <a href="/solutions/agriculture.html"><b>Agriculture</b><em>Crop and agricultural flood risk</em></a>
+          <a href="/solutions/infrastructure.html"><b>Infrastructure</b><em>Sites, assets and corridors</em></a>
+          <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b><em>Prepare, monitor and respond</em></a>
+          <a class="all" href="/solutions.html">Solutions overview →</a>
+        </div>
+      </div>
+      <a href="/platform.html" aria-current="page">Platform</a>
+      <a href="/insights.html">Insights</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="topbarAct">
+      <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <a class="btn bg2 tExplore" href="/index.html#hmap">Explore Free Data</a>
+      <a class="btn bp" href="/contact.html">Request a Demo</a>
+      <a class="tsign" href="/auth.html" data-signin>Sign in</a>
+      <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
+    </div>
+    <div class="tmenuPanel" id="tmenuPanel" hidden>
+      <p>Products</p>
+      <a href="/products.html#explorer">Explorer</a>
+      <a href="/products.html#atlas">Atlas</a>
+      <a href="/products.html#live">Live</a>
+      <p>Solutions</p>
+      <a href="/solutions.html">Overview</a>
+      <a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a>
+      <a href="/solutions/banking.html">Banking &amp; Finance</a>
+      <a href="/solutions/agriculture.html">Agriculture</a>
+      <a href="/solutions/infrastructure.html">Infrastructure</a>
+      <a href="/solutions/government.html">Government &amp; Disaster Management</a>
+      <hr>
+      <a href="/platform.html" aria-current="page">Platform</a>
+      <a href="/insights.html">Insights</a>
+      <a href="/about.html">About us</a>
+      <a href="/contact.html">Contact us</a>
+      <div class="themeRow"><span>Appearance</span>
+        <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+        </button>
+      </div>
+      <a class="btn bp" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+  </header>
+</div>
+<!-- /shell:header -->
+
+<main>
+  <!-- 01 — HERO -->
+  <section class="pgHero">
+    <div class="wrap grid">
+      <div>
+        <p class="eyebrow"><i></i>The FloodGuard platform</p>
+        <h1>Data in. Intelligence out. Nothing hidden in between.</h1>
+        <p class="sup" style="font-size:var(--t-1);margin-top:1.1rem">FloodGuard brings decades of observed data, terrain, satellite observations and climate projections into one consistent flood record — then models it into intelligence you can inspect, question and act on.</p>
+        <div class="ctaRow">
+          <a class="btn bp" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="#how">How it works</a>
+        </div>
+      </div>
+
+      <!-- the platform as a stack: each layer resolves the one beneath it -->
+      <div class="pStack" data-reveal role="img" aria-label="The FloodGuard platform as five layers, from the bottom: data, technology, methodology, validation, and delivery through the API and products">
+        <div class="pLayer" style="--i:4"><span class="n">05</span><b>Delivery</b><em>Explorer · Atlas · Live · API</em></div>
+        <div class="pLayer" style="--i:3"><span class="n">04</span><b>Validation</b><em>Back-tested against recorded floods</em></div>
+        <div class="pLayer" style="--i:2"><span class="n">03</span><b>Methodology</b><em>Hazard × exposure × vulnerability</em></div>
+        <div class="pLayer" style="--i:1"><span class="n">02</span><b>Technology</b><em>Geospatial, statistical and ML models</em></div>
+        <div class="pLayer" style="--i:0"><span class="n">01</span><b>Data</b><em>Observed · satellite · terrain · climate</em></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 — PROOF -->
+  <section class="pStats" aria-label="The platform in numbers">
+    <div class="wrap">
+      <dl>
+        <div><dt>75</dt><dd>Years of observed flood and climate record<span>1951–2025</span></dd></div>
+        <div><dt>766+</dt><dd>Districts<span>Across India</span></dd></div>
+        <div><dt>6,500+</dt><dd>Talukas<span>Granular risk intelligence</span></dd></div>
+        <div><dt>3</dt><dd>Climate scenarios<span>Low · Mid · High</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 03 — HOW IT WORKS -->
+  <section class="sec" id="how">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>How it works</p>
+        <h2>From scattered data to one decision-ready answer.</h2>
+        <p>Flood data in India exists — it is just spread across agencies, formats and time periods. The platform does the slow work of bringing it together, so every product and every number starts from the same foundation.</p>
+      </div>
+      <ol class="pFlow" data-reveal>
+        <li><span class="n">01</span><b>Collect</b><p>Observed rainfall, recorded floods, terrain, drainage, satellite observations and climate projections.</p></li>
+        <li><span class="n">02</span><b>Harmonise</b><p>Aligned to one grid and one timeline, from 1951 to today, at district and taluka scale.</p></li>
+        <li><span class="n">03</span><b>Model</b><p>Hazard, exposure and vulnerability, combined into one comparable measure of risk.</p></li>
+        <li><span class="n">04</span><b>Validate</b><p>Checked against floods that actually happened, with the result reported alongside.</p></li>
+        <li><span class="n">05</span><b>Deliver</b><p>Maps, scores, reports and data — in our products or inside your own systems.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 04 — THE FIVE PARTS -->
+  <section class="sec" id="parts">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Inside the platform</p>
+        <h2>Five parts, each inspectable on its own.</h2>
+        <p>Nothing here is a black box. Every number we publish can be traced back to the data and the method that produced it.</p>
+      </div>
+
+      <div class="pParts">
+        <article class="pPart" id="data" data-reveal>
+          <div class="pPartHead">
+            <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span>
+            <span class="n">01</span><h3>Data</h3>
+          </div>
+          <div class="pPartBody">
+            <p class="lead">One continuous record, not a pile of disconnected extracts.</p>
+            <p>Observed climate, satellite and remote sensing, terrain, hydrological records and climate projections are held as a single, consistent series — the same record for 1951 as for last monsoon — so trends are real trends, not artefacts of a change in source.</p>
+            <ul class="checks">
+              <li>Observed rainfall and river levels</li>
+              <li>Recorded historical flood events</li>
+              <li>Satellite and remote sensing observations</li>
+              <li>Terrain, drainage and land use</li>
+              <li>Climate projections for future scenarios</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="pPart" id="technology" data-reveal>
+          <div class="pPartHead">
+            <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/></svg></span>
+            <span class="n">02</span><h3>Technology</h3>
+          </div>
+          <div class="pPartBody">
+            <p class="lead">The right model for each question — not one model for everything.</p>
+            <p>Geospatial processing, statistical analysis, hydrological reasoning and machine learning are each applied where they are strongest. Machine learning earns its place where it measurably improves a result; it is never used to paper over gaps in the data.</p>
+            <ul class="checks">
+              <li>Geospatial processing at district and taluka scale</li>
+              <li>Statistical and hydrological modelling</li>
+              <li>Machine learning where it earns its place</li>
+              <li>Reproducible, versioned model runs</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="pPart" id="methodology" data-reveal>
+          <div class="pPartHead">
+            <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6M9 13h7M9 17h5"/></svg></span>
+            <span class="n">03</span><h3>Methodology</h3>
+          </div>
+          <div class="pPartBody">
+            <p class="lead">Written down, so a result can be argued with rather than taken on trust.</p>
+            <p>Risk is built from three parts — the hazard (how often and how badly an area floods), the exposure (what is in the water's path) and the vulnerability (how much damage it would do). How they are combined is documented, with every assumption stated.</p>
+            <ul class="checks">
+              <li>Hazard × exposure × vulnerability, documented</li>
+              <li>Assumptions stated, not implied</li>
+              <li>Uncertainty reported with every figure</li>
+              <li>Versioned method notes</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="pPart" id="validation" data-reveal>
+          <div class="pPartHead">
+            <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="m8.5 12 2.5 2.5L16 9.5"/></svg></span>
+            <span class="n">04</span><h3>Validation</h3>
+          </div>
+          <div class="pPartBody">
+            <p class="lead">Checked against the floods that actually happened.</p>
+            <p>Model output is back-tested against recorded flood events, and those checks are reported alongside the result — not kept in a separate file nobody reads. Where the model is less certain, we say so.</p>
+            <ul class="checks">
+              <li>Back-testing against observed floods</li>
+              <li>Independent review of method</li>
+              <li>Published performance notes</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="pPart" id="api" data-reveal>
+          <div class="pPartHead">
+            <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8-5 4 5 4M15 8l5 4-5 4M13 5l-2 14"/></svg></span>
+            <span class="n">05</span><h3>API &amp; delivery</h3>
+          </div>
+          <div class="pPartBody">
+            <p class="lead">Intelligence that fits the workflow you already run.</p>
+            <p>Use FloodGuard through Explorer, Atlas and Live, or bring the same intelligence into your own underwriting, lending, GIS or planning systems — instead of moving your team into ours.</p>
+            <ul class="pChips" aria-label="Delivery options">
+              <li>Dashboards</li><li>REST endpoints</li><li>Bulk data</li><li>Map tiles</li><li>Reports</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — WHY TRUST IT -->
+  <section class="sec" id="trust">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Why you can rely on it</p>
+        <h2>Built to be checked, not just believed.</h2>
+      </div>
+      <div class="capGrid c4" data-reveal>
+        <div><span class="n">01</span><b>Observed first</b><p>Built on decades of observations, not a modelled average with no history behind it.</p></div>
+        <div><span class="n">02</span><b>Transparent methods</b><p>Documented assumptions and versioned method notes — nothing is a black box.</p></div>
+        <div><span class="n">03</span><b>Honest about uncertainty</b><p>Every figure ships with its confidence attached, never stripped off.</p></div>
+        <div><span class="n">04</span><b>Built for India</b><p>Resolved to the districts and talukas where Indian decisions are actually made.</p></div>
+      </div>
+      <div class="talk" data-reveal>
+        <div>
+          <h3><a href="/index.html#hmap">See the platform at work →</a></h3>
+          <p>Explore district-level historical flood risk in Explorer — free, with no sales conversation.</p>
+        </div>
+        <a class="btn" href="/index.html#hmap">Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- shell:cta -->
+<section class="sec getStarted" id="get-started">
+  <div class="wrap">
+    <div class="secHead">
+      <p class="eyebrow"><i></i>Get started</p>
+      <h2>Ready to explore FloodGuard?</h2>
+    </div>
+    <div class="paths">
+      <div class="card" data-reveal>
+        <span class="access">Explorer</span>
+        <h3>Explore for free.</h3>
+        <p>Access district-level historical flood risk and begin exploring India's flood record. No sales conversation required.</p>
+        <div class="ctaRow"><a class="btn bp" href="/index.html#hmap">Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+      </div>
+      <div class="card ent" data-reveal>
+        <span class="access">Atlas + Live</span>
+        <h3>Talk to the FloodGuard team.</h3>
+        <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
+        <div class="ctaRow">
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="/contact.html?intent=sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /shell:cta -->
+</main>
+
+<!-- shell:footer -->
+<footer class="site-footer">
+  <div class="wrap site-footer__top">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="/index.html" aria-label="FloodGuard home">
+        <img src="/assets/img/logo-mark.png" alt="">
+        <b class="site-footer__wordmark">FloodGuard</b>
+      </a>
+      <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated into decision-ready insight for organisations exposed to flood risk.</p>
+      <address>
+        <ul class="site-footer__contact" role="list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>COHORT Coworking, Kondapur, Hyderabad, Telangana</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+919030762494">+91 90307 62494</a></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><a href="mailto:dhanyabulla@floodguard.in">dhanyabulla@floodguard.in</a></li>
+        </ul>
+      </address>
+    </div>
+    <nav class="site-footer__nav" aria-label="Footer">
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Products</h2>
+        <ul role="list">
+          <li><a href="/products.html#explorer">Explorer</a></li>
+          <li><a href="/products.html#atlas">Atlas</a></li>
+          <li><a href="/products.html#live">Live</a></li>
+          <li><a href="/products.html#compare">Compare products</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Solutions</h2>
+        <ul role="list">
+          <li><a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a></li>
+          <li><a href="/solutions/banking.html">Banking &amp; Finance</a></li>
+          <li><a href="/solutions/agriculture.html">Agriculture</a></li>
+          <li><a href="/solutions/infrastructure.html">Infrastructure</a></li>
+          <li><a href="/solutions/government.html">Government</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Platform</h2>
+        <ul role="list">
+          <li><a href="/platform.html#data">Data</a></li>
+          <li><a href="/platform.html#technology">Technology</a></li>
+          <li><a href="/platform.html#methodology">Methodology</a></li>
+          <li><a href="/platform.html#validation">Validation</a></li>
+          <li><a href="/platform.html#api">API</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Company</h2>
+        <ul role="list">
+          <li><a href="/insights.html">Insights</a></li>
+          <li><a href="/about.html">About us</a></li>
+          <li><a href="/contact.html">Contact us</a></li>
+          <li><a href="/contact.html?intent=demo">Request a demo</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap site-footer__bottom">
+    <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
+  </div>
+</footer>
+<!-- /shell:footer -->
+
+<script type="module" src="/assets/js/page.js"></script>
+<script type="module" src="/assets/js/signin.js"></script>
+</body>
+</html>

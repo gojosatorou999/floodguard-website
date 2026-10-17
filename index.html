@@ -18,15 +18,17 @@
   <meta property="og:locale" content="en_IN">
   <meta name="twitter:card" content="summary_large_image">
   <script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
-  <link rel="preload" href="assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/rubik.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <!-- shared page components (product cards, map panels, insight posts, the closing CTA); the inline styles below win on any overlap -->
+  <link rel="stylesheet" href="/assets/fg-pages.css">
   <link rel="icon"
     href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
   <style>
     /*═══════════════════════════════════════════════════════════════
   FLOODGUARD — light-first, glass, scroll-driven
-  Type: Fredoka (rounded) for headings and figures; Rubik for body text and UI.
+  Type: Newsreader (editorial serif) for headings; Manrope for body, UI and numbers.
   Palette: ocean depth ramp — abyss navy (b950) through shoal teal (b500)
   to seafoam (b100), hue drifting 205° → 172° as it gets shallower.
   #C1121F = live alert only.
@@ -64,6 +66,9 @@
       --panelBg: #f8fdfd;
       --panelEdge: rgba(4, 38, 61, .14);
       --panelShadow: 0 2px 6px rgba(4, 38, 61, .07), 0 26px 60px -22px rgba(4, 38, 61, .4);
+      --elev-1: 0 1px 2px rgba(4, 38, 61, .06), 0 10px 28px -18px rgba(4, 38, 61, .28);
+      --elev-2: 0 2px 4px rgba(4, 38, 61, .06), 0 28px 56px -26px rgba(4, 38, 61, .42);
+      --cardEdge: linear-gradient(160deg, rgba(63, 166, 178, .55), rgba(10, 82, 115, .08) 45%, rgba(10, 82, 115, .28));
       --glassA: rgba(255, 255, 255, .74);
       --glassB: rgba(255, 255, 255, .38);
       --glassEdge: rgba(255, 255, 255, .85);
@@ -89,9 +94,9 @@
 
       /* type — display serif echoes the logo's calligraphic ƒ,
      tracked sans caps echo PREDICT · PLAN · PROTECT */
-      --fD: "Fredoka", "Rubik", ui-rounded, "SF Pro Rounded", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
-      --fS: "Rubik", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-      --fM: "Fredoka", "Rubik", ui-rounded, "SF Pro Rounded", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+      --fD: "Newsreader", "Iowan Old Style", "Charter", Cambria, Georgia, serif;
+      --fS: "Manrope", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+      --fM: "Manrope", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
 
       --t-xs: clamp(.68rem, .66rem + .08vw, .74rem);
       --t-sm: clamp(.82rem, .8rem + .1vw, .88rem);
@@ -187,6 +192,9 @@
         --panelBg: #072630;
         --panelEdge: rgba(158, 218, 217, .22);
         --panelShadow: 0 2px 6px rgba(0, 0, 0, .6), 0 26px 60px -22px rgba(0, 0, 0, .9);
+        --elev-1: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 30px -18px rgba(0, 0, 0, .8);
+        --elev-2: 0 2px 6px rgba(0, 0, 0, .55), 0 30px 60px -26px rgba(0, 0, 0, .95);
+        --cardEdge: linear-gradient(160deg, rgba(158, 218, 217, .45), rgba(158, 218, 217, .06) 45%, rgba(109, 192, 198, .22));
         --glassA: rgba(16, 58, 68, .62);
         --glassB: rgba(8, 34, 42, .4);
         --glassEdge: rgba(158, 218, 217, .2);
@@ -241,6 +249,9 @@
       --panelBg: #072630;
       --panelEdge: rgba(158, 218, 217, .22);
       --panelShadow: 0 2px 6px rgba(0, 0, 0, .6), 0 26px 60px -22px rgba(0, 0, 0, .9);
+      --elev-1: 0 1px 2px rgba(0, 0, 0, .5), 0 12px 30px -18px rgba(0, 0, 0, .8);
+      --elev-2: 0 2px 6px rgba(0, 0, 0, .55), 0 30px 60px -26px rgba(0, 0, 0, .95);
+      --cardEdge: linear-gradient(160deg, rgba(158, 218, 217, .45), rgba(158, 218, 217, .06) 45%, rgba(109, 192, 198, .22));
       --glassA: rgba(16, 58, 68, .62);
       --glassB: rgba(8, 34, 42, .4);
       --glassEdge: rgba(158, 218, 217, .2);
@@ -316,8 +327,9 @@
       font-family: var(--fS);
       font-size: var(--t-0);
       line-height: 1.7;
-      font-weight: 400;
-      letter-spacing: -.004em;
+      /* Manrope draws light at 400; 450 keeps body copy crisp on every screen */
+      font-weight: 450;
+      letter-spacing: 0;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
       width: 100%;
@@ -393,8 +405,7 @@
       }
     }
 
-    /* Fredoka is round and a little heavy already: 500 reads soft without
-       turning bold. */
+    /* Newsreader at 500: a confident editorial weight without turning bold */
     h1,
     h2,
     h3,
@@ -764,8 +775,9 @@
       flex: none;
       border-radius: 50%;
       background: #fff;
-      box-shadow: 0 0 0 1px rgba(4, 38, 61, .1);
-      object-fit: cover
+      padding: 2px;
+      box-shadow: 0 0 0 1px rgba(4, 38, 61, .1), 0 4px 12px -6px rgba(4, 38, 61, .35);
+      object-fit: contain
     }
 
     .logo b {
@@ -2383,24 +2395,41 @@
       pointer-events: none
     }
 
+    /* a solid brand tile with a heavy glyph — reads from across the room */
     .nIcon {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
+      width: 92px;
+      height: 92px;
+      border-radius: 26px;
       display: grid;
       place-items: center;
       margin-bottom: auto;
-      background: color-mix(in srgb, var(--brand) 12%, transparent)
+      background: var(--band);
+      color: var(--onBand);
+      box-shadow: 0 18px 34px -18px rgba(4, 38, 61, .65), inset 0 1px 0 rgba(255, 255, 255, .18)
     }
 
     .nIcon svg {
-      width: 32px;
-      height: 32px;
+      width: 50px;
+      height: 50px;
       fill: none;
-      stroke: var(--brand);
-      stroke-width: 1.6;
+      stroke: currentColor;
+      stroke-width: 2.1;
       stroke-linecap: round;
       stroke-linejoin: round
+    }
+
+    .nIcon svg .acc {
+      stroke: var(--b200)
+    }
+
+    .nIcon svg .fillAcc {
+      fill: var(--b300);
+      stroke: none
+    }
+
+    @media(max-width:900px) {
+      .nIcon { width: 76px; height: 76px; border-radius: 22px }
+      .nIcon svg { width: 42px; height: 42px }
     }
 
     .nlist h3 {
@@ -2423,960 +2452,500 @@
     }
 
     /*───────────────────────────────────────────────────────────────
-  §03 — Decision gap: DATA → FLOODGUARD → INTELLIGENCE → DECISION
-  One SVG diagram, two fixed geometries (by width). Layer surfaces
-  are small procedural rasters coloured from the ocean ramp; every
-  other colour here is a token, so both themes come for free.
+  §03 — The FloodGuard approach: DATA → FLOODGUARD → INTELLIGENCE → DECISION
+  Plain HTML and CSS, laid out like a printed diagram. Map layers are CSS
+  tiles laid flat in perspective; nothing is drawn by script.
 ───────────────────────────────────────────────────────────────*/
-    #gap {
-      --dg-edge: rgba(18, 118, 143, .55);
-      --dg-stream: var(--b500);
-      --dg-side: var(--b900);
-      --dg-core-top: var(--b800);
-      --dg-core-l: var(--b900);
-      --dg-core-r: var(--b950);
-      --dg-core-edge: var(--b300);
-      --dg-core-mark: var(--b100);
-      --dg-glow: var(--b400);
-      --dg-glowA: .3
+    .fx {
+      --fxInk: var(--ink);
+      --fxCard: var(--panelBg);
+      position: relative;
+      display: grid;
+      gap: clamp(1.2rem, 2.2vw, 2rem);
+      grid-template-columns: minmax(0, 1.65fr) minmax(0, .95fr) minmax(0, 1.3fr) minmax(0, 1fr);
+      align-items: stretch;
+      padding: clamp(1.4rem, 3vw, 2.6rem);
+      border-radius: var(--r-xl);
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(60% 70% at 50% 60%, color-mix(in srgb, var(--b300) 22%, transparent), transparent 70%),
+        linear-gradient(170deg, color-mix(in srgb, var(--b100) 30%, var(--panelBg)), var(--panelBg));
+      box-shadow: 0 30px 70px -50px rgba(4, 38, 61, .55)
     }
 
-    @media (prefers-color-scheme:dark) {
-      :root:not([data-theme="light"]) #gap {
-        --dg-edge: rgba(158, 218, 217, .6);
-        --dg-stream: var(--b400);
-        --dg-side: var(--b950);
-        --dg-core-top: var(--b700);
-        --dg-core-l: var(--b800);
-        --dg-core-r: var(--b900);
-        --dg-core-edge: var(--b200);
-        --dg-glowA: .5
-      }
-    }
-
-    :root[data-theme="dark"] #gap {
-      --dg-edge: rgba(158, 218, 217, .6);
-      --dg-stream: var(--b400);
-      --dg-side: var(--b950);
-      --dg-core-top: var(--b700);
-      --dg-core-l: var(--b800);
-      --dg-core-r: var(--b900);
-      --dg-core-edge: var(--b200);
-      --dg-glowA: .5
-    }
-
-    /* a column, with the header flush to the grid rather than centred */
-    .dg {
+    .fxCol {
+      position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: stretch;
-      gap: clamp(.8rem, 2vh, 1.6rem);
-      overflow: hidden;
-      padding-top: calc(var(--header-h) + 14px);
-      padding-bottom: 1rem
+      gap: 1.1rem;
+      min-width: 0
     }
 
-    /* inside a 100svh pin: no gap under the head */
-    .dgHead.sechead {
-      margin-bottom: 0
-    }
-
-    .dgStage {
-      position: relative;
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-inline: var(--gutter)
-    }
-
-    .dgStage svg {
-      display: block;
-      height: 100%;
-      width: auto;
-      max-width: 100%;
-      overflow: visible
-    }
-
-    /* column heads */
-    .dgH .badge {
-      fill: none;
-      stroke: var(--brand2);
-      stroke-width: 1.5
-    }
-
-    .dgH .num {
-      font-family: var(--fM);
-      font-size: 15px;
-      font-weight: 600;
-      fill: var(--brand2)
-    }
-
-    .dgH .ttl {
-      font-family: var(--fS);
-      font-size: 21px;
-      font-weight: 600;
-      letter-spacing: .06em;
-      fill: var(--ink)
-    }
-
-    .dgH .sub {
-      font-family: var(--fS);
-      font-size: 16px;
-      font-weight: 500;
-      fill: var(--ink2)
-    }
-
-    /* chips, process boxes, layer labels */
-    .dgCard rect {
-      fill: var(--glassA);
-      stroke: var(--line2);
-      stroke-width: 1;
-      transition: stroke .2s
-    }
-
-    .dgCard text {
-      font-family: var(--fS);
-      font-size: 17px;
-      font-weight: 500;
-      fill: var(--ink)
-    }
-
-    .dgProc text {
-      font-size: 14px;
-      font-weight: 500;
-      fill: var(--ink2)
-    }
-
-    .dgIco {
-      fill: none;
-      stroke: var(--brand);
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round
-    }
-
-    /* connectors */
-    .dgLink {
-      fill: none;
-      stroke: var(--line2);
-      stroke-width: 1.2
-    }
-
-    .dgDot {
-      fill: var(--brand)
-    }
-
-    .dgStream {
-      fill: none;
-      stroke: var(--dg-stream);
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      opacity: .85
-    }
-
-    /* draw-on: pathLength is normalised to 1, so the offset is the progress */
-    .dgDraw {
-      stroke-dasharray: 1;
-      stroke-dashoffset: 1
-    }
-
-    .dgArrow {
-      fill: none;
-      stroke: var(--brand);
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round
-    }
-
-    /* ambient flow — dashes drifting along each drawn path once it is built */
-    .dgFlow {
-      fill: none;
-      stroke: var(--brand);
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-dasharray: 4 14;
-      opacity: 0
-    }
-
-    .dgOn .dgFlow {
-      opacity: .9;
-      animation: dgDrift 1.4s linear infinite
-    }
-
-    @keyframes dgDrift {
-      to {
-        stroke-dashoffset: -18
-      }
-    }
-
-    /* map layers */
-    .dgLayer .side {
-      fill: var(--dg-side)
-    }
-
-    .dgLayer .shadeL {
-      fill: var(--iso-side-left)
-    }
-
-    .dgLayer .shadeR {
-      fill: var(--iso-side-right)
-    }
-
-    .dgLayer .edge {
-      fill: none;
-      stroke: var(--dg-edge);
-      stroke-width: 1.2;
-      transition: stroke .2s, stroke-width .2s
-    }
-
-    .dgLit .edge {
-      stroke: var(--brand);
-      stroke-width: 2.6
-    }
-
-    .dgLit rect {
-      stroke: var(--brand)
-    }
-
-    .dgDim {
-      opacity: .3;
-      transition: opacity .25s
-    }
-
-    /* the FloodGuard core */
-    .dgCore .top {
-      fill: var(--dg-core-top)
-    }
-
-    .dgCore .l {
-      fill: var(--dg-core-l)
-    }
-
-    .dgCore .r {
-      fill: var(--dg-core-r)
-    }
-
-    .dgCore .edge,
-    .dgCore .seam {
-      fill: none;
-      stroke: var(--dg-core-edge);
-      stroke-width: 1.2;
-      stroke-opacity: .8
-    }
-
-    .dgCore .seam {
-      stroke-opacity: .28
-    }
-
-    .dgCore .mark {
-      fill: none;
-      stroke: var(--dg-core-mark);
-      stroke-width: 2;
-      stroke-linecap: round
-    }
-
-    .dgG0 {
-      stop-color: var(--dg-glow);
-      stop-opacity: var(--dg-glowA)
-    }
-
-    .dgG1 {
-      stop-color: var(--dg-glow);
-      stop-opacity: 0
-    }
-
-    .dgRing {
-      fill: none;
-      stroke: var(--brand2);
-      stroke-width: 1.2;
-      stroke-dasharray: 3 7;
-      opacity: .55
-    }
-
-    .dgOn .dgRing {
-      animation: dgRing 14s linear infinite
-    }
-
-    @keyframes dgRing {
-      to {
-        stroke-dashoffset: -200
-      }
-    }
-
-    /* decision panel */
-    .dgPanel {
-      fill: var(--glassA);
-      stroke: var(--line2);
-      stroke-width: 1
-    }
-
-    .dgDiv {
-      stroke: var(--line);
-      stroke-width: 1
-    }
-
-    .dgRow text {
-      font-family: var(--fS);
-      font-size: 17px;
-      font-weight: 500;
-      fill: var(--ink)
-    }
-
-    .dgRow .hit {
-      fill: transparent;
-      transition: fill .2s
-    }
-
-    .dgRow .chev {
-      fill: none;
-      stroke: var(--ink3);
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: stroke .2s, transform .2s
-    }
-
-    .dgRow:hover .hit {
-      fill: var(--dentBg)
-    }
-
-    .dgRow:hover .chev {
-      stroke: var(--brand);
-      transform: translateX(3px)
-    }
-
-    /* feature strip under the diagram */
-    .dgFeat {
-      list-style: none;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      width: min(var(--wrap), calc(100% - 2 * var(--gutter)));
-      margin: 0 auto;
-      padding: 1.1rem 0;
-      border: 1px solid var(--line2);
-      border-radius: var(--r-m);
-      background: var(--glassB);
-      transition: opacity .7s var(--E), transform .7s var(--E)
-    }
-
-    body:not(.nopin) .dgFeat:not(.on) {
-      opacity: 0;
-      transform: translateY(14px)
-    }
-
-    .dgFeat li {
-      display: flex;
-      gap: .9rem;
-      align-items: flex-start;
-      padding: .2rem 1.4rem;
-      border-left: 1px solid var(--line)
-    }
-
-    .dgFeat li:first-child {
-      border-left: 0
-    }
-
-    .dgFeat svg {
-      width: 30px;
-      height: 30px;
-      flex: none;
-      fill: none;
-      stroke: var(--brand);
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round
-    }
-
-    .dgFeat b {
-      display: block;
-      font-size: var(--t-0);
-      font-weight: 600;
-      line-height: 1.3;
-      color: var(--ink)
-    }
-
-    .dgFeat span {
-      display: block;
-      font-size: var(--t-sm);
-      line-height: 1.45;
-      color: var(--ink2)
-    }
-
-    /* pinned on a short screen: the diagram gets the room */
-    @media (min-width:900px) and (max-height:900px) {
-      body:not(.nopin) .dgHead .shLead {
-        display: none
-      }
-    }
-
-    @media (min-width:900px) and (max-height:800px) {
-      body:not(.nopin) .dgFeat {
-        display: none
-      }
-    }
-
-    /* <900: no pin — the diagram runs vertically and scrubs by scroll position */
-    @media (max-width:899px) {
-      #gap {
-        height: auto !important
-      }
-
-      #gapPin {
-        position: static;
-        height: auto;
-        display: block;
-        padding-block: var(--section-pad-y)
-      }
-
-      .dgStage {
-        margin-block: 1.6rem 2rem
-      }
-
-      .dgStage svg {
-        width: 100%;
-        height: auto;
-        max-width: 480px
-      }
-
-      .dgFeat {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        row-gap: 1.2rem
-      }
-
-      .dgFeat li:nth-child(3) {
-        border-left: 0
-      }
-    }
-
-    @media (max-width:520px) {
-      .dgFeat {
-        grid-template-columns: 1fr
-      }
-
-      .dgFeat li {
-        border-left: 0
-      }
-    }
-
-    /* Static state: no pin, no scrub — the finished diagram. */
-    body.nopin .dg {
-      padding-block: var(--section-pad-y);
-      gap: 1.6rem
-    }
-
-    body.nopin .dgStage svg {
-      width: 100%;
-      height: auto
-    }
-
-    /*───────────────────────────────────────────────────────────────
-  §06 — Platform tide reveal (spec §5.4)
-  The water recedes and the platform surfaces. Cards read top to
-  bottom in one column: readable first, animated second.
-───────────────────────────────────────────────────────────────*/
-    #platform {
-      position: relative;
-      padding-block: 0 var(--section-pad-y)
-    }
-
-    /* full-bleed via a negative-margin-free grid escape; never 100vw, which on
-   Windows overshoots by the width of a classic scrollbar */
-    .tideBand {
-      display: none;
-      position: relative;
-      width: 100%;
-      height: clamp(96px, 14svh, 180px);
-      overflow: hidden;
-      margin-bottom: clamp(1.6rem, 4vh, 3rem)
-    }
-
-    .tbLayerWrap {
-      position: absolute;
-      inset: 0;
-      will-change: transform
-    }
-
-    .tideBand svg {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 200%;
-      height: 100%
-    }
-
-    .tideBand .tbLayer {
-      will-change: transform
-    }
-
-    .tideBand .tbDrift {
-      animation: tbDrift var(--d, 24s) linear infinite
-    }
-
-    /* the echo layer drifts the opposite way, at its own speed, so the two
-   waves visibly cross rather than just riding in lockstep */
-    .tideBand .tbDrift2 {
-      animation: tbDrift var(--d, 24s) linear infinite reverse
-    }
-
-    @keyframes tbDrift {
-      to {
-        transform: translateX(-50%)
-      }
-    }
-
-    .plat {
-      display: grid;
-      gap: clamp(1.6rem, 4vw, 3rem);
-      align-items: start
-    }
-
-    .platList {
-      display: grid;
-      gap: clamp(16px, 3svh, 32px);
-      max-width: 760px
-    }
-
-    .platCard {
-      position: relative;
-      scroll-margin-top: calc(var(--header-h) + 40px);
-      isolation: isolate;
-      overflow: clip;
-      border-radius: var(--r-l)
-    }
-
-    @supports not (overflow:clip) {
-      .platCard {
-        overflow: hidden
-      }
-    }
-
-    .platBody {
-      padding: clamp(1.3rem, 3vw, 1.8rem);
-      border-radius: var(--r-l);
-      border: 1px solid var(--line);
-      background: var(--bg2)
-    }
-
-    .platTop {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      margin-bottom: .8rem
-    }
-
-    .platTop svg {
-      width: 24px;
-      height: 24px;
-      flex: none;
-      fill: none;
-      stroke: var(--brand);
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round
-    }
-
-    .platTop h3 {
-      font-size: var(--t-2);
-      letter-spacing: -.02em
-    }
-
-    .platCard p {
-      color: var(--ink2);
-      max-width: 65ch;
-      font-size: var(--t-0)
-    }
-
-    .platCard ul {
-      list-style: none;
-      margin: 1rem 0 0;
-      padding: 0;
-      display: grid;
-      gap: .4rem
-    }
-
-    .platCard li {
-      position: relative;
-      padding-left: 1.1rem;
-      font-size: var(--t-sm);
-      color: var(--ink2)
-    }
-
-    .platCard li::before {
+    /* arrow between columns */
+    .fxCol:not(:last-child)::after {
       content: "";
       position: absolute;
-      left: 0;
-      top: .62em;
-      width: 5px;
-      height: 5px;
+      top: 58%;
+      right: calc(clamp(1.2rem, 2.2vw, 2rem) / -2 - 9px);
+      width: 18px;
+      height: 18px;
+      border-top: 2px solid var(--brand);
+      border-right: 2px solid var(--brand);
+      transform: rotate(45deg);
+      opacity: .7
+    }
+
+    .fxHead {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: .1rem .7rem;
+      align-items: center
+    }
+
+    .fxN {
+      grid-row: span 2;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: var(--brand2)
-    }
-
-    /* the receding cover — same colour as the page, so what it uncovers is the card */
-    .platCover {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: -20%;
-      height: 140%;
-      z-index: 2;
-      pointer-events: none;
-      will-change: transform
-    }
-
-    .platCover svg {
-      width: 200%;
-      height: 100%;
-      display: block
-    }
-
-    .platCover .pcDrift {
-      animation: tbDrift 6s linear infinite
-    }
-
-    /* depth gauge — the water level rises as the list is read */
-    .gauge {
-      display: none;
-      margin-top: 1rem;
-      gap: .9rem
-    }
-
-    .gaugeTrack {
-      position: relative;
-      width: 2px;
-      height: 240px;
-      background: var(--line2);
-      border-radius: 2px;
-      flex: none
-    }
-
-    .gaugeFill {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, var(--b400), var(--b800));
-      border-radius: 2px;
-      transform: scaleY(var(--g, 0));
-      transform-origin: top;
-      will-change: transform
-    }
-
-    .gaugeTicks {
-      position: relative;
-      height: 240px;
-      flex: 1
-    }
-
-    .gaugeTicks b {
-      position: absolute;
-      left: 0;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: var(--ink3);
-      white-space: nowrap;
-      transition: color var(--dur-med) var(--ease-out-quint)
-    }
-
-    .gaugeTicks b::before {
-      content: "";
-      width: 8px;
-      height: 1px;
-      background: var(--line2);
-      flex: none
-    }
-
-    .gaugeTicks b.on {
-      color: var(--brand)
-    }
-
-    .gaugeTicks b.on::before {
-      background: var(--brand);
-      width: 14px
-    }
-
-    @media (min-width:1200px) {
-      .plat {
-        grid-template-columns: minmax(0, 4fr) minmax(0, 7fr)
-      }
-
-      .platHead {
-        position: sticky;
-        top: calc(var(--header-h) + 32px)
-      }
-
-      .gauge {
-        display: flex
-      }
-    }
-
-    /* Static state (spec §5.4): no covers at all, cards fully visible, band still. */
-    body.nopin .platCover,
-    body.rm .platCover {
-      display: none
-    }
-
-    body.nopin .platCard .platBody,
-    body.rm .platCard .platBody {
-      opacity: 1;
-      transform: none
-    }
-
-    body.nopin .tbDrift,
-    body.nopin .tbDrift2,
-    body.nopin .pcDrift {
-      animation: none
-    }
-
-    /* touch devices don't need a 6s drift loop running behind every card */
-    @media (pointer:coarse) {
-      .pcDrift {
-        animation: none
-      }
-    }
-
-    @media (max-width:899px) {
-      .platCover svg {
-        width: 100%
-      }
-    }
-
-    /*───────────────────────────────────────────────────────────────
-  §05 — IsoStack (spec §5.3)
-  The reference prompt was Tailwind + Next + GSAP + a dark-only
-  canvas. Translated: tokens, static page, IntersectionObserver,
-  and a palette that works in both themes.
-───────────────────────────────────────────────────────────────*/
-    #decision {
-      position: relative;
-      padding-block: var(--section-pad-y)
-    }
-
-    .iso {
       display: grid;
-      gap: clamp(10px, 2vw, 22px);
-      align-items: start
+      place-items: center;
+      border: 1.5px solid var(--brand);
+      color: var(--brand);
+      font: 600 .8rem/1 var(--fM)
     }
 
-    .isoStep {
-      max-width: 46ch
+    .fxHead b {
+      font: 600 .95rem/1.1 var(--fS);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--fxInk)
     }
 
-    .isoStep i {
-      display: block;
+    .fxHead em {
       font-style: normal;
-      font-family: var(--fM);
-      font-size: var(--t-label);
-      letter-spacing: .1em;
-      color: var(--brand2);
-      font-weight: 500;
-      margin-bottom: .5rem
+      font-size: var(--t-xs);
+      color: var(--ink2)
     }
 
-    .isoStep h3 {
-      font-size: var(--t-2);
-      margin-bottom: .5rem
+    .fxIco {
+      width: 20px;
+      height: 20px;
+      flex: none;
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round
     }
 
-    .isoStep p {
-      color: var(--ink2);
-      font-size: var(--t-0)
+    /* 01 — inputs on the left, the layers they become on the right */
+    .fxDataBody {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(160px, 1.1fr);
+      gap: 1.1rem;
+      align-items: center
     }
 
-    .isoStage {
+    .fxList {
+      list-style: none;
+      display: grid;
+      gap: .5rem
+    }
+
+    .fxList li {
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: center
+      gap: .6rem;
+      padding: .62rem .75rem;
+      border-radius: 12px;
+      background: var(--fxCard);
+      border: 1px solid var(--line);
+      font-size: var(--t-xs);
+      font-weight: 500;
+      color: var(--fxInk);
+      box-shadow: 0 6px 16px -14px rgba(4, 38, 61, .5)
     }
 
-    .isoStage svg {
-      display: block;
-      height: 100%;
-      width: auto;
-      max-width: 100%;
-      overflow: visible
+    .fxData .fxList li::after {
+      content: "";
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      width: .8rem;
+      border-top: 1.5px dashed color-mix(in srgb, var(--brand) 55%, transparent)
     }
 
-    /* every layer is always drawn — a jump straight to this section shows
-       the whole stack; scrolling through the steps lights each one up */
-    .isoSlab {
-      opacity: .38;
-      transform: none;
-      transition: opacity var(--dur-med) var(--ease-out-quint), transform var(--dur-med) var(--ease-out-quint)
+    .fxStack {
+      position: relative;
+      height: 330px
     }
 
-    .isoSlab.on {
-      opacity: .7;
-      transform: none
+    .fxTile {
+      position: absolute;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      margin-left: -50px;
+      top: calc(var(--k) * 44px + 6px);
+      border-radius: 6px;
+      transform: rotateX(62deg) rotateZ(45deg);
+      box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .7), -7px 7px 0 -1px rgba(4, 38, 61, .28), -10px 10px 18px -6px rgba(4, 38, 61, .35)
     }
 
-    .isoSlab.act {
-      opacity: 1
+    .t-rain {
+      background:
+        radial-gradient(circle at 28% 30%, rgba(240, 248, 255, .95) 0 14%, transparent 27%),
+        radial-gradient(circle at 62% 46%, rgba(220, 236, 248, .85) 0 16%, transparent 30%),
+        repeating-linear-gradient(115deg, rgba(255, 255, 255, .22) 0 1px, transparent 1px 7px),
+        linear-gradient(135deg, #1f5f9c, #5aa2d8)
     }
 
-    .isoConn {
-      opacity: .4;
-      transition: opacity var(--dur-med) var(--ease-out-quint)
+    .t-hist {
+      background:
+        linear-gradient(62deg, transparent 44%, #4b8fc4 45% 49%, transparent 50%),
+        linear-gradient(20deg, transparent 58%, #6aa8d2 59% 61%, transparent 62%),
+        linear-gradient(135deg, #f1f5f6, #cfdde2)
     }
 
-    .isoConn.on {
-      opacity: 1
+    .t-terr {
+      background:
+        radial-gradient(circle at 30% 38%, #c39a64 0 12%, transparent 34%),
+        radial-gradient(circle at 70% 70%, #557c3d 0 16%, transparent 44%),
+        repeating-radial-gradient(circle at 30% 38%, transparent 0 7px, rgba(255, 255, 255, .18) 7px 8px),
+        linear-gradient(135deg, #6c9550, #b2ba78)
     }
 
-    .isoLabel {
-      opacity: .55;
-      transition: opacity var(--dur-med) var(--ease-out-quint)
+    .t-drain {
+      background:
+        repeating-linear-gradient(32deg, transparent 0 10px, rgba(130, 200, 236, .6) 10px 11px),
+        repeating-linear-gradient(-58deg, transparent 0 15px, rgba(130, 200, 236, .4) 15px 16px),
+        linear-gradient(135deg, #0b2740, #164b6e)
     }
 
-    .isoLabel.on {
-      opacity: 1
+    .t-sat {
+      background:
+        repeating-conic-gradient(from 18deg at 40% 58%, #4d6e38 0 14deg, #7d8f4e 14deg 34deg, #3a5934 34deg 52deg, #8c7d52 52deg 66deg),
+        #5b7a43
     }
 
-    .isoLabel text {
-      font-family: var(--fS);
-      fill: var(--ink2);
-      font-size: 14px;
-      font-weight: 500
+    .t-clim {
+      background: linear-gradient(135deg, #2c6aa8 0%, #7fbcd9 32%, #f1c34f 58%, #e0673a 80%, #b3302a 100%)
     }
 
-    .isoLabel .n {
-      font-family: var(--fM);
-      fill: var(--brand2);
+    .t-haz {
+      background:
+        radial-gradient(circle at 38% 40%, #164f84 0 22%, transparent 44%),
+        radial-gradient(circle at 70% 66%, #2a78b2 0 18%, transparent 40%),
+        linear-gradient(135deg, #78b6dd, #b3d8ec)
+    }
+
+    .t-exp {
+      background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .4) 0 1px, transparent 1px 9px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, .4) 0 1px, transparent 1px 9px),
+        radial-gradient(circle at 52% 50%, #e0673a 0 16%, transparent 34%),
+        linear-gradient(135deg, #5f7079, #9ba9af)
+    }
+
+    .t-risk {
+      background:
+        radial-gradient(circle at 34% 60%, #f1c34f 0 9%, transparent 16%),
+        radial-gradient(circle at 62% 38%, #e0673a 0 10%, transparent 18%),
+        radial-gradient(circle at 70% 70%, #e0673a 0 7%, transparent 14%),
+        linear-gradient(135deg, #2c6aa8, #7cc0e0)
+    }
+
+    /* 02 — the FloodGuard core */
+    .fxCore {
+      align-items: stretch
+    }
+
+    .fxProc {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .45rem;
+      padding: .55rem;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--fxCard) 70%, transparent)
+    }
+
+    .fxProc span {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      padding: .7rem .3rem;
+      border-radius: 10px;
+      background: var(--fxCard);
+      text-align: center;
+      font-size: .68rem;
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--fxInk)
+    }
+
+    .fxBox {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      position: relative;
+      min-height: 200px
+    }
+
+    .fxBox::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      height: 28%;
+      border-left: 1.5px dashed color-mix(in srgb, var(--brand) 55%, transparent)
+    }
+
+    .fxBox svg {
+      width: min(190px, 100%);
+      height: auto;
+      filter: drop-shadow(0 22px 26px rgba(4, 38, 61, .35))
+    }
+
+    .fxBox .glow {
+      position: absolute;
+      inset: 18% 6% 4%;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--b300) 45%, transparent), transparent);
+      animation: fxGlow 4s ease-in-out infinite
+    }
+
+    @keyframes fxGlow {
+      50% { transform: scale(1.08); opacity: .7 }
+    }
+
+    /* 03 — intelligence: a layer and what it means */
+    .fxIntelRows {
+      flex: 1;
+      display: grid;
+      gap: .4rem;
+      align-content: center
+    }
+
+    .fxIntelRow {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr);
+      gap: 1.1rem;
+      align-items: center;
+      min-height: 104px
+    }
+
+    .fxIntelRow .fxTile {
+      position: relative;
+      left: auto;
+      top: auto;
+      margin: 0
+    }
+
+    .fxCard {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: .1rem .55rem;
+      padding: .7rem .8rem;
+      border-radius: 12px;
+      background: var(--fxCard);
+      border: 1px solid var(--line);
+      box-shadow: 0 6px 16px -14px rgba(4, 38, 61, .5)
+    }
+
+    .fxCard .fxIco {
+      grid-row: span 2
+    }
+
+    .fxCard b {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--fxInk)
+    }
+
+    .fxCard em {
+      font-style: normal;
+      font-size: .68rem;
+      color: var(--ink2);
+      line-height: 1.3
+    }
+
+    /* 04 — decisions */
+    .fxDec .fxList {
+      flex: 1;
+      align-content: center;
+      padding: .5rem;
+      gap: 0;
+      border-radius: 16px;
+      background: var(--fxCard);
+      border: 1px solid var(--line)
+    }
+
+    .fxDec .fxList li {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: .05rem .65rem;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+      padding: .7rem .5rem
+    }
+
+    .fxDec .fxList li:last-child {
+      border-bottom: 0
+    }
+
+    .fxDec .fxList .fxIco {
+      grid-row: span 2
+    }
+
+    .fxDec .fxList b {
+      font-size: .8rem;
       font-weight: 600
     }
 
-    .isoNum {
-      font-family: var(--fM);
-      font-size: 14px;
-      font-weight: 600;
-      fill: var(--onBrand);
-      opacity: .85
+    .fxDec .fxList em {
+      grid-column: 2;
+      font-style: normal;
+      font-size: .66rem;
+      color: var(--ink2);
+      font-weight: 400;
+      line-height: 1.3
     }
 
-    /* the skyline on the top layer grows in once that layer is active — a
-   transform only (scaleY from its own ground point), no geometry rebuild */
-    .isoBldg {
-      transform: scaleY(.06);
-      transition: transform var(--dur-slow) var(--ease-out-quint)
+    .fxDec .fxList .chev {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+      width: 7px;
+      height: 7px;
+      border-top: 1.5px solid var(--ink3);
+      border-right: 1.5px solid var(--ink3);
+      transform: rotate(45deg)
     }
 
-    .isoSlab.on .isoBldg {
-      transform: scaleY(1)
+    /* the flow, gently alive: one pulse down the dashed links */
+    @media (prefers-reduced-motion: no-preference) {
+      .fxData .fxList li::after { animation: fxDash 1.4s linear infinite }
+      @keyframes fxDash { to { border-top-color: var(--brand) } }
     }
 
-    body.nopin .isoBldg,
-    body.rm .isoBldg {
-      transform: none;
-      transition: none
+    @media (max-width: 1180px) {
+      .fx { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) }
+      .fxCol:nth-child(2)::after { display: none }
     }
 
-    /* the steps are a list you click through (or Previous / Next); the
-       stage builds up to the chosen layer. Nothing here is pinned. */
-    .isoCol {
-      display: flex;
-      flex-direction: column;
-      gap: .35rem
-    }
-
-    .isoStep {
-      padding: .85rem 1rem;
-      border-radius: var(--r-m);
-      border: 1px solid transparent;
-      cursor: pointer;
-      opacity: .62;
-      transition: opacity .25s var(--E), background .25s var(--E), border-color .25s var(--E)
-    }
-
-    .isoStep:hover {
-      opacity: .9
-    }
-
-    .isoStep.on {
-      opacity: 1;
-      background: var(--panelBg);
-      border-color: var(--line)
-    }
-
-    .isoStep h3 {
-      margin-bottom: 0
-    }
-
-    .isoStep.on h3 {
-      margin-bottom: .45rem
-    }
-
-    .isoStep p {
-      display: none
-    }
-
-    .isoStep.on p {
-      display: block
-    }
-
-    .isoStep:focus-visible {
-      outline: 2px solid var(--brand);
-      outline-offset: 2px
-    }
-
-    .isoCol .stepNav {
-      margin-top: .9rem;
-      padding-left: 1rem
-    }
-
-    /* one column: the buttons sit right under the drawing they change */
-    @media (max-width:899px) {
-      .isoCol .stepNav {
-        order: -1;
-        margin: 0 0 .5rem;
-        padding-left: 0;
-        justify-content: center
+    @media (max-width: 680px) {
+      .fx { grid-template-columns: 1fr; gap: 3rem }
+      .fxCol:not(:last-child)::after {
+        top: auto;
+        bottom: -2.05rem;
+        right: auto;
+        left: calc(50% - 9px);
+        transform: rotate(135deg);
+        display: block !important
       }
+      .fxDataBody { grid-template-columns: minmax(0, 1fr) 128px; gap: .9rem }
+      .fxTile { width: 80px; height: 80px; margin-left: -40px; top: calc(var(--k) * 40px + 10px) }
+      .fxStack { height: 290px }
+      .fxIntelRow { grid-template-columns: 116px minmax(0, 1fr); min-height: 92px }
+      .fxIntelRow .fxTile { margin-left: 18px }
+      .fxBox { min-height: 170px }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fxBox .glow { animation: none }
+    }
+
+    /*── PRODUCTS on the homepage: the /products overview cards ──*/
+    #products .pOver .foot .btn {
+      padding: .7rem 1.1rem
+    }
+
+    #products .pOver .btn svg {
+      width: 13px;
+      height: 13px
+    }
+
+    .homeAll {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      justify-content: center;
+      margin-top: clamp(1.6rem, 3vw, 2.4rem)
+    }
+
+    /*── hero: the explorer hints under the map ──*/
+    .hmicro li > span {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem 0;
+      font-size: var(--t-xs);
+      font-weight: 500;
+      color: var(--ink2)
+    }
+
+    .hmicro li > span svg { color: var(--brand) }
+
+    .drop a.all {
+      margin-top: .25rem;
+      border-top: 1px solid var(--line);
+      border-radius: 0 0 var(--r-s) var(--r-s)
+    }
+
+    .drop a.all b {
+      font-size: var(--t-xs);
+      font-weight: 600;
+      color: var(--brand)
+    }
+
+    /*── the shared closing CTA and footer contact lines (stamped by scripts/shell.mjs) ──*/
+    #get-started .wrap { max-width: var(--wrap, 1260px) }
+    #get-started .card { padding: clamp(1.5rem, 3.4vw, 2.4rem) }
+    #get-started .secHead h2 { font-family: var(--fD) }
+
+    .site-footer__contact {
+      list-style: none;
+      margin: 1.2rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: .55rem;
+      font-size: var(--t-sm);
+      color: var(--ink2);
+      font-style: normal
+    }
+
+    .site-footer address { font-style: normal }
+
+    .site-footer__contact li {
+      display: flex;
+      gap: .6rem;
+      align-items: flex-start;
+      line-height: 1.5
+    }
+
+    .site-footer__contact svg {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      margin-top: .2rem;
+      fill: none;
+      stroke: var(--brand);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .site-footer__contact a { color: var(--ink2) }
+    .site-footer__contact a:hover { color: var(--brand) }
 
     @media (min-width:900px) {
-      .iso {
-        grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-        align-items: center
-      }
-
-      .isoStageWrap {
-        height: clamp(380px, 62svh, 560px);
-        display: flex;
-        align-items: center;
-        justify-content: center
-      }
-
-      .isoStage {
-        height: 100%;
-        max-height: 100%
-      }
-    }
-
-    /* narrower: the drawing first, full width, then the list */
-    @media (max-width:899px) {
-      .iso {
-        display: flex;
-        flex-direction: column
-      }
-
-      .isoStageWrap {
-        order: -1;
-        align-self: stretch;
-        width: 100%;
-        height: clamp(260px, 44svh, 380px)
-      }
-
-      .isoStage {
-        height: 100%
-      }
+      .site-footer__nav { grid-template-columns: repeat(4, minmax(0, 1fr)) }
     }
 
     /*── PRODUCTS / SECTORS — home page briefs, full detail lives on their own pages ──*/
@@ -3665,419 +3234,6 @@
       transform: none
     }
 
-    /*── STEPPERS — the stacks advance on a button, never on scroll ──*/
-    .stepNav {
-      display: flex;
-      align-items: center;
-      gap: .6rem
-    }
-
-    .stepBtn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .5rem;
-      height: 44px;
-      min-width: 44px;
-      padding: 0 1.15rem;
-      border-radius: 99px;
-      border: 1px solid var(--line2);
-      background: var(--panelBg);
-      color: var(--ink);
-      font: 500 var(--t-sm)/1 var(--fS);
-      cursor: pointer;
-      transition: background .2s var(--E), border-color .2s var(--E), opacity .2s, filter .2s
-    }
-
-    .stepBtn svg {
-      width: 14px;
-      height: 14px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round
-    }
-
-    .stepBtn.prev {
-      padding: 0
-    }
-
-    .stepBtn.next {
-      background: var(--brand);
-      border-color: var(--brand);
-      color: var(--onBrand)
-    }
-
-    .stepBtn:hover:not(:disabled) {
-      border-color: var(--brand)
-    }
-
-    .stepBtn.next:hover:not(:disabled) {
-      filter: brightness(1.08)
-    }
-
-    .stepBtn:disabled {
-      opacity: .4;
-      cursor: default
-    }
-
-    .stepBtn:focus-visible {
-      outline: 2px solid var(--brand);
-      outline-offset: 3px
-    }
-
-    /*── WHY — card stack, one card per click ──*/
-    #why {
-      padding: clamp(1.4rem, 3.5svh, 2.4rem) 0 var(--section-pad-y)
-    }
-
-    .stackAside .stepNav {
-      margin-top: 1.4rem
-    }
-
-    /* one column: the card first, its controls right under it */
-    @media(max-width:939px) {
-      .stackAside {
-        order: 1
-      }
-
-      .stackAside .stepNav {
-        margin-top: 1rem
-      }
-    }
-
-    .stackWrap {
-      display: grid;
-      gap: clamp(1.6rem, 3.4vw, 3rem);
-      align-items: center;
-      width: 100%
-    }
-
-    @media(min-width:940px) {
-      .stackWrap {
-        grid-template-columns: .85fr 1.15fr
-      }
-    }
-
-    /* the Why head lives above the pinned stack, in normal flow */
-    .shSolo {
-      position: relative;
-      z-index: 1;
-      padding-top: var(--section-pad-y)
-    }
-
-    .shSolo .sechead {
-      margin-bottom: 0
-    }
-
-    .stackCount {
-      display: flex;
-      align-items: baseline;
-      gap: .4rem;
-      font-family: var(--fD);
-      color: var(--ink3)
-    }
-
-    .stackCount b {
-      font-size: 2.6rem;
-      font-weight: 500;
-      color: var(--brand);
-      letter-spacing: -.04em;
-      font-variant-numeric: tabular-nums
-    }
-
-    .stackCount span {
-      font-size: 1rem
-    }
-
-    .stackTicks {
-      display: flex;
-      gap: .3rem;
-      margin-top: 1.2rem;
-      max-width: 220px
-    }
-
-    .stackTicks i {
-      flex: 1;
-      height: 3px;
-      border-radius: 2px;
-      background: var(--line2);
-      position: relative;
-      overflow: hidden
-    }
-
-    .stackTicks i::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: var(--brand);
-      transform: scaleX(var(--f, 0));
-      transform-origin: left;
-      transition: transform .3s linear
-    }
-
-    .stackStage {
-      position: relative;
-      height: clamp(430px, 62vh, 560px);
-      perspective: 1500px;
-      /* a card leaving slides up and disappears at the stage's top edge
-         rather than over the counter above it; sides and bottom stay open
-         so the shadows aren't cut */
-      clip-path: inset(0 -100vw -100vh -100vw)
-    }
-
-    .scard {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      padding: clamp(1.7rem, 3.6vw, 2.6rem);
-      border-radius: var(--r-xl);
-      /* flat, not preserve-3d: two tilted preserve-3d cards are depth-sorted
-         and intersect, so the incoming card cut through the outgoing one
-         regardless of z-index. Flat keeps the tilt and the z-index order. */
-      transform-style: flat;
-      will-change: transform, opacity;
-      backface-visibility: hidden
-    }
-
-    .scard .ic {
-      display: grid;
-      place-items: center;
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: var(--dentBg);
-      box-shadow: inset 0 1px 4px var(--dentIn);
-      margin-bottom: 1.3rem
-    }
-
-    .scard svg {
-      width: 22px;
-      height: 22px;
-      stroke: var(--brand);
-      fill: none;
-      stroke-width: 1.4
-    }
-
-    .scard b {
-      display: block;
-      font-family: var(--fD);
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      font-weight: 500;
-      letter-spacing: -.04em;
-      line-height: 1;
-      font-variant-numeric: tabular-nums
-    }
-
-    .scard em {
-      display: block;
-      font-style: normal;
-      font-size: var(--t-1);
-      color: var(--ink2);
-      margin-top: .7rem;
-      line-height: 1.5;
-      max-width: 32ch
-    }
-
-    .shead {
-      display: flex;
-      align-items: center;
-      gap: .85rem;
-      margin-bottom: 1.3rem
-    }
-
-    .scard .ic {
-      margin-bottom: 0;
-      flex: none
-    }
-
-    .seye {
-      font: 500 var(--t-label)/1 var(--fS);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--ink3)
-    }
-
-    /* .scard b is the display figure — scope the fact values so they don't
-   inherit that 2.8rem type */
-    .sfacts {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-      margin-top: 1.6rem;
-      padding-top: 1.3rem;
-      border-top: 1px solid var(--line)
-    }
-
-    .sfacts>div {
-      min-width: 0
-    }
-
-    .sfacts span {
-      display: block;
-      font: 500 var(--t-label)/1.2 var(--fS);
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--ink3);
-      margin-bottom: .4rem
-    }
-
-    .scard .sfacts b {
-      font-family: var(--fS);
-      font-size: var(--t-0);
-      font-weight: 500;
-      letter-spacing: 0;
-      line-height: 1.3;
-      color: var(--ink)
-    }
-
-    .scard .snote {
-      margin-top: 1.2rem;
-      font-size: var(--t-sm);
-      color: var(--ink3);
-      line-height: 1.55;
-      max-width: 46ch
-    }
-
-    @media (max-width:520px) {
-      .sfacts {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: .9rem
-      }
-
-      .scard .snote {
-        display: none
-      }
-    }
-
-    /*── INDUSTRIES — growing vine with curved branches ──*/
-    .tree {
-      position: relative;
-      padding-block: 1rem 3rem
-    }
-
-    #treeSvg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-      pointer-events: none;
-      z-index: 0
-    }
-
-    #treeSvg .trunk,
-    #treeSvg .branch {
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round
-    }
-
-    #treeSvg .trunk {
-      stroke: url(#vineGrad);
-      stroke-width: 2.5
-    }
-
-    #treeSvg .branch {
-      stroke: url(#vineGrad);
-      stroke-width: 2
-    }
-
-    #treeSvg .bud {
-      fill: var(--bg);
-      stroke: var(--brand);
-      stroke-width: 2.5
-    }
-
-    #treeSvg .halo {
-      fill: var(--brand);
-      opacity: .16
-    }
-
-    #treeSvg .leaf {
-      fill: var(--brand)
-    }
-
-    .node {
-      position: relative;
-      z-index: 1;
-      margin-bottom: clamp(1rem, 2.2vw, 1.5rem);
-      padding-left: 62px
-    }
-
-    /* rounded box, icon tile on the left, text on the right — on both sides */
-    .ncard {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      column-gap: clamp(1rem, 2vw, 1.4rem);
-      align-items: start;
-      padding: clamp(1.5rem, 3vw, 2.2rem);
-      border-radius: 24px;
-      opacity: 0;
-      will-change: transform, opacity;
-      background: linear-gradient(158deg, var(--glassA), var(--glassB));
-      border: 1px solid var(--glassEdge);
-      box-shadow: inset 0 1px 0 var(--glassGlow), 0 24px 50px -30px var(--glassShade)
-    }
-
-    .ncard .top {
-      display: contents
-    }
-
-    .ncard svg {
-      grid-row: 1 / span 2;
-      box-sizing: border-box;
-      width: 58px;
-      height: 58px;
-      padding: 15px;
-      border-radius: 16px;
-      background: var(--dentBg);
-      border: 1px solid var(--line);
-      stroke: var(--brand);
-      fill: none;
-      stroke-width: 1.5
-    }
-
-    .ncard h3 {
-      font-size: var(--t-card);
-      letter-spacing: -.022em;
-      margin: .15rem 0 .45rem
-    }
-
-    .ncard p {
-      font-size: var(--t-1);
-      color: var(--ink2);
-      line-height: 1.6;
-      max-width: 46ch
-    }
-
-    @media(min-width:900px) {
-      .tree {
-        padding-block: 1.5rem 3rem
-      }
-
-      .node {
-        padding-left: 0;
-        width: calc(50% - 44px)
-      }
-
-      .node.l {
-        margin-right: auto
-      }
-
-      .node.r {
-        margin-left: auto;
-        margin-top: clamp(2.5rem, 5.5vw, 4.5rem)
-      }
-    }
-
-    body.rm .ncard {
-      opacity: 1 !important;
-      transform: none !important
-    }
-
     /*── FOOTER ──*/
     /*───────────────────────────────────────────────────────────────
   Footer (spec §5.7)
@@ -4144,7 +3300,7 @@
 
     @media (min-width:900px) {
       .site-footer__nav {
-        grid-template-columns: repeat(5, minmax(0, 1fr))
+        grid-template-columns: repeat(4, minmax(0, 1fr))
       }
     }
 
@@ -5422,7 +4578,7 @@
     <div class="wrap">
       <div class="bar">
         <a class="logo" href="#hero">
-          <img src="assets/img/logo.jpeg" alt="" aria-hidden="true">
+          <img src="/assets/img/logo-mark.png" alt="" aria-hidden="true">
           <b>FLOODGUARD</b>
         </a>
         <nav class="main" aria-label="Primary">
@@ -5430,45 +4586,31 @@
                 <path d="M2 4.5 6 8.5 10 4.5" />
               </svg></button>
             <div class="drop">
-              <a href="products.html#explorer"><b>Explorer</b><em>Free historical district and taluka flood intelligence</em></a>
-              <a href="products.html#atlas"><b>Atlas</b><em>Premium historical, current and future intelligence</em></a>
-              <a href="products.html#live"><b>Live</b><em>Real-time rainfall, radar, risk and alerts</em></a>
+              <a href="/products.html#explorer"><b>Explorer</b><em>Free district-level flood history</em></a>
+              <a href="/products.html#atlas"><b>Atlas</b><em>Historical and future flood risk, in depth</em></a>
+              <a href="/products.html#live"><b>Live</b><em>Real-time rainfall, radar and alerts</em></a>
+              <a class="all" href="/products.html"><b>All products →</b></a>
             </div>
           </div>
           <div class="ni"><button type="button" aria-expanded="false">Solutions <svg viewBox="0 0 12 12">
                 <path d="M2 4.5 6 8.5 10 4.5" />
               </svg></button>
             <div class="drop">
-              <a href="solutions.html#insurance"><b>Insurance &amp; Reinsurance</b></a>
-              <a href="solutions.html#banking"><b>Banking &amp; Finance</b></a>
-              <a href="solutions.html#agriculture"><b>Agriculture</b></a>
-              <a href="solutions.html#infrastructure"><b>Infrastructure</b></a>
-              <a href="solutions.html#government"><b>Government</b></a>
+              <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b><em>Underwriting, accumulation and claims</em></a>
+              <a href="/solutions/banking.html"><b>Banking &amp; Finance</b><em>Collateral and portfolio screening</em></a>
+              <a href="/solutions/agriculture.html"><b>Agriculture</b><em>Crop and agricultural flood risk</em></a>
+              <a href="/solutions/infrastructure.html"><b>Infrastructure</b><em>Sites, assets and corridors</em></a>
+              <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b><em>Prepare, monitor and respond</em></a>
+              <a class="all" href="/solutions.html"><b>Solutions overview →</b></a>
             </div>
           </div>
-          <div class="ni"><button type="button" aria-expanded="false">Platform <svg viewBox="0 0 12 12">
-                <path d="M2 4.5 6 8.5 10 4.5" />
-              </svg></button>
-            <div class="drop">
-              <a href="#plat-data"><b>Data</b><em>Observed, satellite, terrain and projections</em></a>
-              <a href="#plat-technology"><b>Technology</b></a>
-              <a href="#plat-methodology"><b>Methodology</b></a>
-            </div>
-          </div>
-          <div class="ni"><button type="button" aria-expanded="false">Insights <svg viewBox="0 0 12 12">
-                <path d="M2 4.5 6 8.5 10 4.5" />
-              </svg></button>
-            <div class="drop">
-              <a href="insights.html#ins-research"><b>Research</b></a>
-              <a href="insights.html#ins-data-stories"><b>Data Stories</b></a>
-              <a href="insights.html#ins-reports"><b>Reports</b></a>
-            </div>
-          </div>
-          <div class="ni"><a href="about.html">About</a></div>
+          <div class="ni"><a href="/platform.html">Platform</a></div>
+          <div class="ni"><a href="/insights.html">Insights</a></div>
+          <div class="ni"><a href="/about.html">About</a></div>
         </nav>
         <div class="hact">
           <a class="cta-sm" href="#hmap">Explore Free Data</a>
-          <a class="cta-sm ghost" href="#start" data-utm>Request a Demo</a>
+          <a class="cta-sm ghost" href="/contact.html" data-utm>Request a Demo</a>
           <button class="hsign" type="button" data-signin>Sign in</button>
           <div class="menuWrap">
             <button id="menuBtn" type="button" aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
@@ -5496,29 +4638,34 @@
 
               <div class="mSec">
                 <p class="mLbl">Products</p>
-                <a href="products.html#explorer"><b>Explorer</b><em>Free historical district intelligence</em></a>
-                <a href="products.html#atlas"><b>Atlas</b><em>Historical, current and future in one view</em></a>
-                <a href="products.html#live"><b>Live</b><em>Real-time rainfall, radar and risk</em></a>
+                <a href="/products.html#explorer"><b>Explorer</b><em>Free district-level flood history</em></a>
+                <a href="/products.html#atlas"><b>Atlas</b><em>Historical and future flood risk, in depth</em></a>
+                <a href="/products.html#live"><b>Live</b><em>Real-time rainfall, radar and alerts</em></a>
               </div>
 
               <div class="mSec">
-                <p class="mLbl">Navigate</p>
-                <a href="#problem"><b>The challenge</b></a>
-                <a href="#record"><b>History and projections</b></a>
-                <a href="#gap"><b>The decision gap</b></a>
-                <a href="#decision"><b>The FloodGuard approach</b></a>
-                <a href="#products"><b>Products</b></a>
-                <a href="#sectors"><b>Sectors</b></a>
-                <a href="#why"><b>Why FloodGuard</b></a>
-                <a href="insights.html"><b>Insights</b></a>
-                <a href="about.html"><b>About us</b></a>
+                <p class="mLbl">Solutions</p>
+                <a href="/solutions.html"><b>Overview</b></a>
+                <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b></a>
+                <a href="/solutions/banking.html"><b>Banking &amp; Finance</b></a>
+                <a href="/solutions/agriculture.html"><b>Agriculture</b></a>
+                <a href="/solutions/infrastructure.html"><b>Infrastructure</b></a>
+                <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b></a>
+              </div>
+
+              <div class="mSec">
+                <p class="mLbl">Company</p>
+                <a href="/platform.html"><b>Platform</b></a>
+                <a href="/insights.html"><b>Insights</b></a>
+                <a href="/about.html"><b>About us</b></a>
+                <a href="/contact.html"><b>Contact us</b></a>
               </div>
 
               <div class="mSec">
                 <p class="mLbl">Actions</p>
                 <button type="button" id="sBtn"><b>Search</b><span class="kbd">Ctrl K</span></button>
                 <button type="button" id="signinBtn" data-signin><b>Sign in</b></button>
-                <a class="mCta" href="#start" data-utm>Request a demo
+                <a class="mCta" href="#hmap">Explore Free Data
                   <svg viewBox="0 0 14 14">
                     <path d="M2 7h10M8 3l4 4-4 4" />
                   </svg></a>
@@ -5547,29 +4694,24 @@
               risk scenarios together in one platform — helping you understand, assess and act on flood risk across
               India.</p>
             <div class="hcta" data-rv>
-              <a class="btn bp" href="products.html#explorer">Explore Flood Risk <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
-              <a class="btn bg2" href="#start" data-utm>Request a Demo</a>
+              <a class="btn bp" href="#hmap">Explore Free Data <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
+              <a class="btn bg2" href="/contact.html" data-utm>Request a Demo</a>
             </div>
           </div>
 
-          <!-- the product visual: India across History · Now · Future (assets/js/hero-map.js) -->
-          <div class="hmap" id="hmap" data-mode="now" data-rv>
+          <!-- the product visual: Explorer, India's historical flood record (assets/js/hero-map.js).
+               Pinned to the historical horizon; the Now / Future views return with Live and Atlas data. -->
+          <div class="hmap" id="hmap" data-mode="history" data-rv>
             <div class="hmHead">
               <div class="hmTitle">
-                <b>India · District flood risk</b>
-                <span class="hmCap"><span data-cap="history">Observed record · 1951–2025</span><span
-                    data-cap="now">Current conditions</span><span data-cap="future">Climate scenario · 2050</span></span>
-                <span class="hmNote"><i></i>Illustrative data · not live conditions</span>
-              </div>
-              <div class="hmSeg" role="radiogroup" aria-label="Time horizon">
-                <button type="button" role="radio" data-hm-set="history" aria-checked="false" tabindex="-1">History</button>
-                <button type="button" role="radio" data-hm-set="now" aria-checked="true">Now</button>
-                <button type="button" role="radio" data-hm-set="future" aria-checked="false" tabindex="-1">Future</button>
+                <b>Explorer · District flood history</b>
+                <span class="hmCap"><span data-cap="history">Observed record · 1951–2025</span></span>
+                <span class="hmNote"><i></i>Illustrative data</span>
               </div>
             </div>
             <div class="hmStage">
               <svg class="hmBase" role="img"
-                aria-label="Map of India with an illustrative district flood-risk layer, rivers and terrain"></svg>
+                aria-label="Map of India with an illustrative historical district flood-risk layer, recorded floods, rivers and terrain"></svg>
               <canvas class="hmRain" aria-hidden="true"></canvas>
               <svg class="hmTop" aria-hidden="true"></svg>
               <div class="hmCallouts" aria-hidden="true"></div>
@@ -5579,38 +4721,29 @@
             <div class="hmLayers" role="group" aria-label="Map layers">
               <p>Layers</p>
               <button type="button" data-hm-layer="risk" aria-pressed="true">Flood Risk</button>
-              <button type="button" data-hm-layer="rain" aria-pressed="true">Rainfall (Live)</button>
-              <button type="button" data-hm-layer="history" aria-pressed="false">Flood History</button>
-              <button type="button" data-hm-layer="scenario" aria-pressed="false">Climate Scenario</button>
+              <button type="button" data-hm-layer="history" aria-pressed="true">Flood History</button>
               <button type="button" data-hm-layer="terrain" aria-pressed="true">Terrain</button>
               <button type="button" data-hm-layer="exposure" aria-pressed="false">Exposure</button>
             </div>
             <div class="hmLegend">
-              <p class="hmLgT"><span data-cap="history">Historical flood risk</span><span data-cap="now">Flood
-                  risk</span><span data-cap="future">Projected flood risk</span></p>
+              <p class="hmLgT"><span data-cap="history">Historical flood risk</span></p>
               <div class="hmRamp" aria-hidden="true"><i style="background:#0f2b33"></i><i style="background:#133f4f"></i><i style="background:#175a73"></i><i style="background:#1f7d98"></i><i style="background:#36a6b8"></i><i style="background:#7cc4a0"></i><i style="background:#e0c062"></i><i style="background:#e38c4a"></i></div>
               <div class="hmRampL"><span>Low</span><span>High</span></div>
-              <p class="hmLgX" data-cap="now"><i class="hmSwRain"></i>Rainfall, light → heavy</p>
               <p class="hmLgX" data-cap="history"><i class="hmSwEv"></i>Major recorded flood</p>
-              <div class="hmScen" data-cap="future" role="group" aria-label="Emissions scenario">
-                <button type="button" data-hm-scen="low" aria-pressed="false">Low</button>
-                <button type="button" data-hm-scen="mid" aria-pressed="true">Mid</button>
-                <button type="button" data-hm-scen="high" aria-pressed="false">High</button>
-              </div>
             </div>
             <p class="hmCredit"></p>
           </div>
 
-          <ul class="hmicro" data-rv aria-label="Switch the map's time horizon">
-            <li><button type="button" data-hm-echo="history"><svg viewBox="0 0 24 24" aria-hidden="true">
+          <ul class="hmicro" data-rv aria-label="About this map">
+            <li><span><svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" /><path d="M3 4v4h4M12 7.5V12l3 2" />
-                </svg>Historical datasets</button></li>
-            <li><button type="button" data-hm-echo="now"><svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="2" /><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 16.2a6 6 0 0 0 0-8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 19.1a10 10 0 0 0 0-14.2" />
-                </svg>Real-time conditions</button></li>
-            <li><button type="button" data-hm-echo="future"><svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" />
-                </svg>Future scenarios</button></li>
+                </svg>75 years of observed record</span></li>
+            <li><span><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 3l14 9-6 1.5L10 20z" />
+                </svg>Click any district to open its data</span></li>
+            <li><span><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" /><path d="m8.5 12 2.5 2.5L16 9.5" />
+                </svg>Free · no sales conversation</span></li>
           </ul>
         </div>
 
@@ -5637,7 +4770,8 @@
             <li data-rv>
               <i>01</i>
               <div class="nIcon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></svg>
+                <!-- a clock turning backwards: rear-view risk -->
+                <svg viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1" /><path d="M2.8 3.6v4.3h4.3" /><path class="acc" d="M12 7.2V12l3.4 2.1" /></svg>
               </div>
               <h3>Backward-looking</h3>
               <p>Past data doesn't fully describe future risk.</p>
@@ -5645,11 +4779,12 @@
             <li data-rv>
               <i>02</i>
               <div class="nIcon" aria-hidden="true">
+                <!-- one coarse block hiding the asset inside it -->
                 <svg viewBox="0 0 24 24">
-                  <rect x="3" y="3" width="7" height="7" rx="1" />
-                  <rect x="14" y="3" width="7" height="7" rx="1" />
-                  <rect x="3" y="14" width="7" height="7" rx="1" />
-                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                  <rect x="3" y="3" width="18" height="18" rx="2.5" />
+                  <path d="M3 12h18M12 3v18" stroke-dasharray="1.5 2.5" />
+                  <path class="acc" d="M16.5 14.6l-2.2 1.8v2.6h4.4v-2.6z" />
+                  <circle class="fillAcc" cx="7.5" cy="7.5" r="1.6" />
                 </svg>
               </div>
               <h3>Too coarse</h3>
@@ -5658,9 +4793,13 @@
             <li data-rv>
               <i>03</i>
               <div class="nIcon" aria-hidden="true">
+                <!-- puzzle pieces that never meet -->
                 <svg viewBox="0 0 24 24">
-                  <circle cx="5" cy="6" r="2" /><circle cx="19" cy="6" r="2" /><circle cx="5" cy="18" r="2" />
-                  <circle cx="19" cy="18" r="2" /><circle cx="12" cy="12" r="2.4" />
+                  <path d="M3 4h6v2.2a1.6 1.6 0 1 0 3 0V4h0" />
+                  <path d="M3 4v6h2.2a1.6 1.6 0 1 1 0 3H3v0" />
+                  <path class="acc" d="M21 20h-6v-2.2a1.6 1.6 0 1 0-3 0V20" />
+                  <path class="acc" d="M21 20v-6h-2.2a1.6 1.6 0 1 1 0-3H21" />
+                  <path d="M9.5 14.5l5-5" stroke-dasharray="1.4 2.4" />
                 </svg>
               </div>
               <h3>Fragmented</h3>
@@ -5719,252 +4858,140 @@
         </div>
       </section>
 
-      <!-- ══ DECISION GAP ══ -->
-      <section id="gap" class="pinsec" style="padding:0">
-        <div class="pin dg" id="gapPin">
-          <div class="wrap dgHead sechead" data-rv>
-            <span class="snum">03 — The decision gap</span>
+      <!-- ══ THE FLOODGUARD APPROACH ══ -->
+      <section id="gap">
+        <div class="wrap">
+          <div class="sechead" data-rv>
+            <span class="snum">03 — The FloodGuard approach</span>
             <h2>Data alone doesn't answer the decision.</h2>
-            <p class="shLead">FloodGuard brings diverse flood-risk signals together into one clear picture of hazard,
-              exposure and risk — so the answer arrives at the moment the decision is made.</p>
+            <p class="shLead">FloodGuard brings the right data together, models it and turns it into actionable insight —
+              helping organisations prepare, manage risk and build resilience.</p>
           </div>
-          <div class="dgStage" id="dgStage"></div>
-          <ul class="dgFeat" id="dgFeat">
-            <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0" />
-              </svg>
-              <div><b>Integrated view</b><span>Many data sources, one intelligence layer.</span></div>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5" />
-              </svg>
-              <div><b>Granular insights</b><span>From district to taluka, down to asset and portfolio.</span></div>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M5 5l7 7-7 7M12 5l7 7-7 7" />
-              </svg>
-              <div><b>Forward-looking</b><span>Current conditions and future scenarios.</span></div>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M8 12.5l2.8 2.8 5.7-5.8" />
-              </svg>
-              <div><b>Built for decisions</b><span>Designed for real-world use cases.</span></div>
-            </li>
-          </ul>
-          <!-- The diagram is decorative; this is the content of record. -->
-          <ol class="sr">
-            <li>Data: rainfall, flood history, terrain, drainage, satellite data, climate projections and exposure.</li>
-            <li>FloodGuard: geospatial processing, risk modelling and scenario analysis.</li>
-            <li>Intelligence: hazard, exposure, risk and scenarios.</li>
-            <li>Decision: assess risk, plan and prepare, monitor conditions, underwrite and price, prioritise
-              investments, respond and build resilience.</li>
-          </ol>
-        </div>
-      </section>
 
-      <!-- ══ DECISION SUPPORT ══ -->
-      <section id="decision">
-        <div class="wrap">
-          <div class="sechead" data-rv>
-            <span class="snum">04 — The FloodGuard approach</span>
-            <h2>From flood risk to actionable insight.</h2>
-            <p class="shLead">Each layer resolves the one beneath it. Nothing is inferred from a single source, and
-              every layer stays inspectable on its own.</p>
-          </div>
-        </div>
-        <div class="wrap iso" id="isoRoot">
-          <div class="isoCol">
-            <!-- i = 0 is the BOTTOM layer. Text order top→bottom == stack order bottom→top. -->
-            <div class="isoStep" data-step><i>01</i>
-              <h3>Hazard signals</h3>
-              <p>Observed rainfall, river levels and recorded flood events, held as one continuous series from 1951.</p>
+          <div class="fx" data-rv>
+            <!-- 01 DATA -->
+            <div class="fxCol fxData">
+              <div class="fxHead"><span class="fxN">01</span><b>Data</b><em>Bring the right data together.</em></div>
+              <div class="fxDataBody">
+                <ul class="fxList" role="list">
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15.5a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17 7.8a3.6 3.6 0 0 1 .4 7.7H7zM9 18.5l-1 2M13 18.5l-1 2M17 18.5l-1 2" /></svg>Rainfall</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3.5 2" /></svg>Flood history</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19.5l6-10 4 6 3-4 6 8z" /></svg>Terrain &amp; elevation</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3c0 5 4 6 7 9s3 6 3 9M12 12c2-2 5-3 7-3M8 7.5C6 9 4 9.5 3 9.5" /></svg>Drainage network</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 6.5l3-3 4 4-3 3zM3.5 16.5l3-3 4 4-3 3zM8.5 15.5l7-7M15 20a5 5 0 0 0 5-5" /></svg>Satellite observations</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0zM12 9v8" /></svg>Climate projections</li>
+                </ul>
+                <div class="fxStack" aria-hidden="true">
+                  <i class="fxTile t-rain" style="--k:0"></i>
+                  <i class="fxTile t-hist" style="--k:1"></i>
+                  <i class="fxTile t-terr" style="--k:2"></i>
+                  <i class="fxTile t-drain" style="--k:3"></i>
+                  <i class="fxTile t-sat" style="--k:4"></i>
+                  <i class="fxTile t-clim" style="--k:5"></i>
+                </div>
+              </div>
             </div>
-            <div class="isoStep" data-step><i>02</i>
-              <h3>Terrain &amp; drainage</h3>
-              <p>Elevation, slope and drainage capacity — where the water can go once it arrives, and where it cannot.
-              </p>
+
+            <!-- 02 FLOODGUARD -->
+            <div class="fxCol fxCore">
+              <div class="fxHead"><span class="fxN">02</span><b>FloodGuard</b><em>Process, model and analyse.</em></div>
+              <div class="fxProc">
+                <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M3 12h18M12 3c3.2 3.4 3.2 14.6 0 18M12 3c-3.2 3.4-3.2 14.6 0 18" /></svg>Geospatial processing</span>
+                <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M7.5 7.5l3 3M16.5 7.5l-3 3M7.5 16.5l3-3M16.5 16.5l-3-3" /></svg>Risk modelling</span>
+                <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 20v-6M12 20V8M17 20V11" /></svg>Scenario analysis</span>
+              </div>
+              <div class="fxBox" aria-hidden="true">
+                <span class="glow"></span>
+                <svg viewBox="0 0 200 170">
+                  <defs>
+                    <linearGradient id="fxTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a6c93" /><stop offset="1" stop-color="#0a4f73" /></linearGradient>
+                  </defs>
+                  <!-- three slabs, bottom up -->
+                  <path d="M100 118 182 78v18l-82 40z" fill="#073a5a" /><path d="M100 118 18 78v18l82 40z" fill="#0a5273" />
+                  <path d="M100 96 182 56v18l-82 40z" fill="#0a4566" /><path d="M100 96 18 56v18l82 40z" fill="#0f5d80" />
+                  <path d="M100 74 182 34v18l-82 40z" fill="#0b4a6c" /><path d="M100 74 18 34v18l82 40z" fill="#126a8e" />
+                  <path d="M100 74 18 34l82-32 82 32z" fill="url(#fxTop)" stroke="rgba(255,255,255,.5)" stroke-width="1" />
+                  <!-- the FloodGuard logo, as a badge on the top face -->
+                  <circle cx="100" cy="36" r="27" fill="#fff" stroke="rgba(4,38,61,.18)" stroke-width="1" />
+                  <clipPath id="fxLogoClip"><circle cx="100" cy="36" r="25" /></clipPath>
+                  <image href="/assets/img/logo-mark.png" x="75" y="11" width="50" height="50" clip-path="url(#fxLogoClip)" />
+                </svg>
+              </div>
             </div>
-            <div class="isoStep" data-step><i>03</i>
-              <h3>Exposure</h3>
-              <p>People, assets and land use in the path of the water, resolved from district down to site.</p>
+
+            <!-- 03 INTELLIGENCE -->
+            <div class="fxCol fxIntel">
+              <div class="fxHead"><span class="fxN">03</span><b>Intelligence</b><em>Turn data into actionable insight.</em></div>
+              <div class="fxIntelRows">
+                <div class="fxIntelRow"><i class="fxTile t-haz" aria-hidden="true"></i>
+                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 14c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 19c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" /></svg><b>Hazard</b><em>Where flooding may occur</em></div></div>
+                <div class="fxIntelRow"><i class="fxTile t-exp" aria-hidden="true"></i>
+                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l6-3v15M11 21V11h8v10M14 14h2M14 17h2M7 11.5h2M7 15h2" /></svg><b>Exposure</b><em>What may be affected</em></div></div>
+                <div class="fxIntelRow"><i class="fxTile t-risk" aria-hidden="true"></i>
+                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M6 20v-4M10 20v-8M14 20v-6M18 20V6" /></svg><b>Risk &amp; scenarios</b><em>What it means for you</em></div></div>
+              </div>
             </div>
-            <div class="isoStep" data-step><i>04</i>
-              <h3>Risk</h3>
-              <p>Hazard × exposure × vulnerability, combined into a single comparable measure rather than four separate
-                ones.</p>
+
+            <!-- 04 DECISION -->
+            <div class="fxCol fxDec">
+              <div class="fxHead"><span class="fxN">04</span><b>Decision</b><em>Support real-world action.</em></div>
+              <ul class="fxList" role="list">
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6zM8.8 12l2.2 2.2 4.2-4.4" /></svg><b>Assess risk</b><em>Identify vulnerable areas and assets</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM15 3v4h4M9 11h7M9 15h7" /></svg><b>Plan and prepare</b><em>Strengthen preparedness and response</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4" /></svg><b>Monitor conditions</b><em>Track evolving risk in near real time</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-9z" /><path d="M14.5 2.8A9 9 0 0 1 21.2 9.5h-6.7z" /></svg><b>Underwrite and price</b><em>Inform risk selection and pricing</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0" /></svg><b>Prioritise investments</b><em>Focus on high-risk areas</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a3 3 0 1 0 6 0a3 3 0 1 0-6 0M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.3c2 .7 3.5 2.9 3.5 5.7" /></svg><b>Respond and build resilience</b><em>Support long-term planning</em><i class="chev"></i></li>
+              </ul>
             </div>
-            <div class="isoStep" data-step><i>05</i>
-              <h3>Decision</h3>
-              <p>The vulnerability atlas, portfolio exposure screening, drainage capacity assessment and site-level risk
-                analysis all read off this stack.</p>
-            </div>
-            <div class="stepNav" id="isoNav">
-              <button class="stepBtn prev" type="button" data-dir="-1" aria-label="Previous layer"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" /></svg></button>
-              <button class="stepBtn next" type="button" data-dir="1"><span>Next layer</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" /></svg></button>
-            </div>
-          </div>
-          <div class="isoStageWrap">
-            <div class="isoStage" id="isoStage"></div>
           </div>
         </div>
       </section>
 
-      <!-- ══ PLATFORM ══ -->
-      <section id="platform">
-        <!-- the tide band opens as the section arrives; full-bleed via grid, never 100vw -->
-        <div class="tideBand" id="tideBand" aria-hidden="true"></div>
-        <div class="wrap">
-          <div class="sechead" data-rv>
-            <span class="snum">05 — Platform</span>
-            <h2>Data in. Intelligence out.</h2>
-            <p class="shLead">Five parts, each inspectable on its own. Nothing here is a black box — every number we
-              publish can be traced back to the data and the method that produced it.</p>
-          </div>
-        </div>
-        <div class="wrap plat">
-          <div class="platHead">
-            <div class="gauge" id="platGauge" aria-hidden="true">
-              <div class="gaugeTrack"><i class="gaugeFill"></i></div>
-              <div class="gaugeTicks"></div>
-            </div>
-          </div>
-
-          <div class="platList" id="platList">
-            <article class="platCard" id="plat-data" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <ellipse cx="12" cy="6" rx="8" ry="3" />
-                    <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
-                  </svg>
-                  <h3>Data</h3>
-                </div>
-                <p>Observed climate, satellite and remote sensing, terrain, hydrological records and climate
-                  projections, held as one continuous series rather than a set of disconnected extracts.</p>
-                <ul>
-                  <li>Observed rainfall and river levels</li>
-                  <li>Satellite and remote sensing</li>
-                  <li>Terrain, drainage and land use</li>
-                  <li>Climate projections</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" id="plat-technology" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19" />
-                  </svg>
-                  <h3>Technology</h3>
-                </div>
-                <p>Statistical, machine-learning and climate-modelling approaches, applied where each is
-                  appropriate rather than everywhere at once.</p>
-                <ul>
-                  <li>Hydrological simulation</li>
-                  <li>Machine learning where it earns its place</li>
-                  <li>Reproducible model runs</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" id="plat-methodology" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M6 3h9l5 5v13H6z" />
-                    <path d="M14 3v6h6M9 13h7M9 17h5" />
-                  </svg>
-                  <h3>Methodology</h3>
-                </div>
-                <p>How hazard, exposure and vulnerability are combined, written down and published — so a
-                  result can be argued with rather than taken on trust.</p>
-                <ul>
-                  <li>Documented assumptions</li>
-                  <li>Stated uncertainty</li>
-                  <li>Versioned method notes</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" id="plat-validation" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" />
-                    <path d="m8.5 12 2.5 2.5L16 9.5" />
-                  </svg>
-                  <h3>Validation</h3>
-                </div>
-                <p>Model output checked against recorded events, and the checks reported alongside the
-                  result rather than kept separately.</p>
-                <ul>
-                  <li>Back-testing against observed floods</li>
-                  <li>Independent review of method</li>
-                  <li>Published performance notes</li>
-                </ul>
-              </div>
-            </article>
-
-            <article class="platCard" id="plat-api" data-step>
-              <div class="platBody">
-                <div class="platTop">
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="m9 8-5 4 5 4M15 8l5 4-5 4M13 5l-2 14" />
-                  </svg>
-                  <h3>API</h3>
-                </div>
-                <p>Maps, reports, data services and endpoints that drop into the workflows you already run,
-                  instead of asking you to move into ours.</p>
-                <ul>
-                  <li>REST endpoints for risk and exposure</li>
-                  <li>Bulk data delivery</li>
-                  <li>Tiles for your own map stack</li>
-                </ul>
-              </div>
-            </article>
-          </div>
-        </div>
-        <div class="wrap" data-rv style="margin-top:2.4rem"><a class="btn bg2" href="#start">Explore the platform <svg
-              viewBox="0 0 14 14">
-              <path d="M2 7h10M8 3l4 4-4 4" />
-            </svg></a></div>
-      </section>
-
-      <!-- ══ PRODUCTS ══ -->
+      <!-- ══ PRODUCTS — the /products overview, one way into each product ══ -->
       <section id="products">
         <div class="wrap">
           <div class="sechead" data-rv>
-            <span class="snum">06 — Products</span>
-            <h2>Start free. Go deeper. Monitor in real time.</h2>
-            <p class="shLead">Explorer, Atlas and Live are the same flood record at three different depths.</p>
+            <span class="snum">04 — Products</span>
+            <h2>Three ways to understand flood risk.</h2>
+            <p class="shLead">Explorer, Atlas and Live are the same flood record at three different depths — start free,
+              go deeper, monitor in real time.</p>
           </div>
-          <div class="briefRow" data-rv>
-            <div class="briefCard">
-              <p class="pkick">Explorer · free</p>
-              <h3>First read on flood risk</h3>
-              <p>District-level risk score, free for every visitor.</p>
-            </div>
-            <div class="briefCard">
-              <p class="pkick">Atlas · premium</p>
-              <h3>Risk across time</h3>
-              <p>Historical, current and future flood intelligence in one view.</p>
-            </div>
-            <div class="briefCard">
-              <p class="pkick">Live · operational</p>
-              <h3>What's happening now</h3>
-              <p>Real-time rainfall, radar and flood-risk signals.</p>
-            </div>
+          <div class="pOver">
+            <article class="card" data-reveal>
+              <div class="vis"><div class="inst paper"><div class="instMap" data-fgmap="explorer-mini"></div></div></div>
+              <div class="txt">
+                <span class="hzChip"><i class="p"></i>Past</span>
+                <h3>Explorer — explore the past.</h3>
+                <p class="d">Explore district-level historical flood risk across India.</p>
+                <p class="s">Understand where floods have occurred and how historical flood risk varies across India's districts.</p>
+                <div class="foot"><span class="access">Free access</span><a class="btn bp" href="/products.html#explorer">Explore more <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a></div>
+              </div>
+            </article>
+            <article class="card" data-reveal>
+              <div class="vis"><div class="inst"><div class="instMap" data-fgmap="atlas-mini"></div></div></div>
+              <div class="txt">
+                <span class="hzChip"><i class="p"></i>Past + <i class="f"></i>Future</span>
+                <h3>Atlas — understand risk across time.</h3>
+                <p class="d">Assess historical flood risk and explore how risk could evolve under future scenarios.</p>
+                <p class="s">Deeper flood-risk intelligence for professional and enterprise users.</p>
+                <div class="foot"><span class="access">Enterprise</span><a class="btn bp" href="/products.html#atlas">Explore more <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a></div>
+              </div>
+            </article>
+            <article class="card" data-reveal>
+              <div class="vis"><div class="inst"><div class="instMap" data-fgmap="live-mini"></div></div></div>
+              <div class="txt">
+                <span class="hzChip"><i class="n"></i>Now</span>
+                <h3>Live — know what's happening now.</h3>
+                <p class="d">Monitor real-time rainfall, radar, flood-risk signals and alerts as conditions evolve.</p>
+                <p class="s">Built for operational monitoring and timely response.</p>
+                <div class="foot"><span class="access">Enterprise</span><a class="btn bp" href="/products.html#live">Explore more <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a></div>
+              </div>
+            </article>
           </div>
-          <div class="briefCta" data-rv>
-            <a class="btn bp btnXl" href="products.html">See all products <svg viewBox="0 0 14 14">
-                <path d="M2 7h10M8 3l4 4-4 4" />
-              </svg></a>
+          <div class="homeAll" data-rv>
+            <a class="btn bg2" href="/products.html#compare">Compare products</a>
+            <a class="btn bp" href="#hmap">Try Explorer free <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
           </div>
         </div>
       </section>
@@ -5973,14 +5000,14 @@
       <section id="sectors">
         <div class="wrap">
           <div class="sechead" data-rv>
-            <span class="snum">07 — Sectors</span>
+            <span class="snum">05 — Sectors</span>
             <h2>One flood record. Every sector.</h2>
             <p class="shLead">The same intelligence, shaped around how each sector actually makes its flood
               decisions.</p>
           </div>
           <div class="secPanel">
             <div class="secBriefs">
-              <a class="secBrief" href="solutions.html#agriculture" data-rv>
+              <a class="secBrief" href="/solutions/agriculture.html" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 21V10" />
                   <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z" />
@@ -5990,7 +5017,7 @@
                 <p>Crop loss, sowing windows and mandi exposure, mapped to the taluka a field sits in.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="solutions.html#banking" data-rv>
+              <a class="secBrief" href="/solutions/banking.html" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 10 12 4l9 6" />
                   <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" />
@@ -5999,7 +5026,7 @@
                 <p>Flood risk priced into the loan book — KCC, farm loans, mortgages and MSME credit.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="solutions.html#insurance" data-rv>
+              <a class="secBrief" href="/solutions/insurance.html" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" />
                   <path d="M9 12h6M12 9v6" />
@@ -6008,7 +5035,7 @@
                 <p>Underwriting, pricing and accumulation with an observed flood record behind every policy.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="solutions.html#government" data-rv>
+              <a class="secBrief" href="/solutions/government.html" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 21V9l8-5 8 5v12" />
                   <path d="M9 21v-6h6v6M2 21h20" />
@@ -6017,7 +5044,7 @@
                 <p>District disaster plans, relief pre-positioning and resilient public spending.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="solutions.html#infrastructure" data-rv>
+              <a class="secBrief" href="/solutions/infrastructure.html" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16" />
                   <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1" />
@@ -6030,7 +5057,7 @@
             <div class="secPanelFoot" data-rv>
               <p>Each sector gets its own view of the same record — the decisions it faces, the exposure that matters
                 to it, and what FloodGuard puts in front of the people making the call.</p>
-              <a class="btn bp btnXl" href="solutions.html">Explore all solutions <svg viewBox="0 0 14 14">
+              <a class="btn bp btnXl" href="/solutions.html">Explore all solutions <svg viewBox="0 0 14 14">
                   <path d="M2 7h10M8 3l4 4-4 4" />
                 </svg></a>
             </div>
@@ -6038,282 +5065,115 @@
         </div>
       </section>
 
-      <!-- ══ WHO WE SERVE ══ -->
-      <section id="serve">
-        <div class="wrap">
-          <div class="sechead" data-rv>
-            <span class="snum">08 — Solutions</span>
-            <h2>Flood intelligence for decisions that matter.</h2>
-          </div>
-          <div class="tree" id="tree">
-            <svg id="treeSvg" aria-hidden="true">
-              <defs>
-                <linearGradient id="vineGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="var(--b400)" />
-                  <stop offset="55%" stop-color="var(--b600)" />
-                  <stop offset="100%" stop-color="var(--b800)" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-        </div>
-      </section>
-
-      <!-- ══ WHY FLOODGUARD ══ -->
-      <!-- the head sits above the pinned stack, not inside it: a full-width
-           heading would eat the stage's 100svh -->
-      <div class="wrap shSolo">
-        <div class="sechead" data-rv>
-          <span class="snum">09 — Why FloodGuard</span>
-          <h2>Built on observed data. Built for better decisions.</h2>
-          <p class="shLead">Four things decide whether flood intelligence is worth acting on: how far back the record
-            runs, how finely it resolves, whether it spans time consistently, and whether it arrives in a form you can
-            actually use.</p>
-        </div>
-      </div>
-      <section id="why">
-        <div class="wrap stackWrap">
-          <div class="stackAside">
-            <p class="stackCount"><b id="stackI">01</b><span>/ 04</span></p>
-            <div class="stackTicks" id="stackTicks"></div>
-            <div class="stepNav" id="whyNav">
-              <button class="stepBtn prev" type="button" data-dir="-1" aria-label="Previous card"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" /></svg></button>
-              <button class="stepBtn next" type="button" data-dir="1"><span>Next card</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" /></svg></button>
-            </div>
-          </div>
-          <div class="stackStage" id="stackStage" aria-live="polite"></div>
-        </div>
-      </section>
-
-      <!-- ══ KEEP EXPLORING ══ -->
+      <!-- ══ FROM THE INSIGHTS DESK — the latest posts (assets/js/posts.js) ══ -->
       <section id="more">
         <div class="wrap">
           <div class="sechead" data-rv>
-            <span class="snum">10 — Keep exploring</span>
-            <h2>The research behind it, and the people building it.</h2>
+            <span class="snum">06 — From the Insights desk</span>
+            <h2>The latest from our research and writing.</h2>
+            <p class="shLead">Research, data stories and perspectives on flood risk in India — each built on the same
+              observed record as the platform.</p>
           </div>
-          <div class="moreGrid">
-            <a class="moreCard" href="insights.html" data-tex="contours">
-              <span class="moreKind">Insights</span>
-              <h3>Research, white papers and data stories</h3>
-              <p>Five strands of work built on the same observed record as the platform — research, method notes,
-                sector use cases, data stories and articles.</p>
-              <span class="moreGo">Read the insights <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg></span>
-            </a>
-            <a class="moreCard" href="about.html" data-tex="dots">
-              <span class="moreKind">About us</span>
-              <h3>The team building India's flood intelligence layer</h3>
-              <p>Who we are, what we hold ourselves to, and the people working across climate science, geospatial
-                intelligence and data systems.</p>
-              <span class="moreGo">Meet the team <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg></span>
-            </a>
+          <div class="postGrid" data-posts="3">
+            <noscript><p><a href="/insights.html">Read our latest insights</a></p></noscript>
+          </div>
+          <div class="homeAll" data-rv>
+            <a class="btn bg2" href="/insights.html">All insights <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
           </div>
         </div>
       </section>
 
-      <!-- ══ GET STARTED ══ -->
-      <section id="start">
-        <div class="wrap">
-          <div class="sechead" data-rv>
-            <span class="snum">11 — Book a demo</span>
-            <h2>Ready to understand flood risk differently?</h2>
-            <p class="shLead">Whether you want to explore your district, evaluate FloodGuard, book a product
-              demonstration or collaborate with us — start here.</p>
-          </div>
+      <!-- shell:cta -->
+<section class="sec getStarted" id="get-started">
+  <div class="wrap">
+    <div class="secHead">
+      <p class="eyebrow"><i></i>Get started</p>
+      <h2>Ready to explore FloodGuard?</h2>
+    </div>
+    <div class="paths">
+      <div class="card" data-reveal>
+        <span class="access">Explorer</span>
+        <h3>Explore for free.</h3>
+        <p>Access district-level historical flood risk and begin exploring India's flood record. No sales conversation required.</p>
+        <div class="ctaRow"><a class="btn bp" href="/index.html#hmap">Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+      </div>
+      <div class="card ent" data-reveal>
+        <span class="access">Atlas + Live</span>
+        <h3>Talk to the FloodGuard team.</h3>
+        <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
+        <div class="ctaRow">
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="/contact.html?intent=sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
         </div>
-        <div class="wrap fgrid2">
-          <div>
-            <ul class="intents" data-rv data-stag>
-              <li><a class="intentBtn" href="auth.html"><b>Explore flood risk</b><span>Explorer</span></a></li>
-              <li><button class="intentBtn" type="button" data-intent="Request early access"><b>Request early
-                    access</b><span>Atlas · Live</span></button></li>
-              <li><button class="intentBtn" type="button" data-intent="Book a demo"><b>Book a demo</b><span>Product
-                    evaluation</span></button></li>
-              <li><button class="intentBtn" type="button" data-intent="Partner with us"><b>Partner with
-                    us</b><span>Research · data · government</span></button></li>
-              <li><button class="intentBtn" type="button" data-intent="General enquiry"><b>General
-                    enquiry</b><span>Anything else</span></button></li>
-            </ul>
-            <div data-rv style="display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem">
-              <span style="font-family:var(--fM);font-size:var(--t-sm);color:var(--ink2)"
-                id="contactMail">hello@floodguard.in</span>
-              <button class="copy" type="button" data-copy="hello@floodguard.in">
-                <svg viewBox="0 0 24 24">
-                  <rect x="9" y="9" width="12" height="12" rx="2.5" />
-                  <path d="M5 15V5.5A2.5 2.5 0 0 1 7.5 3H15" />
-                </svg>Copy
-              </button>
-            </div>
-            <div class="utmChip" id="utmChip"><span>Attributed source</span><b id="utmVal">—</b></div>
-          </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /shell:cta -->
 
-          <div class="formCard glass" data-rv>
-            <form id="demoForm" novalidate>
-              <div class="f2">
-                <div class="field">
-                  <label for="fName">Name</label>
-                  <input class="inp" id="fName" name="name" type="text" placeholder="Priya Sharma" autocomplete="name">
-                  <span class="emsg"><svg viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="9" />
-                      <path d="M12 7v6M12 16.5v.5" stroke-linecap="round" />
-                    </svg>Please enter your name</span>
-                </div>
-                <div class="field">
-                  <label for="fMail">Work email</label>
-                  <input class="inp" id="fMail" name="email" type="email" placeholder="priya@organisation.in"
-                    autocomplete="email">
-                  <span class="emsg"><svg viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="9" />
-                      <path d="M12 7v6M12 16.5v.5" stroke-linecap="round" />
-                    </svg>Enter a valid email address</span>
-                </div>
-              </div>
-              <div class="f2">
-                <div class="field">
-                  <label for="fOrgName">Organisation</label>
-                  <input class="inp" id="fOrgName" name="organisation" type="text" placeholder="Organisation name"
-                    autocomplete="organization">
-                </div>
-                <div class="field">
-                  <label for="fGeo">Location / geography</label>
-                  <input class="inp" id="fGeo" name="geography" type="text" placeholder="State, district or region">
-                </div>
-              </div>
-              <div class="f2">
-                <div class="field">
-                  <label for="fOrg">Industry</label>
-                  <select class="inp" id="fOrg" name="industry">
-                    <option value="">Select one</option>
-                    <option>Insurance &amp; reinsurance</option>
-                    <option>Banking &amp; finance</option>
-                    <option>Government &amp; disaster management</option>
-                    <option>Infrastructure &amp; engineering</option>
-                    <option>Agriculture &amp; food security</option>
-                    <option>Research &amp; education</option>
-                    <option>Other</option>
-                  </select>
-                  <span class="emsg"><svg viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="9" />
-                      <path d="M12 7v6M12 16.5v.5" stroke-linecap="round" />
-                    </svg>Please choose an option</span>
-                </div>
-                <div class="field">
-                  <label for="fIntent">Intent</label>
-                  <select class="inp" id="fIntent" name="intent">
-                    <option value="">Select one</option>
-                    <option>Explore flood risk</option>
-                    <option>Request early access</option>
-                    <option>Book a demo</option>
-                    <option>Partner with us</option>
-                    <option>General enquiry</option>
-                  </select>
-                  <span class="emsg"><svg viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="9" />
-                      <path d="M12 7v6M12 16.5v.5" stroke-linecap="round" />
-                    </svg>Please choose an option</span>
-                </div>
-              </div>
-              <div class="field">
-                <label for="fMsg">What would you like to see? <span
-                    style="text-transform:none;letter-spacing:0;color:var(--ink3)">(optional)</span></label>
-                <textarea class="inp" id="fMsg" name="message"
-                  placeholder="Product, geography, primary use case"></textarea>
-              </div>
-              <input type="hidden" name="utm" id="utmField">
-              <button class="btn bp" type="submit" id="demoSubmit" style="width:100%;justify-content:center">
-                <span class="spin"></span><span class="lbl">Send enquiry</span> <svg viewBox="0 0 14 14">
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg>
-              </button>
-              <p class="demoErr" id="demoErr" role="alert" hidden></p>
-              <p class="next caps">We read it → the right person responds → we explore the fit</p>
-            </form>
-
-            <div class="okState" id="demoOk">
-              <div class="okRing"><svg viewBox="0 0 24 24">
-                  <path d="m5 12.5 4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg></div>
-              <h3>Enquiry received</h3>
-              <p>Your enquiry has reached the FloodGuard team. We'll reply to <b id="okMail">you</b>.</p>
-              <button class="btn bg2" type="button" id="demoReset">Send another enquiry</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer class="site-footer">
-        <div class="wrap site-footer__top">
-          <div class="site-footer__brand">
-            <!-- One wordmark. The mark is decorative (alt=""), the text carries the
-           name, and the link is labelled once — it used to announce
-           "FloodGuard FloodGuard" to a screen reader. -->
-            <a class="site-footer__logo" href="#hero" aria-label="FloodGuard home">
-              <img src="assets/img/logo.jpeg" alt="">
-              <span class="site-footer__names">
-                <b class="site-footer__wordmark">FloodGuard</b>
-              </span>
-            </a>
-            <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated
-              into decision-ready intelligence for organizations exposed to flood risk.</p>
-          </div>
-          <nav class="site-footer__nav" aria-label="Footer">
-            <div class="site-footer__col">
-              <h2 class="site-footer__heading">Products</h2>
-              <ul role="list">
-                <li><a href="products.html#explorer">Explorer</a></li>
-                <li><a href="products.html#atlas">Atlas</a></li>
-                <li><a href="products.html#live">Live</a></li>
-              </ul>
-            </div>
-            <div class="site-footer__col">
-              <h2 class="site-footer__heading">Platform</h2>
-              <ul role="list">
-                <li><a href="#platform">Technology</a></li>
-                <li><a href="#platform">Data</a></li>
-                <li><a href="#platform">Methodology</a></li>
-                <li><a href="#platform">Validation</a></li>
-                <li><a href="#platform">API</a></li>
-              </ul>
-            </div>
-            <div class="site-footer__col">
-              <h2 class="site-footer__heading">Solutions</h2>
-              <ul role="list">
-                <li><a href="solutions.html#insurance">Insurance</a></li>
-                <li><a href="solutions.html#banking">Banking</a></li>
-                <li><a href="solutions.html#government">Government</a></li>
-                <li><a href="solutions.html#infrastructure">Infrastructure</a></li>
-                <li><a href="solutions.html#agriculture">Agriculture</a></li>
-                <li><a href="solutions.html#library">Use case library</a></li>
-              </ul>
-            </div>
-            <div class="site-footer__col">
-              <h2 class="site-footer__heading">Insights</h2>
-              <ul role="list">
-                <li><a href="insights.html#ins-research">Research</a></li>
-                <li><a href="insights.html#ins-reports">White papers</a></li>
-                <li><a href="insights.html#ins-use-cases">Use cases</a></li>
-                <li><a href="insights.html#ins-data-stories">Data stories</a></li>
-                <li><a href="insights.html#ins-articles">Articles</a></li>
-              </ul>
-            </div>
-            <div class="site-footer__col">
-              <h2 class="site-footer__heading">Company</h2>
-              <ul role="list">
-                <li><a href="about.html">About us</a></li>
-                <li><a href="#start">Contact</a></li>
-                <li><a href="#start">Careers</a></li>
-              </ul>
-            </div>
-          </nav>
-        </div>
-        <div class="wrap site-footer__bottom">
-          <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
-          <ul role="list" class="site-footer__legal">
-            <li><a href="#start">Privacy</a></li>
-            <li><a href="#start">Terms</a></li>
-          </ul>
-        </div>
-      </footer>
+      <!-- shell:footer -->
+<footer class="site-footer">
+  <div class="wrap site-footer__top">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="/index.html" aria-label="FloodGuard home">
+        <img src="/assets/img/logo-mark.png" alt="">
+        <b class="site-footer__wordmark">FloodGuard</b>
+      </a>
+      <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated into decision-ready insight for organisations exposed to flood risk.</p>
+      <address>
+        <ul class="site-footer__contact" role="list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>COHORT Coworking, Kondapur, Hyderabad, Telangana</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+919030762494">+91 90307 62494</a></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><a href="mailto:dhanyabulla@floodguard.in">dhanyabulla@floodguard.in</a></li>
+        </ul>
+      </address>
+    </div>
+    <nav class="site-footer__nav" aria-label="Footer">
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Products</h2>
+        <ul role="list">
+          <li><a href="/products.html#explorer">Explorer</a></li>
+          <li><a href="/products.html#atlas">Atlas</a></li>
+          <li><a href="/products.html#live">Live</a></li>
+          <li><a href="/products.html#compare">Compare products</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Solutions</h2>
+        <ul role="list">
+          <li><a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a></li>
+          <li><a href="/solutions/banking.html">Banking &amp; Finance</a></li>
+          <li><a href="/solutions/agriculture.html">Agriculture</a></li>
+          <li><a href="/solutions/infrastructure.html">Infrastructure</a></li>
+          <li><a href="/solutions/government.html">Government</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Platform</h2>
+        <ul role="list">
+          <li><a href="/platform.html#data">Data</a></li>
+          <li><a href="/platform.html#technology">Technology</a></li>
+          <li><a href="/platform.html#methodology">Methodology</a></li>
+          <li><a href="/platform.html#validation">Validation</a></li>
+          <li><a href="/platform.html#api">API</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Company</h2>
+        <ul role="list">
+          <li><a href="/insights.html">Insights</a></li>
+          <li><a href="/about.html">About us</a></li>
+          <li><a href="/contact.html">Contact us</a></li>
+          <li><a href="/contact.html?intent=demo">Request a demo</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap site-footer__bottom">
+    <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
+  </div>
+</footer>
+<!-- /shell:footer -->
 
     </div>
   </div>
@@ -6335,20 +5195,6 @@
       <div id="sEmpty" hidden>No matches. Try “risk”, “drainage” or “pricing”.</div>
       <div class="sfoot"><span><span class="kbd">↑↓</span> navigate</span><span><span class="kbd">↵</span>
           open</span><span><span class="kbd">Ctrl K</span> anywhere</span></div>
-    </div>
-  </div>
-
-  <div class="ov" id="modalWrap" role="dialog" aria-modal="true" aria-labelledby="cTitle">
-    <div class="ov-panel glass mpad" style="max-width:440px;position:relative">
-      <button class="ovX" type="button" data-close aria-label="Close"><svg viewBox="0 0 24 24">
-          <path d="M5 5l14 14M19 5 5 19" />
-        </svg></button>
-      <h3 class="mtitle" id="cTitle">Send this enquiry?</h3>
-      <p class="mbodytxt" id="cBody">We'll send your enquiry to the FloodGuard team.</p>
-      <div class="mfootrow">
-        <button class="btn-xs bx-g" type="button" data-close>Cancel</button>
-        <button class="btn-xs bx-p" type="button" id="cOk">Yes, send it</button>
-      </div>
     </div>
   </div>
 
@@ -6375,16 +5221,16 @@
       </svg>
     </button>
     <div id="fabMenu">
-      <a class="fabItem" href="#start" data-utm><svg viewBox="0 0 24 24">
+      <a class="fabItem" href="/contact.html" data-utm><svg viewBox="0 0 24 24">
           <rect x="3" y="5" width="18" height="14" rx="2.5" />
           <path d="m3.5 7 8.5 6 8.5-6" />
-        </svg>Book a demo</a>
-      <a class="fabItem" href="mailto:hello@floodguard.in"><svg viewBox="0 0 24 24">
+        </svg>Request a demo</a>
+      <a class="fabItem" href="tel:+919030762494"><svg viewBox="0 0 24 24">
           <path d="M4 4h16v16H4z" style="display:none" />
           <circle cx="12" cy="12" r="9" />
           <path d="M12 8v4l3 2" stroke-linecap="round" />
-        </svg>hello@floodguard.in</a>
-      <button class="fabItem" type="button" data-copy="hello@floodguard.in"><svg viewBox="0 0 24 24">
+        </svg>+91 90307 62494</a>
+      <button class="fabItem" type="button" data-copy="dhanyabulla@floodguard.in"><svg viewBox="0 0 24 24">
           <rect x="9" y="9" width="12" height="12" rx="2.5" />
           <path d="M5 15V5.5A2.5 2.5 0 0 1 7.5 3H15" />
         </svg>Copy email</button>
@@ -6809,8 +5655,7 @@
         measureProof();
         /* the inner's transform doesn't affect the section's own box, so no correction needed */
         pins.forEach(P => { const b = P.sec.getBoundingClientRect(); P.top = b.top + base; P.h = b.height; });
-        buildTree();
-        lastGp = -1; pins.forEach(P => P.lastOff = -1);
+        pins.forEach(P => P.lastOff = -1);
         barsTop = document.getElementById("tl").getBoundingClientRect().top + base;
       }
       /* Mobile browsers fire resize constantly as the URL bar slides in and out.
@@ -6999,424 +5844,6 @@
         tlChartEl.classList.add("on");
       }
 
-      /*═══════════════════════════════════════════════════════════════
-        §03 — Decision gap: DATA → FLOODGUARD → INTELLIGENCE → DECISION
-        One SVG, two fixed geometries chosen by width, both computed at
-        module scope. The diagram is painted complete on load (p = 1) — it
-        is not built up by scrolling; only the ambient flow animates.
-      ═══════════════════════════════════════════════════════════════*/
-      const DG_ICON = {
-        rain: "M7 15.5a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17 7.8a3.6 3.6 0 0 1 .4 7.7H7zM9 18.5l-1 2M13 18.5l-1 2M17 18.5l-1 2",
-        clock: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3.5 2",
-        terrain: "M2.5 19.5l6-10 4 6 3-4 6 8z",
-        drain: "M5 3c0 5 4 6 7 9s3 6 3 9M12 12c2-2 5-3 7-3M8 7.5C6 9 4 9.5 3 9.5",
-        sat: "M13.5 6.5l3-3 4 4-3 3zM3.5 16.5l3-3 4 4-3 3zM8.5 15.5l7-7M15 20a5 5 0 0 0 5-5",
-        climate: "M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0zM12 9v8",
-        bldg: "M3 21h18M5 21V9l6-3v15M11 21V11h8v10M14 14h2M14 17h2M7 11.5h2M7 15h2",
-        globe: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M3 12h18M12 3c3.2 3.4 3.2 14.6 0 18M12 3c-3.2 3.4-3.2 14.6 0 18",
-        nodes: "M10 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M7.5 7.5l3 3M16.5 7.5l-3 3M7.5 16.5l3-3M16.5 16.5l-3-3",
-        bars: "M4 20h16M7 20v-6M12 20V8M17 20V11",
-        layers: "M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5",
-        risk: "M4 20h16M6 20v-4M10 20v-8M14 20v-6M18 20V6",
-        trend: "M4 20h16M4 16l5-5 4 3 7-7M15.5 7H20v4.5",
-        search: "M4 11a7 7 0 1 0 14 0a7 7 0 1 0-14 0M20.5 20.5l-4.5-4.5",
-        doc: "M6 3h9l4 4v14H6zM15 3v4h4M9 11h7M9 15h7",
-        pulse: "M3 12h4l3-7 4 14 3-7h4",
-        shield: "M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6zM8.8 12l2.2 2.2 4.2-4.4",
-        target: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0",
-        people: "M6 8a3 3 0 1 0 6 0a3 3 0 1 0-6 0M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.3c2 .7 3.5 2.9 3.5 5.7"
-      };
-      const DG_HEAD = [
-        ["01", "Data", "Bring the right data together."],
-        ["02", "FloodGuard", "Process, model and analyse."],
-        ["03", "Intelligence", "Turn data into actionable insight."],
-        ["04", "Decision", "Support real-world action."]
-      ];
-      /* label, icon, surface */
-      const DG_DATA = [
-        ["Rainfall", "rain", "rain"], ["Flood history", "clock", "history"], ["Terrain", "terrain", "terrain"],
-        ["Drainage", "drain", "drainage"], ["Satellite", "sat", "satellite"], ["Climate", "climate", "climate"],
-        ["Exposure", "bldg", "exposure"]
-      ];
-      const DG_PROC = [["Geospatial", "processing", "globe"], ["Risk", "modelling", "nodes"], ["Scenario", "analysis", "bars"]];
-      const DG_INTEL = [["Hazard", "layers", "hazard"], ["Exposure", "bldg", "expo2"], ["Risk", "risk", "risk"], ["Scenarios", "trend", "scen"]];
-      /* label, icon, optional second line (desktop wraps it) */
-      const DG_DECIDE = [
-        ["Assess risk", "search"], ["Plan and prepare", "doc"], ["Monitor conditions", "pulse"],
-        ["Underwrite and price", "shield"], ["Prioritise investments", "target"], ["Respond and build", "people", "resilience"]
-      ];
-
-      const DG_DESKTOP = (() => {
-        const W = 1720, H = 530;
-        const heads = [0, 640, 1020, 1420].map(x => ({ x, y: 0 }));
-        const chips = DG_DATA.map((_, i) => ({ x: 0, y: 92 + i * 56, w: 176, h: 42 }));
-        const ds = { cx: 412, hw: 122, hh: 50, d: 7, cys: DG_DATA.map((_, i) => 128 + i * 53) };
-        const chipLinks = chips.map((c, i) => {
-          const x0 = c.x + c.w, y0 = c.y + c.h / 2, x1 = ds.cx - ds.hw, y1 = ds.cys[i];
-          return `M ${x0} ${y0} C ${x0 + 50} ${y0}, ${x1 - 56} ${y1}, ${x1 - 2} ${y1}`;
-        });
-        const core = { cx: 830, cy: 300, hw: 104, hh: 48, ht: 64 };
-        const base = { cx: 830, cy: 364, rx: 190, ry: 88 };
-        const procs = DG_PROC.map((_, i) => ({ x: 656 + i * 120, y: 86, w: 108, h: 84 }));
-        const procLinks = procs.map(b => {
-          const x = b.x + b.w / 2, y = b.y + b.h, ty = core.cy - core.hh + 8;
-          return `M ${x} ${y} C ${x} ${y + 46}, ${core.cx} ${ty - 40}, ${core.cx} ${ty}`;
-        });
-        const inAt = [714, 340], outAt = [958, 340];
-        const inStreams = ds.cys.map(y => {
-          const x0 = ds.cx + ds.hw;
-          return `M ${x0} ${y} C ${x0 + 70} ${y}, ${inAt[0] - 80} ${inAt[1]}, ${inAt[0] - 6} ${inAt[1]}`;
-        });
-        const is = { cx: 1142, hw: 104, hh: 44, d: 7, cys: [140, 220, 300, 380] };
-        const outStreams = is.cys.map(y => {
-          const x1 = is.cx - is.hw;
-          return `M ${outAt[0]} ${outAt[1]} C ${outAt[0] + 50} ${outAt[1]}, ${x1 - 50} ${y}, ${x1 - 2} ${y}`;
-        });
-        const pills = is.cys.map(y => ({ x: 1258, y: y - 20, w: 132, h: 40 }));
-        const pillLinks = is.cys.map((y, i) => `M ${is.cx + is.hw} ${y} L ${pills[i].x} ${y}`);
-        return {
-          W, H, heads, chips, chipLinks, ds, core, base, procs, procLinks, inStreams, is, outStreams, pills, pillLinks,
-          inArrow: `M ${inAt[0] - 11} ${inAt[1] - 9} L ${inAt[0]} ${inAt[1]} L ${inAt[0] - 11} ${inAt[1] + 9}`,
-          outArrow: `M 944 331 L 955 340 L 944 349`,
-          decLine: "M 1394 300 L 1410 300", decArrow: "M 1402 292 L 1410 300 L 1402 308",
-          panel: { x: 1420, y: 78, w: 300, rowH: 72, wrap: true }
-        };
-      })();
-
-      const DG_MOBILE = (() => {
-        const W = 390, H = 1896;
-        const heads = [0, 628, 1034, 1446].map(y => ({ x: 16, y }));
-        const chips = DG_DATA.map((_, i) => ({
-          x: i === DG_DATA.length - 1 && i % 2 === 0 ? 108.5 : i % 2 ? 201 : 16,
-          y: 72 + Math.floor(i / 2) * 52, w: 173, h: 42
-        }));
-        const ds = { cx: 195, hw: 132, hh: 54, d: 7, cys: DG_DATA.map((_, i) => 344 + i * 30) };
-        const core = { cx: 195, cy: 856, hw: 96, hh: 44, ht: 58 };
-        const base = { cx: 195, cy: 914, rx: 172, ry: 72 };
-        const procs = DG_PROC.map((_, i) => ({ x: 16 + i * 122, y: 694, w: 114, h: 84 }));
-        const procLinks = procs.map(b => {
-          const x = b.x + b.w / 2, y = b.y + b.h, ty = core.cy - core.hh + 8;
-          return `M ${x} ${y} C ${x} ${y + 20}, ${core.cx} ${ty - 20}, ${core.cx} ${ty}`;
-        });
-        const is = { cx: 148, hw: 108, hh: 44, d: 7, cys: [1150, 1214, 1278, 1342] };
-        const pills = is.cys.map(y => ({ x: 264, y: y - 19, w: 112, h: 38 }));
-        const pillLinks = is.cys.map((y, i) => `M ${is.cx + is.hw} ${y} L ${pills[i].x} ${y}`);
-        return {
-          W, H, heads, chips, chipLinks: [], ds, core, base, procs, procLinks, is, pills, pillLinks,
-          inStreams: ["M 195 592 L 195 614"], inArrow: "M 187 606 L 195 616 L 203 606",
-          outStreams: ["M 195 992 L 195 1014"], outArrow: "M 187 1008 L 195 1018 L 203 1008",
-          decLine: "M 195 1404 L 195 1426", decArrow: "M 187 1420 L 195 1430 L 203 1420",
-          panel: { x: 16, y: 1512, w: 358, rowH: 62, wrap: false }
-        };
-      })();
-
-      /* Layer surfaces: one small procedural raster per layer, coloured from the
-         ocean ramp. The ramp is the same in both themes, so each is built once
-         and cached across rebuilds. */
-      const DG_TN = 112, DG_TEX = new Map();
-      let DG_RGB = null;
-      function dgRgb() {
-        if (DG_RGB) return DG_RGB;
-        const s = getComputedStyle(document.documentElement);
-        DG_RGB = ["--b950", "--b900", "--b800", "--b700", "--b600", "--b500", "--b400", "--b300", "--b200", "--b100"].map(n => {
-          const h = s.getPropertyValue(n).trim();
-          return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-        });
-        return DG_RGB;
-      }
-      const dgFrac = x => x - Math.floor(x);
-      const dgSt = (n, lo, hi) => clamp01((n - lo) / (hi - lo));
-      /* each returns a 0..1 position on the ramp (dark → light); g = greyness */
-      const DG_FIELD = {
-        rain: { g: 0, f: (u, v) => { const n = dgSt(fbm(u * 3.2, v * 3.2, 3, 4), .25, .7), q = Math.floor(n * 7) / 7; return .12 + q * .85 + (dgFrac(n * 7) < .06 ? .08 : 0); } },
-        history: {
-          g: 0, f: (u, v) => {
-            const n = dgSt(fbm(u * 4, v * 4, 7, 4), .25, .7), r = Math.abs(v - .5 - .16 * Math.sin(u * 7 + 1.3) - (n - .5) * .12);
-            return r < .03 ? .92 : n > .62 ? .62 + (n - .62) * .8 : .1 + n * .25;
-          }
-        },
-        terrain: {
-          g: .15, f: (u, v) => {
-            const n = fbm(u * 3, v * 3, 11, 5), e = fbm(u * 3 + .03, v * 3 + .03, 11, 5), m = dgSt(n, .25, .7);
-            return .18 + m * .45 + (clamp01(.5 + (e - n) * 14) - .5) * .3 + (dgFrac(m * 10) < .06 ? .07 : 0);
-          }
-        },
-        drainage: {
-          g: 0, f: (u, v) => {
-            const n = fbm(u * 3.5, v * 3.5, 23, 4), m = fbm(u * 7, v * 7, 29, 3);
-            return Math.abs(n - .47) < .012 ? .9 : Math.abs(m - .47) < .008 ? .7 : .06 + dgSt(n, .25, .7) * .22;
-          }
-        },
-        satellite: {
-          g: .35, f: (u, v) => {
-            const w = fbm(u * 2, v * 2, 31, 2), r = h2(Math.floor(u * 8 + w * 1.6), Math.floor(v * 8 + w * 1.6), 5);
-            return .18 + r * .5 + (fbm(u * 16, v * 16, 37, 3) - .45) * .5;
-          }
-        },
-        climate: {
-          g: 0, f: (u, v) => {
-            const n = fbm(u * 2, v * 2, 41, 3), b = u * .9 + v * .7 + n * 1.1;
-            return .15 + .75 * (.5 + .5 * Math.sin(b * 8)) * (.6 + .4 * dgSt(n, .25, .7));
-          }
-        },
-        exposure: {
-          g: .75, f: (u, v) => {
-            const fu = u * 12, fv = v * 12;
-            if (dgFrac(fu) < .14 || dgFrac(fv) < .14) return .06;
-            if (fbm(u * 3, v * 3, 43, 2) > .56) return .42;
-            return .55 + h2(Math.floor(fu), Math.floor(fv), 9) * .42;
-          }
-        },
-        hazard: { g: 0, f: (u, v) => .08 + dgSt(fbm(u * 2.6, v * 2.6, 51, 4), .22, .72) * .92 },
-        expo2: {
-          g: .2, f: (u, v) => {
-            const fu = u * 10, fv = v * 10;
-            if (dgFrac(fu) < .13 || dgFrac(fv) < .13) return .08;
-            return .2 + dgSt(fbm(u * 2.4, v * 2.4, 55, 3), .25, .7) * .55 + h2(Math.floor(fu), Math.floor(fv), 11) * .2;
-          }
-        },
-        risk: { g: 0, f: (u, v) => .05 + Math.pow(dgSt(fbm(u * 3, v * 3, 61, 4), .25, .72), 1.8) * 1.05 },
-        scen: {
-          g: 0, f: (u, v) => {
-            const n = dgSt(fbm(u * 2.2, v * 2.2, 71, 3), .25, .7);
-            return .1 + Math.floor((n * .8 + u * .35) * 8) / 8 * .95;
-          }
-        }
-      };
-      function dgTexture(kind) {
-        let url = DG_TEX.get(kind);
-        if (url) return url;
-        const N = DG_TN, cv = document.createElement("canvas"); cv.width = cv.height = N;
-        const cx = cv.getContext("2d"), img = cx.createImageData(N, N), px = img.data, R = dgRgb(), F = DG_FIELD[kind];
-        for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
-          const t = clamp01(F.f(x / N, y / N)) * (R.length - 1), i = Math.min(R.length - 2, t | 0), k = t - i, a = R[i], b = R[i + 1];
-          let r = a[0] + (b[0] - a[0]) * k, g = a[1] + (b[1] - a[1]) * k, bl = a[2] + (b[2] - a[2]) * k;
-          if (F.g) { const l = r * .3 + g * .59 + bl * .11; r += (l - r) * F.g; g += (l - g) * F.g; bl += (l - bl) * F.g; }
-          const o = (y * N + x) * 4; px[o] = r; px[o + 1] = g; px[o + 2] = bl; px[o + 3] = 255;
-        }
-        cx.putImageData(img, 0, 0);
-        url = cv.toDataURL(); DG_TEX.set(kind, url);
-        return url;
-      }
-
-      /* own point helper: the IsoStack's ptsOf is declared further down (TDZ) */
-      const dgPts = (...p) => p.map(q => q[0] + "," + q[1]).join(" ");
-      const dgDiamond = (cx, cy, hw, hh) => [[cx, cy - hh], [cx + hw, cy], [cx, cy + hh], [cx - hw, cy]];
-      function dgText(parent, x, y, str, attrs) {
-        const t = mk("text", Object.assign({ x, y }, attrs || {}));
-        t.textContent = str; parent.appendChild(t); return t;
-      }
-      function dgIcon(parent, name, x, y, s) {
-        const g = mk("g", { transform: `translate(${x} ${y}) scale(${s || 1})` });
-        g.appendChild(mk("path", { d: DG_ICON[name], class: "dgIco" }));
-        parent.appendChild(g); return g;
-      }
-      /* a map layer: two shaded sides and the raster mapped onto the diamond.
-         matrix() carries the N×N image square exactly onto the top face. */
-      function dgSlab(cx, cy, hw, hh, dep, kind) {
-        const g = mk("g", { class: "dgLayer" }), [T, R, B, L] = dgDiamond(cx, cy, hw, hh), N = DG_TN;
-        const left = dgPts(L, B, [B[0], B[1] + dep], [L[0], L[1] + dep]), right = dgPts(B, R, [R[0], R[1] + dep], [B[0], B[1] + dep]);
-        g.appendChild(mk("polygon", { points: left, class: "side" }));
-        g.appendChild(mk("polygon", { points: left, class: "shadeL", "data-decorative": "" }));
-        g.appendChild(mk("polygon", { points: right, class: "side" }));
-        g.appendChild(mk("polygon", { points: right, class: "shadeR", "data-decorative": "" }));
-        g.appendChild(mk("image", {
-          href: dgTexture(kind), width: N, height: N, preserveAspectRatio: "none",
-          transform: `matrix(${hw / N} ${hh / N} ${-hw / N} ${hh / N} ${cx} ${cy - hh})`
-        }));
-        g.appendChild(mk("polygon", { points: dgPts(T, R, B, L), class: "edge" }));
-        return g;
-      }
-      function dgCard(x, y, w, h, icon, label, rx) {
-        const g = mk("g", { class: "dgCard" });
-        g.appendChild(mk("rect", { x, y, width: w, height: h, rx: rx || 10 }));
-        dgIcon(g, icon, x + 13, y + h / 2 - 11, .92);
-        dgText(g, x + 46, y + h / 2 + 6, label);
-        return g;
-      }
-
-      let DG = null;
-      function buildDecisionGap() {
-        const host = document.getElementById("dgStage");
-        if (!host) return;
-        const G = mqValue("(min-width: 900px)") ? DG_DESKTOP : DG_MOBILE;
-        const svg = mk("svg", {
-          viewBox: "0 0 " + G.W + " " + G.H, "aria-hidden": "true", focusable: "false",
-          preserveAspectRatio: "xMidYMid meet"
-        });
-        const defs = mk("defs", {}), rg = mk("radialGradient", { id: "dgGlow" });
-        rg.appendChild(mk("stop", { offset: "0%", class: "dgG0" }));
-        rg.appendChild(mk("stop", { offset: "100%", class: "dgG1" }));
-        defs.appendChild(rg); svg.appendChild(defs);
-
-        /* fades: opacity (+ optional drop / scale) over [a,b] of p.
-           draws: stroke draw-on over [a,b]. */
-        const fades = [], draws = [];
-        const fade = (el, a, b, dy, sc) => { fades.push({ el, a, b, dy: dy || 0, sc }); return el; };
-        const line = (parent, d, a, b, cls, flow) => {
-          const el = mk("path", { d, class: "dgDraw " + cls, pathLength: 1 });
-          parent.appendChild(el); draws.push({ el, a, b });
-          let fl = null;
-          if (flow) { fl = mk("path", { d, class: "dgFlow", "data-decorative": "" }); parent.appendChild(fl); }
-          return { el, fl };
-        };
-
-        /* ── core base: glow + rings, under everything ── */
-        const B0 = G.base, baseG = fade(mk("g", { "data-decorative": "" }), .40, .52);
-        baseG.appendChild(mk("ellipse", { cx: B0.cx, cy: B0.cy, rx: B0.rx * 1.25, ry: B0.ry * 1.25, fill: "url(#dgGlow)" }));
-        baseG.appendChild(mk("ellipse", { cx: B0.cx, cy: B0.cy, rx: B0.rx, ry: B0.ry, class: "dgRing" }));
-        baseG.appendChild(mk("ellipse", { cx: B0.cx, cy: B0.cy, rx: B0.rx * .72, ry: B0.ry * .72, class: "dgRing" }));
-        svg.appendChild(baseG);
-
-        /* ── connectors, so layers, cards and the core occlude their ends ── */
-        const lg = mk("g", {}); svg.appendChild(lg);
-        const chipLinks = G.chipLinks.map((d, i) => line(lg, d, .06 + i * .02, .12 + i * .02, "dgLink"));
-        const inStreams = G.inStreams.map((d, i) => line(lg, d, .26 + i * .012, .34 + i * .012, "dgStream", true));
-        const procLinks = G.procLinks.map(d => line(lg, d, .38, .46, "dgStream", true));
-        const outStreams = G.outStreams.map((d, i) => line(lg, d, .53 + i * .015, .60 + i * .015, "dgStream", true));
-        const pillLinks = G.pillLinks.map((d, j) => line(lg, d, .60 + j * .035, .67 + j * .035, "dgLink"));
-        line(lg, G.decLine, .74, .78, "dgStream");
-
-        /* ── data layers: painted bottom-up so each one overlaps the one below ── */
-        const ds = G.ds, dataLayers = [];
-        for (let i = DG_DATA.length - 1; i >= 0; i--) {
-          const s = dgSlab(ds.cx, ds.cys[i], ds.hw, ds.hh, ds.d, DG_DATA[i][2]);
-          fade(s, .05 + i * .025, .13 + i * .025, -24);
-          svg.appendChild(s); dataLayers[i] = s;
-        }
-        const dots = G.chipLinks.length ? ds.cys.map((y, i) => {
-          const c = fade(mk("circle", { cx: ds.cx - ds.hw, cy: y, r: 3.5, class: "dgDot" }), .10 + i * .02, .14 + i * .02);
-          svg.appendChild(c); return c;
-        }) : [];
-
-        /* ── the FloodGuard core ── */
-        const C = G.core, [T, R, Bt, L] = dgDiamond(C.cx, C.cy, C.hw, C.hh), dn = p => [p[0], p[1] + C.ht];
-        const coreG = fade(mk("g", { class: "dgCore" }), .42, .52, 0, [C.cx, C.cy + C.ht / 2]);
-        coreG.appendChild(mk("polygon", { points: dgPts(L, Bt, dn(Bt), dn(L)), class: "l" }));
-        coreG.appendChild(mk("polygon", { points: dgPts(Bt, R, dn(R), dn(Bt)), class: "r" }));
-        [.36, .7].forEach(k => {
-          const o = C.ht * k;
-          coreG.appendChild(mk("path", { d: `M ${L[0]} ${L[1] + o} L ${Bt[0]} ${Bt[1] + o} L ${R[0]} ${R[1] + o}`, class: "seam", "data-decorative": "" }));
-        });
-        coreG.appendChild(mk("polygon", { points: dgPts(T, R, Bt, L), class: "top" }));
-        coreG.appendChild(mk("polygon", { points: dgPts(...dgDiamond(C.cx, C.cy, C.hw * .8, C.hh * .8)), class: "seam", "data-decorative": "" }));
-        coreG.appendChild(mk("path", { d: `M ${L[0]} ${L[1]} L ${T[0]} ${T[1]} L ${R[0]} ${R[1]} L ${dn(R)[0]} ${dn(R)[1]} L ${dn(Bt)[0]} ${dn(Bt)[1]} L ${dn(L)[0]} ${dn(L)[1]} Z M ${L[0]} ${L[1]} L ${Bt[0]} ${Bt[1]} L ${R[0]} ${R[1]} M ${Bt[0]} ${Bt[1]} L ${dn(Bt)[0]} ${dn(Bt)[1]}`, class: "edge" }));
-        /* the logo mark, laid flat on the top face */
-        const ms = .62, mark = mk("g", {
-          transform: `matrix(${ms * C.hw / 24} ${ms * C.hh / 24} ${-ms * C.hw / 24} ${ms * C.hh / 24} ${C.cx} ${C.cy - ms * C.hh})`
-        });
-        mark.appendChild(mk("path", { d: "M2 12a10 10 0 1 0 20 0a10 10 0 1 0-20 0M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2", class: "mark" }));
-        coreG.appendChild(mark);
-        svg.appendChild(coreG);
-
-        /* ── intelligence layers ── */
-        const is = G.is, intelLayers = [];
-        for (let j = DG_INTEL.length - 1; j >= 0; j--) {
-          const s = dgSlab(is.cx, is.cys[j], is.hw, is.hh, is.d, DG_INTEL[j][2]);
-          fade(s, .56 + j * .035, .64 + j * .035, -20);
-          svg.appendChild(s); intelLayers[j] = s;
-        }
-
-        /* ── cards, heads, arrows, decision panel — always on top ── */
-        const chips = G.chips.map((c, i) => {
-          const g = fade(dgCard(c.x, c.y, c.w, c.h, DG_DATA[i][1], DG_DATA[i][0]), .02 + i * .02, .08 + i * .02, 10);
-          svg.appendChild(g); return g;
-        });
-        G.procs.forEach((b, i) => {
-          const g = mk("g", { class: "dgCard dgProc" });
-          g.appendChild(mk("rect", { x: b.x, y: b.y, width: b.w, height: b.h, rx: 10 }));
-          dgIcon(g, DG_PROC[i][2], b.x + b.w / 2 - 13, b.y + 13, 1.08);
-          dgText(g, b.x + b.w / 2, b.y + 60, DG_PROC[i][0], { "text-anchor": "middle" });
-          dgText(g, b.x + b.w / 2, b.y + 76, DG_PROC[i][1], { "text-anchor": "middle" });
-          svg.appendChild(fade(g, .30 + i * .03, .37 + i * .03, 10));
-        });
-        const pills = G.pills.map((c, j) => {
-          const g = fade(dgCard(c.x, c.y, c.w, c.h, DG_INTEL[j][1], DG_INTEL[j][0]), .60 + j * .035, .67 + j * .035);
-          svg.appendChild(g); return g;
-        });
-        const headAt = [[0, .06], [.28, .34], [.52, .58], [.74, .80]];
-        G.heads.forEach((h, i) => {
-          const g = mk("g", { class: "dgH" });
-          g.appendChild(mk("rect", { x: h.x, y: h.y + 4, width: 46, height: 30, rx: 15, class: "badge" }));
-          dgText(g, h.x + 23, h.y + 24.5, DG_HEAD[i][0], { class: "num", "text-anchor": "middle" });
-          dgText(g, h.x + 60, h.y + 26, DG_HEAD[i][1].toUpperCase(), { class: "ttl" });
-          dgText(g, h.x + 60, h.y + 52, DG_HEAD[i][2], { class: "sub" });
-          svg.appendChild(fade(g, headAt[i][0], headAt[i][1], 8));
-        });
-        svg.appendChild(fade(mk("path", { d: G.inArrow, class: "dgArrow" }), .36, .41));
-        svg.appendChild(fade(mk("path", { d: G.outArrow, class: "dgArrow" }), .52, .56));
-        svg.appendChild(fade(mk("path", { d: G.decArrow, class: "dgArrow" }), .76, .79));
-
-        const P = G.panel, n = DG_DECIDE.length;
-        svg.appendChild(fade(mk("rect", { x: P.x, y: P.y, width: P.w, height: n * P.rowH, rx: 16, class: "dgPanel" }), .76, .82));
-        DG_DECIDE.forEach((d, r) => {
-          const y = P.y + r * P.rowH, g = mk("g", { class: "dgRow" });
-          g.appendChild(mk("rect", { x: P.x + 8, y: y + 5, width: P.w - 16, height: P.rowH - 10, rx: 10, class: "hit" }));
-          if (r < n - 1) g.appendChild(mk("line", { x1: P.x + 20, y1: y + P.rowH, x2: P.x + P.w - 20, y2: y + P.rowH, class: "dgDiv" }));
-          dgIcon(g, d[1], P.x + 22, y + P.rowH / 2 - 12, 1);
-          if (d[2] && P.wrap) {
-            dgText(g, P.x + 62, y + P.rowH / 2 - 4, d[0]);
-            dgText(g, P.x + 62, y + P.rowH / 2 + 17, d[2]);
-          } else dgText(g, P.x + 62, y + P.rowH / 2 + 6, d[2] ? d[0] + " " + d[2] : d[0]);
-          const cy = y + P.rowH / 2;
-          g.appendChild(mk("path", { d: `M ${P.x + P.w - 30} ${cy - 6} l 6 6 -6 6`, class: "chev" }));
-          svg.appendChild(fade(g, .78 + r * .022, .84 + r * .022, 8));
-        });
-
-        host.innerHTML = ""; host.appendChild(svg);
-        DG = { svg, host, fades, draws, feat: document.getElementById("dgFeat"), last: -1 };
-
-        /* Fine pointer: hovering an input or an insight lights its layer and
-           its stream, and the rest recede. */
-        const sets = {
-          data: DG_DATA.map((_, i) => ({ card: chips[i], layer: dataLayers[i], els: [chipLinks[i], inStreams[i], dots[i]] })),
-          intel: DG_INTEL.map((_, j) => ({ card: pills[j], layer: intelLayers[j], els: [pillLinks[j], outStreams[j]] }))
-        };
-        const setLit = (key, idx) => {
-          sets[key].forEach((s, k) => {
-            const dim = idx >= 0 && k !== idx, lit = k === idx;
-            [s.card, s.layer].forEach(el => { el.classList.toggle("dgDim", dim); el.classList.toggle("dgLit", lit); });
-            s.els.forEach(e => {
-              if (!e) return;
-              const list = e.el ? [e.el, e.fl] : [e];
-              list.forEach(x => x && x.classList.toggle("dgDim", dim));
-            });
-          });
-        };
-        if (finePointer()) Object.keys(sets).forEach(key => sets[key].forEach((s, i) => {
-          [s.card, s.layer].forEach(el => {
-            el.addEventListener("pointerenter", () => setLit(key, i));
-            el.addEventListener("pointerleave", () => setLit(key, -1));
-          });
-        }));
-
-        inViewPause(host);
-        /* the whole diagram at once — no scroll-driven build */
-        paintDecisionGap(1, true);
-      }
-
-      function paintDecisionGap(p, force) {
-        if (!DG) return;
-        if (!force && Math.abs(p - DG.last) < .0015) return;
-        DG.last = p;
-        for (const f of DG.fades) {
-          const e = easeOut(seg(p, f.a, f.b));
-          f.el.setAttribute("opacity", e.toFixed(3));
-          let tr = "";
-          if (f.dy) tr += "translate(0 " + (f.dy * (1 - e)).toFixed(2) + ")";
-          if (f.sc) tr += " translate(" + f.sc[0] + " " + f.sc[1] + ") scale(" + (.86 + .14 * e).toFixed(4) + ") translate(" + (-f.sc[0]) + " " + (-f.sc[1]) + ")";
-          if (tr) f.el.setAttribute("transform", tr);
-        }
-        for (const d of DG.draws) d.el.style.strokeDashoffset = String(1 - seg(p, d.a, d.b));
-        DG.svg.classList.toggle("dgOn", p >= .95 && !RM);
-        if (DG.feat) DG.feat.classList.toggle("on", p > .9);
-      }
-
-      buildDecisionGap();
-      /* the two viewBoxes are different diagrams, so crossing 900px rebuilds */
-      onMq("(min-width: 900px)", () => buildDecisionGap());
-      onMq(TALL_Q, () => buildDecisionGap());
-      onMq(REDUCE_Q, () => buildDecisionGap());
 
 
       /*── Footer: year, and back-to-top (spec §5.7) ──*/
@@ -7433,617 +5860,6 @@
         });
       }
 
-
-      /*═══════════════════════════════════════════════════════════════
-        §06 — Tide reveal (spec §5.4)
-        Wave paths are built once at module scope. Each is closed and
-        tileable, and every band renders a viewBox twice its container so
-        a -50% translate loops seamlessly.
-      ═══════════════════════════════════════════════════════════════*/
-      /** Closed, horizontally tileable wave fill. width must be a multiple of wavelength. */
-      function waveFill(width, height, amp, wavelength, baseY) {
-        const half = wavelength / 2;
-        let d = "M0 " + baseY;
-        for (let x = 0; x < width; x += wavelength)d += " q " + (half / 2) + " " + (-amp) + " " + half + " 0 t " + half + " 0";
-        return d + " V " + height + " H 0 Z";
-      }
-      /* Four crests, not three, and each one is two superimposed waveFills (a
-         primary + an echo of a different wavelength, drifting at its own speed)
-         instead of a single sine — a lone crest reads as "a line"; two waves of
-         different periods overlapping unevenly read as choppy, moving water.
-         Both wavelengths in every pair must divide 2400 evenly (waveFill's own
-         tiling requirement) — this is why they're not round numbers. */
-      const TIDE_BAND = [
-        waveFill(2400, 180, 14, 400, 40),
-        waveFill(2400, 180, 11, 300, 64),
-        waveFill(2400, 180, 8, 200, 90),
-        waveFill(2400, 180, 6, 150, 112)
-      ];
-      const TIDE_BAND_ECHO = [
-        waveFill(2400, 180, 10, 480, 46),
-        waveFill(2400, 180, 8, 240, 70),
-        waveFill(2400, 180, 6, 160, 96),
-        waveFill(2400, 180, 5, 120, 116)
-      ];
-      const TIDE_COVER = [waveFill(2400, 400, 18, 400, 24), waveFill(2400, 400, 12, 300, 44)];
-      /* light enough that the crests read as separate water lines rather
-         than one dark bar across the page */
-      const TIDE_BAND_FILL = ["var(--b900)", "var(--b800)", "var(--b600)", "var(--b400)"];
-      const TIDE_BAND_ALPHA = [.16, .22, .3, .42];
-      const TIDE_DRIFT = ["22s", "18s", "27s", "33s"];
-      const TIDE_DRIFT2 = ["31s", "24s", "36s", "44s"];
-
-      /* one instance per section using the platform card-reveal: Platform */
-      const TIDE_SECTIONS = [["tideBand", "platList", "platGauge"]];
-      let TIDES = [];
-      function buildTide() { TIDES = TIDE_SECTIONS.map(s => buildTideOne(...s)).filter(Boolean); }
-      function buildTideOne(bandId, listId, gaugeId) {
-        const band = bandId && document.getElementById(bandId);
-        const list = document.getElementById(listId);
-        if (!list) return null;
-        const narrow = !mqValue("(min-width: 900px)");
-        const still = document.body.classList.contains("nopin") || RM;
-
-        /* ── the band ── */
-        if (band) band.innerHTML = "";
-        const bandLayers = !band ? [] : TIDE_BAND.map((d, k) => {
-          /* the scroll-driven separation (runTide) goes on this wrapper — the two
-             waves inside keep their own independent CSS drift animations on
-             `transform`, and an animated property always wins over anything else
-             written to it, so the scroll offset can't live on the same element */
-          const wrap = document.createElement("div");
-          wrap.className = "tbLayerWrap";
-          const svg = mk("svg", {
-            viewBox: "0 0 2400 180", preserveAspectRatio: "none",
-            "aria-hidden": "true", focusable: "false", class: "tbLayer"
-          });
-          const path = mk("path", { d, fill: TIDE_BAND_FILL[k], opacity: TIDE_BAND_ALPHA[k], "data-decorative": "" });
-          /* a thin high-contrast duplicate along the same crest, so it reads as a
-             lit edge rather than a flat fill boundary — no filter, just a second
-             stroke-only path (spec §4.7: duplicated stroke instead of drop-shadow) */
-          const foam = mk("path", {
-            d, fill: "none", stroke: TIDE_BAND_FILL[k], "stroke-width": 2.5,
-            opacity: Math.min(.9, TIDE_BAND_ALPHA[k] + .3), "data-decorative": ""
-          });
-          svg.appendChild(path); svg.appendChild(foam);
-          if (!still) { svg.classList.add("tbDrift"); svg.style.setProperty("--d", TIDE_DRIFT[k]); }
-          wrap.appendChild(svg);
-          /* a second, independent wave (own wavelength, own drift speed) layered
-             on top — one crest alone reads as a static line; two of different
-             periods sliding past each other read as choppy, moving water */
-          const svg2 = mk("svg", {
-            viewBox: "0 0 2400 180", preserveAspectRatio: "none",
-            "aria-hidden": "true", focusable: "false", class: "tbLayer"
-          });
-          const echo = mk("path", {
-            d: TIDE_BAND_ECHO[k], fill: TIDE_BAND_FILL[k],
-            opacity: (TIDE_BAND_ALPHA[k] * .55).toFixed(3), "data-decorative": ""
-          });
-          svg2.appendChild(echo);
-          if (!still) { svg2.classList.add("tbDrift2"); svg2.style.setProperty("--d", TIDE_DRIFT2[k]); }
-          wrap.appendChild(svg2);
-          band.appendChild(wrap);
-          return { wrap, svg, path, svg2 };
-        });
-
-        /* ── one cover per card ── */
-        const cards = [...list.querySelectorAll(".platCard")].map(card => {
-          card.querySelectorAll(".platCover").forEach(n => n.remove());
-          const body = card.querySelector(".platBody");
-          if (still) { body.style.opacity = ""; body.style.transform = ""; return { card, body, cover: null }; }
-          const cover = document.createElement("div");
-          cover.className = "platCover";
-          const svg = mk("svg", {
-            viewBox: "0 0 2400 400", preserveAspectRatio: "none",
-            "aria-hidden": "true", focusable: "false"
-          });
-          /* under 900 one path is enough — a second one is invisible at that size
-             and doubles the fill cost on exactly the devices that can least afford it */
-          const paths = (narrow ? TIDE_COVER.slice(0, 1) : TIDE_COVER);
-          paths.forEach((d, k) => svg.appendChild(mk("path", {
-            d, fill: "var(--bg)",
-            opacity: k === 0 ? 1 : .6, "data-decorative": ""
-          })));
-          if (!narrow && finePointer()) svg.classList.add("pcDrift");
-          cover.appendChild(svg);
-          card.appendChild(cover);
-          return { card, body, cover };
-        });
-
-        /* ── the gauge ── */
-        const gauge = document.getElementById(gaugeId);
-        const fill = gauge && gauge.querySelector(".gaugeFill");
-        const ticksHost = gauge && gauge.querySelector(".gaugeTicks");
-        let ticks = [];
-        if (ticksHost) {
-          ticksHost.innerHTML = "";
-          ticks = cards.map((c, i) => {
-            const b = document.createElement("b");
-            b.textContent = c.card.querySelector("h3").textContent;
-            /* Reading order, top to bottom — the same order as the cards. The spec
-               describes a rising water level, but the ticks index the list, and a
-               gauge that runs opposite to the text it labels misreads at a glance.
-               Kept as depth instead: you descend through the platform. */
-            b.style.top = ((i / Math.max(1, cards.length - 1)) * 100).toFixed(2) + "%";
-            ticksHost.appendChild(b);
-            return b;
-          });
-        }
-
-        const TIDE = {
-          band, bandLayers, list, cards, fill, ticks, still, last: -2, lastY: -1,
-          bandG: band ? trackGeom(band) : null, listG: trackGeom(list)
-        };
-        cards.forEach(c => { c.g = trackGeom(c.card); });
-        if (still) {
-          if (fill) fill.style.setProperty("--g", 1);
-          ticks.forEach(t => t.classList.add("on"));
-        } else if (ticks.length) {
-          activeStep(list, i => ticks.forEach((t, k) => t.classList.toggle("on", k === i)), ".platCard");
-        }
-        if (band) inViewPause(band);
-        inViewPause(list);
-        return TIDE;
-      }
-
-      function runTide() { for (const T of TIDES) runTideOne(T); }
-      function runTideOne(TIDE) {
-        if (!TIDE || TIDE.still) return;
-        /* Skipping while the section is off-screen looks like a free win and is
-           not: offsetProgress clamps, so a card above the viewport reads 1 and one
-           below reads 0 — but only if the maths actually runs. Bail out on a
-           section that was jumped straight past and its covers stay shut forever.
-           Gate on the scroll having moved instead, which skips the same idle
-           frames without ever leaving a card stranded. */
-        if (TIDE.lastY === cur) return;
-        TIDE.lastY = cur;
-        /* band: the layers separate vertically — the tide opening. Eased, not
-           linear, so the separation settles instead of moving at a constant rate. */
-        const bp = TIDE.bandG ? easeOut(offsetProgress(TIDE.bandG, 1, .3)) : 0;
-        const sep = [0, 18, 36, 58];
-        TIDE.bandLayers.forEach((L, k) => {
-          L.wrap.style.transform = "translateY(" + (-bp * sep[k]).toFixed(1) + "px)";
-          if (k === TIDE.bandLayers.length - 1) L.path.setAttribute("opacity", (TIDE_BAND_ALPHA[k] * (1 - bp * .65)).toFixed(3));
-        });
-
-        /* cards: the cover slides down past the bottom, uncovering the top first.
-           Eased so the water decelerates as it recedes instead of sliding at a
-           constant rate. */
-        const narrow = !mqValue("(min-width: 900px)");
-        const a = narrow ? .95 : .92, b = narrow ? .65 : .5;
-        for (const c of TIDE.cards) {
-          if (!c.cover) continue;
-          const q = offsetProgress(c.g, a, b), qe = easeOut(q);
-          c.cover.style.transform = "translateY(" + (qe * 105).toFixed(2) + "%)";
-          const r = seg(q, .2, 1);
-          c.body.style.opacity = r.toFixed(3);
-          c.body.style.transform = "translateY(" + ((1 - r) * 20).toFixed(1) + "px)";
-        }
-
-        /* gauge: the level rises with progress through the list */
-        if (TIDE.fill) {
-          const g = offsetProgress(TIDE.listG, .9, -.2);
-          if (Math.abs(g - TIDE.last) > .002) { TIDE.last = g; TIDE.fill.style.setProperty("--g", g.toFixed(4)); }
-        }
-      }
-
-      buildTide();
-      onMq("(min-width: 900px)", () => buildTide());
-      onMq(TALL_Q, () => buildTide());
-      onMq(REDUCE_Q, () => buildTide());
-
-      /*═══════════════════════════════════════════════════════════════
-        §05 — IsoStack (spec §5.3)
-        Dimetric 2:1 slabs, bottom-up. Paint order is i = 0 … n-1 so an
-        upper slab overlaps the one below it. Geometry is computed once at
-        module scope — never per frame.
-      ═══════════════════════════════════════════════════════════════*/
-      const ISO = { cx: 200, halfW: 155, halfH: 78, depth: 14, gap: 88, pad: 32 };
-      /* i = 0 is the BOTTOM layer (revealed first); the top layer has the smallest cy */
-      const layerCy = (i, n) => ISO.pad + ISO.halfH + (n - 1 - i) * ISO.gap;
-      const viewBoxH = n => ISO.pad * 2 + ISO.halfH * 2 + (n - 1) * ISO.gap + ISO.depth;
-      const ptsOf = (...p) => p.map(([x, y]) => x + "," + y).join(" ");
-      function isoBox(cx, cy, halfW, halfH, d) {
-        const T = [cx, cy - halfH], R = [cx + halfW, cy], B = [cx, cy + halfH], L = [cx - halfW, cy];
-        return {
-          top: ptsOf(T, R, B, L),
-          left: ptsOf(L, B, [B[0], B[1] + d], [L[0], L[1] + d]),
-          right: ptsOf(B, R, [R[0], R[1] + d], [B[0], B[1] + d])
-        };
-      }
-      function slab(cy) { return isoBox(ISO.cx, cy, ISO.halfW, ISO.halfH, ISO.depth); }
-      /* extruded blocks standing on the top ("Decision") layer — the reference
-         prompt's "top grid with extruded 3D geometric buildings". Each is the
-         same dimetric box as a slab, just anchored at its own footprint and
-         built roof-down to ground level so it reads as rising off the surface,
-         not sunk into it. */
-      const ISO_BUILDINGS = [
-        { dx: -96, dy: 18, w: 16, h: 11, ht: 30 },
-        { dx: -58, dy: -22, w: 13, h: 10, ht: 54 },
-        { dx: -8, dy: 14, w: 15, h: 11, ht: 40 },
-        { dx: 34, dy: -16, w: 12, h: 9, ht: 64 },
-        { dx: 76, dy: 12, w: 14, h: 10, ht: 24 },
-        { dx: 112, dy: -8, w: 11, h: 9, ht: 46 }
-      ];
-      /* ── per-layer heat grid ───────────────────────────────────────────
-         Every slab's top face is subdivided into an isometric grid of small
-         cells, each tinted by two independent smooth-noise fields — a blue one
-         and a neutral-grey one — so the face reads as a real data surface (a
-         risk heatmap) rather than a flat colour or a decorative pattern.
-         (a,b) run over [-1,1]; isoPt is an exact affine map of that square onto
-         the diamond, so a uniform (a,b) grid tiles the face with no clipping. */
-      const isoPt = (cy, a, b, h = 0) => [ISO.cx + (a - b) * ISO.halfW / 2, cy + (a + b) * ISO.halfH / 2 - h];
-      const f1 = v => (+v).toFixed(1);
-      const isoPts = ps => ps.map(p => f1(p[0]) + "," + f1(p[1])).join(" ");
-      function isoGrow(x, y, delay) {
-        const w = mk("g", { class: "isoBldg" });
-        w.style.transformOrigin = f1(x) + "px " + f1(y) + "px";
-        w.style.transitionDelay = delay + "ms";
-        return w;
-      }
-      const ISO_HEAT_N = 6;
-      function isoHeatGrid(cy, seed) {
-        const g = mk("g", { class: "isoHeat", "data-decorative": "" });
-        const step = 2 / ISO_HEAT_N, s0 = seed * 7.3;
-        /* one polygon per cell (fill + grid-line stroke together), not a
-           wrapper <g> plus up to two polygons — a third the DOM nodes across
-           five stacked layers, which is what was actually behind the scroll
-           feeling heavier since this section's illustrations changed */
-        for (let j = 0; j < ISO_HEAT_N; j++)for (let i = 0; i < ISO_HEAT_N; i++) {
-          const a0 = -1 + i * step, b0 = -1 + j * step, a1 = a0 + step, b1 = b0 + step, ac = a0 + step / 2, bc = b0 + step / 2;
-          const poly = isoPts([isoPt(cy, a0, b0), isoPt(cy, a1, b0), isoPt(cy, a1, b1), isoPt(cy, a0, b1)]);
-          const vb = fbm(ac * 1.6 + s0, bc * 1.6 + s0, seed * 2 + 1, 3);
-          const vg = fbm(ac * 1.9 - s0, bc * 1.9 - s0, seed * 2 + 19, 3);
-          let fill = "none", fo = 0;
-          if (vg > .6) { fill = "var(--ink3)"; fo = .12 + Math.min(.3, (vg - .6) * 1.2); }
-          else if (vb > .52) { fill = "var(--iso-heat)"; fo = .16 + Math.min(.55, (vb - .52) * 1.35); }
-          g.appendChild(mk("polygon", { points: poly, fill, "fill-opacity": fo.toFixed(3),
-            stroke: "var(--line2)", "stroke-width": .6, "stroke-opacity": .6 }));
-        }
-        return g;
-      }
-      /* dashed connectors at both side corners, between layer i and i+1 */
-      function connectors(i, n) {
-        const yUpper = layerCy(i + 1, n) + ISO.depth, yLower = layerCy(i, n);
-        return [ISO.cx - ISO.halfW, ISO.cx + ISO.halfW].map(x => ({ x, y1: yLower, y2: yUpper }));
-      }
-
-
-      function buildIsoStack() {
-        const root = document.getElementById("isoRoot");
-        const host = document.getElementById("isoStage");
-        if (!root || !host) return;
-        const steps = [...root.querySelectorAll(".isoStep")];
-        const n = steps.length;
-        if (!n) return;
-        const wide = 1200;
-        const vbW = innerWidth >= wide ? 560 : 400;
-        const vbH = viewBoxH(n);
-        const svg = mk("svg", {
-          viewBox: (vbW === 560 ? -80 : 0) + " 0 " + vbW + " " + vbH,
-          "aria-hidden": "true", focusable: "false", preserveAspectRatio: "xMidYMid meet"
-        });
-
-        /* connectors go under every slab so the slabs occlude them correctly */
-        const connG = mk("g", {}); svg.appendChild(connG);
-        const conns = [];
-        for (let i = 0; i < n - 1; i++) {
-          const g = mk("g", { class: "isoConn" });
-          connectors(i, n).forEach(c => {
-            g.appendChild(mk("line", {
-              x1: c.x, y1: c.y1, x2: c.x, y2: c.y2,
-              stroke: "var(--line2)", "stroke-width": 1, "stroke-dasharray": "3 5", "data-decorative": ""
-            }));
-          });
-          connG.appendChild(g); conns.push(g);
-        }
-
-        const slabs = [], labels = [];
-        for (let i = 0; i < n; i++) {
-          const cy = layerCy(i, n), sp = slab(cy), fill = "var(--iso-l" + (i + 1) + ")";
-          const g = mk("g", { class: "isoSlab" });
-          /* sides carry the depth ramp; the top face is a light data surface
-             (isoHeatGrid) instead of a flat colour */
-          g.appendChild(mk("polygon", { points: sp.left, fill }));
-          g.appendChild(mk("polygon", { points: sp.left, fill: "var(--iso-side-left)", "data-decorative": "" }));
-          g.appendChild(mk("polygon", { points: sp.right, fill }));
-          g.appendChild(mk("polygon", { points: sp.right, fill: "var(--iso-side-right)", "data-decorative": "" }));
-          g.appendChild(mk("polygon", { points: sp.top, fill: "var(--iso-face)" }));
-          g.appendChild(isoHeatGrid(cy, i));
-          /* glow = a second stroked polygon, never a CSS filter — drop-shadow on
-             five stacked slabs is the single most expensive thing you can ask a
-             mid-range Android GPU to do per frame (spec §4.7) */
-          const glow = mk("polygon", {
-            points: sp.top, fill: "none", stroke: "var(--brand)",
-            "stroke-width": 8, opacity: 0, "data-decorative": ""
-          });
-          glow.classList.add("isoGlow");
-          g.appendChild(glow);
-          const edge = mk("polygon", { points: sp.top, fill: "none", stroke: "var(--line2)", "stroke-width": 1 });
-          edge.classList.add("isoEdge");
-          g.appendChild(edge);
-          /* under 1200 there's no room for outside labels — the face carries the index */
-          if (vbW === 400) {
-            const num = mk("text", { x: ISO.cx, y: cy + 5, "text-anchor": "middle", class: "isoNum" });
-            num.textContent = String(i + 1).padStart(2, "0");
-            g.appendChild(num);
-          }
-          /* the top layer alone carries the skyline standing on its heat grid */
-          if (i === n - 1) {
-            const bldgs = mk("g", { class: "isoBldgs", "data-decorative": "" });
-            ISO_BUILDINGS.forEach((b, bi) => {
-              const bx = ISO.cx + b.dx, groundY = cy + b.dy, roofY = groundY - b.ht;
-              const bp = isoBox(bx, roofY, b.w, b.h, b.ht);
-              const bwrap = isoGrow(bx, groundY, 90 + bi * 65);
-              bwrap.appendChild(mk("polygon", { points: bp.left, fill: "var(--iso-l" + n + ")" }));
-              bwrap.appendChild(mk("polygon", { points: bp.left, fill: "var(--iso-side-left)" }));
-              bwrap.appendChild(mk("polygon", { points: bp.right, fill: "var(--iso-l" + n + ")" }));
-              bwrap.appendChild(mk("polygon", { points: bp.right, fill: "var(--iso-side-right)" }));
-              bwrap.appendChild(mk("polygon", { points: bp.top, fill: "var(--brand)" }));
-              bwrap.appendChild(mk("polygon", { points: bp.top, fill: "none", stroke: "var(--line2)", "stroke-width": .75 }));
-              bldgs.appendChild(bwrap);
-            });
-            g.appendChild(bldgs);
-          }
-          svg.appendChild(g); slabs.push({ g, glow, edge });
-
-          if (vbW === 560) {
-            const lx = ISO.cx + ISO.halfW, lg = mk("g", { class: "isoLabel" });
-            lg.appendChild(mk("line", { x1: lx, y1: cy, x2: lx + 24, y2: cy, stroke: "var(--line2)", "stroke-width": 1 }));
-            const tn = mk("text", { x: lx + 32, y: cy + 5 });
-            const num = mk("tspan", { class: "n" }); num.textContent = String(i + 1).padStart(2, "0") + "  ";
-            tn.appendChild(num);
-            tn.appendChild(document.createTextNode(steps[i].querySelector("h3").textContent));
-            lg.appendChild(tn);
-            svg.appendChild(lg); labels.push(lg);
-          }
-        }
-
-        /* the particle rides the connector into the newest layer — data arriving */
-        const particle = mk("circle", { r: 3, fill: "var(--brand)", opacity: 0, "data-decorative": "" });
-        const pMotion = mk("animateMotion", { dur: "1.4s", repeatCount: "indefinite", path: "M0,0 L0,0" });
-        particle.appendChild(pMotion);
-        svg.appendChild(particle);
-
-        host.innerHTML = ""; host.appendChild(svg);
-
-        let active = -1;
-        function paint(a) {
-          active = a;
-          slabs.forEach((s, i) => {
-            const on = i <= a, act = i === a;
-            s.g.classList.toggle("on", on);
-            s.g.classList.toggle("act", act);
-            s.glow.setAttribute("opacity", act ? .18 : 0);
-            s.edge.setAttribute("stroke", act ? "var(--brand)" : "var(--line2)");
-            s.edge.setAttribute("stroke-width", act ? 2.5 : 1);
-          });
-          conns.forEach((g, i) => g.classList.toggle("on", i + 1 <= a));
-          labels.forEach((g, i) => g.classList.toggle("on", i <= a));
-          if (a > 0 && !RM) {
-            const c = connectors(a - 1, n)[1];
-            particle.setAttribute("cx", c.x); particle.setAttribute("cy", c.y1);
-            pMotion.setAttribute("path", "M0,0 L0," + (c.y2 - c.y1));
-            particle.setAttribute("opacity", 1);
-          } else particle.setAttribute("opacity", 0);
-        }
-        /* the layer chosen with the steps list / buttons (see isoGo) */
-        paint(isoCur);
-        /* SMIL keeps ticking off-screen unless it's told not to */
-        inViewPause(host, on => {
-          if (!svg.pauseAnimations) return;
-          if (on) svg.unpauseAnimations(); else svg.pauseAnimations();
-        });
-        ISOSTACK = { root, host, paint, n };
-      }
-      let ISOSTACK = null, isoCur = 0;
-      buildIsoStack();
-      /* crossing the 1200px label threshold changes the viewBox, so rebuild */
-      onMq("(min-width: 1200px)", () => buildIsoStack());
-      onMq(TALL_Q, () => buildIsoStack());
-      /* the steps are buttons: click one, or step with Previous / Next */
-      const isoSteps = [...document.querySelectorAll("#isoRoot .isoStep")];
-      const isoNav = document.getElementById("isoNav");
-      const isoPrev = isoNav.querySelector('[data-dir="-1"]'), isoNext = isoNav.querySelector('[data-dir="1"]');
-      function isoGo(i) {
-        const n = isoSteps.length;
-        isoCur = clamp(i, 0, n - 1);
-        if (ISOSTACK) ISOSTACK.paint(isoCur);
-        isoSteps.forEach((st, k) => {
-          st.classList.toggle("on", k === isoCur);
-          st.setAttribute("aria-pressed", String(k === isoCur));
-        });
-        isoPrev.disabled = isoCur === 0;
-        isoNext.querySelector("span").textContent = isoCur === n - 1 ? "Back to first" : "Next layer";
-      }
-      isoSteps.forEach((st, k) => {
-        st.tabIndex = 0;
-        st.setAttribute("role", "button");
-        st.addEventListener("click", () => isoGo(k));
-        st.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); isoGo(k); } });
-      });
-      isoPrev.addEventListener("click", () => isoGo(isoCur - 1));
-      isoNext.addEventListener("click", () => isoGo(isoCur === isoSteps.length - 1 ? 0 : isoCur + 1));
-      isoGo(0);
-
-      /*── WHY: pinned stack that unfolds one card at a time ──*/
-      const WHY = [
-        ["M3 12h4l3-8 4 16 3-8h4", "The foundation", "75+ years",
-          "Of observations — an observed foundation, not a modelled average",
-          [["From", "1951"], ["Through", "2025"], ["Cadence", "Daily"]],
-          "Rainfall, river levels and recorded flood events, held as one continuous series."],
-        ["M4 19V9m5 10V5m5 14v-7m5 7V8", "The resolution", "District → taluka",
-          "Intelligence resolved to the scale decisions are actually made at",
-          [["States / UTs", "36"], ["Districts", "766"], ["Talukas", "6,512"]],
-          "Start at a state, drill to the taluka a single asset actually sits in."],
-        ["M12 3a9 9 0 1 0 9 9M12 3v9l6.4 6.4", "The horizon", "Across time",
-          "Historical, current and future in a single consistent view",
-          [["Historical", "1951–2024"], ["Current", "Live"], ["Projected", "2030 · 2050 · 2100"]],
-          "One method across all three horizons, so the numbers stay comparable."],
-        ["M3 17l6-6 4 4 8-8", "The output", "Decision-ready",
-          "Science-driven analysis, delivered as something you can act on",
-          [["Outputs", "Scores · depths"], ["Delivery", "API · CSV · dashboard"], ["Uncertainty", "Always stated"]],
-          "Every figure ships with the confidence attached to it, not stripped off."]];
-      const stackStage = document.getElementById("stackStage"), stackTicks = document.getElementById("stackTicks"), stackI = document.getElementById("stackI");
-      const SC = WHY.map(([p, eye, n, l, facts, note], i) => {
-        const d = document.createElement("article"); d.className = "scard glass";
-        /* all static authored copy — no user input reaches this markup */
-        d.innerHTML = '<div class="shead"><div class="ic"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="' + p + '"/></svg></div>' +
-          '<span class="seye">' + eye + '</span></div>' +
-          '<b>' + n + '</b><em>' + l + '</em>' +
-          '<div class="sfacts">' + facts.map(([k, v]) => '<div><span>' + k + '</span><b>' + v + '</b></div>').join('') + '</div>' +
-          '<p class="snote">' + note + '</p>';
-        stackStage.appendChild(d);
-        const t = document.createElement("i"); stackTicks.appendChild(t);
-        return { el: d, tick: t };
-      });
-      /* the stack moves to whyIdx, set by the buttons — never by scroll */
-      let stackA = 0, stackSettled = false, whyIdx = 0, stackT = 0;
-      function runStack() {
-        if (stackSettled) return;
-        const N = SC.length, tgt = whyIdx;
-        /* eased by real elapsed time (not the loop's capped step), so a card
-           lands in about half a second even on a device dropping frames */
-        const now = performance.now(), sdt = stackT ? Math.min(.25, (now - stackT) / 1000) : 0;
-        stackT = now;
-        stackSettled = Math.abs(stackA - tgt) < .001;
-        stackA = RM || stackSettled ? tgt : lerp(stackA, tgt, 1 - Math.exp(-sdt * 10));
-        if (stackSettled) stackT = 0;
-        /* Opacity holds flat at 1 while a card is centered/in-frame and only
-           starts falling once it's meaningfully on its way in or out — the old
-           curve (1-d*.3 / 1+d*1.5) started fading the instant d left exactly 0,
-           so a card was never fully opaque except at the precise rest position
-           and the incoming/outgoing pair spent most of the scroll half-and-half. */
-        const AHEAD_HOLD = .18;
-        SC.forEach((c, i) => {
-          const d = i - stackA;
-          let y, s, o, rx, z;
-          if (d >= 0) { y = d * 26; s = 1 - d * .05; o = clamp(1 - Math.max(0, d - AHEAD_HOLD) * (1 / (1 - AHEAD_HOLD)), 0, 1); rx = -d * 3; z = 100 - i; }
-          /* the card on its way out stays solid and slides up until it is
-             clear of the stage, whose top edge clips it (see .stackStage) —
-             it uncovers the next card cleanly and never turns see-through
-             over it. (Fading it while it still overlapped left two
-             half-transparent cards with their text printed over each other.) */
-          else { y = d * (c.el.parentElement.clientHeight / 2 + c.el.offsetHeight / 2 + 24); s = 1 + (-d) * .02; o = d > -.97 ? 1 : 0; rx = -d * 6; z = 300 + i; }
-          c.el.style.transform = `translate3d(0,calc(-50% + ${y.toFixed(1)}px),0) scale(${clamp(s, .7, 1).toFixed(3)}) rotateX(${rx.toFixed(1)}deg)`;
-          c.el.style.opacity = o.toFixed(3);
-          c.el.style.zIndex = z;
-          c.el.style.pointerEvents = Math.abs(d) < .5 ? "auto" : "none";
-          c.tick.style.setProperty("--f", clamp(stackA - i + 1, 0, 1));
-        });
-        stackI.textContent = String(Math.min(N, Math.round(stackA) + 1)).padStart(2, "0");
-      }
-
-      const whyNav = document.getElementById("whyNav");
-      const whyPrev = whyNav.querySelector('[data-dir="-1"]'), whyNext = whyNav.querySelector('[data-dir="1"]');
-      function whyGo(i) {
-        const N = SC.length;
-        whyIdx = clamp(i, 0, N - 1);
-        stackSettled = false;
-        whyPrev.disabled = whyIdx === 0;
-        whyNext.querySelector("span").textContent = whyIdx === N - 1 ? "Back to first" : "Next card";
-        SC.forEach((c, k) => { c.el.inert = k !== whyIdx; });
-      }
-      whyPrev.addEventListener("click", () => whyGo(whyIdx - 1));
-      whyNext.addEventListener("click", () => whyGo(whyIdx === SC.length - 1 ? 0 : whyIdx + 1));
-      whyGo(0);
-
-      /*── ABOUT: branching tree (relocated from Solutions — spec: parked, reused
-         smaller). Same mechanism, now carrying the About copy. ──*/
-      const IND = [
-        ["M6 21V9l6-4 6 4v12M10 21v-5h4v5", "Who we are", "FloodGuard Solutions Pvt. Ltd., founded 2025 in Hyderabad; a DPIIT-recognised startup."],
-        ["M12 3 3 8l9 5 9-5-9-5Z M3 13l9 5 9-5M3 18l9 5 9-5", "What we build", "Flood intelligence across time — historical, current and future — turned into decision-ready insight."],
-        ["M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75", "Who we serve", "Governments, insurers, banks, infrastructure and agriculture."],
-        ["M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z", "Backed by", "T-Hub and WE-Hub."]];
-      const treeEl = document.getElementById("tree"), treeSvg = document.getElementById("treeSvg");
-      const SVGNS = "http://www.w3.org/2000/svg";
-      const NODES = IND.map(([p, t, d], i) => {
-        const n = document.createElement("div");
-        n.className = "node " + (i % 2 ? "r" : "l");
-        n.innerHTML = '<div class="ncard"><div class="top">' +
-          '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="' + p + '"/></svg><h3>' + t + '</h3></div><p>' + d + '</p></div>';
-        treeEl.appendChild(n);
-        return { el: n, card: n.querySelector(".ncard"), left: i % 2 === 0, top: 0, h: 0 };
-      });
-
-      /* The vine is a sine-displaced trunk, so trunk-x at any y is exact and each
-         branch can spring from the trunk itself rather than a straight stub. */
-      let treeTop = 0, treeH = 1, trunkPath = null, TW = 0, TH = 0, wide = false;
-      const trunkX = y => (wide ? TW / 2 : 26) + Math.sin(y / 190) * (wide ? 26 : 10);
-
-      function buildTree() {
-        TW = treeEl.clientWidth; TH = treeEl.clientHeight;
-        if (!TW || !TH) return;
-        wide = innerWidth >= 900;
-        treeSvg.setAttribute("viewBox", "0 0 " + TW + " " + TH);
-        [...treeSvg.querySelectorAll(".trunk,.branch,.bud,.halo,.leaf")].forEach(e => e.remove());
-
-        let d = "M " + trunkX(0).toFixed(1) + " 0";
-        for (let y = 10; y <= TH; y += 10)d += " L " + trunkX(y).toFixed(1) + " " + y;
-        trunkPath = document.createElementNS(SVGNS, "path");
-        trunkPath.setAttribute("class", "trunk"); trunkPath.setAttribute("d", d);
-        treeSvg.appendChild(trunkPath);
-        trunkPath.__len = trunkPath.getTotalLength();
-
-        const tr = treeEl.getBoundingClientRect();
-        NODES.forEach(n => {
-          const cb = n.card.getBoundingClientRect();
-          const ay = cb.top - tr.top + Math.min(46, cb.height * .32);          /* anchor near card top */
-          const ax = wide ? (n.left ? cb.right - tr.left : cb.left - tr.left) : cb.left - tr.left;
-          const sx = trunkX(ay), sy = ay;
-          const dx = ax - sx;
-          /* cubic that leaves the trunk vertically, swings out, and lands flat on the card */
-          const bd = "M " + sx.toFixed(1) + " " + sy.toFixed(1) +
-            " C " + (sx + dx * .06).toFixed(1) + " " + (sy + 58).toFixed(1) +
-            " " + (ax - dx * .42).toFixed(1) + " " + (sy + 46).toFixed(1) +
-            " " + ax.toFixed(1) + " " + ay.toFixed(1);
-          const bp = document.createElementNS(SVGNS, "path");
-          bp.setAttribute("class", "branch"); bp.setAttribute("d", bd);
-          treeSvg.insertBefore(bp, trunkPath);
-          bp.__len = bp.getTotalLength();
-
-          const halo = document.createElementNS(SVGNS, "circle");
-          halo.setAttribute("class", "halo"); halo.setAttribute("cx", sx); halo.setAttribute("cy", sy); halo.setAttribute("r", 0);
-          const bud = document.createElementNS(SVGNS, "circle");
-          bud.setAttribute("class", "bud"); bud.setAttribute("cx", sx); bud.setAttribute("cy", sy); bud.setAttribute("r", 0);
-          const leaf = document.createElementNS(SVGNS, "circle");
-          leaf.setAttribute("class", "leaf"); leaf.setAttribute("cx", ax); leaf.setAttribute("cy", ay); leaf.setAttribute("r", 0);
-          treeSvg.append(halo, bud, leaf);
-          Object.assign(n, { branch: bp, bud, halo, leaf, sy, dx });
-        });
-        treeTop = tr.top + scrollY;
-        treeH = Math.max(1, TH);
-      }
-
-      let lastGp = -1;
-      function runTree(y) {
-        if (!trunkPath) return;
-        const gp = clamp((y + vh * .62 - treeTop) / (treeH * .82), 0, 1);          /* trunk growth */
-        /* SVG attribute writes force a re-render, so only touch them on change */
-        if (Math.abs(gp - lastGp) < .0015) return;
-        lastGp = gp;
-        trunkPath.style.strokeDasharray = trunkPath.__len;
-        trunkPath.style.strokeDashoffset = trunkPath.__len * (1 - gp);
-        const reach = gp * TH;
-        NODES.forEach(n => {
-          /* a branch only starts once the vine has grown past its junction */
-          const bp = clamp((reach - n.sy) / 150, 0, 1);
-          const e = easeOut(bp);
-          n.branch.style.strokeDasharray = n.branch.__len;
-          n.branch.style.strokeDashoffset = n.branch.__len * (1 - e);
-          n.bud.setAttribute("r", (5.5 * clamp(bp * 4, 0, 1)).toFixed(2));
-          n.halo.setAttribute("r", (16 * clamp(bp * 3, 0, 1)).toFixed(2));
-          n.leaf.setAttribute("r", (4 * clamp((bp - .75) * 4, 0, 1)).toFixed(2));
-          /* card springs out of the branch tip, swinging in from the trunk side */
-          const cp = clamp((bp - .55) / .45, 0, 1), ce = easeOut(cp);
-          n.card.style.opacity = ce.toFixed(3);
-          n.card.style.transformOrigin = wide ? (n.left ? "100% 20%" : "0% 20%") : "0% 20%";
-          n.card.style.transform =
-            `translate3d(${((1 - ce) * -n.dx * .42).toFixed(1)}px,${((1 - ce) * 26).toFixed(1)}px,0)` +
-            ` rotate(${((1 - ce) * (n.left ? 4.5 : -4.5)).toFixed(2)}deg)` +
-            ` scale(${(.86 + .14 * ce).toFixed(3)})`;
-        });
-      }
 
       /*═══════════ UI SYSTEMS ═══════════*/
 
@@ -8078,8 +5894,6 @@
         const str = new URLSearchParams(UTM).toString();
         const f = document.getElementById("utmField"); if (f) f.value = str;
         if (has) {
-          document.getElementById("utmChip").classList.add("on");
-          document.getElementById("utmVal").textContent = UTM.utm_source ? (UTM.utm_source + (UTM.utm_campaign ? " · " + UTM.utm_campaign : "")) : str;
           document.querySelectorAll("a[data-utm]").forEach(a => {
             const h = a.getAttribute("href") || "";
             if (h.startsWith("#")) return;
@@ -8126,22 +5940,24 @@
       const searchOv = document.getElementById("search"), sInput = document.getElementById("sInput"),
         sList = document.getElementById("sList"), sEmpty = document.getElementById("sEmpty");
       const INDEX = [
-        ["Home", "Know the flood before it arrives", "#hero", "home hero map india district exposure risk"],
-        ["The flood problem", "Why current assessment falls short", "#problem", "problem backward looking coarse fragmented assessment"],
-        ["The decision gap", "Data alone doesn't answer the decision", "#gap", "decision gap data rainfall terrain drainage exposure"],
+        ["Home", "One view of flood risk", "#hero", "home hero map india district exposure risk explorer free data"],
+        ["The challenge", "Why current assessment falls short", "#problem", "problem backward looking coarse fragmented assessment"],
         ["75 years of flood record", "Observed record 1951–2025", "#record", "record history 1951 2025 timeline years observed districts talukas"],
-        ["Explorer", "Free historical district intelligence", "products.html#explorer", "explorer free district taluka historical search map"],
-        ["Atlas", "Historical, current and future in one view", "products.html#atlas", "atlas premium projection 2030 2050 2100 scenario portfolio taluka"],
-        ["Live", "Real-time rainfall, radar and risk", "products.html#live", "live radar rainfall alert monitoring operational response"],
-        ["Decision support", "From flood risk to actionable insight", "#decision", "vulnerability atlas portfolio screening drainage capacity property site"],
-        ["Platform", "Data in. Intelligence out.", "#platform", "platform data models risk decision technology methodology validation api cmip6"],
-        ["Solutions", "Flood intelligence for decisions that matter.", "solutions.html", "solutions sectors agriculture crop insurance agri loans lending banking finance insurance reinsurance government disaster management infrastructure use case pdf"],
-        ["Solutions", "Five sectors we serve", "#serve", "insurance banking government infrastructure agriculture reinsurance finance sector"],
-        ["Keep exploring", "Insights and the team", "#more", "more insights about team explore"],
-        ["Why FloodGuard", "Built on observed data", "#why", "why observed foundation multi scale horizon decision ready"],
-        ["About us", "Building India's flood intelligence layer", "about.html", "about vision mission principles team company"],
-        ["Insights", "Research, white papers and data stories", "insights.html", "insights research white paper use case data story article"],
-        ["Book a demo", "Let's talk flood risk", "#start", "get started contact demo early access partner enquiry form"]];
+        ["The FloodGuard approach", "Data alone doesn't answer the decision", "#gap", "approach decision data rainfall terrain drainage satellite climate hazard exposure risk"],
+        ["Products", "Explorer, Atlas and Live", "#products", "products explorer atlas live compare"],
+        ["Explorer", "Free historical district intelligence", "/products.html#explorer", "explorer free district taluka historical search map"],
+        ["Atlas", "Historical and future flood risk", "/products.html#atlas", "atlas premium projection 2030 2050 2100 scenario portfolio taluka"],
+        ["Live", "Real-time rainfall, radar and alerts", "/products.html#live", "live radar rainfall alert monitoring operational response"],
+        ["Solutions", "One flood record. Many decisions.", "/solutions.html", "solutions sectors use case pdf"],
+        ["Insurance & Reinsurance", "Underwriting, accumulation and claims", "/solutions/insurance.html", "insurance reinsurance underwriting pricing accumulation claims crop"],
+        ["Banking & Finance", "Collateral and portfolio screening", "/solutions/banking.html", "banking finance lending collateral portfolio loans nbfc"],
+        ["Agriculture", "Crop and agricultural flood risk", "/solutions/agriculture.html", "agriculture crop farm insurance"],
+        ["Infrastructure", "Sites, assets and corridors", "/solutions/infrastructure.html", "infrastructure site corridor road rail power real estate"],
+        ["Government", "Prepare, monitor and respond", "/solutions/government.html", "government disaster management preparedness response planning"],
+        ["Platform", "Data in. Intelligence out.", "/platform.html", "platform data technology methodology validation api models"],
+        ["Insights", "Research, data stories and articles", "/insights.html", "insights research white paper use case data story article blog"],
+        ["About us", "Building India's flood intelligence layer", "/about.html", "about team founder dhanya bulla t-hub we hub bower capital company"],
+        ["Contact us", "Address, phone and email", "/contact.html", "contact address phone email hyderabad kondapur demo sales"]];
       let sIdx = 0, sHits = INDEX.slice();
       function renderSearch() {
         sList.innerHTML = "";
@@ -8178,60 +5994,6 @@
         closeMenu();
         location.href = "/auth.html?next=" + encodeURIComponent(location.pathname + location.search);
       });
-      /*── validation helpers ──*/
-      const mailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      function setErr(input, bad, msg) {
-        const f = input.closest(".field");
-        f.classList.toggle("err", bad);
-        input.setAttribute("aria-invalid", String(bad));
-        if (msg) f.querySelector(".emsg").lastChild.textContent = msg;
-        return !bad;
-      }
-      function busy(btn, on) { btn.classList.toggle("loading", on); btn.disabled = on; }
-
-      /*── demo form: validate → confirm modal → loading → success ──*/
-      const dForm = document.getElementById("demoForm"), dSubmit = document.getElementById("demoSubmit"),
-        dOk = document.getElementById("demoOk"), modalOv = document.getElementById("modalWrap");
-      const fName = document.getElementById("fName"), fMail = document.getElementById("fMail"),
-        fOrg = document.getElementById("fOrg"), fIntent = document.getElementById("fIntent");
-      [fName, fMail, fOrg, fIntent].forEach(i => i.addEventListener("input", () => i.closest(".field").classList.remove("err")));
-      dForm.addEventListener("submit", e => {
-        e.preventDefault();
-        const a = setErr(fName, fName.value.trim().length < 2);
-        const b = setErr(fMail, !mailRe.test(fMail.value.trim()));
-        const c = setErr(fOrg, !fOrg.value);
-        const d = setErr(fIntent, !fIntent.value);
-        if (!(a && b && c && d)) { dForm.querySelector(".field.err .inp")?.focus(); return; }
-        document.getElementById("cBody").textContent =
-          "We'll send your enquiry to the FloodGuard team. They'll reply to " + fMail.value.trim() + ".";
-        openOv(modalOv);
-      });
-      /* sent for real: public.enquiries in Supabase, via assets/js/enquiry.js */
-      const dErr = document.getElementById("demoErr");
-      document.getElementById("cOk").onclick = async () => {
-        closeOv(modalOv);
-        dErr.hidden = true;
-        busy(dSubmit, true);
-        dSubmit.querySelector(".lbl").textContent = "Sending…";
-        try {
-          if (!window.fgSendEnquiry) throw new Error("Enquiries aren't available right now — please try again in a moment.");
-          await window.fgSendEnquiry({
-            name: fName.value, email: fMail.value, organisation: document.getElementById("fOrgName").value,
-            geography: document.getElementById("fGeo").value, sector: fOrg.value, intent: fIntent.value, source: "/#start"
-          });
-          document.getElementById("okMail").textContent = fMail.value.trim();
-          dForm.style.display = "none"; dOk.classList.add("on");
-        } catch (err) {
-          dErr.textContent = err.message; dErr.hidden = false;
-        } finally {
-          busy(dSubmit, false);
-          dSubmit.querySelector(".lbl").textContent = "Book a demo";
-        }
-      };
-      document.getElementById("demoReset").onclick = () => {
-        dForm.reset(); dForm.style.display = ""; dOk.classList.remove("on"); fName.focus();
-      };
-
       /*── cookie banner ──*/
       const ck = document.getElementById("cookie");
       function ckSet(v) { try { localStorage.setItem("fg_cookie", v) } catch (_) { } ck.classList.remove("on"); }
@@ -8263,13 +6025,6 @@
         }
       });
 
-      /*── contact intents: pick one, the form is pre-filled and focused ──*/
-      document.querySelectorAll(".intentBtn[data-intent]").forEach(btn => btn.addEventListener("click", () => {
-        const sel = document.getElementById("fIntent"), name = document.getElementById("fName");
-        if (sel) { sel.value = btn.dataset.intent; sel.dispatchEvent(new Event("change", { bubbles: true })); }
-        if (name) { name.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "center" }); name.focus({ preventScroll: true }); }
-      }));
-
       /*── last updated ──*/
       {
         const el = document.getElementById("lastUpd");
@@ -8287,7 +6042,7 @@
         cur = scrollY;
         const y = cur;
         runRevs(y); runCounters(y); runProof(y); runPins(y, dt); runHdr(y); runBars(y); runParallax(y, dt);
-        runTree(y); runStack(); runToTop(y); runTide();
+        runToTop(y);
         drawWater(dt);
         requestAnimationFrame(loop);
       }
@@ -8296,7 +6051,7 @@
       if (TOUCH) { const th = document.getElementById("tlHint"); if (th) th.textContent = "Tap"; }
       readTokens();
       syncThemeColor();
-      measure();          /* also caches tree-node, bar and pin offsets */
+      measure();          /* also caches bar and pin offsets */
       requestAnimationFrame(loop);
       {
         const bar = document.querySelector("#preBar i"), pre = document.getElementById("pre");
@@ -8316,7 +6071,9 @@
   <script type="module" src="/assets/js/signin.js"></script>
   <script type="module" src="/assets/js/mist.js"></script>
   <script type="module" src="/assets/js/hero-map.js"></script>
-  <script type="module" src="/assets/js/home-enquiry.js"></script>
+  <!-- product-card maps (and page.js reveals), and the latest insights -->
+  <script type="module" src="/assets/js/products.js"></script>
+  <script type="module" src="/assets/js/posts.js"></script>
 </body>
 
 </html>

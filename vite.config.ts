@@ -38,15 +38,21 @@ export default defineConfig(({ mode }) => {
           // Gated district view + its login/register gate.
           auth: resolve(here, "auth.html"),
           district: resolve(here, "district.html"),
-          // Full Products / Sectors detail, split out of the homepage.
+          // Full Products detail, split out of the homepage.
           products: resolve(here, "products.html"),
-          sectors: resolve(here, "sectors.html"),
-          // Solutions: sector applications + use-case PDF library.
+          // Solutions: the overview, and one page per sector.
           solutions: resolve(here, "solutions.html"),
-          // Insights (the depth deck) and About, split out of the homepage.
+          "solutions/insurance": resolve(here, "solutions/insurance.html"),
+          "solutions/banking": resolve(here, "solutions/banking.html"),
+          "solutions/agriculture": resolve(here, "solutions/agriculture.html"),
+          "solutions/infrastructure": resolve(here, "solutions/infrastructure.html"),
+          "solutions/government": resolve(here, "solutions/government.html"),
+          // Platform: data, technology, methodology, validation, API.
+          platform: resolve(here, "platform.html"),
+          // Insights (posts from assets/js/posts.js) and About.
           insights: resolve(here, "insights.html"),
           about: resolve(here, "about.html"),
-          // Demo / contact form (writes to Supabase public.enquiries).
+          // Contact us: details + enquiry form (writes to Supabase public.enquiries).
           contact: resolve(here, "contact.html"),
         },
       },

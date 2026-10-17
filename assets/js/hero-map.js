@@ -136,7 +136,7 @@ function init(D) {
   }
   modeBtns.forEach(b => b.addEventListener("click", () => setMode(b.dataset.hmSet)));
   // radiogroup keys: arrows move and select
-  root.querySelector(".hmSeg").addEventListener("keydown", e => {
+  root.querySelector(".hmSeg")?.addEventListener("keydown", e => {
     const i = modeBtns.findIndex(b => b.dataset.hmSet === mode);
     const k = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
     if (!k) return;
@@ -254,7 +254,8 @@ function init(D) {
   document.addEventListener("visibilitychange", kickRain);
 
   root.querySelector(".hmCredit").textContent = D.credit;
-  setMode("now");
+  // the page can pin the map to one horizon (data-mode); otherwise it opens on "now"
+  setMode(root.dataset.mode || "now");
   root.classList.add("hmReady");
 }
 
