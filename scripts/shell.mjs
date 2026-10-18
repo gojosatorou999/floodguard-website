@@ -34,12 +34,14 @@ const PRODUCTS = [
   ["Atlas", "/products.html#atlas", "Historical and future flood risk, in depth"],
   ["Live", "/products.html#live", "Real-time rainfall, radar and alerts"],
 ];
+/* Solutions has no dropdown: every way in lands on the overview first,
+   which carries each sector in full (the per-sector pages aren't linked). */
 const SOLUTIONS = [
-  ["Insurance & Reinsurance", "/solutions/insurance.html", "Underwriting, accumulation and claims"],
-  ["Banking & Finance", "/solutions/banking.html", "Collateral and portfolio screening"],
-  ["Agriculture", "/solutions/agriculture.html", "Crop and agricultural flood risk"],
-  ["Infrastructure", "/solutions/infrastructure.html", "Sites, assets and corridors"],
-  ["Government & Disaster Management", "/solutions/government.html", "Prepare, monitor and respond"],
+  ["Insurance & Reinsurance", "/solutions.html#insurance"],
+  ["Banking & Finance", "/solutions.html#banking"],
+  ["Agriculture", "/solutions.html#agriculture"],
+  ["Infrastructure", "/solutions.html#infrastructure"],
+  ["Government & Disaster Management", "/solutions.html#government"],
 ];
 const esc = s => s.replace(/&(?!amp;)/g, "&amp;");
 const ARROW = '<svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg>';
@@ -62,7 +64,7 @@ ${items.map(([t, h, d]) => `          <a href="${h}"><b>${esc(t)}</b><em>${d}</e
     <a class="brandmark" href="/index.html" aria-label="FloodGuard — home">
       <img src="/assets/img/logo-mark.png" alt="" aria-hidden="true"><b>FLOODGUARD</b>
     </a>
-    <nav class="tnav" aria-label="Primary">${drop("products", "Products", PRODUCTS, ["All products", "/products.html"])}${drop("solutions", "Solutions", SOLUTIONS, ["Solutions overview", "/solutions.html"])}${plain("platform", "Platform", "/platform.html")}${plain("insights", "Insights", "/insights.html")}${plain("about", "About", "/about.html")}
+    <nav class="tnav" aria-label="Primary">${drop("products", "Products", PRODUCTS, ["All products", "/products.html"])}${plain("solutions", "Solutions", "/solutions.html")}${plain("platform", "Platform", "/platform.html")}${plain("insights", "Insights", "/insights.html")}${plain("about", "About", "/about.html")}
     </nav>
     <div class="topbarAct">
       <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
@@ -70,17 +72,14 @@ ${items.map(([t, h, d]) => `          <a href="${h}"><b>${esc(t)}</b><em>${d}</e
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
       </button>
       <a class="btn bg2 tExplore" href="${EXPLORER}">Explore Free Data</a>
-      <a class="btn bp" href="/contact.html"${cur(nav === "contact")}>Request a Demo</a>
-      <a class="tsign" href="/auth.html" data-signin>Sign in</a>
+      <a class="btn bp" href="/contact.html?intent=demo" data-lead="demo"${cur(nav === "contact")}>Request a Demo</a>
       <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
     </div>
     <div class="tmenuPanel" id="tmenuPanel" hidden>
       <p>Products</p>
 ${PRODUCTS.map(mlink).join("\n")}
-      <p>Solutions</p>
-      <a href="/solutions.html">Overview</a>
-${SOLUTIONS.map(mlink).join("\n")}
       <hr>
+      <a href="/solutions.html"${cur(nav === "solutions")}>Solutions</a>
       <a href="/platform.html"${cur(nav === "platform")}>Platform</a>
       <a href="/insights.html"${cur(nav === "insights")}>Insights</a>
       <a href="/about.html"${cur(nav === "about")}>About us</a>
@@ -92,6 +91,7 @@ ${SOLUTIONS.map(mlink).join("\n")}
         </button>
       </div>
       <a class="btn bp" href="${EXPLORER}">Explore Free Data ${ARROW}</a>
+      <a class="btn bg2" href="/contact.html?intent=demo" data-lead="demo">Request a Demo ${ARROW}</a>
     </div>
   </header>
 </div>`;
@@ -116,8 +116,8 @@ const CTA = `<section class="sec getStarted" id="get-started">
         <h3>Talk to the FloodGuard team.</h3>
         <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
         <div class="ctaRow">
-          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live">Request a Demo ${ARROW}</a>
-          <a class="btn bg2" href="/contact.html?intent=sales">Contact Sales ${ARROW}</a>
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live" data-lead="demo">Request a Demo ${ARROW}</a>
+          <a class="btn bg2" href="/contact.html?intent=sales" data-lead="sales">Contact Sales ${ARROW}</a>
         </div>
       </div>
     </div>
@@ -138,7 +138,7 @@ const ICON = {
 const col = (title, links) => `      <div class="site-footer__col">
         <h2 class="site-footer__heading">${title}</h2>
         <ul role="list">
-${links.map(([t, h]) => `          <li><a href="${h}">${esc(t)}</a></li>`).join("\n")}
+${links.map(([t, h, a]) => `          <li><a href="${h}"${a ? " " + a : ""}>${esc(t)}</a></li>`).join("\n")}
         </ul>
       </div>`;
 const FOOTER = `<footer class="site-footer">
@@ -159,9 +159,9 @@ const FOOTER = `<footer class="site-footer">
     </div>
     <nav class="site-footer__nav" aria-label="Footer">
 ${col("Products", [...PRODUCTS.map(([t, h]) => [t, h]), ["Compare products", "/products.html#compare"]])}
-${col("Solutions", SOLUTIONS.map(([t, h]) => [t.replace(" & Disaster Management", ""), h]))}
+${col("Solutions", [["Overview", "/solutions.html"], ...SOLUTIONS.map(([t, h]) => [t.replace(" & Disaster Management", ""), h])])}
 ${col("Platform", [["Data", "/platform.html#data"], ["Technology", "/platform.html#technology"], ["Methodology", "/platform.html#methodology"], ["Validation", "/platform.html#validation"], ["API", "/platform.html#api"]])}
-${col("Company", [["Insights", "/insights.html"], ["About us", "/about.html"], ["Contact us", "/contact.html"], ["Request a demo", "/contact.html?intent=demo"]])}
+${col("Company", [["Insights", "/insights.html"], ["About us", "/about.html"], ["Contact us", "/contact.html"], ["Request a demo", "/contact.html?intent=demo", 'data-lead="demo"']])}
     </nav>
   </div>
   <div class="wrap site-footer__bottom">

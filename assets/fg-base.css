@@ -227,14 +227,9 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .tmenuPanel hr{border:0;border-top:1px solid var(--line);margin:.4rem .3rem}
 .tmenuPanel .btn{width:100%;margin-top:.5rem;color:var(--onBrand)}
 .tmenuPanel .btn:hover{color:var(--onBrand)}
-/* header buttons sit a size down from page buttons, so six nav links,
-   the arrow, theme, two CTAs and sign in share one line */
+/* header buttons sit a size down from page buttons, so the nav links,
+   theme and two CTAs share one line */
 .topbar .btn{height:40px;padding:0 1rem;font-size:var(--t-sm)}
-/* sign in / sign out (wired by assets/js/signin.js) — quiet, like a nav link */
-.tsign{flex:none;padding:.55rem .6rem;border-radius:99px;white-space:nowrap;text-decoration:none;
-  font:500 var(--t-sm)/1 var(--fS);color:var(--ink2);transition:background .2s var(--E),color .2s var(--E)}
-.tsign:hover{background:var(--dentBg);color:var(--ink)}
-
 /* light / dark toggle (wired by assets/js/theme.js) */
 .themeBtn{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;cursor:pointer;
   border:1px solid var(--line2);background:transparent;color:var(--ink);transition:background .2s var(--E),transform .2s var(--E)}
@@ -248,7 +243,6 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 .topbar .btn{flex:none;white-space:nowrap}
 @media (min-width:1241px){.topbar{gap:.6rem}.topbarAct{gap:.35rem}}
 @media (max-width:760px){.tExplore{display:none}}
-@media (max-width:560px){.tsign{display:none}}
 /* phones: the logo and name always show; the theme switch moves into the menu */
 @media (max-width:560px){
   .topbar .themeBtn{display:none}

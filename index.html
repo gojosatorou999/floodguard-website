@@ -2397,9 +2397,9 @@
 
     /* a solid brand tile with a heavy glyph — reads from across the room */
     .nIcon {
-      width: 92px;
-      height: 92px;
-      border-radius: 26px;
+      width: 108px;
+      height: 108px;
+      border-radius: 30px;
       display: grid;
       place-items: center;
       margin-bottom: auto;
@@ -2409,11 +2409,12 @@
     }
 
     .nIcon svg {
-      width: 50px;
-      height: 50px;
+      width: 68px;
+      height: 68px;
+      overflow: visible;
       fill: none;
       stroke: currentColor;
-      stroke-width: 2.1;
+      stroke-width: 2.4;
       stroke-linecap: round;
       stroke-linejoin: round
     }
@@ -2428,8 +2429,43 @@
     }
 
     @media(max-width:900px) {
-      .nIcon { width: 76px; height: 76px; border-radius: 22px }
-      .nIcon svg { width: 42px; height: 42px }
+      .nIcon { width: 88px; height: 88px; border-radius: 24px }
+      .nIcon svg { width: 56px; height: 56px }
+    }
+
+    /* the three glyphs move once as the card arrives, and again on hover:
+       the clock rewinds, the lens finds the asset hidden in the coarse
+       block, the clusters drift further apart. All transforms are in the
+       48-unit viewBox. */
+    .nIcon svg * { transform-box: view-box }
+    /* origin is from the viewBox corner: the clock's viewBox starts at -1.5 -2 */
+    .nIcon .hands { transform-origin: 25.5px 26px; transition: transform 1.1s var(--E) }
+    .nIcon .rew { stroke-dasharray: 52; stroke-dashoffset: 0 }
+    .nIcon .lens { transition: transform .9s var(--E) }
+    .nIcon .lensBg { fill: var(--b900); stroke: none }
+    .nIcon .pix { fill: currentColor; stroke: none }
+    .nIcon .grid { stroke: var(--b300); stroke-width: .6; opacity: .45 }
+    .nIcon .cl { transition: transform .9s var(--E) }
+    .nlist li.in .hands { animation: nRewind 1.6s .35s var(--E) backwards }
+    .nlist li.in .rew { animation: nDraw 1.1s .2s var(--E) backwards }
+    .nlist li.in .lens { animation: nScan 1.8s .3s var(--E) backwards }
+    .nlist li.in .cl1 { animation: nDrift1 1.4s .3s var(--E) backwards }
+    .nlist li.in .cl2 { animation: nDrift2 1.4s .3s var(--E) backwards }
+    .nlist li.in .cl3 { animation: nDrift3 1.4s .3s var(--E) backwards }
+    .nlist li.in:hover .hands { transform: rotate(-360deg) }
+    .nlist li.in:hover .lens { transform: translate(-3px, -3px) }
+    .nlist li.in:hover .cl1 { transform: translate(-1.6px, -1.2px) }
+    .nlist li.in:hover .cl2 { transform: translate(1.6px, -.6px) }
+    .nlist li.in:hover .cl3 { transform: translate(0, 1.8px) }
+    @keyframes nRewind { from { transform: rotate(300deg) } }
+    @keyframes nDraw { from { stroke-dashoffset: 52 } }
+    @keyframes nScan { 0% { transform: translate(-14px, -14px) } 55% { transform: translate(-1px, -9px) } }
+    @keyframes nDrift1 { from { transform: translate(4px, 4px) } }
+    @keyframes nDrift2 { from { transform: translate(-4px, 2px) } }
+    @keyframes nDrift3 { from { transform: translate(0, -5px) } }
+    @media (prefers-reduced-motion:reduce) {
+      .nIcon svg * { animation: none !important; transition: none !important }
+      .nlist li.in:hover .nIcon svg * { transform: none }
     }
 
     .nlist h3 {
@@ -4233,28 +4269,10 @@
       color: var(--ink)
     }
 
-    /*── header sign in / sign out — a quiet text button beside the CTAs ──*/
-    .hsign {
-      padding: .6rem .7rem;
-      border-radius: 999px;
-      font-size: var(--t-sm);
-      font-weight: 500;
-      line-height: 1;
-      white-space: nowrap;
-      color: var(--ink2);
-      transition: color .25s, background .25s
-    }
-
-    .hsign:hover {
-      color: var(--ink);
-      background: var(--dentBg)
-    }
-
-    /* below this the six-item nav no longer fits beside all three; the
-       Menu still carries Request a demo and Sign in */
+    /* below this the nav no longer fits beside both; the Menu still
+       carries Request a demo */
     @media(max-width:1400px) {
-      .cta-sm.ghost,
-      .hsign {
+      .cta-sm.ghost {
         display: none
       }
     }
@@ -4592,26 +4610,14 @@
               <a class="all" href="/products.html"><b>All products →</b></a>
             </div>
           </div>
-          <div class="ni"><button type="button" aria-expanded="false">Solutions <svg viewBox="0 0 12 12">
-                <path d="M2 4.5 6 8.5 10 4.5" />
-              </svg></button>
-            <div class="drop">
-              <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b><em>Underwriting, accumulation and claims</em></a>
-              <a href="/solutions/banking.html"><b>Banking &amp; Finance</b><em>Collateral and portfolio screening</em></a>
-              <a href="/solutions/agriculture.html"><b>Agriculture</b><em>Crop and agricultural flood risk</em></a>
-              <a href="/solutions/infrastructure.html"><b>Infrastructure</b><em>Sites, assets and corridors</em></a>
-              <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b><em>Prepare, monitor and respond</em></a>
-              <a class="all" href="/solutions.html"><b>Solutions overview →</b></a>
-            </div>
-          </div>
+          <div class="ni"><a href="/solutions.html">Solutions</a></div>
           <div class="ni"><a href="/platform.html">Platform</a></div>
           <div class="ni"><a href="/insights.html">Insights</a></div>
           <div class="ni"><a href="/about.html">About</a></div>
         </nav>
         <div class="hact">
           <a class="cta-sm" href="#hmap">Explore Free Data</a>
-          <a class="cta-sm ghost" href="/contact.html" data-utm>Request a Demo</a>
-          <button class="hsign" type="button" data-signin>Sign in</button>
+          <a class="cta-sm ghost" href="/contact.html?intent=demo" data-utm data-lead="demo">Request a Demo</a>
           <div class="menuWrap">
             <button id="menuBtn" type="button" aria-expanded="false" aria-controls="menuPanel" aria-haspopup="true">
               <span class="mIcon"><i></i><i></i><i></i></span><span class="mWord">Menu</span>
@@ -4644,17 +4650,8 @@
               </div>
 
               <div class="mSec">
-                <p class="mLbl">Solutions</p>
-                <a href="/solutions.html"><b>Overview</b></a>
-                <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b></a>
-                <a href="/solutions/banking.html"><b>Banking &amp; Finance</b></a>
-                <a href="/solutions/agriculture.html"><b>Agriculture</b></a>
-                <a href="/solutions/infrastructure.html"><b>Infrastructure</b></a>
-                <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b></a>
-              </div>
-
-              <div class="mSec">
                 <p class="mLbl">Company</p>
+                <a href="/solutions.html"><b>Solutions</b></a>
                 <a href="/platform.html"><b>Platform</b></a>
                 <a href="/insights.html"><b>Insights</b></a>
                 <a href="/about.html"><b>About us</b></a>
@@ -4664,7 +4661,7 @@
               <div class="mSec">
                 <p class="mLbl">Actions</p>
                 <button type="button" id="sBtn"><b>Search</b><span class="kbd">Ctrl K</span></button>
-                <button type="button" id="signinBtn" data-signin><b>Sign in</b></button>
+                <a href="/contact.html?intent=demo" data-utm data-lead="demo"><b>Request a demo</b></a>
                 <a class="mCta" href="#hmap">Explore Free Data
                   <svg viewBox="0 0 14 14">
                     <path d="M2 7h10M8 3l4 4-4 4" />
@@ -4695,7 +4692,7 @@
               India.</p>
             <div class="hcta" data-rv>
               <a class="btn bp" href="#hmap">Explore Free Data <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
-              <a class="btn bg2" href="/contact.html" data-utm>Request a Demo</a>
+              <a class="btn bg2" href="/contact.html?intent=demo" data-utm data-lead="demo">Request a Demo</a>
             </div>
           </div>
 
@@ -4770,8 +4767,15 @@
             <li data-rv>
               <i>01</i>
               <div class="nIcon" aria-hidden="true">
-                <!-- a clock turning backwards: rear-view risk -->
-                <svg viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1" /><path d="M2.8 3.6v4.3h4.3" /><path class="acc" d="M12 7.2V12l3.4 2.1" /></svg>
+                <!-- a clock rewinding: risk read off the rear-view mirror -->
+                <svg viewBox="-1.5 -2 48 48">
+                  <circle cx="24" cy="24" r="13" />
+                  <path d="M24 12.6v2.4M35.4 24H33M24 35.4V33M12.6 24H15" stroke-width="2" />
+                  <g class="hands"><path d="M24 24v-8.2" /><path class="acc" d="M24 24l-5.6 3.2" /></g>
+                  <circle cx="24" cy="24" r="1.8" fill="currentColor" stroke="none" />
+                  <path class="acc rew" d="M40.45 14.5A19 19 0 0 0 5 24" stroke-width="2.8" />
+                  <path class="acc" d="M1.6 20.2 5 24.4l3.4-4.2" stroke-width="2.8" />
+                </svg>
               </div>
               <h3>Backward-looking</h3>
               <p>Past data doesn't fully describe future risk.</p>
@@ -4779,12 +4783,20 @@
             <li data-rv>
               <i>02</i>
               <div class="nIcon" aria-hidden="true">
-                <!-- one coarse block hiding the asset inside it -->
-                <svg viewBox="0 0 24 24">
-                  <rect x="3" y="3" width="18" height="18" rx="2.5" />
-                  <path d="M3 12h18M12 3v18" stroke-dasharray="1.5 2.5" />
-                  <path class="acc" d="M16.5 14.6l-2.2 1.8v2.6h4.4v-2.6z" />
-                  <circle class="fillAcc" cx="7.5" cy="7.5" r="1.6" />
+                <!-- coarse pixel blocks; the lens shows the asset they hide -->
+                <svg viewBox="0 0 48 48">
+                  <defs><clipPath id="nLensClip"><circle cx="29" cy="29" r="9.5" /></clipPath></defs>
+                  <rect class="pix" x="3" y="3" width="10" height="10" rx="1.6" fill-opacity="0.55" /><rect class="pix" x="14.5" y="3" width="10" height="10" rx="1.6" fill-opacity="0.3" /><rect class="pix" x="26" y="3" width="10" height="10" rx="1.6" fill-opacity="0.45" /><rect class="pix" x="3" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.25" /><rect class="pix" x="14.5" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.5" /><rect class="pix" x="26" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.2" /><rect class="pix" x="3" y="26" width="10" height="10" rx="1.6" fill-opacity="0.4" /><rect class="pix" x="14.5" y="26" width="10" height="10" rx="1.6" fill-opacity="0.2" /><rect class="pix" x="26" y="26" width="10" height="10" rx="1.6" fill-opacity="0.35" />
+                  <g class="lens">
+                    <g clip-path="url(#nLensClip)">
+                      <rect class="lensBg" x="19" y="19" width="20" height="20" />
+                      <path class="grid" d="M21 19v20M19 21h20M24 19v20M19 24h20M27 19v20M19 27h20M30 19v20M19 30h20M33 19v20M19 33h20M36 19v20M19 36h20" />
+                      <path class="acc" d="M25 33v-5l4-3.5 4 3.5v5z" stroke-width="1.8" />
+                      <path class="acc" d="M22 36.2c1.4 0 1.4.9 2.8.9s1.4-.9 2.8-.9 1.4.9 2.8.9 1.4-.9 2.8-.9 1.4.9 2.8.9" stroke-width="1.6" />
+                    </g>
+                    <circle cx="29" cy="29" r="9.5" stroke-width="2.6" />
+                    <path d="M35.9 35.9 43.5 43.5" stroke-width="4" />
+                  </g>
                 </svg>
               </div>
               <h3>Too coarse</h3>
@@ -4793,13 +4805,11 @@
             <li data-rv>
               <i>03</i>
               <div class="nIcon" aria-hidden="true">
-                <!-- puzzle pieces that never meet -->
-                <svg viewBox="0 0 24 24">
-                  <path d="M3 4h6v2.2a1.6 1.6 0 1 0 3 0V4h0" />
-                  <path d="M3 4v6h2.2a1.6 1.6 0 1 1 0 3H3v0" />
-                  <path class="acc" d="M21 20h-6v-2.2a1.6 1.6 0 1 0-3 0V20" />
-                  <path class="acc" d="M21 20v-6h-2.2a1.6 1.6 0 1 1 0-3H21" />
-                  <path d="M9.5 14.5l5-5" stroke-dasharray="1.4 2.4" />
+                <!-- three clusters of data whose links break before they meet -->
+                <svg viewBox="0 0 48 48">
+                  <g class="cl cl1"><circle cx="9" cy="11" r="3.4" /><circle cx="23" cy="7" r="3.4" /><circle cx="9" cy="28" r="3.4" /><path d="M12.9 9.9 19.1 8.1M9 15.1v8.8" /><path class="acc" d="M27 7.9 29.5 8.5M13.1 27.5 18.1 26.9M11.8 31 13.9 33.3" /></g>
+                  <g class="cl cl2"><circle cx="40" cy="11" r="3.4" /><circle cx="33" cy="25" r="3.4" /><circle cx="41" cy="39" r="3.4" /><path d="M38.2 14.7 34.8 21.3M35 28.6 39 35.4" /><path class="acc" d="M36 10.1 33.5 9.5M28.9 25.5 23.9 26.1M37 39.6 33.8 40.1" /></g>
+                  <g class="cl cl3"><circle class="fillAcc" cx="22" cy="42" r="3.4" /><path class="acc" d="M19.2 39 17.1 36.7M26 41.4 29.2 40.9" /></g>
                 </svg>
               </div>
               <h3>Fragmented</h3>
@@ -5007,7 +5017,7 @@
           </div>
           <div class="secPanel">
             <div class="secBriefs">
-              <a class="secBrief" href="/solutions/agriculture.html" data-rv>
+              <a class="secBrief" href="/solutions.html#agriculture" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 21V10" />
                   <path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z" />
@@ -5017,7 +5027,7 @@
                 <p>Crop loss, sowing windows and mandi exposure, mapped to the taluka a field sits in.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="/solutions/banking.html" data-rv>
+              <a class="secBrief" href="/solutions.html#banking" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 10 12 4l9 6" />
                   <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" />
@@ -5026,7 +5036,7 @@
                 <p>Flood risk priced into the loan book — KCC, farm loans, mortgages and MSME credit.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="/solutions/insurance.html" data-rv>
+              <a class="secBrief" href="/solutions.html#insurance" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" />
                   <path d="M9 12h6M12 9v6" />
@@ -5035,7 +5045,7 @@
                 <p>Underwriting, pricing and accumulation with an observed flood record behind every policy.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="/solutions/government.html" data-rv>
+              <a class="secBrief" href="/solutions.html#government" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 21V9l8-5 8 5v12" />
                   <path d="M9 21v-6h6v6M2 21h20" />
@@ -5044,7 +5054,7 @@
                 <p>District disaster plans, relief pre-positioning and resilient public spending.</p>
                 <span class="go">Read more</span>
               </a>
-              <a class="secBrief" href="/solutions/infrastructure.html" data-rv>
+              <a class="secBrief" href="/solutions.html#infrastructure" data-rv>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 20h18M5 20V9h5v11M14 20V4h5v16" />
                   <path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1" />
@@ -5102,8 +5112,8 @@
         <h3>Talk to the FloodGuard team.</h3>
         <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
         <div class="ctaRow">
-          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-          <a class="btn bg2" href="/contact.html?intent=sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="/contact.html?intent=sales" data-lead="sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
         </div>
       </div>
     </div>
@@ -5141,11 +5151,12 @@
       <div class="site-footer__col">
         <h2 class="site-footer__heading">Solutions</h2>
         <ul role="list">
-          <li><a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a></li>
-          <li><a href="/solutions/banking.html">Banking &amp; Finance</a></li>
-          <li><a href="/solutions/agriculture.html">Agriculture</a></li>
-          <li><a href="/solutions/infrastructure.html">Infrastructure</a></li>
-          <li><a href="/solutions/government.html">Government</a></li>
+          <li><a href="/solutions.html">Overview</a></li>
+          <li><a href="/solutions.html#insurance">Insurance &amp; Reinsurance</a></li>
+          <li><a href="/solutions.html#banking">Banking &amp; Finance</a></li>
+          <li><a href="/solutions.html#agriculture">Agriculture</a></li>
+          <li><a href="/solutions.html#infrastructure">Infrastructure</a></li>
+          <li><a href="/solutions.html#government">Government</a></li>
         </ul>
       </div>
       <div class="site-footer__col">
@@ -5164,7 +5175,7 @@
           <li><a href="/insights.html">Insights</a></li>
           <li><a href="/about.html">About us</a></li>
           <li><a href="/contact.html">Contact us</a></li>
-          <li><a href="/contact.html?intent=demo">Request a demo</a></li>
+          <li><a href="/contact.html?intent=demo" data-lead="demo">Request a demo</a></li>
         </ul>
       </div>
     </nav>
@@ -5221,7 +5232,7 @@
       </svg>
     </button>
     <div id="fabMenu">
-      <a class="fabItem" href="/contact.html" data-utm><svg viewBox="0 0 24 24">
+      <a class="fabItem" href="/contact.html?intent=demo" data-utm data-lead="demo"><svg viewBox="0 0 24 24">
           <rect x="3" y="5" width="18" height="14" rx="2.5" />
           <path d="m3.5 7 8.5 6 8.5-6" />
         </svg>Request a demo</a>
@@ -5949,11 +5960,11 @@
         ["Atlas", "Historical and future flood risk", "/products.html#atlas", "atlas premium projection 2030 2050 2100 scenario portfolio taluka"],
         ["Live", "Real-time rainfall, radar and alerts", "/products.html#live", "live radar rainfall alert monitoring operational response"],
         ["Solutions", "One flood record. Many decisions.", "/solutions.html", "solutions sectors use case pdf"],
-        ["Insurance & Reinsurance", "Underwriting, accumulation and claims", "/solutions/insurance.html", "insurance reinsurance underwriting pricing accumulation claims crop"],
-        ["Banking & Finance", "Collateral and portfolio screening", "/solutions/banking.html", "banking finance lending collateral portfolio loans nbfc"],
-        ["Agriculture", "Crop and agricultural flood risk", "/solutions/agriculture.html", "agriculture crop farm insurance"],
-        ["Infrastructure", "Sites, assets and corridors", "/solutions/infrastructure.html", "infrastructure site corridor road rail power real estate"],
-        ["Government", "Prepare, monitor and respond", "/solutions/government.html", "government disaster management preparedness response planning"],
+        ["Insurance & Reinsurance", "Underwriting, accumulation and claims", "/solutions.html#insurance", "insurance reinsurance underwriting pricing accumulation claims crop"],
+        ["Banking & Finance", "Collateral and portfolio screening", "/solutions.html#banking", "banking finance lending collateral portfolio loans nbfc"],
+        ["Agriculture", "Crop and agricultural flood risk", "/solutions.html#agriculture", "agriculture crop farm insurance"],
+        ["Infrastructure", "Sites, assets and corridors", "/solutions.html#infrastructure", "infrastructure site corridor road rail power real estate"],
+        ["Government", "Prepare, monitor and respond", "/solutions.html#government", "government disaster management preparedness response planning"],
         ["Platform", "Data in. Intelligence out.", "/platform.html", "platform data technology methodology validation api models"],
         ["Insights", "Research, data stories and articles", "/insights.html", "insights research white paper use case data story article blog"],
         ["About us", "Building India's flood intelligence layer", "/about.html", "about team founder dhanya bulla t-hub we hub bower capital company"],
@@ -5989,11 +6000,6 @@
       document.getElementById("sBtn").onclick = () => { closeMenu(); sInput.value = ""; sHits = INDEX.slice(); sIdx = 0; renderSearch(); openOv(searchOv); };
       renderSearch();
 
-      /*── sign in: the real gate lives at auth.html (Supabase-backed) ──*/
-      document.querySelectorAll("[data-signin]").forEach(b => b.onclick = () => {
-        closeMenu();
-        location.href = "/auth.html?next=" + encodeURIComponent(location.pathname + location.search);
-      });
       /*── cookie banner ──*/
       const ck = document.getElementById("cookie");
       function ckSet(v) { try { localStorage.setItem("fg_cookie", v) } catch (_) { } ck.classList.remove("on"); }
@@ -6068,7 +6074,7 @@
       }
     })();
   </script>
-  <script type="module" src="/assets/js/signin.js"></script>
+  <script type="module" src="/assets/js/lead.js"></script>
   <script type="module" src="/assets/js/mist.js"></script>
   <script type="module" src="/assets/js/hero-map.js"></script>
   <!-- product-card maps (and page.js reveals), and the latest insights -->

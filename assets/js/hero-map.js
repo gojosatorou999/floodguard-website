@@ -12,6 +12,7 @@
      svg.hmTop    outline · recorded floods · exposure · signal rings
      html         callouts, tooltip                                      */
 import mapUrl from "/assets/geo/india-map.json?url";
+import { hasLead, openLead } from "/assets/js/lead.js";
 
 const root = document.getElementById("hmap");
 if (root) boot();
@@ -161,7 +162,7 @@ function init(D) {
     recolor();
   }));
 
-  /* ── tooltip + click through to the (sign-in gated) district page ── */
+  /* ── tooltip + click through to the district dashboard, behind the lead form ── */
   const tip = root.querySelector(".hmTip");
   const slug = n => n.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const hrefOf = d => "district.html?place=" + encodeURIComponent(slug(d[0])) + "&name=" + encodeURIComponent(d[0]) +
@@ -186,7 +187,10 @@ function init(D) {
   riskG.addEventListener("pointerleave", () => { hot?.classList.remove("hot"); hot = null; tip.hidden = true; });
   riskG.addEventListener("click", e => {
     const p = e.target.closest("path"); if (!p) return;
-    location.href = hrefOf(D.districts[+p.dataset.i]);
+    const d = D.districts[+p.dataset.i], go = () => { location.href = hrefOf(d); };
+    // first visit: the lead form opens over the map, then the dashboard
+    if (hasLead()) go();
+    else openLead({ mode: "dashboard", dest: d[0] + ", " + d[1], source: "/ · map", onDone: go });
   });
 
   /* ── hillshade, drawn once from the elevation grid when the page is idle ── */

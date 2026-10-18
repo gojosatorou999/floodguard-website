@@ -35,17 +35,7 @@
           <a class="all" href="/products.html">All products →</a>
         </div>
       </div>
-      <div class="tni">
-        <button type="button" aria-expanded="false" aria-controls="dd-solutions" aria-current="page">Solutions <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
-        <div class="tdrop" id="dd-solutions">
-          <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b><em>Underwriting, accumulation and claims</em></a>
-          <a href="/solutions/banking.html"><b>Banking &amp; Finance</b><em>Collateral and portfolio screening</em></a>
-          <a href="/solutions/agriculture.html"><b>Agriculture</b><em>Crop and agricultural flood risk</em></a>
-          <a href="/solutions/infrastructure.html"><b>Infrastructure</b><em>Sites, assets and corridors</em></a>
-          <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b><em>Prepare, monitor and respond</em></a>
-          <a class="all" href="/solutions.html">Solutions overview →</a>
-        </div>
-      </div>
+      <a href="/solutions.html" aria-current="page">Solutions</a>
       <a href="/platform.html">Platform</a>
       <a href="/insights.html">Insights</a>
       <a href="/about.html">About</a>
@@ -56,8 +46,7 @@
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
       </button>
       <a class="btn bg2 tExplore" href="/index.html#hmap">Explore Free Data</a>
-      <a class="btn bp" href="/contact.html">Request a Demo</a>
-      <a class="tsign" href="/auth.html" data-signin>Sign in</a>
+      <a class="btn bp" href="/contact.html?intent=demo" data-lead="demo">Request a Demo</a>
       <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
     </div>
     <div class="tmenuPanel" id="tmenuPanel" hidden>
@@ -65,14 +54,8 @@
       <a href="/products.html#explorer">Explorer</a>
       <a href="/products.html#atlas">Atlas</a>
       <a href="/products.html#live">Live</a>
-      <p>Solutions</p>
-      <a href="/solutions.html">Overview</a>
-      <a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a>
-      <a href="/solutions/banking.html">Banking &amp; Finance</a>
-      <a href="/solutions/agriculture.html">Agriculture</a>
-      <a href="/solutions/infrastructure.html">Infrastructure</a>
-      <a href="/solutions/government.html">Government &amp; Disaster Management</a>
       <hr>
+      <a href="/solutions.html" aria-current="page">Solutions</a>
       <a href="/platform.html">Platform</a>
       <a href="/insights.html">Insights</a>
       <a href="/about.html">About us</a>
@@ -84,6 +67,7 @@
         </button>
       </div>
       <a class="btn bp" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a class="btn bg2" href="/contact.html?intent=demo" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
   </header>
 </div>
@@ -195,8 +179,8 @@
         <h3>Talk to the FloodGuard team.</h3>
         <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
         <div class="ctaRow">
-          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-          <a class="btn bg2" href="/contact.html?intent=sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="/contact.html?intent=sales" data-lead="sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
         </div>
       </div>
     </div>
@@ -235,11 +219,12 @@
       <div class="site-footer__col">
         <h2 class="site-footer__heading">Solutions</h2>
         <ul role="list">
-          <li><a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a></li>
-          <li><a href="/solutions/banking.html">Banking &amp; Finance</a></li>
-          <li><a href="/solutions/agriculture.html">Agriculture</a></li>
-          <li><a href="/solutions/infrastructure.html">Infrastructure</a></li>
-          <li><a href="/solutions/government.html">Government</a></li>
+          <li><a href="/solutions.html">Overview</a></li>
+          <li><a href="/solutions.html#insurance">Insurance &amp; Reinsurance</a></li>
+          <li><a href="/solutions.html#banking">Banking &amp; Finance</a></li>
+          <li><a href="/solutions.html#agriculture">Agriculture</a></li>
+          <li><a href="/solutions.html#infrastructure">Infrastructure</a></li>
+          <li><a href="/solutions.html#government">Government</a></li>
         </ul>
       </div>
       <div class="site-footer__col">
@@ -258,7 +243,7 @@
           <li><a href="/insights.html">Insights</a></li>
           <li><a href="/about.html">About us</a></li>
           <li><a href="/contact.html">Contact us</a></li>
-          <li><a href="/contact.html?intent=demo">Request a demo</a></li>
+          <li><a href="/contact.html?intent=demo" data-lead="demo">Request a demo</a></li>
         </ul>
       </div>
     </nav>
@@ -281,6 +266,6 @@
 </dialog>
 
 <script type="module" src="/assets/js/solutions.js"></script>
-<script type="module" src="/assets/js/signin.js"></script>
+<script type="module" src="/assets/js/lead.js"></script>
 </body>
 </html>

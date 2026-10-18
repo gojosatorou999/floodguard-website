@@ -12,11 +12,16 @@
 <script type="module" src="/assets/js/theme.js" defer></script>
 <script type="module" src="/assets/js/mist.js"></script>
 <style>
-/* Gate first, paint second. The body stays hidden until the session
-   check runs, so a signed-out visitor never sees a flash of the data
-   they haven't been let into yet. */
+/* Gate first, paint second. The body stays hidden until the script has
+   decided between the lead form and the dashboard, so a visitor who
+   hasn't shared their details never sees a flash of the data. */
 body{visibility:hidden}
 body.ready{visibility:visible}
+
+/* the gate: the site's lead form, on its own before the dashboard */
+.gate[hidden]{display:none}
+.gate{display:grid;place-items:center;padding:clamp(1.6rem,6vw,4rem) 0 clamp(2.4rem,7vw,5rem)}
+.gate .panel{width:min(620px,100%);padding:clamp(1.4rem,4vw,2.4rem)}
 
 .hd .who{display:flex;align-items:center;gap:.8rem}
 .who span{font-size:var(--t-xs);color:var(--ink3)}
@@ -90,11 +95,17 @@ body.ready{visibility:visible}
     </a>
     <div class="who">
       <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg></button>
-      <span>Signed in as <b id="whoMail">—</b></span>
-      <button class="lnk" id="out">Sign out</button>
+      <span id="whoLine" hidden>Viewing as <b id="whoName">—</b></span>
     </div>
   </header>
 
+  <section class="gate" id="gate" hidden>
+    <div class="panel">
+      <div id="gateForm"></div>
+    </div>
+  </section>
+
+  <div id="dash" hidden>
   <nav class="crumb" aria-label="Breadcrumb">
     <a href="/index.html">Home</a><span>›</span>
     <a href="/index.html#hmap">District risk</a><span>›</span>
@@ -160,32 +171,36 @@ body.ready{visibility:visible}
        real metrics before this page goes in front of anyone.</p>
   </div>
 
+  </div>
+
   <footer class="ft">© FloodGuard · Private preview</footer>
 </div>
 
 <script type="module">
-import { getSession, signOut } from "/assets/js/supabase.js";
+import { getLead, mountLead } from "/assets/js/lead.js";
 
 /* ── gate ───────────────────────────────────────────────────────
-   A real Supabase session, checked before the page reveals anything.
-   Row Level Security on the data this page reads is the actual access
-   control; this redirect is just the UX for "you're not signed in". */
+   The dashboard opens once the visitor has sent the lead form — here,
+   or from the homepage map, which asks before it navigates. The data on
+   this page is demonstration data, so this is lead capture, not access
+   control. */
 const P=new URLSearchParams(location.search);
-(async()=>{
-  const sess=await getSession();
-  if(!sess){
-    const back=location.pathname+location.search;
-    location.replace("/auth.html?next="+encodeURIComponent(back)+
-                     "&dest="+encodeURIComponent(P.get("name")||"this district"));
-  }else{
-    document.body.classList.add("ready");
-    document.getElementById("whoMail").textContent=sess.user.email;
-  }
-})();
-document.getElementById("out").onclick=async()=>{
-  await signOut();
-  location.href="/index.html";
-};
+function openDash(lead){
+  document.getElementById("gate").hidden=true;
+  document.getElementById("dash").hidden=false;
+  document.getElementById("whoName").textContent=lead.name||lead.email;
+  document.getElementById("whoLine").hidden=false;
+}
+const lead=getLead();
+if(lead) openDash(lead);
+else{
+  document.getElementById("gate").hidden=false;
+  mountLead(document.getElementById("gateForm"),{
+    mode:"dashboard",dest:P.get("name")||"",source:"/district",
+    onDone:d=>{openDash(d);scrollTo(0,0);},
+  });
+}
+document.body.classList.add("ready");
 
 /* ── inputs ── */
 const NAME=P.get("name")||"Unknown district";

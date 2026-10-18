@@ -6,7 +6,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/sectors", "destination": "/solutions", "permanent": true }
+    { "source": "/sectors", "destination": "/solutions", "permanent": true },
+    { "source": "/auth", "destination": "/", "permanent": true }
   ],
   "rewrites": [
     { "source": "/sb/:path*", "destination": "https://lywnmsbsnumjahvtflmq.supabase.co/:path*" }

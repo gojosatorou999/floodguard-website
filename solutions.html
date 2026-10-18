@@ -35,17 +35,7 @@
           <a class="all" href="/products.html">All products →</a>
         </div>
       </div>
-      <div class="tni">
-        <button type="button" aria-expanded="false" aria-controls="dd-solutions" aria-current="page">Solutions <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
-        <div class="tdrop" id="dd-solutions">
-          <a href="/solutions/insurance.html"><b>Insurance &amp; Reinsurance</b><em>Underwriting, accumulation and claims</em></a>
-          <a href="/solutions/banking.html"><b>Banking &amp; Finance</b><em>Collateral and portfolio screening</em></a>
-          <a href="/solutions/agriculture.html"><b>Agriculture</b><em>Crop and agricultural flood risk</em></a>
-          <a href="/solutions/infrastructure.html"><b>Infrastructure</b><em>Sites, assets and corridors</em></a>
-          <a href="/solutions/government.html"><b>Government &amp; Disaster Management</b><em>Prepare, monitor and respond</em></a>
-          <a class="all" href="/solutions.html">Solutions overview →</a>
-        </div>
-      </div>
+      <a href="/solutions.html" aria-current="page">Solutions</a>
       <a href="/platform.html">Platform</a>
       <a href="/insights.html">Insights</a>
       <a href="/about.html">About</a>
@@ -56,8 +46,7 @@
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
       </button>
       <a class="btn bg2 tExplore" href="/index.html#hmap">Explore Free Data</a>
-      <a class="btn bp" href="/contact.html">Request a Demo</a>
-      <a class="tsign" href="/auth.html" data-signin>Sign in</a>
+      <a class="btn bp" href="/contact.html?intent=demo" data-lead="demo">Request a Demo</a>
       <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
     </div>
     <div class="tmenuPanel" id="tmenuPanel" hidden>
@@ -65,14 +54,8 @@
       <a href="/products.html#explorer">Explorer</a>
       <a href="/products.html#atlas">Atlas</a>
       <a href="/products.html#live">Live</a>
-      <p>Solutions</p>
-      <a href="/solutions.html">Overview</a>
-      <a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a>
-      <a href="/solutions/banking.html">Banking &amp; Finance</a>
-      <a href="/solutions/agriculture.html">Agriculture</a>
-      <a href="/solutions/infrastructure.html">Infrastructure</a>
-      <a href="/solutions/government.html">Government &amp; Disaster Management</a>
       <hr>
+      <a href="/solutions.html" aria-current="page">Solutions</a>
       <a href="/platform.html">Platform</a>
       <a href="/insights.html">Insights</a>
       <a href="/about.html">About us</a>
@@ -84,132 +67,338 @@
         </button>
       </div>
       <a class="btn bp" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a class="btn bg2" href="/contact.html?intent=demo" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
   </header>
 </div>
 <!-- /shell:header -->
 
 <main>
-  <!-- 01 — HERO: one intelligence layer, many applications -->
-  <section class="pgHero">
-    <div class="wrap grid">
-      <div>
-        <p class="eyebrow"><i></i>Solutions</p>
+  <!-- 01 — HERO: one flood record, five sectors (the products-page hero, applied) -->
+  <section class="pgHero heroWhole">
+    <div class="wrap">
+      <div class="whole">
+        <p class="eyebrow"><i></i>FloodGuard solutions</p>
         <h1>One flood record. Many decisions.</h1>
-        <p class="sup" style="font-size:var(--t-1);margin-top:1.1rem">From underwriting and portfolio assessment to infrastructure planning and disaster response, FloodGuard helps organisations understand where flood risk is, how it is changing, and what it could mean for their decisions.</p>
+        <p>From underwriting and portfolio assessment to infrastructure planning and disaster response, FloodGuard helps organisations understand where flood risk is, how it is changing, and what it could mean for their decisions.</p>
         <div class="ctaRow">
-          <a class="btn bp" href="#overview">Explore Solutions <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bp" href="/contact.html?intent=demo" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
           <a class="btn bg2" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
         </div>
-      </div>
-
-      <!-- the applications, radiating from the one intelligence layer -->
-      <div class="appHub" data-reveal role="img" aria-label="FloodGuard's flood intelligence at the centre, applied across five sectors and 25 applications: insurance and reinsurance, banking and finance, agriculture, infrastructure, and government and disaster management">
-        <svg class="appWires" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M50 50 L24 13"/><path d="M50 50 L76 13"/><path d="M50 50 L15 58"/><path d="M50 50 L85 58"/><path d="M50 50 L50 90"/>
-        </svg>
-        <div class="appCore" aria-hidden="true">
-          <span class="ring"></span><span class="ring r2"></span>
-          <img src="/assets/img/logo-mark.png" alt="">
-          <b>Flood intelligence</b>
-          <em>Past · Now · Future</em>
+        <nav class="sectAxis" aria-label="Solutions by sector">
+          <a href="#insurance"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12h6M12 9v6"/></svg></span><span class="p">Insurance</span><span class="q">6 applications</span></a>
+          <a href="#banking"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg></span><span class="p">Banking</span><span class="q">5 applications</span></a>
+          <a href="#agriculture"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21V10"/><path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z"/><path d="M4 21h16"/></svg></span><span class="p">Agriculture</span><span class="q">4 applications</span></a>
+          <a href="#infrastructure"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 20V9h5v11M14 20V4h5v16"/><path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1"/></svg></span><span class="p">Infrastructure</span><span class="q">5 applications</span></a>
+          <a href="#government"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-6h6v6M2 21h20"/></svg></span><span class="p">Government</span><span class="q">5 applications</span></a>
+        </nav>
+        <div class="eq">
+          <span class="lhs">One flood record</span><span class="op">→</span><span class="rhs">Five sectors</span>
+          <small>Historical · real-time · future intelligence, applied</small>
         </div>
-        <a class="appNode" href="/solutions/insurance.html" style="--x:24%;--y:13%">
-          <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M9 12h6M12 9v6"/></svg></span>
-          <b>Insurance &amp; Reinsurance</b>
-          <span class="apps"><i>Underwriting</i><i>Accumulation</i><i>Claims</i><i>+3</i></span>
-        </a>
-        <a class="appNode" href="/solutions/banking.html" style="--x:76%;--y:13%">
-          <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg></span>
-          <b>Banking &amp; Finance</b>
-          <span class="apps"><i>Collateral</i><i>Portfolio</i><i>Lending</i><i>+2</i></span>
-        </a>
-        <a class="appNode" href="/solutions/agriculture.html" style="--x:15%;--y:58%">
-          <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21V10"/><path d="M12 13c-4 0-6-3-6-7 4 0 6 3 6 7zM12 11c0-4 2-7 6-7 0 4-2 7-6 7z"/><path d="M4 21h16"/></svg></span>
-          <b>Agriculture</b>
-          <span class="apps"><i>Crop insurance</i><i>Crop risk</i><i>+2</i></span>
-        </a>
-        <a class="appNode" href="/solutions/infrastructure.html" style="--x:85%;--y:58%">
-          <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 20V9h5v11M14 20V4h5v16"/><path d="M7 12h1M7 15h1M16 7h1M16 10h1M16 13h1"/></svg></span>
-          <b>Infrastructure</b>
-          <span class="apps"><i>Site screening</i><i>Corridors</i><i>+3</i></span>
-        </a>
-        <a class="appNode" href="/solutions/government.html" style="--x:50%;--y:90%">
-          <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-6h6v6M2 21h20"/></svg></span>
-          <b>Government &amp; Disaster Mgmt.</b>
-          <span class="apps"><i>Preparedness</i><i>Monitoring</i><i>Response</i><i>+2</i></span>
-        </a>
-        <p class="appCount"><b>5</b> sectors <span aria-hidden="true">·</span> <b>25</b> applications</p>
       </div>
     </div>
   </section>
 
-  <!-- 02 — OVERVIEW: one card per solution, like the products overview -->
-  <section class="sec" id="overview">
+  <nav class="subnav" aria-label="On this page">
+    <a href="#insurance">Insurance</a>
+    <a href="#banking">Banking</a>
+    <a href="#agriculture">Agriculture</a>
+    <a href="#infrastructure">Infrastructure</a>
+    <a href="#government">Government</a>
+    <a href="#compare">Which products</a>
+  </nav>
+
+  <!-- Insurance & Reinsurance -->
+  <section class="sec" id="insurance">
     <div class="wrap">
       <div class="secHead">
-        <p class="eyebrow"><i></i>One platform. Multiple decisions.</p>
-        <h2>Flood intelligence, applied to the decisions that matter.</h2>
-        <p>Every solution reads off the same flood record, shaped around how each sector actually makes its flood decisions. Choose yours.</p>
+        <p class="eyebrow"><i></i>Insurance &amp; Reinsurance <span aria-hidden="true">·</span> <span class="hz">Past + Future</span></p>
+        <h2>Price flood into every policy you write.</h2>
+        <p>FloodGuard gives insurers and reinsurers location-level flood intelligence — so flood is underwritten, accumulated and managed with an observed record behind every decision, not a district average.</p>
       </div>
-      <div class="pOver solOver">
-        <article class="card" data-reveal>
-          <div class="vis"><div class="inst"><div class="instMap" data-fgmap="doc-mini" data-crop="68,15.4,81.2,24.9"></div></div><span class="visTag">Insurance &amp; Reinsurance</span></div>
-          <div class="txt">
-            <span class="hzs"><span class="hzChip"><i class="p"></i>Past</span><span class="hzChip"><i class="f"></i>Future</span></span>
-            <h3>Price flood into every policy.</h3>
-            <p class="d">Location-level flood risk for underwriting, accumulation control and claims.</p>
-            <p class="s">For general insurers, crop insurers and reinsurers writing flood-exposed risk in India.</p>
-            <div class="foot"><span class="access">6 applications</span><a class="btn bp" href="/solutions/insurance.html">Explore solution <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+
+      <figure class="inst" data-reveal aria-label="Illustrative insurance view: Gujarat and Maharashtra with district flood risk, sample insured locations, exposure concentration rings and a portfolio risk panel">
+        <div class="instBar">
+          <span class="app">FloodGuard · Portfolio view</span>
+          <span class="crumbs">India › Gujarat · <b>Maharashtra</b></span>
+          <span class="sp"></span>
+          <span class="seg" aria-label="Horizon"><span class="on">Historical</span><span>2050 · Mid</span></span>
+          <span class="instTag">Illustrative · sample portfolio</span>
+        </div>
+        <div class="instBody s3">
+          <div class="instSide">
+            <p class="instH">Layers</p>
+            <div class="lyr"><span class="on">District boundaries</span><span class="on">Flood risk</span><span class="on">Insured locations</span><span class="on">Exposure concentration</span><span>Future scenario</span></div>
+            <p class="instH" style="margin-top:1.2rem">Flood risk</p>
+            <div class="rampBar" aria-hidden="true"><i style="background:#133f4f"></i><i style="background:#175a73"></i><i style="background:#1f7d98"></i><i style="background:#36a6b8"></i><i style="background:#7cc4a0"></i><i style="background:#e0c062"></i><i style="background:#e38c4a"></i></div>
+            <div class="rampL"><span>Low</span><span>High</span></div>
           </div>
-        </article>
-        <article class="card" data-reveal>
-          <div class="vis"><div class="inst"><div class="instMap" data-fgmap="doc-mini" data-crop="74,8,80.6,15.6" data-mode="future"></div></div><span class="visTag">Banking &amp; Finance</span></div>
-          <div class="txt">
-            <span class="hzs"><span class="hzChip"><i class="p"></i>Past</span><span class="hzChip"><i class="f"></i>Future</span></span>
-            <h3>See flood exposure in the loan book.</h3>
-            <p class="d">Screen collateral, borrowers and portfolios for flood exposure.</p>
-            <p class="s">For banks, NBFCs and lenders bringing climate risk into credit decisions.</p>
-            <div class="foot"><span class="access">5 applications</span><a class="btn bp" href="/solutions/banking.html">Explore solution <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+          <div class="instMap" style="min-height:460px" data-fgmap="sol-ins"></div>
+          <div class="instPanel">
+            <p class="instH">Portfolio · sample</p>
+            <div class="kv"><span>Locations in view</span><b data-x="iLoc">—</b></div>
+            <div class="kv"><span>In high / very high bands</span><b data-x="iHigh">—</b></div>
+            <div class="kv"><span>Largest concentration</span><b data-x="iTop">—</b></div>
+            <div class="kv"><span>Mumbai Suburban</span><b data-x="iBand">—</b></div>
+            <p class="instH" style="margin-top:1.1rem">Locations by risk band</p>
+            <div class="cmpBars" data-x="iBars" aria-hidden="true"></div>
           </div>
-        </article>
-        <article class="card" data-reveal>
-          <div class="vis"><div class="inst"><div class="instMap" data-fgmap="doc-mini" data-crop="83.2,24.3,89.2,27.5"></div></div><span class="visTag">Agriculture</span></div>
-          <div class="txt">
-            <span class="hzs"><span class="hzChip"><i class="p"></i>Past</span><span class="hzChip"><i class="f"></i>Future</span></span>
-            <h3>Know which fields flood, and how often.</h3>
-            <p class="d">Crop and agricultural flood risk across districts and talukas.</p>
-            <p class="s">For crop insurers, agri-lenders, agribusiness and agricultural planners.</p>
-            <div class="foot"><span class="access">4 applications</span><a class="btn bp" href="/solutions/agriculture.html">Explore solution <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
-          </div>
-        </article>
-        <article class="card" data-reveal>
-          <div class="vis"><div class="inst"><div class="instMap" data-fgmap="doc-mini" data-crop="72.4,18.2,80.2,22.3" data-mode="future"></div></div><span class="visTag">Infrastructure</span></div>
-          <div class="txt">
-            <span class="hzs"><span class="hzChip"><i class="n"></i>Now</span><span class="hzChip"><i class="f"></i>Future</span></span>
-            <h3>Site and build for the water to come.</h3>
-            <p class="d">Screen sites, assets and corridors before you invest.</p>
-            <p class="s">For developers, engineers, utilities and infrastructure investors.</p>
-            <div class="foot"><span class="access">5 applications</span><a class="btn bp" href="/solutions/infrastructure.html">Explore solution <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
-          </div>
-        </article>
-        <article class="card" data-reveal>
-          <div class="vis"><div class="inst"><div class="instMap" data-fgmap="doc-mini" data-crop="89.6,24.2,96.1,28.1"></div></div><span class="visTag">Government &amp; Disaster Management</span></div>
-          <div class="txt">
-            <span class="hzs"><span class="hzChip"><i class="p"></i>Past</span><span class="hzChip"><i class="n"></i>Now</span><span class="hzChip"><i class="f"></i>Future</span></span>
-            <h3>Prepare before the flood arrives.</h3>
-            <p class="d">Risk mapping, preparedness, monitoring and response.</p>
-            <p class="s">For state and district disaster management authorities and urban planners.</p>
-            <div class="foot"><span class="access">5 applications</span><a class="btn bp" href="/solutions/government.html">Explore solution <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
-          </div>
-        </article>
-        <a class="card solOverMore" href="/index.html#hmap" data-reveal>
-          <span class="access">Not sure yet?</span>
-          <h3>Start with your district.</h3>
-          <p>Every solution begins with the historical record. Explore it free in Explorer, then talk to us about the rest.</p>
-          <span class="arrowLink">Explore Explorer <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></span>
-        </a>
+        </div>
+        <figcaption class="instNote">Mock-up of a portfolio view. Locations, concentrations and bands are sample content for illustration, not FloodGuard model output.</figcaption>
+      </figure>
+
+      <p class="capLbl">Six applications across the insurance value chain</p>
+      <div class="capGrid c3" data-reveal>
+        <div><span class="n">01</span><b>Underwriting &amp; pricing</b><p>Rate each location on its own flood history rather than a regional average.</p></div>
+        <div><span class="n">02</span><b>Portfolio accumulation</b><p>See where sum insured concentrates in high flood-risk bands.</p></div>
+        <div><span class="n">03</span><b>Climate stress testing</b><p>Test the portfolio against future flood scenarios.</p></div>
+        <div><span class="n">04</span><b>Crop insurance</b><p>Historical and future flood risk across agricultural districts and talukas.</p></div>
+        <div><span class="n">05</span><b>Reinsurance</b><p>Portfolio-level flood analysis for treaty and facultative decisions.</p></div>
+        <div><span class="n">06</span><b>Claims &amp; event analysis</b><p>Understand affected areas after a flood to anticipate claims.</p></div>
       </div>
+
+      <div class="talk" data-reveal>
+        <div>
+          <h3><a href="/contact.html?sector=Insurance%20%26%20Reinsurance" data-lead="demo" data-sector="Insurance &amp; Reinsurance">Talk to us about insurance →</a></h3>
+          <p>See FloodGuard on your own portfolio — a demo shaped around how your team makes its flood decisions.</p>
+        </div>
+        <a class="btn" href="/contact.html?sector=Insurance%20%26%20Reinsurance" data-lead="demo" data-sector="Insurance &amp; Reinsurance">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Banking & Finance -->
+  <section class="sec" id="banking">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Banking &amp; Finance <span aria-hidden="true">·</span> <span class="hz">Past + Future</span></p>
+        <h2>Understand flood exposure across the portfolio.</h2>
+        <p>Flood risk can affect properties, collateral, borrowers and portfolios. FloodGuard provides location-based flood intelligence to help financial institutions incorporate flood risk into assessment and planning.</p>
+      </div>
+
+      <figure class="inst paper" data-reveal aria-label="Illustrative banking view: southern India with projected district flood risk, sample collateral locations and exposure concentration, with simple portfolio statistics">
+        <div class="instBar">
+          <span class="app">FloodGuard · Portfolio screening</span>
+          <span class="crumbs">India › <b>Karnataka · Kerala · Tamil Nadu</b></span>
+          <span class="sp"></span>
+          <span class="seg" aria-label="Horizon"><span>Historical</span><span class="on">2050 · Mid</span></span>
+          <span class="instTag">Illustrative · sample data</span>
+        </div>
+        <div class="instBody s2">
+          <div class="instMap" style="min-height:460px" data-fgmap="sol-bank"></div>
+          <div class="instPanel">
+            <p class="instH">Lending footprint · sample</p>
+            <div class="kv"><span>Collateral locations</span><b data-x="bLoc">—</b></div>
+            <div class="kv"><span>Districts covered</span><b data-x="bDist">—</b></div>
+            <div class="kv"><span>In high projected risk</span><b data-x="bHigh">—</b></div>
+            <p class="instH" style="margin-top:1.1rem">Projected risk · 2050 mid</p>
+            <div class="rampBar" aria-hidden="true"><i style="background:#cfe4e3"></i><i style="background:#aed5d6"></i><i style="background:#7fbcc4"></i><i style="background:#4b9fb0"></i><i style="background:#7fb996"></i><i style="background:#dcb54f"></i><i style="background:#d9803f"></i></div>
+            <div class="rampL"><span>Low</span><span>High</span></div>
+          </div>
+        </div>
+        <figcaption class="instNote">Mock-up. Locations and counts are sample content, not customer or FloodGuard data.</figcaption>
+      </figure>
+
+      <p class="capLbl">Five applications for lenders</p>
+      <div class="capGrid c5" data-reveal>
+        <div><span class="n">01</span><b>Collateral assessment</b><p>Understand flood risk associated with properties and collateral.</p></div>
+        <div><span class="n">02</span><b>Portfolio screening</b><p>Identify flood exposure across lending portfolios.</p></div>
+        <div><span class="n">03</span><b>Location risk</b><p>Assess flood characteristics at relevant locations.</p></div>
+        <div><span class="n">04</span><b>Climate risk</b><p>Understand how flood risk may evolve under future scenarios.</p></div>
+        <div><span class="n">05</span><b>Lending decisions</b><p>Incorporate location-based flood intelligence into risk assessment.</p></div>
+      </div>
+
+      <div class="talk" data-reveal>
+        <div>
+          <h3><a href="/contact.html?sector=Banking%20%26%20Finance" data-lead="demo" data-sector="Banking &amp; Finance">Talk to us about lending →</a></h3>
+          <p>See FloodGuard on your own portfolio — a demo shaped around how your team makes its flood decisions.</p>
+        </div>
+        <a class="btn" href="/contact.html?sector=Banking%20%26%20Finance" data-lead="demo" data-sector="Banking &amp; Finance">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agriculture -->
+  <section class="sec" id="agriculture">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Agriculture <span aria-hidden="true">·</span> <span class="hz">Past + Future</span></p>
+        <h2>Understand flood risk across agricultural landscapes.</h2>
+        <p>FloodGuard helps analyse how flood risk varies across agricultural areas, supporting crop-risk assessment, planning and resilience.</p>
+      </div>
+
+      <figure class="inst" data-reveal aria-label="Illustrative agriculture view: north Bihar and north Bengal with agricultural districts hatched, a sample flood extent along the Kosi and Gandak, and a district's recurring flood years">
+        <div class="instBar">
+          <span class="app">FloodGuard · Agricultural risk</span>
+          <span class="crumbs">India › Bihar › <b>Khagaria</b></span>
+          <span class="sp"></span>
+          <span class="instTag">Illustrative · sample data</span>
+        </div>
+        <div class="instBody s2">
+          <div class="instMap" style="min-height:460px" data-fgmap="sol-agri"></div>
+          <div class="instPanel">
+            <p class="instH">Layers</p>
+            <div class="lyr"><span class="on">Agricultural land</span><span class="on">Flood extent · sample</span><span class="on">Historical flood risk</span><span class="on">District boundaries</span></div>
+            <div style="margin-top:.9rem">
+              <div class="kv"><span>Khagaria · historical</span><b data-x="gBand">—</b></div>
+              <div class="kv"><span>Bihar, in record</span><b data-x="gAgri">—</b></div>
+            </div>
+            <p class="instH" style="margin-top:1.1rem">Flood years · 1951–2025</p>
+            <div class="stripes" data-x="gStripes" aria-hidden="true"></div>
+            <div class="rampL"><span>1951</span><span>2025</span></div>
+          </div>
+        </div>
+        <figcaption class="instNote">Mock-up. Flood extent, zones and flood years are illustrative, not observed events or FloodGuard output.</figcaption>
+      </figure>
+
+      <p class="capLbl">Four applications in agriculture</p>
+      <div class="capGrid c4" data-reveal>
+        <div><span class="n">01</span><b>Crop insurance</b><p>Understand historical and future flood risk across agricultural areas.</p></div>
+        <div><span class="n">02</span><b>Agricultural risk assessment</b><p>Identify areas exposed to recurring or changing flood risk.</p></div>
+        <div><span class="n">03</span><b>Portfolio analysis</b><p>Assess flood exposure across agricultural geographies.</p></div>
+        <div><span class="n">04</span><b>Resilience planning</b><p>Identify areas where flood risk may require additional planning or intervention.</p></div>
+      </div>
+
+      <div class="talk" data-reveal>
+        <div>
+          <h3><a href="/contact.html?sector=Agriculture" data-lead="demo" data-sector="Agriculture">Talk to us about agriculture →</a></h3>
+          <p>See FloodGuard on your own districts and crops — a demo shaped around how your team makes its flood decisions.</p>
+        </div>
+        <a class="btn" href="/contact.html?sector=Agriculture" data-lead="demo" data-sector="Agriculture">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Infrastructure -->
+  <section class="sec" id="infrastructure">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Infrastructure <span aria-hidden="true">·</span> <span class="hz">Now + Future</span></p>
+        <h2>Know the flood risk before investing.</h2>
+        <p>Infrastructure decisions have long time horizons. FloodGuard helps organisations understand flood exposure across sites, assets and corridors — from current conditions to future risk.</p>
+      </div>
+
+      <figure class="inst" data-reveal aria-label="Illustrative infrastructure view: a sample road corridor and rail lines across Maharashtra over terrain, rivers and projected flood risk, with sample assets along the route">
+        <div class="instBar">
+          <span class="app">FloodGuard · Corridor screening</span>
+          <span class="crumbs">India › <b>Maharashtra</b></span>
+          <span class="sp"></span>
+          <span class="seg" aria-label="Horizon"><span>Now</span><span class="on">2050</span><span>2100</span></span>
+          <span class="instTag">Illustrative · sample route</span>
+        </div>
+        <div class="instBody s2">
+          <div class="instMap" style="min-height:460px" data-fgmap="sol-infra"></div>
+          <div class="instPanel">
+            <p class="instH">Layers</p>
+            <div class="lyr"><span class="on">Road corridor</span><span class="on">Rail</span><span class="on">Rivers &amp; terrain</span><span class="on">Future scenario · 2050 mid</span></div>
+            <div style="margin-top:.9rem">
+              <div class="kv"><span>Assets on route</span><b data-x="fAssets">—</b></div>
+              <div class="kv"><span>In high projected risk</span><b data-x="fHot">—</b></div>
+            </div>
+            <p class="instH" style="margin-top:1.1rem">Projected change vs today</p>
+            <div class="cmpBars" aria-hidden="true">
+              <div class="fut"><span>2030</span><i style="width:30%"></i></div>
+              <div class="fut"><span>2050</span><i style="width:58%"></i></div>
+              <div class="fut"><span>2100</span><i style="width:92%"></i></div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="instNote">Mock-up. The route, assets and scenario trend are illustrative, not a real project or FloodGuard output.</figcaption>
+      </figure>
+
+      <p class="capLbl">Five applications for infrastructure</p>
+      <div class="capGrid c5" data-reveal>
+        <div><span class="n">01</span><b>Site screening</b><p>Assess flood risk before selecting or developing a site.</p></div>
+        <div><span class="n">02</span><b>Asset risk</b><p>Understand flood exposure for existing infrastructure.</p></div>
+        <div><span class="n">03</span><b>Infrastructure corridors</b><p>Assess flood risk along roads, railways, pipelines and other corridors.</p></div>
+        <div><span class="n">04</span><b>Project planning</b><p>Incorporate flood intelligence into infrastructure planning.</p></div>
+        <div><span class="n">05</span><b>Climate resilience</b><p>Understand how flood risk could evolve over time.</p></div>
+      </div>
+
+      <div class="talk" data-reveal>
+        <div>
+          <h3><a href="/contact.html?sector=Infrastructure" data-lead="demo" data-sector="Infrastructure">Talk to us about infrastructure →</a></h3>
+          <p>See FloodGuard on your own sites and corridors — a demo shaped around how your team makes its flood decisions.</p>
+        </div>
+        <a class="btn" href="/contact.html?sector=Infrastructure" data-lead="demo" data-sector="Infrastructure">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Government & Disaster Management -->
+  <section class="sec" id="government">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Government &amp; Disaster Management <span aria-hidden="true">·</span> <span class="hz">Past + Now + Future</span></p>
+        <h2>Prepare before the flood arrives.</h2>
+        <p>FloodGuard connects historical flood intelligence, current conditions and future risk to support preparedness, planning, monitoring and response.</p>
+      </div>
+
+      <figure class="inst" data-reveal aria-label="Illustrative operational view of Assam: historical district flood risk with sample current rainfall, alert areas, monitoring points and critical infrastructure">
+        <div class="instBar">
+          <span class="livePill">Live</span>
+          <span class="app">FloodGuard · Situational view</span>
+          <span class="crumbs">India › <b>Assam</b></span>
+          <span class="sp"></span>
+          <span class="instTag">Demo feed · not live data</span>
+        </div>
+        <div class="instBody s2">
+          <div class="instMap" style="min-height:460px" data-fgmap="sol-gov"></div>
+          <div class="instPanel">
+            <p class="instH">Alert areas <span style="float:right;font-weight:600;letter-spacing:0;text-transform:none">Sample · 06:40 IST</span></p>
+            <div class="alertL">
+              <div><b><span class="sev h">High</span>Dhemaji · Lakhimpur</b><span>Heavy rainfall upstream · rivers rising</span></div>
+              <div><b><span class="sev e">Elevated</span>Barpeta · Marigaon</b><span>Low-lying areas · historical flood zone</span></div>
+            </div>
+            <p class="instH" style="margin-top:1.1rem">Legend</p>
+            <div class="lyr"><span class="on">Current rainfall · sample</span><span class="on">Historical flood risk</span><span class="on">Critical infrastructure</span><span class="on">Monitoring points</span></div>
+          </div>
+        </div>
+        <figcaption class="instNote">Mock-up of an operational view. Rainfall, alerts and timestamps are sample content — never live operational data.</figcaption>
+      </figure>
+
+      <p class="capLbl">Five applications for government</p>
+      <div class="capGrid c5" data-reveal>
+        <div><span class="n">01</span><b>Risk mapping</b><p>Understand flood-prone areas and historical patterns.</p></div>
+        <div><span class="n">02</span><b>Preparedness planning</b><p>Use historical and future risk to support disaster preparedness.</p></div>
+        <div><span class="n">03</span><b>Real-time monitoring</b><p>Monitor changing flood conditions where Live is available.</p></div>
+        <div><span class="n">04</span><b>Response</b><p>Support situational awareness during flood events.</p></div>
+        <div><span class="n">05</span><b>Resilience planning</b><p>Identify areas where long-term flood-risk reduction may be needed.</p></div>
+      </div>
+
+      <div class="talk" data-reveal>
+        <div>
+          <h3><a href="/contact.html?sector=Government" data-lead="demo" data-sector="Government">Talk to us about disaster management →</a></h3>
+          <p>See FloodGuard on your own state or district — a demo shaped around how your team makes its flood decisions.</p>
+        </div>
+        <a class="btn" href="/contact.html?sector=Government" data-lead="demo" data-sector="Government">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON: which products each sector draws on -->
+  <section class="sec" id="compare">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Products by sector</p>
+        <h2>Which products does each sector use?</h2>
+        <p>Every solution starts with the free historical record in Explorer. Atlas adds depth and future scenarios; Live adds what is happening now.</p>
+      </div>
+      <div class="cmpWrap cmpShort" data-reveal>
+        <table class="cmp">
+          <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">FloodGuard products used by each sector</caption>
+          <thead><tr><th scope="col">Sector</th><th scope="col">Explorer<span>Past</span></th><th scope="col">Atlas<span>Past + Future</span></th><th scope="col">Live<span>Now</span></th></tr></thead>
+          <tbody>
+            <tr><td><a href="#insurance">Insurance &amp; Reinsurance</a></td><td class="y" aria-label="Included"></td><td class="y" aria-label="Included"></td><td class="no" aria-label="Not used"></td></tr>
+            <tr><td><a href="#banking">Banking &amp; Finance</a></td><td class="y" aria-label="Included"></td><td class="y" aria-label="Included"></td><td class="no" aria-label="Not used"></td></tr>
+            <tr><td><a href="#agriculture">Agriculture</a></td><td class="y" aria-label="Included"></td><td class="y" aria-label="Included"></td><td class="no" aria-label="Not used"></td></tr>
+            <tr><td><a href="#infrastructure">Infrastructure</a></td><td class="y" aria-label="Included"></td><td class="y" aria-label="Included"></td><td class="y" aria-label="Included"></td></tr>
+            <tr><td><a href="#government">Government &amp; Disaster Management</a></td><td class="y" aria-label="Included"></td><td class="y" aria-label="Included"></td><td class="y" aria-label="Included"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cmpMore"><a class="arrowLink" href="/products.html">Compare the products in detail <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></p>
     </div>
   </section>
 
@@ -232,8 +421,8 @@
         <h3>Talk to the FloodGuard team.</h3>
         <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
         <div class="ctaRow">
-          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-          <a class="btn bg2" href="/contact.html?intent=sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="/contact.html?intent=sales" data-lead="sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
         </div>
       </div>
     </div>
@@ -272,11 +461,12 @@
       <div class="site-footer__col">
         <h2 class="site-footer__heading">Solutions</h2>
         <ul role="list">
-          <li><a href="/solutions/insurance.html">Insurance &amp; Reinsurance</a></li>
-          <li><a href="/solutions/banking.html">Banking &amp; Finance</a></li>
-          <li><a href="/solutions/agriculture.html">Agriculture</a></li>
-          <li><a href="/solutions/infrastructure.html">Infrastructure</a></li>
-          <li><a href="/solutions/government.html">Government</a></li>
+          <li><a href="/solutions.html">Overview</a></li>
+          <li><a href="/solutions.html#insurance">Insurance &amp; Reinsurance</a></li>
+          <li><a href="/solutions.html#banking">Banking &amp; Finance</a></li>
+          <li><a href="/solutions.html#agriculture">Agriculture</a></li>
+          <li><a href="/solutions.html#infrastructure">Infrastructure</a></li>
+          <li><a href="/solutions.html#government">Government</a></li>
         </ul>
       </div>
       <div class="site-footer__col">
@@ -295,7 +485,7 @@
           <li><a href="/insights.html">Insights</a></li>
           <li><a href="/about.html">About us</a></li>
           <li><a href="/contact.html">Contact us</a></li>
-          <li><a href="/contact.html?intent=demo">Request a demo</a></li>
+          <li><a href="/contact.html?intent=demo" data-lead="demo">Request a demo</a></li>
         </ul>
       </div>
     </nav>
@@ -307,6 +497,6 @@
 <!-- /shell:footer -->
 
 <script type="module" src="/assets/js/solutions.js"></script>
-<script type="module" src="/assets/js/signin.js"></script>
+<script type="module" src="/assets/js/lead.js"></script>
 </body>
 </html>

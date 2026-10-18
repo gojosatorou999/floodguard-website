@@ -35,8 +35,7 @@ export default defineConfig(({ mode }) => {
           main: resolve(here, "index.html"),
           // The React scaffold, still buildable at /app.html while it's filled in.
           app: resolve(here, "app.html"),
-          // Gated district view + its login/register gate.
-          auth: resolve(here, "auth.html"),
+          // District dashboard, behind the lead form (assets/js/lead.js).
           district: resolve(here, "district.html"),
           // Full Products detail, split out of the homepage.
           products: resolve(here, "products.html"),
