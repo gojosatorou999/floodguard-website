@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D Studio — flood intelligence on real terrain | FloodGuard</title>
+<meta name="description" content="Explore rainfall, drainage, hazard, exposure and flood depth on a lit 3D terrain model of India's flood-prone regions. Real, derived and simulated data are clearly labelled.">
+<link rel="canonical" href="https://floodguard.in/studio">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27/%3E%3Cpath d=%27M4 13c2 0 2 1.6 4 1.6s2-1.6 4-1.6 2 1.6 4 1.6 1.6-.7 2.4-1.2%27 fill=%27none%27 stroke=%27%2301497c%27 stroke-width=%272%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preload" href="/assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fg-base.css">
+<link rel="stylesheet" href="/assets/fg-pages.css">
+<link rel="stylesheet" href="/assets/webinar.css">
+<link rel="stylesheet" href="/assets/studio.css">
+<script type="module" src="/assets/js/theme.js" defer></script>
+<script type="module" src="/assets/js/nav.js"></script>
+<script type="module" src="/assets/js/mist.js"></script>
+<script type="module" src="/assets/js/totop.js"></script>
+</head>
+<body data-nav="studio">
+
+<!-- shell:banner -->
+<aside class="wbBar" aria-label="Upcoming webinar">
+  <div class="wrap wbIn">
+    <span class="wbTag"><i class="wbLive" aria-hidden="true"></i>Upcoming webinar<span class="wbSep"> · </span><span class="wbFor">For pilot partners</span></span>
+    <p class="wbTxt">Want to see what we're building? <b>Join our webinar.</b></p>
+    <a class="wbBtn" href="%WEBINAR_URL%" data-webinar>Save My Spot <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </div>
+</aside>
+<!-- /shell:banner -->
+
+<!-- shell:header -->
+<div class="wrap topWrap">
+  <header class="topbar">
+    <a class="brandmark" href="/index.html" aria-label="FloodGuard — home">
+      <img src="/assets/img/logo-mark.png" alt="" aria-hidden="true"><b>FLOODGUARD</b>
+    </a>
+    <nav class="tnav" aria-label="Primary">
+      <div class="tni">
+        <button type="button" aria-expanded="false" aria-controls="dd-products">Products <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="tdrop" id="dd-products">
+          <a href="/products.html#explorer"><b>Explorer</b><em>Free district-level flood history</em></a>
+          <a href="/products.html#atlas"><b>Atlas</b><em>Historical and future flood risk, in depth</em></a>
+          <a href="/products.html#live"><b>Live</b><em>Real-time rainfall, radar and alerts</em></a>
+          <a class="all" href="/products.html">All products →</a>
+        </div>
+      </div>
+      <a href="/solutions.html">Solutions</a>
+      <a href="/platform.html">Platform</a>
+      <a href="/studio.html" aria-current="page">3D Studio</a>
+      <a href="/insights.html">Insights</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="topbarAct">
+      <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <a class="btn bg2 tExplore" href="%WEBINAR_URL%" data-webinar>Explore Free Data</a>
+      <a class="btn bp" href="/contact.html?intent=demo" data-lead="demo">Request a Demo</a>
+      <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
+    </div>
+    <div class="tmenuPanel" id="tmenuPanel" hidden>
+      <p>Products</p>
+      <a href="/products.html#explorer">Explorer</a>
+      <a href="/products.html#atlas">Atlas</a>
+      <a href="/products.html#live">Live</a>
+      <hr>
+      <a href="/solutions.html">Solutions</a>
+      <a href="/platform.html">Platform</a>
+      <a href="/studio.html" aria-current="page">3D Studio</a>
+      <a href="/insights.html">Insights</a>
+      <a href="/about.html">About us</a>
+      <a href="/contact.html">Contact us</a>
+      <div class="themeRow"><span>Appearance</span>
+        <button class="themeBtn" type="button" data-theme-toggle aria-label="Switch to dark mode">
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+        </button>
+      </div>
+      <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a class="btn bg2" href="/contact.html?intent=demo" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+  </header>
+</div>
+<!-- /shell:header -->
+
+<main>
+  <!-- 01 — INTRO -->
+  <section class="pgHero stuIntro">
+    <div class="wrap">
+      <p class="eyebrow"><i></i>3D Studio</p>
+      <h1>See where the water goes — on real terrain.</h1>
+      <p class="sup">Fly into six flood-prone regions of India and read rainfall, drainage, hazard, exposure and flood depth on one lit 3D surface. Every layer is labelled <b>real</b>, <b>derived</b> or <b>simulated</b>, so you always know what you are looking at.</p>
+    </div>
+  </section>
+
+  <!-- 02 — THE STUDIO -->
+  <section class="stu" id="studio" aria-label="Interactive 3D flood intelligence studio">
+    <div class="wrap">
+      <div class="stuTop">
+        <div class="stuChips" role="group" aria-label="Analysis region">
+          <button type="button" class="chip" data-overview aria-pressed="true">India</button>
+          <button type="button" class="chip" data-region="konkan" aria-pressed="false">Mumbai &amp; Konkan</button>
+          <button type="button" class="chip" data-region="kosi" aria-pressed="false">Kosi plains</button>
+          <button type="button" class="chip" data-region="assam" aria-pressed="false">Assam</button>
+          <button type="button" class="chip" data-region="chennai" aria-pressed="false">Chennai</button>
+          <button type="button" class="chip" data-region="kerala" aria-pressed="false">Kerala</button>
+          <button type="button" class="chip" data-region="mahanadi" aria-pressed="false">Odisha delta</button>
+        </div>
+        <div class="stuViews" role="group" aria-label="Camera">
+          <button type="button" data-view="persp" aria-pressed="true">Perspective</button>
+          <button type="button" data-view="iso" aria-pressed="false">Isometric</button>
+          <button type="button" data-view="plan" aria-pressed="false">Plan</button>
+        </div>
+      </div>
+
+      <div class="stuGrid">
+        <aside class="stuPanel stuLeft" aria-label="Layers">
+          <h2>Layers</h2>
+          <ul id="stuLayers" class="lyrList"></ul>
+        </aside>
+
+        <div class="stuStage" id="stuStage">
+          <div id="stuMap" aria-label="Interactive 3D map of India and the selected flood region" role="application"></div>
+          <ul id="stuStatus" class="stuStatus" aria-live="polite"></ul>
+          <div id="stuTip" class="stuTip" hidden></div>
+          <div id="stuLoading" class="stuLoading" role="status" hidden></div>
+          <p id="stuHint" class="stuHint">Pick a region above, then drag to rotate and hover the terrain to read it.</p>
+          <div class="stuTools">
+            <button type="button" id="resetView" aria-label="Reset camera"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg></button>
+            <button type="button" data-fullscreen aria-label="Toggle full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+          </div>
+          <div id="stuFail" class="stuFail" hidden></div>
+        </div>
+
+        <aside class="stuPanel stuRight" aria-label="Scenario">
+          <h2>Scenario</h2>
+          <div class="ctl"><span class="lbl">Flood return period</span>
+            <div class="sseg" role="group" aria-label="Return period">
+              <button type="button" data-rp="10" aria-pressed="false">1-in-10</button>
+              <button type="button" data-rp="25" aria-pressed="false">1-in-25</button>
+              <button type="button" data-rp="100" aria-pressed="true">1-in-100</button>
+              <button type="button" data-rp="500" aria-pressed="false">1-in-500</button>
+            </div></div>
+          <div class="ctl"><span class="lbl">Climate scenario <u>simulated</u></span>
+            <div class="sseg" role="group" aria-label="Climate scenario">
+              <button type="button" data-ssp="none" aria-pressed="true">Today</button>
+              <button type="button" data-ssp="ssp126" aria-pressed="false">SSP1</button>
+              <button type="button" data-ssp="ssp245" aria-pressed="false">SSP2</button>
+              <button type="button" data-ssp="ssp585" aria-pressed="false">SSP5</button>
+            </div></div>
+          <label class="ctl rng" id="yearRow" hidden><span class="lbl">Horizon <b id="yearOut">2050</b></span><input id="yearIn" type="range" min="2030" max="2100" step="10" value="2050"></label>
+          <label class="ctl rng"><span class="lbl">Vertical exaggeration <b id="exOut">—</b></span><input id="exIn" type="range" min="1" max="20" step="0.5" value="4"></label>
+          <div class="opts">
+            <label><input type="checkbox" data-opt="contour" checked><i></i>Contours</label>
+            <label><input type="checkbox" data-opt="grid" checked><i></i>Metric grid</label>
+            <label><input type="checkbox" data-opt="wire"><i></i>Wireframe</label>
+            <label><input type="checkbox" data-opt="depthBars"><i></i>Depth bars</label>
+            <label><input type="checkbox" data-opt="storm" checked><i></i>Storm</label>
+            <label><input type="checkbox" data-opt="orbit"><i></i>Orbit</label>
+          </div>
+
+          <h2 class="h2s">Outcome <small id="sNote"></small></h2>
+          <p class="where"><b id="sRegion">Select a region</b><span id="sRegionNote">Fly into a 170 km analysis window to run the scenario.</span></p>
+          <dl class="stats">
+            <div><dt>Flooded area</dt><dd><b id="sArea">—</b><u>km²</u></dd></div>
+            <div><dt>Peak depth</dt><dd><b id="sDepth">—</b><u>m</u></dd></div>
+            <div><dt>Design rain, 24 h</dt><dd><b id="sRain">—</b><u>mm</u></dd></div>
+            <div><dt>River stage</dt><dd><b id="sStage">—</b><u>m</u></dd></div>
+            <div><dt>People exposed <em>sim.</em></dt><dd><b id="sPeople">—</b></dd></div>
+            <div><dt>Assets affected <em>sim.</em></dt><dd><b id="sAssets">—</b></dd></div>
+          </dl>
+          <h2 class="h2s">Under the cursor</h2>
+          <div id="stuReadout" class="readout"><p>Hover the terrain.</p></div>
+        </aside>
+      </div>
+      <p class="stuFoot">Terrain: Mapzen / AWS Terrain Tiles · Satellite and rainfall: NASA GIBS · Boundaries: DataMeet (CC BY 2.5 IN) · Flood depths come from a screening model (height above nearest drainage), not hydrodynamic simulation. Population, assets and climate columns are simulated placeholders.</p>
+    </div>
+  </section>
+
+  <!-- 03 — LAYER STACK -->
+  <section class="sec stuStackSec" id="stack">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>The layer stack</p>
+        <h2>Nine layers, one place.</h2>
+        <p>Pull the stack apart to see each layer on its own plate — the same data the studio draws, separated so you can read it. Hover a plate to lift it; click to switch the layer on or off in the studio.</p>
+      </div>
+      <div class="stk" id="stk">
+        <canvas id="stkCanvas" aria-label="Exploded stack of the nine intelligence layers"></canvas>
+        <ul class="stkLabels" id="stkLabels" aria-hidden="true"></ul>
+        <label class="stkExplode"><span>Explode</span><input id="stkIn" type="range" min="0" max="100" value="100"></label>
+        <p class="stkFail" id="stkFail" hidden>The 3D stack needs WebGL, which isn't available in this browser.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — PROVENANCE -->
+  <section class="sec" id="provenance">
+    <div class="wrap">
+      <div class="secHead">
+        <p class="eyebrow"><i></i>Data provenance</p>
+        <h2>What is real, what is modelled, what is placeholder.</h2>
+        <p>A map that looks convincing is worth little if you cannot tell which parts are measured. Here is every source behind the studio.</p>
+      </div>
+      <div class="stuProv" data-reveal>
+        <article><span class="bdg" data-d="real">Real data</span><h3>Fetched at runtime</h3>
+          <ul><li><b>Elevation</b> — Mapzen / AWS Terrain Tiles (SRTM, ASTER, GMTED); bundled ETOPO1 as an offline fallback</li><li><b>Satellite</b> — NASA VIIRS true colour via GIBS</li><li><b>Rainfall</b> — NASA GPM IMERG rain rate via GIBS</li><li><b>Boundaries and rivers</b> — DataMeet districts, Natural Earth</li></ul></article>
+        <article><span class="bdg" data-d="derived">Derived</span><h3>Computed in your browser</h3>
+          <ul><li><b>Drainage network</b> — priority-flood flow routing and accumulation on the real terrain</li><li><b>Hazard probability</b> and <b>flood depth</b> — a screening model on height above nearest drainage (HAND), with stage rising by return period and stream size</li><li><b>Shading</b> — slope, sky-view occlusion, contours</li></ul></article>
+        <article><span class="bdg" data-d="simulated">Simulated</span><h3>Placeholder until real data is wired in</h3>
+          <ul><li><b>Population and assets</b> — a seeded settlement model; swap for WorldPop / OSM</li><li><b>Climate projections</b> — coarse warming curves and illustrative district sensitivities</li><li><b>Historical flood index</b> — a terrain / river / coast heuristic, with real recorded events marked</li><li><b>Design storm</b> over the 3D window</li></ul></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- shell:cta -->
+<section class="sec getStarted" id="get-started">
+  <div class="wrap">
+    <div class="secHead">
+      <p class="eyebrow"><i></i>Get started</p>
+      <h2>Ready to explore FloodGuard?</h2>
+    </div>
+    <div class="paths">
+      <div class="card" data-reveal>
+        <span class="access">Explorer</span>
+        <h3>Explore for free.</h3>
+        <p>Access district-level historical flood risk and begin exploring India's flood record. No sales conversation required.</p>
+        <div class="ctaRow"><a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+      </div>
+      <div class="card ent" data-reveal>
+        <span class="access">Atlas + Live</span>
+        <h3>Talk to the FloodGuard team.</h3>
+        <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
+        <div class="ctaRow">
+          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+          <a class="btn bg2" href="/contact.html?intent=sales" data-lead="sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /shell:cta -->
+</main>
+
+<!-- shell:footer -->
+<footer class="site-footer">
+  <div class="wrap site-footer__top">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="/index.html" aria-label="FloodGuard home">
+        <img src="/assets/img/logo-mark.png" alt="">
+        <b class="site-footer__wordmark">FloodGuard</b>
+      </a>
+      <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated into decision-ready insight for organisations exposed to flood risk.</p>
+      <address>
+        <ul class="site-footer__contact" role="list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>COHORT Coworking, Kondapur, Hyderabad, Telangana</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+919030762494">+91 90307 62494</a></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><a href="mailto:dhanyabulla@floodguard.in">dhanyabulla@floodguard.in</a></li>
+        </ul>
+      </address>
+    </div>
+    <nav class="site-footer__nav" aria-label="Footer">
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Products</h2>
+        <ul role="list">
+          <li><a href="/products.html#explorer">Explorer</a></li>
+          <li><a href="/products.html#atlas">Atlas</a></li>
+          <li><a href="/products.html#live">Live</a></li>
+          <li><a href="/products.html#compare">Compare products</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Solutions</h2>
+        <ul role="list">
+          <li><a href="/solutions.html">Overview</a></li>
+          <li><a href="/solutions.html#insurance">Insurance &amp; Reinsurance</a></li>
+          <li><a href="/solutions.html#banking">Banking &amp; Finance</a></li>
+          <li><a href="/solutions.html#agriculture">Agriculture</a></li>
+          <li><a href="/solutions.html#infrastructure">Infrastructure</a></li>
+          <li><a href="/solutions.html#government">Government</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Platform</h2>
+        <ul role="list">
+          <li><a href="/platform.html#data">Data</a></li>
+          <li><a href="/platform.html#technology">Technology</a></li>
+          <li><a href="/platform.html#methodology">Methodology</a></li>
+          <li><a href="/platform.html#validation">Validation</a></li>
+          <li><a href="/studio.html">3D Studio</a></li>
+          <li><a href="/platform.html#api">API</a></li>
+        </ul>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Company</h2>
+        <ul role="list">
+          <li><a href="/insights.html">Insights</a></li>
+          <li><a href="/about.html">About us</a></li>
+          <li><a href="/contact.html">Contact us</a></li>
+          <li><a href="/contact.html?intent=demo" data-lead="demo">Request a demo</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap site-footer__bottom">
+    <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
+  </div>
+</footer>
+<!-- /shell:footer -->
+
+<script type="module" src="/assets/js/page.js"></script>
+<script type="module" src="/assets/js/studio-page.js"></script>
+</body>
+</html>
