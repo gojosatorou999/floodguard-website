@@ -1,9 +1,30 @@
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath, URL } from "node:url";
 import { resolve } from "node:path";
+import { readFileSync } from "node:fs";
 
 const here = fileURLToPath(new URL(".", import.meta.url));
+
+/**
+ * The webinar registration link lives in webinar.config.json. HTML pages say
+ * href="%WEBINAR_URL%"; this fills the token in, in dev and in the build, so
+ * changing the link is a one-line edit in one file. (Scripts import the same
+ * JSON through assets/js/webinar.js.)
+ */
+function webinarUrl(): Plugin {
+  const cfgPath = resolve(here, "webinar.config.json");
+  return {
+    name: "floodguard-webinar-url",
+    transformIndexHtml: {
+      order: "pre",
+      handler(html) {
+        const url: string = JSON.parse(readFileSync(cfgPath, "utf8")).url;
+        return html.split("%WEBINAR_URL%").join(url.replace(/&/g, "&amp;"));
+      },
+    },
+  };
+}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, here, "VITE_");
@@ -22,7 +43,7 @@ export default defineConfig(({ mode }) => {
     : undefined;
 
   return {
-    plugins: [react()],
+    plugins: [react(), webinarUrl()],
     resolve: {
       alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
     },

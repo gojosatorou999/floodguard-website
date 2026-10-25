@@ -20,6 +20,7 @@
    browser (fg_lead) so the dashboard opens straight away next time and
    later forms come pre-filled. Storage is a convenience only: if it's
    blocked, the visitor just sees the form again. */
+import { WEBINAR_URL } from "/assets/js/webinar.js";
 import "/assets/lead.css";
 // the Supabase client is ~240 kB, so it loads on first submit, not with the page
 
@@ -147,7 +148,7 @@ export function mountLead(host, opts = {}) {
       done.innerHTML = `<div class="tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h2>Thank you — we've got it.</h2>
         <p>Your ${mode === "message" ? "message" : "request"} has reached the FloodGuard team. We'll reply to <b>${esc(data.email)}</b>.</p>
-        <div class="row"><a class="p" href="/index.html#hmap">Explore Free Data</a><a href="/products.html">See products</a></div>`;
+        <div class="row"><a class="p" href="${WEBINAR_URL}" data-webinar>Explore Free Data</a><a href="/products.html">See products</a></div>`;
       done.hidden = false;
       opts.onDone?.(data);
     } catch (ex) {

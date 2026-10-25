@@ -225,8 +225,10 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
   color:var(--ink);font:500 var(--t-sm)/1.3 var(--fS)}
 .tmenuPanel a:hover,.tmenuPanel a[aria-current="page"]{background:var(--dentBg);color:var(--brand)}
 .tmenuPanel hr{border:0;border-top:1px solid var(--line);margin:.4rem .3rem}
-.tmenuPanel .btn{width:100%;margin-top:.5rem;color:var(--onBrand)}
-.tmenuPanel .btn:hover{color:var(--onBrand)}
+.topbar .tmenuPanel .btn{width:100%;height:46px;margin-top:.5rem;padding:0 1rem;font-size:var(--t-sm)}
+.tmenuPanel .bp,.tmenuPanel .bp:hover{color:var(--onBrand)}
+.tmenuPanel .bg2{color:var(--ink)}
+.tmenuPanel .bg2:hover{color:var(--brand)}
 /* header buttons sit a size down from page buttons, so the nav links,
    theme and two CTAs share one line */
 .topbar .btn{height:40px;padding:0 1rem;font-size:var(--t-sm)}
@@ -245,7 +247,7 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
 @media (max-width:760px){.tExplore{display:none}}
 /* phones: the logo and name always show; the theme switch moves into the menu */
 @media (max-width:560px){
-  .topbar .themeBtn{display:none}
+  .topbarAct>.themeBtn{display:none}
   .topbar .brandmark{gap:.5rem}
   .topbar .brandmark img{width:40px;height:40px}
   .topbar .brandmark b{font-size:.98rem;letter-spacing:.03em}
@@ -258,7 +260,7 @@ h1,h2,h3{font-family:var(--fD);font-weight:500;font-optical-sizing:auto;line-hei
   .topbar .btn{height:38px;padding:0 .7rem;font-size:.76rem}
   .tmenu{width:40px;height:40px}
 }
-@media (max-width:340px){.topbar .btn.bp{display:none}}
+@media (max-width:340px){.topbarAct>.btn.bp{display:none}}
 .tmenuPanel .themeRow{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.4rem .7rem;min-height:44px;font:500 var(--t-sm)/1.3 var(--fS)}
 @media (min-width:561px){.tmenuPanel .themeRow{display:none}}
 

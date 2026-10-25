@@ -30,6 +30,8 @@ const BUDGETS = {
 for (const [name, w, h, throttle] of [['desktop', 1440, 900, 1], ['mobile-4x', 412, 915, 4]]) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h } });
   const page = await ctx.newPage();
+  // the first-visit webinar invitation is covered by tools/webinar-check.mjs; keep it out of the layout audits
+  await page.addInitScript(() => { try { sessionStorage.setItem('fg_webinar_invite', '1'); } catch (_) {} });
   const cdp = await ctx.newCDPSession(page);
   if (throttle > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: throttle });
 

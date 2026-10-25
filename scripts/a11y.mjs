@@ -14,6 +14,8 @@ const failures = [];
 for (const theme of ['light', 'dark']) {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: theme });
   const page = await ctx.newPage();
+  // the first-visit webinar invitation is covered by tools/webinar-check.mjs; keep it out of the layout audits
+  await page.addInitScript(() => { try { sessionStorage.setItem('fg_webinar_invite', '1'); } catch (_) {} });
   await page.goto(BASE, { waitUntil: 'load' });
   await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
   await page.waitForTimeout(1900);

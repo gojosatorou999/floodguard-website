@@ -66,6 +66,8 @@ async function open(vp, opts = {}) {
     reducedMotion: opts.reduce ? 'reduce' : 'no-preference',
   });
   const page = await ctx.newPage();
+  // the first-visit webinar invitation is covered by tools/webinar-check.mjs; keep it out of the layout audits
+  await page.addInitScript(() => { try { sessionStorage.setItem('fg_webinar_invite', '1'); } catch (_) {} });
   const errs = [];
   page.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   page.on('pageerror', e => errs.push('pageerror: ' + e.message));

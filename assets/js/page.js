@@ -1,15 +1,31 @@
 /* ── shared behaviour for the content pages ──────────────────────
    Reveal-on-scroll, the sticky secondary nav's active state, and the
    footer year. Imported by products.js, solutions.js and contact.js. */
+import "/assets/js/webinar.js";
+import "/assets/js/smooth-scroll.js";
 const y = document.getElementById("fgYear");
 if (y) y.textContent = new Date().getFullYear();
 
 const reveal = document.querySelectorAll("[data-reveal]");
 if ("IntersectionObserver" in window) {
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-  }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
+  const left = new Set(reveal);
+  const show = el => { el.classList.add("in"); io.unobserve(el); left.delete(el); };
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) show(e.target); }),
+    { threshold: .12, rootMargin: "0px 0px -6% 0px" });
   reveal.forEach(el => io.observe(el));
+  /* a fast fling (iOS momentum scroll especially) can carry a short element
+     from below the screen to above it between two observer checks — it never
+     "intersects", and would stay invisible. Anything the reader has scrolled
+     past is shown, whatever the observer saw. */
+  let queued = false;
+  addEventListener("scroll", () => {
+    if (queued || !left.size) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      for (const el of left) if (el.getBoundingClientRect().top < innerHeight * .94) show(el);
+    });
+  }, { passive: true });
 } else reveal.forEach(el => el.classList.add("in"));
 
 /* a jump to a section (sub-nav, in-page link, or a #hash from another page)

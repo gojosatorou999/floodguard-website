@@ -1,0 +1,4 @@
+{
+  "_": "The one place the webinar registration link lives. Replace `url` with the real registration page and rebuild: the banner, hero card, popup, every Explore button and the post-enquiry link all read it (HTML via the %WEBINAR_URL% token — see vite.config.ts — and scripts via assets/js/webinar.js).",
+  "url": "https://us05web.zoom.us/j/83157859475?pwd=vECqzbOnafBUjGI9vYpD46QO0eI2Qa.1"
+}

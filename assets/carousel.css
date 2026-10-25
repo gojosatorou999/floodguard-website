@@ -1,0 +1,135 @@
+/* ── carousel (assets/js/carousel.js) ─────────────────────────────
+   A horizontal scroll-snap track with a peek of the next card, centred
+   controls and a pill of dots. The product cards inside also get a more
+   polished look (.carTrack > .card): the map sits under a soft fade, the
+   chip floats over it, and the card lifts on hover. */
+
+.carWrap { position: relative; min-width: 0 }
+
+.carTrack {
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 1rem 0 2.2rem;      /* room for hover lift and shadows, which overflow-y would clip */
+  outline: none;
+  cursor: grab
+}
+.carTrack::-webkit-scrollbar { display: none }
+.carTrack.grab { cursor: grabbing }
+.carTrack.dragging { scroll-snap-type: none; user-select: none }
+/* lists and grids that are already laid out by their own rules become the track */
+.carTrack.nlist, .carTrack.postGrid, .carTrack.secBriefs { display: flex; grid-template-columns: none }
+.carTrack:focus-visible { outline: 2px solid var(--brand); outline-offset: 6px; border-radius: 12px }
+.carTrack > * {
+  /* two cards and a peek on desktop; one and a peek on phones */
+  flex: 0 0 min(calc((100% - 1.5rem) / 2.15), 560px);
+  scroll-snap-align: start;
+  min-width: 0
+}
+@media (max-width: 979px) { .carTrack > * { flex-basis: min(84%, 520px) } }
+/* the track runs out to the edges of the screen, so the next card is shown whole
+   as it slides in rather than cut off by an invisible line at the page margin;
+   the first card still starts on the page's own left edge */
+.carTrack { margin-inline: calc(var(--carGut, 0px) * -1); padding-inline: var(--carGut, 0px); scroll-padding-inline: var(--carGut, 0px) }
+html, body { overflow-x: clip }
+
+/* the challenge cards and posts are not .card: give them the same rise on hover */
+.carTrack.postGrid > .post, .carTrack.nlist > li { height: auto }
+.carTrack.postGrid > .post { display: flex; flex-direction: column }
+
+/* the cards: same markup, more finished */
+.carTrack > .card {
+  position: relative;
+  border-radius: var(--r-l, 28px);
+  transition: transform .45s var(--E), box-shadow .45s var(--E), border-color .3s;
+  box-shadow: var(--elev-1)
+}
+.carTrack:not(.dragging) > .card:hover { transform: translateY(-6px); box-shadow: var(--elev-2); border-color: color-mix(in srgb, var(--brand) 40%, var(--line2)) }
+.carTrack > .card .vis { height: clamp(220px, 24vw, 280px) }
+.carTrack > .card .vis::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 42%;
+  background: linear-gradient(transparent, var(--panelBg));
+  pointer-events: none
+}
+.carTrack > .card .hzChip {
+  position: absolute;
+  top: -2.6rem;
+  left: 1.4rem;
+  z-index: 2;
+  background: var(--panelBg);
+  box-shadow: var(--elev-1)
+}
+.carTrack > .card .txt { position: relative; padding-top: 1.1rem }
+.carTrack > .card h3 { font-size: clamp(1.25rem, 1rem + .8vw, 1.6rem); letter-spacing: -.02em }
+.carTrack > .card .foot { margin-top: auto; padding-top: 1.1rem; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: .8rem }
+
+/* controls */
+.carCtl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .75rem;
+  margin-top: .4rem
+}
+.carBtn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  color: var(--brand);
+  background: var(--panelBg);
+  border: 1px solid var(--line2);
+  box-shadow: var(--elev-1);
+  transition: transform .25s var(--E), background .2s, border-color .2s
+}
+.carBtn:hover { border-color: var(--brand); transform: translateY(-1px) }
+.carBtn:active { transform: scale(.94) }
+.carBtn:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px }
+.carBtn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round }
+
+/* pagination pill: the active dot stretches */
+.carPill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .45rem;
+  width: max-content;
+  margin: .9rem auto 0;
+  padding: .55rem .75rem;
+  border-radius: 99px;
+  background: rgba(4, 38, 61, .88);
+  box-shadow: 0 10px 24px -14px rgba(4, 38, 61, .7)
+}
+.carDot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .38);
+  cursor: pointer;
+  transition: width .45s var(--E), background .3s
+}
+.carDot[aria-current="true"] { width: 24px; background: #9edad9 }
+.carDot:focus-visible { outline: 2px solid #9edad9; outline-offset: 3px }
+
+@media (prefers-reduced-motion: reduce) {
+  .carTrack { scroll-behavior: auto }
+  .carDot, .carBtn, .carTrack > .card { transition: none }
+  .carTrack:not(.dragging) > .card:hover { transform: none }
+}
+
+/* insight posts in a track: a shorter cover, so title and text sit higher */
+.carTrack.postGrid .postCover { aspect-ratio: auto; height: clamp(150px, 14vw, 190px); flex: none }
+.carTrack.postGrid > .post { border-radius: var(--r-l, 28px) }

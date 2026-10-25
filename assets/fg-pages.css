@@ -597,7 +597,7 @@ a.post:hover .postGo svg { transform: translateX(3px) }
 .member h3 { font-size: var(--t-card, 1.3rem) }
 .member .role { margin-top: .25rem; font-weight: 600; font-size: var(--t-sm); color: var(--brand) }
 .member .role + p { margin-top: .6rem; color: var(--ink2); font-size: var(--t-sm); line-height: 1.6 }
-.member.diverse { background: color-mix(in srgb, var(--brand) 6%, var(--panelBg)); border-style: dashed }
+.member.diverse { background: color-mix(in srgb, var(--brand) 6%, var(--panelBg)); border-style: dashed; justify-content: center }
 .member.diverse p { margin-top: .6rem; color: var(--ink2); font-size: var(--t-sm); line-height: 1.6 }
 .skills { list-style: none; display: flex; gap: .4rem; flex-wrap: wrap }
 .skills li { padding: .5rem .85rem; border-radius: 99px; background: var(--band); color: var(--onBand); font: 600 .72rem/1 var(--fS); letter-spacing: .1em }

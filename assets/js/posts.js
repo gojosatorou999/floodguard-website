@@ -70,4 +70,6 @@ export function postCard(p) {
 document.querySelectorAll("[data-posts]").forEach(el => {
   const n = parseInt(el.dataset.posts, 10) || POSTS.length;
   el.innerHTML = POSTS.slice(0, n).map(postCard).join("");
+  // the cards arrive after the page loads, so a carousel has to be started here
+  if (el.hasAttribute("data-carousel")) import("/assets/js/carousel.js").then(m => m.initCarousel(el));
 });

@@ -7,6 +7,7 @@
  * Each page carries marker comments; everything between a pair is
  * regenerated from the fragments below:
  *
+ *   <!-- shell:banner -->  … <!-- /shell:banner -->   (webinar announcement, above the header)
  *   <!-- shell:header -->  … <!-- /shell:header -->   (content pages only;
  *                                                     the homepage keeps its own bar)
  *   <!-- shell:cta -->     … <!-- /shell:cta -->
@@ -28,7 +29,10 @@ const PAGES = [
 ];
 
 /* ── site map: one list drives the bar, the phone menu and the footer ── */
-export const EXPLORER = "/index.html#hmap";
+/* Every "Explore …" button goes to the webinar. The URL itself lives in webinar.config.json;
+   vite.config.ts swaps this token for it when the page is served or built. */
+export const EXPLORER = "%WEBINAR_URL%";
+export const WB = " data-webinar";
 const PRODUCTS = [
   ["Explorer", "/products.html#explorer", "Free district-level flood history"],
   ["Atlas", "/products.html#atlas", "Historical and future flood risk, in depth"],
@@ -71,7 +75,7 @@ ${items.map(([t, h, d]) => `          <a href="${h}"><b>${esc(t)}</b><em>${d}</e
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
       </button>
-      <a class="btn bg2 tExplore" href="${EXPLORER}">Explore Free Data</a>
+      <a class="btn bg2 tExplore" href="${EXPLORER}"${WB}>Explore Free Data</a>
       <a class="btn bp" href="/contact.html?intent=demo" data-lead="demo"${cur(nav === "contact")}>Request a Demo</a>
       <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
     </div>
@@ -90,12 +94,21 @@ ${PRODUCTS.map(mlink).join("\n")}
           <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
         </button>
       </div>
-      <a class="btn bp" href="${EXPLORER}">Explore Free Data ${ARROW}</a>
+      <a class="btn bp" href="${EXPLORER}"${WB}>Explore Free Data ${ARROW}</a>
       <a class="btn bg2" href="/contact.html?intent=demo" data-lead="demo">Request a Demo ${ARROW}</a>
     </div>
   </header>
 </div>`;
 }
+
+/* the webinar announcement above the navigation, on every content page */
+const BANNER = `<aside class="wbBar" aria-label="Upcoming webinar">
+  <div class="wrap wbIn">
+    <span class="wbTag"><i class="wbLive" aria-hidden="true"></i>Upcoming webinar<span class="wbSep"> · </span><span class="wbFor">For pilot partners</span></span>
+    <p class="wbTxt">Want to see what we're building? <b>Join our webinar.</b></p>
+    <a class="wbBtn" href="${EXPLORER}"${WB}>Save My Spot ${ARROW}</a>
+  </div>
+</aside>`;
 
 /* the one closing CTA, on every page (it started life on /products) */
 const CTA = `<section class="sec getStarted" id="get-started">
@@ -109,7 +122,7 @@ const CTA = `<section class="sec getStarted" id="get-started">
         <span class="access">Explorer</span>
         <h3>Explore for free.</h3>
         <p>Access district-level historical flood risk and begin exploring India's flood record. No sales conversation required.</p>
-        <div class="ctaRow"><a class="btn bp" href="${EXPLORER}">Explore Explorer ${ARROW}</a></div>
+        <div class="ctaRow"><a class="btn bp" href="${EXPLORER}"${WB}>Explore Explorer ${ARROW}</a></div>
       </div>
       <div class="card ent" data-reveal>
         <span class="access">Atlas + Live</span>
@@ -181,7 +194,7 @@ for (const rel of PAGES) {
   let html;
   try { html = readFileSync(file, "utf8"); } catch { console.warn("skip (missing)", rel); continue; }
   const nav = (html.match(/<body[^>]*data-nav="([^"]+)"/) || [])[1] || "";
-  const out = [["header", header(nav)], ["cta", CTA], ["footer", FOOTER]].reduce((h, [k, b]) => swap(h, k, b), html);
+  const out = [["banner", BANNER], ["header", header(nav)], ["cta", CTA], ["footer", FOOTER]].reduce((h, [k, b]) => swap(h, k, b), html);
   if (out !== html) { writeFileSync(file, out); n++; console.log("shell →", rel); }
 }
 console.log(n ? `${n} page(s) updated` : "all pages already in sync");

@@ -12,12 +12,23 @@
 <link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fg-base.css">
 <link rel="stylesheet" href="/assets/fg-pages.css">
+<link rel="stylesheet" href="/assets/webinar.css">
 <script type="module" src="/assets/js/theme.js" defer></script>
 <script type="module" src="/assets/js/nav.js"></script>
 <script type="module" src="/assets/js/mist.js"></script>
 <script type="module" src="/assets/js/totop.js"></script>
 </head>
 <body data-nav="solutions">
+
+<!-- shell:banner -->
+<aside class="wbBar" aria-label="Upcoming webinar">
+  <div class="wrap wbIn">
+    <span class="wbTag"><i class="wbLive" aria-hidden="true"></i>Upcoming webinar<span class="wbSep"> · </span><span class="wbFor">For pilot partners</span></span>
+    <p class="wbTxt">Want to see what we're building? <b>Join our webinar.</b></p>
+    <a class="wbBtn" href="%WEBINAR_URL%" data-webinar>Save My Spot <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </div>
+</aside>
+<!-- /shell:banner -->
 
 <!-- shell:header -->
 <div class="wrap topWrap">
@@ -45,7 +56,7 @@
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
       </button>
-      <a class="btn bg2 tExplore" href="/index.html#hmap">Explore Free Data</a>
+      <a class="btn bg2 tExplore" href="%WEBINAR_URL%" data-webinar>Explore Free Data</a>
       <a class="btn bp" href="/contact.html?intent=demo" data-lead="demo">Request a Demo</a>
       <button class="tmenu" type="button" aria-expanded="false" aria-controls="tmenuPanel" aria-label="Open menu"><i></i><i></i><i></i></button>
     </div>
@@ -66,7 +77,7 @@
           <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
         </button>
       </div>
-      <a class="btn bp" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
       <a class="btn bg2" href="/contact.html?intent=demo" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
     </div>
   </header>
@@ -82,7 +93,7 @@
       <div class="hzPath" aria-label="Time horizons used: now to future"><span class="lbl">Uses</span><span class="hzChip"><i class="n"></i>Now</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg><span class="hzChip"><i class="f"></i>Future</span></div>
       <div class="ctaRow">
         <a class="btn bp" href="/contact.html?sector=Infrastructure">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-        <a class="btn bg2" href="/index.html#hmap">Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+        <a class="btn bg2" href="%WEBINAR_URL%" data-webinar>Explore Free Data <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
       </div>
     </div>
   </section>
@@ -177,7 +188,7 @@
         <span class="access">Explorer</span>
         <h3>Explore for free.</h3>
         <p>Access district-level historical flood risk and begin exploring India's flood record. No sales conversation required.</p>
-        <div class="ctaRow"><a class="btn bp" href="/index.html#hmap">Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
+        <div class="ctaRow"><a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
       </div>
       <div class="card ent" data-reveal>
         <span class="access">Atlas + Live</span>
