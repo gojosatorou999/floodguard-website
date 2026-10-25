@@ -295,9 +295,12 @@ async function boot() {
   }).filter(Boolean);
 
   const paint = it => {
-    const css = Math.max(40, Math.round(it.el.getBoundingClientRect().width * 2.1));
+    /* an even CSS size, so the centring translate lands on a whole pixel, and a
+       buffer drawn at 2–4x the screen's pixels and scaled down: on 125 % / 150 %
+       Windows scaling a 1:1 canvas sits on half pixels and comes out soft */
+    const css = Math.max(40, 2 * Math.round(it.el.getBoundingClientRect().width * 1.05));
     if (!css) return;
-    const dpr = Math.min(2, devicePixelRatio || 1);
+    const dpr = Math.min(4, Math.max(2, Math.ceil(devicePixelRatio || 1) * 2));
     renderer.setPixelRatio(dpr);
     renderer.setSize(css, css, false);
     it.camera.aspect = 1; it.camera.updateProjectionMatrix();

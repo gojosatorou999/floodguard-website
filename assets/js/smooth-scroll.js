@@ -18,7 +18,7 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !window.__lenis) 
   const style = document.createElement("style");
   style.textContent = `
     html.lenis, html.lenis body { height: auto }
-    html.lenis.lenis-smooth { scroll-behavior: auto !important }
+    html.lenis, html.lenis.lenis-smooth { scroll-behavior: auto !important }
     html.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain }
     html.lenis.lenis-stopped { overflow: hidden }`;
   document.head.append(style);

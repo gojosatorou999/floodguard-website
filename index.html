@@ -5846,7 +5846,7 @@
         const el = document.querySelector(id); if (!el) return;
         e.preventDefault(); closeMenu();
         revealNow(el);
-        scrollTo({ top: anchorTop(el), behavior: "smooth" });
+        (window.__lenis ? window.__lenis.scrollTo(anchorTop(el), { duration: 1.1 }) : scrollTo({ top: anchorTop(el), behavior: "smooth" }));
       }));
       /* arriving from another page with a #section in the address */
       if (location.hash.length > 1) {
@@ -5961,7 +5961,7 @@
         if (y) y.textContent = new Date().getFullYear();
         const b = document.getElementById("footTop");
         if (b) b.addEventListener("click", () => {
-          scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" });
+          RM ? scrollTo({ top: 0, behavior: "auto" }) : (window.__lenis ? window.__lenis.scrollTo(0, { duration: 1.1 }) : scrollTo({ top: 0, behavior: "smooth" }));
           /* move focus too, or a keyboard user is scrolled to the top while their
              tab position is still down in the footer */
           const t = document.getElementById("hero");
@@ -5985,7 +5985,7 @@
         lastRing = p;
         toTopRing.style.strokeDashoffset = (RING_C * (1 - p)).toFixed(2);
       }
-      toTop.onclick = () => scrollTo({ top: 0, behavior: "smooth" });
+      toTop.onclick = () => (window.__lenis ? window.__lenis.scrollTo(0, { duration: 1.1 }) : scrollTo({ top: 0, behavior: "smooth" }));
 
       /*── UTM capture → persists across the session, rides along on CTAs ──*/
       const UTM = (() => {
@@ -6083,7 +6083,7 @@
         closeOv(searchOv);
         if (!hash.startsWith("#")) { location.href = hash; return; }
         const el = document.querySelector(hash); if (!el) return;
-        scrollTo({ top: anchorTop(el), behavior: "smooth" });
+        (window.__lenis ? window.__lenis.scrollTo(anchorTop(el), { duration: 1.1 }) : scrollTo({ top: anchorTop(el), behavior: "smooth" }));
       }
       sInput.addEventListener("input", () => {
         const q = sInput.value.trim().toLowerCase();

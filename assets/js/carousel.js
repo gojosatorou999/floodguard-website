@@ -50,7 +50,7 @@ export function initCarousel(root) {
   pill.setAttribute("aria-label", "Choose a card");
   wrap.append(ctl, pill);
 
-  let playing = true, hovered = false, focused = false, scrolling = false, timer = 0, idleT = 0, active = -1;
+  let playing = true, inView = false, hovered = false, focused = false, scrolling = false, timer = 0, idleT = 0, active = -1;
   let dots = [], positions = [0];
 
   /* the reachable scroll offsets: one per card, except that the last cards
@@ -87,7 +87,7 @@ export function initCarousel(root) {
   };
 
   /* autoplay */
-  const canPlay = () => playing && !hovered && !focused && !scrolling && !RM.matches && !document.hidden;
+  const canPlay = () => playing && inView && !hovered && !focused && !scrolling && !RM.matches && !document.hidden;
   const schedule = () => {
     clearTimeout(timer);
     if (!canPlay()) return;
@@ -164,8 +164,18 @@ export function initCarousel(root) {
     if (e.key === "ArrowLeft") { e.preventDefault(); go(indexFromScroll() - 1); schedule(); }
   });
 
+  /* it only plays while it is on screen, and always starts from the first card:
+     a reader who has not reached it yet must not find it already moved on */
+  let seen = false;
+  new IntersectionObserver(([e]) => {
+    inView = e.isIntersecting;
+    if (inView && !seen) { seen = true; root.scrollTo({ left: 0, behavior: "auto" }); setActive(0); }
+    schedule();
+  }, { threshold: 0.45 }).observe(wrap);
+
   /* a card that is partly on screen counts as the active one */
   measure();
+  root.scrollLeft = 0;
   new ResizeObserver(measure).observe(wrap);
   addEventListener("load", measure);
   setPlaying(!RM.matches);

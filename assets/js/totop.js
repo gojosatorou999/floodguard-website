@@ -29,5 +29,6 @@ update();
 
 btn.addEventListener("click", () => {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  if (!reduce && window.__lenis) window.__lenis.scrollTo(0, { duration: 1.1 });
+  else scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
 });
