@@ -728,52 +728,25 @@
         #04263d
     }
 
-    #pre .preSea {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 100%;
-      transform: translateY(calc((1 - var(--p) * .52) * 100%));
-      background: linear-gradient(180deg, rgba(63, 166, 178, .5), rgba(10, 79, 115, .78) 40%, rgba(4, 38, 61, .9));
-      will-change: transform
-    }
-
-    #pre .preSea svg {
-      position: absolute;
-      left: 0;
-      width: 200%;
-      height: 110px;
-      bottom: 100%;
-      margin-bottom: -2px;
-      fill: rgba(63, 166, 178, .5);
-      animation: preWave 7s linear infinite
-    }
-
-    #pre .preSea svg + svg {
-      height: 84px;
-      fill: rgba(158, 218, 217, .34);
-      animation-duration: 11s;
-      animation-direction: reverse
-    }
-
-    @keyframes preWave { to { transform: translateX(-50%) } }
-
-    #pre .preRain { position: absolute; inset: 0; pointer-events: none }
+    /* three depths of rain, leaning a little with the wind: far drops are thin,
+       faint and slow; near ones long, brighter and quick */
+    #pre .preRain { position: absolute; inset: -12% -8%; pointer-events: none; transform: rotate(9deg) }
 
     #pre .preRain i {
       position: absolute;
-      top: -14%;
+      top: -15%;
       left: var(--x);
-      width: 1.5px;
       height: var(--h);
-      border-radius: 2px;
-      background: linear-gradient(180deg, transparent, rgba(190, 235, 240, .7));
-      opacity: .75;
+      border-radius: 0 0 2px 2px;
+      background: linear-gradient(180deg, transparent, rgba(205, 232, 240, var(--a)));
       animation: preFall var(--d) linear var(--w) infinite
     }
 
-    @keyframes preFall { to { transform: translateY(125vh) } }
+    #pre .preRain .f { width: 1px; --a: .22 }
+    #pre .preRain .m { width: 1.2px; --a: .38 }
+    #pre .preRain .n { width: 1.8px; --a: .55; filter: blur(.4px) }
+
+    @keyframes preFall { to { transform: translateY(135vh) } }
 
     #pre .in {
       position: relative;
@@ -923,7 +896,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #pre .preSea svg, #pre .preRain i, #pre .preLogo .ring, #pre .preLogo img, #preBar i::before, #preBar i::after { animation: none }
+      #pre .preRain i, #pre .preLogo .ring, #pre .preLogo img, #preBar i::before, #preBar i::after { animation: none }
       #pre .preLogo .ring { display: none }
     }
 
@@ -4812,8 +4785,7 @@
   <a id="skip" href="#hero">Skip to content</a>
 
   <div id="pre" role="status" aria-label="Loading FloodGuard">
-    <div class="preRain" aria-hidden="true"><i style="--x:0.0%;--h:26px;--d:0.90s;--w:0.00s"></i><i style="--x:8.7%;--h:39px;--d:1.60s;--w:-0.37s"></i><i style="--x:17.4%;--h:52px;--d:1.40s;--w:-0.74s"></i><i style="--x:15.1%;--h:31px;--d:1.20s;--w:-1.11s"></i><i style="--x:23.8%;--h:44px;--d:1.00s;--w:-1.48s"></i><i style="--x:32.5%;--h:57px;--d:1.70s;--w:-1.85s"></i><i style="--x:30.2%;--h:36px;--d:1.50s;--w:-0.22s"></i><i style="--x:38.9%;--h:49px;--d:1.30s;--w:-0.59s"></i><i style="--x:47.6%;--h:28px;--d:1.10s;--w:-0.96s"></i><i style="--x:45.3%;--h:41px;--d:0.90s;--w:-1.33s"></i><i style="--x:54.0%;--h:54px;--d:1.60s;--w:-1.70s"></i><i style="--x:51.7%;--h:33px;--d:1.40s;--w:-0.07s"></i><i style="--x:60.4%;--h:46px;--d:1.20s;--w:-0.44s"></i><i style="--x:69.1%;--h:59px;--d:1.00s;--w:-0.81s"></i><i style="--x:66.8%;--h:38px;--d:1.70s;--w:-1.18s"></i><i style="--x:75.5%;--h:51px;--d:1.50s;--w:-1.55s"></i><i style="--x:84.2%;--h:30px;--d:1.30s;--w:-1.92s"></i><i style="--x:81.9%;--h:43px;--d:1.10s;--w:-0.29s"></i><i style="--x:90.6%;--h:56px;--d:0.90s;--w:-0.66s"></i><i style="--x:99.3%;--h:35px;--d:1.60s;--w:-1.03s"></i><i style="--x:97.0%;--h:48px;--d:1.40s;--w:-1.40s"></i><i style="--x:5.7%;--h:27px;--d:1.20s;--w:-1.77s"></i></div>
-    <div class="preSea" aria-hidden="true"><svg viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 62C150 22 300 102 450 62S750 22 900 62s150 40 300 0V120H0z"/></svg><svg viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 62C150 22 300 102 450 62S750 22 900 62s150 40 300 0V120H0z"/></svg></div>
+    <div class="preRain" aria-hidden="true"><i class="f" style="--x:-6.0%;--h:20px;--d:2.05s;--w:-0.72s"></i><i class="f" style="--x:75.7%;--h:30px;--d:1.82s;--w:-0.82s"></i><i class="f" style="--x:78.6%;--h:27px;--d:1.83s;--w:-1.71s"></i><i class="f" style="--x:85.5%;--h:29px;--d:1.65s;--w:-0.94s"></i><i class="f" style="--x:72.2%;--h:24px;--d:1.53s;--w:-1.71s"></i><i class="f" style="--x:97.3%;--h:25px;--d:1.98s;--w:-0.31s"></i><i class="f" style="--x:97.4%;--h:26px;--d:1.91s;--w:-1.61s"></i><i class="f" style="--x:96.1%;--h:22px;--d:2.05s;--w:-0.93s"></i><i class="f" style="--x:87.8%;--h:21px;--d:1.70s;--w:-0.38s"></i><i class="f" style="--x:42.0%;--h:26px;--d:1.68s;--w:-2.34s"></i><i class="f" style="--x:75.7%;--h:21px;--d:2.03s;--w:-0.15s"></i><i class="f" style="--x:56.8%;--h:19px;--d:1.81s;--w:-1.05s"></i><i class="f" style="--x:95.8%;--h:22px;--d:1.53s;--w:-0.91s"></i><i class="f" style="--x:68.4%;--h:19px;--d:2.05s;--w:-1.29s"></i><i class="f" style="--x:39.4%;--h:24px;--d:1.67s;--w:-0.91s"></i><i class="f" style="--x:31.2%;--h:20px;--d:1.82s;--w:-1.54s"></i><i class="f" style="--x:95.5%;--h:27px;--d:1.77s;--w:-2.16s"></i><i class="f" style="--x:65.0%;--h:28px;--d:1.81s;--w:-1.26s"></i><i class="f" style="--x:99.2%;--h:21px;--d:1.74s;--w:-1.77s"></i><i class="f" style="--x:59.7%;--h:23px;--d:1.71s;--w:-0.83s"></i><i class="f" style="--x:83.0%;--h:31px;--d:2.03s;--w:-0.28s"></i><i class="f" style="--x:2.7%;--h:17px;--d:1.74s;--w:-0.38s"></i><i class="f" style="--x:105.6%;--h:19px;--d:1.63s;--w:-1.58s"></i><i class="f" style="--x:45.2%;--h:33px;--d:1.86s;--w:-0.34s"></i><i class="f" style="--x:93.1%;--h:32px;--d:2.03s;--w:-2.21s"></i><i class="f" style="--x:79.2%;--h:20px;--d:1.67s;--w:-0.03s"></i><i class="f" style="--x:2.5%;--h:20px;--d:1.50s;--w:-1.54s"></i><i class="f" style="--x:77.0%;--h:20px;--d:1.79s;--w:-1.72s"></i><i class="f" style="--x:92.8%;--h:32px;--d:1.64s;--w:-0.93s"></i><i class="f" style="--x:7.3%;--h:32px;--d:1.79s;--w:-0.01s"></i><i class="f" style="--x:65.3%;--h:32px;--d:2.05s;--w:-0.05s"></i><i class="f" style="--x:15.1%;--h:28px;--d:2.08s;--w:-1.41s"></i><i class="f" style="--x:23.8%;--h:26px;--d:1.63s;--w:-0.52s"></i><i class="f" style="--x:-0.1%;--h:29px;--d:1.96s;--w:-1.75s"></i><i class="f" style="--x:49.8%;--h:33px;--d:1.52s;--w:-0.28s"></i><i class="f" style="--x:8.6%;--h:17px;--d:1.91s;--w:-2.23s"></i><i class="f" style="--x:92.9%;--h:33px;--d:2.02s;--w:-2.48s"></i><i class="f" style="--x:79.7%;--h:29px;--d:1.75s;--w:-0.62s"></i><i class="f" style="--x:92.8%;--h:23px;--d:1.74s;--w:-0.59s"></i><i class="f" style="--x:93.3%;--h:27px;--d:1.84s;--w:-0.88s"></i><i class="f" style="--x:76.3%;--h:24px;--d:1.70s;--w:-1.81s"></i><i class="f" style="--x:16.2%;--h:34px;--d:1.69s;--w:-2.46s"></i><i class="f" style="--x:64.8%;--h:20px;--d:2.02s;--w:-2.30s"></i><i class="f" style="--x:66.3%;--h:26px;--d:1.58s;--w:-1.24s"></i><i class="f" style="--x:80.4%;--h:19px;--d:2.07s;--w:-1.21s"></i><i class="f" style="--x:44.0%;--h:25px;--d:1.60s;--w:-1.66s"></i><i class="m" style="--x:56.9%;--h:41px;--d:1.20s;--w:-1.89s"></i><i class="m" style="--x:78.1%;--h:46px;--d:1.01s;--w:-0.75s"></i><i class="m" style="--x:16.7%;--h:37px;--d:1.29s;--w:-0.73s"></i><i class="m" style="--x:67.9%;--h:53px;--d:1.17s;--w:-0.19s"></i><i class="m" style="--x:86.2%;--h:50px;--d:1.37s;--w:-2.28s"></i><i class="m" style="--x:101.4%;--h:48px;--d:1.01s;--w:-1.90s"></i><i class="m" style="--x:75.1%;--h:34px;--d:1.36s;--w:-0.09s"></i><i class="m" style="--x:3.0%;--h:30px;--d:1.04s;--w:-0.21s"></i><i class="m" style="--x:61.8%;--h:34px;--d:1.38s;--w:-0.48s"></i><i class="m" style="--x:16.6%;--h:44px;--d:1.27s;--w:-0.61s"></i><i class="m" style="--x:105.3%;--h:53px;--d:1.17s;--w:-1.68s"></i><i class="m" style="--x:38.5%;--h:37px;--d:1.17s;--w:-0.15s"></i><i class="m" style="--x:84.5%;--h:58px;--d:1.39s;--w:-0.38s"></i><i class="m" style="--x:51.0%;--h:48px;--d:1.05s;--w:-0.53s"></i><i class="m" style="--x:13.1%;--h:49px;--d:1.03s;--w:-0.68s"></i><i class="m" style="--x:56.3%;--h:32px;--d:1.19s;--w:-2.48s"></i><i class="m" style="--x:40.3%;--h:30px;--d:1.13s;--w:-0.01s"></i><i class="m" style="--x:40.3%;--h:58px;--d:1.04s;--w:-0.59s"></i><i class="m" style="--x:81.1%;--h:56px;--d:1.31s;--w:-1.09s"></i><i class="m" style="--x:101.8%;--h:47px;--d:1.32s;--w:-1.65s"></i><i class="m" style="--x:33.0%;--h:45px;--d:1.16s;--w:-1.24s"></i><i class="m" style="--x:57.6%;--h:49px;--d:1.29s;--w:-1.66s"></i><i class="m" style="--x:75.6%;--h:60px;--d:1.35s;--w:-2.11s"></i><i class="m" style="--x:43.1%;--h:59px;--d:1.19s;--w:-2.39s"></i><i class="m" style="--x:34.1%;--h:56px;--d:1.03s;--w:-0.86s"></i><i class="m" style="--x:73.3%;--h:54px;--d:1.30s;--w:-2.39s"></i><i class="m" style="--x:17.2%;--h:33px;--d:1.10s;--w:-2.00s"></i><i class="m" style="--x:96.5%;--h:51px;--d:1.32s;--w:-1.59s"></i><i class="m" style="--x:54.0%;--h:47px;--d:1.18s;--w:-2.18s"></i><i class="m" style="--x:91.9%;--h:43px;--d:1.11s;--w:-1.72s"></i><i class="n" style="--x:38.2%;--h:62px;--d:0.75s;--w:-1.47s"></i><i class="n" style="--x:94.7%;--h:82px;--d:0.91s;--w:-0.84s"></i><i class="n" style="--x:92.3%;--h:93px;--d:0.73s;--w:-0.77s"></i><i class="n" style="--x:-5.9%;--h:53px;--d:0.73s;--w:-0.99s"></i><i class="n" style="--x:71.6%;--h:61px;--d:0.92s;--w:-0.43s"></i><i class="n" style="--x:100.1%;--h:57px;--d:0.87s;--w:-0.44s"></i><i class="n" style="--x:64.2%;--h:78px;--d:0.70s;--w:-2.03s"></i><i class="n" style="--x:78.1%;--h:83px;--d:0.73s;--w:-0.83s"></i><i class="n" style="--x:101.0%;--h:86px;--d:0.84s;--w:-1.47s"></i><i class="n" style="--x:72.7%;--h:56px;--d:0.88s;--w:-1.49s"></i><i class="n" style="--x:-0.9%;--h:78px;--d:0.85s;--w:-0.56s"></i><i class="n" style="--x:22.1%;--h:80px;--d:0.76s;--w:-1.55s"></i><i class="n" style="--x:85.0%;--h:54px;--d:0.76s;--w:-2.26s"></i><i class="n" style="--x:71.4%;--h:81px;--d:0.80s;--w:-1.98s"></i></div>
     <div class="in">
       <div class="preLogo">
         <i class="ring"></i><i class="ring"></i><i class="ring"></i>
