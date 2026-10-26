@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>FloodGuard — Flood risk intelligence for India</title>
+  <title>FloodGuard | Flood risk intelligence for India</title>
   <meta name="description"
     content="FloodGuard maps where the water goes next. Satellite observation, climate models and hydrological simulation, resolved to the district and taluka across India.">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#edf5f6">
@@ -17,7 +17,7 @@
     content="Predict, plan and protect. District-level flood risk for governments, insurers and planners.">
   <meta property="og:locale" content="en_IN">
   <meta name="twitter:card" content="summary_large_image">
-  <script>try{var t=localStorage.getItem("fg_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script>try { var t = localStorage.getItem("fg_theme"); if (t) document.documentElement.setAttribute("data-theme", t) } catch (e) { }</script>
   <link rel="preload" href="assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts/fonts.css">
@@ -509,14 +509,15 @@
     textarea {
       font-size: max(16px, 1rem)
     }
-/* tracked caps — the logo's own voice */
+
+    /* tracked caps — the logo's own voice */
     .caps {
-  font-family: var(--fS);
-  font-size: var(--t-label);
-  font-weight: 500;
-  letter-spacing: .1em;
-  text-transform: uppercase
-}
+      font-family: var(--fS);
+      font-size: var(--t-label);
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase
+    }
 
 
     .tab {
@@ -730,7 +731,12 @@
 
     /* three depths of rain, leaning a little with the wind: far drops are thin,
        faint and slow; near ones long, brighter and quick */
-    #pre .preRain { position: absolute; inset: -12% -8%; pointer-events: none; transform: rotate(9deg) }
+    #pre .preRain {
+      position: absolute;
+      inset: -12% -8%;
+      pointer-events: none;
+      transform: rotate(9deg)
+    }
 
     #pre .preRain i {
       position: absolute;
@@ -742,11 +748,27 @@
       animation: preFall var(--d) linear var(--w) infinite
     }
 
-    #pre .preRain .f { width: 1px; --a: .22 }
-    #pre .preRain .m { width: 1.2px; --a: .38 }
-    #pre .preRain .n { width: 1.8px; --a: .55; filter: blur(.4px) }
+    #pre .preRain .f {
+      width: 1px;
+      --a: .22
+    }
 
-    @keyframes preFall { to { transform: translateY(135vh) } }
+    #pre .preRain .m {
+      width: 1.2px;
+      --a: .38
+    }
+
+    #pre .preRain .n {
+      width: 1.8px;
+      --a: .55;
+      filter: blur(.4px)
+    }
+
+    @keyframes preFall {
+      to {
+        transform: translateY(135vh)
+      }
+    }
 
     #pre .in {
       position: relative;
@@ -777,7 +799,11 @@
       animation: preBreathe 3.2s ease-in-out infinite
     }
 
-    @keyframes preBreathe { 50% { transform: scale(1.045) } }
+    @keyframes preBreathe {
+      50% {
+        transform: scale(1.045)
+      }
+    }
 
     #pre .preLogo .ring {
       position: absolute;
@@ -788,12 +814,24 @@
       animation: preRing 3.4s cubic-bezier(.2, .6, .3, 1) infinite
     }
 
-    #pre .preLogo .ring:nth-child(2) { animation-delay: 1.13s }
-    #pre .preLogo .ring:nth-child(3) { animation-delay: 2.26s }
+    #pre .preLogo .ring:nth-child(2) {
+      animation-delay: 1.13s
+    }
+
+    #pre .preLogo .ring:nth-child(3) {
+      animation-delay: 2.26s
+    }
 
     @keyframes preRing {
-      0% { transform: scale(.85); opacity: .85 }
-      100% { transform: scale(2.35); opacity: 0 }
+      0% {
+        transform: scale(.85);
+        opacity: .85
+      }
+
+      100% {
+        transform: scale(2.35);
+        opacity: 0
+      }
     }
 
     #pre .preArc {
@@ -807,8 +845,15 @@
       overflow: visible
     }
 
-    #pre .preArc circle { stroke-width: 2.5; stroke-linecap: round }
-    #pre .preArc .tr { stroke: rgba(255, 255, 255, .14) }
+    #pre .preArc circle {
+      stroke-width: 2.5;
+      stroke-linecap: round
+    }
+
+    #pre .preArc .tr {
+      stroke: rgba(255, 255, 255, .14)
+    }
+
     #pre .preArc .fl {
       stroke: #9edad9;
       stroke-dasharray: 351.9;
@@ -865,8 +910,21 @@
       animation: preGlint 1.5s ease-in-out infinite
     }
 
-    @keyframes preStripe { to { background-position: 14px 0 } }
-    @keyframes preGlint { from { left: -45% } to { left: 105% } }
+    @keyframes preStripe {
+      to {
+        background-position: 14px 0
+      }
+    }
+
+    @keyframes preGlint {
+      from {
+        left: -45%
+      }
+
+      to {
+        left: 105%
+      }
+    }
 
     #pre .preRow {
       width: min(340px, 72vw);
@@ -876,7 +934,10 @@
       gap: 1rem
     }
 
-    #pre .preRow .caps { color: rgba(234, 247, 247, .78); margin: 0 }
+    #pre .preRow .caps {
+      color: rgba(234, 247, 247, .78);
+      margin: 0
+    }
 
     #prePct {
       font-family: var(--fM);
@@ -896,8 +957,18 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #pre .preRain i, #pre .preLogo .ring, #pre .preLogo img, #preBar i::before, #preBar i::after { animation: none }
-      #pre .preLogo .ring { display: none }
+
+      #pre .preRain i,
+      #pre .preLogo .ring,
+      #pre .preLogo img,
+      #preBar i::before,
+      #preBar i::after {
+        animation: none
+      }
+
+      #pre .preLogo .ring {
+        display: none
+      }
     }
 
     /*── LOGO ──*/
@@ -1475,11 +1546,23 @@
       width: 100%
     }
 
-    #hero > .wrap { width: 100% }
+    #hero>.wrap {
+      width: 100%
+    }
 
-    .hcopy { grid-area: copy; align-self: end }
-    .hmap { grid-area: map }
-    .hmicro { grid-area: micro; align-self: start }
+    .hcopy {
+      grid-area: copy;
+      align-self: end
+    }
+
+    .hmap {
+      grid-area: map
+    }
+
+    .hmicro {
+      grid-area: micro;
+      align-self: start
+    }
 
     @media(min-width:1024px) {
       .hgrid {
@@ -1498,9 +1581,13 @@
       line-height: 1.04
     }
 
-    #hero .hTime { color: var(--brand) }
+    #hero .hTime {
+      color: var(--brand)
+    }
 
-    #hero .eye { margin-bottom: 1.3rem }
+    #hero .eye {
+      margin-bottom: 1.3rem
+    }
 
     /*── three time labels under the CTAs — compact, not cards ──*/
     .hmicro {
@@ -1537,9 +1624,13 @@
     }
 
     .hmicro button:hover,
-    .hmicro button.on { color: var(--ink) }
+    .hmicro button.on {
+      color: var(--ink)
+    }
 
-    .hmicro button.on svg { color: var(--brand) }
+    .hmicro button.on svg {
+      color: var(--brand)
+    }
 
     /*── HERO MAP ── dark in both themes: it is a product surface, not page chrome ──*/
     .hmap {
@@ -1574,11 +1665,16 @@
       transition: opacity .9s var(--E)
     }
 
-    .hmap.hmReady .hmStage { opacity: 1 }
-    .hmap.hmFailed .hmStage { display: none }
+    .hmap.hmReady .hmStage {
+      opacity: 1
+    }
 
-    .hmStage > svg,
-    .hmStage > canvas {
+    .hmap.hmFailed .hmStage {
+      display: none
+    }
+
+    .hmStage>svg,
+    .hmStage>canvas {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -1587,7 +1683,9 @@
     }
 
     .hmTop,
-    .hmRain { pointer-events: none }
+    .hmRain {
+      pointer-events: none
+    }
 
     .hmRain {
       opacity: 0;
@@ -1595,7 +1693,9 @@
       filter: blur(.6px)
     }
 
-    .hmap.hm-rain .hmRain { opacity: 1 }
+    .hmap.hm-rain .hmRain {
+      opacity: 1
+    }
 
     .hmGrat {
       fill: none;
@@ -1604,14 +1704,31 @@
       vector-effect: non-scaling-stroke
     }
 
-    .hmLandFill { fill: #0b2126 }
+    .hmLandFill {
+      fill: #0b2126
+    }
 
-    .hmShade { opacity: 0; transition: opacity 1.2s var(--E) }
-    .hmap.hmShaded.hm-terrain .hmShade { opacity: .9 }
+    .hmShade {
+      opacity: 0;
+      transition: opacity 1.2s var(--E)
+    }
 
-    .hmRisk { opacity: .9; transition: opacity .6s var(--E) }
-    .hmap[data-mode="now"] .hmRisk { opacity: .74 }
-    .hmap:not(.hm-risk) .hmRisk { opacity: .1 }
+    .hmap.hmShaded.hm-terrain .hmShade {
+      opacity: .9
+    }
+
+    .hmRisk {
+      opacity: .9;
+      transition: opacity .6s var(--E)
+    }
+
+    .hmap[data-mode="now"] .hmRisk {
+      opacity: .74
+    }
+
+    .hmap:not(.hm-risk) .hmRisk {
+      opacity: .1
+    }
 
     .hmRisk path {
       fill: #0f2b33;
@@ -1622,10 +1739,19 @@
       cursor: pointer
     }
 
-    .hmRisk path.hot { stroke: rgba(240, 250, 248, .9); stroke-width: 1.4 }
+    .hmRisk path.hot {
+      stroke: rgba(240, 250, 248, .9);
+      stroke-width: 1.4
+    }
 
-    .hmTerrain { opacity: 0; transition: opacity .8s var(--E) }
-    .hmap.hm-terrain .hmTerrain { opacity: 1 }
+    .hmTerrain {
+      opacity: 0;
+      transition: opacity .8s var(--E)
+    }
+
+    .hmap.hm-terrain .hmTerrain {
+      opacity: 1
+    }
 
     .hmCt {
       fill: none;
@@ -1651,13 +1777,31 @@
       filter: drop-shadow(0 0 10px rgba(70, 180, 200, .35))
     }
 
-    .hmEvents { opacity: 0; transition: opacity .6s var(--E) }
-    .hmap.hm-history .hmEvents { opacity: 1 }
-    .hmEvents circle { fill: #e0c062 }
-    .hmEvents .hmEvHalo { fill: rgba(224, 192, 98, .16) }
+    .hmEvents {
+      opacity: 0;
+      transition: opacity .6s var(--E)
+    }
 
-    .hmExposure { opacity: 0; transition: opacity .6s var(--E) }
-    .hmap.hm-exposure .hmExposure { opacity: 1 }
+    .hmap.hm-history .hmEvents {
+      opacity: 1
+    }
+
+    .hmEvents circle {
+      fill: #e0c062
+    }
+
+    .hmEvents .hmEvHalo {
+      fill: rgba(224, 192, 98, .16)
+    }
+
+    .hmExposure {
+      opacity: 0;
+      transition: opacity .6s var(--E)
+    }
+
+    .hmap.hm-exposure .hmExposure {
+      opacity: 1
+    }
 
     .hmExposure circle {
       fill: rgba(230, 243, 240, .07);
@@ -1677,12 +1821,23 @@
     }
 
     @keyframes hmPulse {
-      0% { transform: scale(.6); opacity: .9 }
-      100% { transform: scale(3.2); opacity: 0 }
+      0% {
+        transform: scale(.6);
+        opacity: .9
+      }
+
+      100% {
+        transform: scale(3.2);
+        opacity: 0
+      }
     }
 
     /* callouts: a dot on the place, a short leader, a two-line label */
-    .hmCallouts { position: absolute; inset: 0; pointer-events: none }
+    .hmCallouts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none
+    }
 
     .hmCo {
       position: absolute;
@@ -1692,7 +1847,7 @@
       animation: hmIn .6s var(--E) both
     }
 
-    .hmCo > i {
+    .hmCo>i {
       position: relative;
       width: 8px;
       height: 8px;
@@ -1702,7 +1857,7 @@
       flex: none
     }
 
-    .hmCo > i::after {
+    .hmCo>i::after {
       content: "";
       position: absolute;
       top: 3.5px;
@@ -1722,14 +1877,42 @@
       line-height: 1.25
     }
 
-    .hmCoT b { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .01em }
-    .hmCoT span { display: block; font-size: .66rem; color: var(--hm-ink2) }
+    .hmCoT b {
+      display: block;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .01em
+    }
 
-    .hmCo.l { flex-direction: row-reverse; transform: translate(calc(-100% + 4px), -50%) }
-    .hmCo.l > i::after { left: auto; right: 11px }
-    .hmCo.l .hmCoT { margin: 0 22px 0 0 }
+    .hmCoT span {
+      display: block;
+      font-size: .66rem;
+      color: var(--hm-ink2)
+    }
 
-    @keyframes hmIn { from { opacity: 0 } to { opacity: 1 } }
+    .hmCo.l {
+      flex-direction: row-reverse;
+      transform: translate(calc(-100% + 4px), -50%)
+    }
+
+    .hmCo.l>i::after {
+      left: auto;
+      right: 11px
+    }
+
+    .hmCo.l .hmCoT {
+      margin: 0 22px 0 0
+    }
+
+    @keyframes hmIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
 
     .hmTip {
       position: absolute;
@@ -1746,8 +1929,16 @@
       line-height: 1.35
     }
 
-    .hmTip b { display: block; font-size: .8rem; font-weight: 600 }
-    .hmTip .s { display: block; color: var(--hm-ink3) }
+    .hmTip b {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600
+    }
+
+    .hmTip .s {
+      display: block;
+      color: var(--hm-ink3)
+    }
 
     .hmTip .r {
       display: flex;
@@ -1775,7 +1966,13 @@
       font-weight: 500
     }
 
-    .hmTip .go svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2 }
+    .hmTip .go svg {
+      width: 10px;
+      height: 10px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2
+    }
 
     /* chrome on the panel: title + horizon switch on top, layers bottom-left,
        legend bottom-right — over the sea, never over the country */
@@ -1792,17 +1989,36 @@
       padding: 1rem 1rem 0 1.15rem
     }
 
-    .hmTitle b { display: block; font-size: .78rem; font-weight: 600; letter-spacing: .02em }
-    .hmCap { display: block; font-size: .7rem; color: var(--hm-ink3); margin-top: .15rem }
+    .hmTitle b {
+      display: block;
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .02em
+    }
+
+    .hmCap {
+      display: block;
+      font-size: .7rem;
+      color: var(--hm-ink3);
+      margin-top: .15rem
+    }
 
     /* per-horizon copy: only the active one shows */
-    .hmap [data-cap] { display: none }
+    .hmap [data-cap] {
+      display: none
+    }
+
     .hmap[data-mode="history"] [data-cap="history"],
     .hmap[data-mode="now"] [data-cap="now"],
-    .hmap[data-mode="future"] [data-cap="future"] { display: revert }
+    .hmap[data-mode="future"] [data-cap="future"] {
+      display: revert
+    }
+
     .hmap[data-mode="now"] .hmLgX[data-cap="now"],
     .hmap[data-mode="history"] .hmLgX[data-cap="history"],
-    .hmap[data-mode="future"] .hmScen[data-cap="future"] { display: flex }
+    .hmap[data-mode="future"] .hmScen[data-cap="future"] {
+      display: flex
+    }
 
     .hmSeg {
       display: flex;
@@ -1823,12 +2039,21 @@
       transition: color .3s, background .35s var(--E)
     }
 
-    .hmSeg button:hover { color: var(--hm-ink) }
-    .hmSeg button[aria-checked="true"] { color: #04263d; background: #cfeae6 }
+    .hmSeg button:hover {
+      color: var(--hm-ink)
+    }
+
+    .hmSeg button[aria-checked="true"] {
+      color: #04263d;
+      background: #cfeae6
+    }
 
     .hmSeg button:focus-visible,
     .hmLayers button:focus-visible,
-    .hmScen button:focus-visible { outline: 2px solid #7fd3de; outline-offset: 2px }
+    .hmScen button:focus-visible {
+      outline: 2px solid #7fd3de;
+      outline-offset: 2px
+    }
 
     .hmLayers,
     .hmLegend {
@@ -1843,8 +2068,17 @@
       -webkit-backdrop-filter: blur(8px)
     }
 
-    .hmLayers { left: .85rem; display: grid; gap: 0; min-width: 132px }
-    .hmLegend { right: 1rem; width: 166px }
+    .hmLayers {
+      left: .85rem;
+      display: grid;
+      gap: 0;
+      min-width: 132px
+    }
+
+    .hmLegend {
+      right: 1rem;
+      width: 166px
+    }
 
     .hmLayers p,
     .hmLgT {
@@ -1877,12 +2111,29 @@
       transition: background .25s, border-color .25s
     }
 
-    .hmLayers button[aria-pressed="true"] { color: var(--hm-ink) }
-    .hmLayers button[aria-pressed="true"]::before { background: #7fd3de; border-color: #7fd3de }
-    .hmLayers button:hover { color: var(--hm-ink) }
+    .hmLayers button[aria-pressed="true"] {
+      color: var(--hm-ink)
+    }
 
-    .hmRamp { display: flex; height: 7px; border-radius: 2px; overflow: hidden }
-    .hmRamp i { flex: 1 }
+    .hmLayers button[aria-pressed="true"]::before {
+      background: #7fd3de;
+      border-color: #7fd3de
+    }
+
+    .hmLayers button:hover {
+      color: var(--hm-ink)
+    }
+
+    .hmRamp {
+      display: flex;
+      height: 7px;
+      border-radius: 2px;
+      overflow: hidden
+    }
+
+    .hmRamp i {
+      flex: 1
+    }
 
     .hmRampL {
       display: flex;
@@ -1907,7 +2158,13 @@
       background: linear-gradient(90deg, rgba(79, 182, 201, .5), #bff0ea, #e9d27c)
     }
 
-    .hmSwEv { width: 8px; height: 8px; border-radius: 50%; background: #e0c062; box-shadow: 0 0 0 3px rgba(224, 192, 98, .2) }
+    .hmSwEv {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e0c062;
+      box-shadow: 0 0 0 3px rgba(224, 192, 98, .2)
+    }
 
     .hmScen {
       gap: 2px;
@@ -1926,7 +2183,10 @@
       color: var(--hm-ink3)
     }
 
-    .hmScen button[aria-pressed="true"] { background: rgba(207, 234, 230, .16); color: var(--hm-ink) }
+    .hmScen button[aria-pressed="true"] {
+      background: rgba(207, 234, 230, .16);
+      color: var(--hm-ink)
+    }
 
     .hmNote {
       display: flex;
@@ -1938,7 +2198,12 @@
       color: var(--hm-ink3)
     }
 
-    .hmNote i { width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor }
+    .hmNote i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1px solid currentColor
+    }
 
     .hmCredit {
       position: absolute;
@@ -1957,21 +2222,69 @@
     /* below this the country fills the panel edge to edge: keep the time
        switch and legend, drop the layer list */
     @media (max-width:1279px) {
-      .hmLayers { display: none }
+      .hmLayers {
+        display: none
+      }
     }
 
     @media (max-width:640px) {
-      .hmap { min-height: 0; display: flex; flex-direction: column }
-      .hmHead { position: relative; flex-wrap: wrap; order: 0 }
-      .hmStage { position: relative; top: auto; bottom: auto; left: auto; transform: none; width: 100%; max-width: none; order: 2; margin-top: .3rem }
-      .hmLayers { display: none }
-      .hmLegend { position: relative; order: 3; right: auto; bottom: auto; margin: .6rem 1rem 0; width: auto }
-      .hmCredit { position: relative; order: 4; left: 0; right: 0; bottom: 0; padding: .6rem 1.15rem .8rem; white-space: normal }
-      .hmCoT span { display: none }
+      .hmap {
+        min-height: 0;
+        display: flex;
+        flex-direction: column
+      }
+
+      .hmHead {
+        position: relative;
+        flex-wrap: wrap;
+        order: 0
+      }
+
+      .hmStage {
+        position: relative;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        max-width: none;
+        order: 2;
+        margin-top: .3rem
+      }
+
+      .hmLayers {
+        display: none
+      }
+
+      .hmLegend {
+        position: relative;
+        order: 3;
+        right: auto;
+        bottom: auto;
+        margin: .6rem 1rem 0;
+        width: auto
+      }
+
+      .hmCredit {
+        position: relative;
+        order: 4;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: .6rem 1.15rem .8rem;
+        white-space: normal
+      }
+
+      .hmCoT span {
+        display: none
+      }
     }
 
     @media (prefers-reduced-motion:reduce) {
-      .hmRing { animation: none; opacity: .6 }
+      .hmRing {
+        animation: none;
+        opacity: .6
+      }
     }
 
     /*── proof strip: four figures in equal cells; each digit is a reel that
@@ -1983,9 +2296,13 @@
       border-block: 1px solid var(--line)
     }
 
-    @media(min-width:820px) { .proof { grid-template-columns: repeat(4, minmax(0, 1fr)) } }
+    @media(min-width:820px) {
+      .proof {
+        grid-template-columns: repeat(4, minmax(0, 1fr))
+      }
+    }
 
-    .proof > div {
+    .proof>div {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1994,11 +2311,20 @@
     }
 
     /* dividers: between all four in a row; a cross on the 2 × 2 grid */
-    @media(min-width:820px) { .proof > div + div { border-left: 1px solid var(--line) } }
+    @media(min-width:820px) {
+      .proof>div+div {
+        border-left: 1px solid var(--line)
+      }
+    }
 
     @media(max-width:819px) {
-      .proof > div:nth-child(even) { border-left: 1px solid var(--line) }
-      .proof > div:nth-child(n+3) { border-top: 1px solid var(--line) }
+      .proof>div:nth-child(even) {
+        border-left: 1px solid var(--line)
+      }
+
+      .proof>div:nth-child(n+3) {
+        border-top: 1px solid var(--line)
+      }
     }
 
     /* flex-end, not baseline: a clipped reel has no usable text baseline, so
@@ -2016,7 +2342,15 @@
       color: var(--ink)
     }
 
-    .proof dt small { font-family: var(--fS); font-size: .4em; font-weight: 500; letter-spacing: 0; line-height: 1; margin-bottom: .34em; color: var(--ink2) }
+    .proof dt small {
+      font-family: var(--fS);
+      font-size: .4em;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1;
+      margin-bottom: .34em;
+      color: var(--ink2)
+    }
 
     .proof dd {
       margin: .45rem 0 0;
@@ -2025,20 +2359,37 @@
       color: var(--ink2)
     }
 
-    .proof dd span { display: block; font-weight: 500; color: var(--ink3); margin-top: .1rem }
+    .proof dd span {
+      display: block;
+      font-weight: 500;
+      color: var(--ink3);
+      margin-top: .1rem
+    }
 
     /* a reel: the digits 0–9 (and 0 again, for the wrap) stacked in a window
        one line tall, faded at its top and bottom edges */
-    .roll { display: inline-flex; align-items: flex-start }
+    .roll {
+      display: inline-flex;
+      align-items: flex-start
+    }
+
     .reel {
       display: inline-block;
       height: 1.12em;
       overflow: hidden;
-      -webkit-mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent);
-      mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent)
+      -webkit-mask-image: linear-gradient(#000 60%, #000 72%, transparent);
+      mask-image: linear-gradient(#000 60%, #000 72%, transparent)
     }
-    .reel > span { display: block }
-    .reel i { display: block; height: 1.12em; font-style: normal }
+
+    .reel>span {
+      display: block
+    }
+
+    .reel i {
+      display: block;
+      height: 1.12em;
+      font-style: normal
+    }
 
     .hsub {
       max-width: 45ch;
@@ -2144,22 +2495,23 @@
       opacity: 1;
       transform: none
     }
+
     /* the section label is set in the text face — at this size a monospace
        read as spaced-out code rather than a label */
     .sechead .snum {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.1rem;
-  margin-bottom: 1.4rem;
-  font-family: var(--fS);
-  font-size: var(--t-micro);
-  font-weight: 500;
-  letter-spacing: .06em;
-  color: var(--brand2);
-  opacity: 0;
-  transition: opacity .8s var(--E)
-}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.1rem;
+      margin-bottom: 1.4rem;
+      font-family: var(--fS);
+      font-size: var(--t-micro);
+      font-weight: 500;
+      letter-spacing: .06em;
+      color: var(--brand2);
+      opacity: 0;
+      transition: opacity .8s var(--E)
+    }
 
     .sechead .snum::before,
     .sechead .snum::after {
@@ -2190,6 +2542,7 @@
     .sechead .eye::after {
       display: none
     }
+
     /* every section head is the same: a moderate size that runs the full
        width of the container, wrapping only when it has to (pretty, not
        balance, so the first line fills out instead of both lines shrinking) */
@@ -2249,15 +2602,16 @@
       filter: none;
       transition: none
     }
-/*── TIMELINE ──*/
+
+    /*── TIMELINE ──*/
     .tlHintTxt {
-  font-size: var(--t-label);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--ink3);
-  margin-right: auto
-}
+      font-size: var(--t-label);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--ink3);
+      margin-right: auto
+    }
 
 
     #tl {
@@ -2576,43 +2930,154 @@
     }
 
     @media(max-width:900px) {
-      .nIcon { width: 88px; height: 88px; border-radius: 24px }
-      .nIcon svg { width: 56px; height: 56px }
+      .nIcon {
+        width: 88px;
+        height: 88px;
+        border-radius: 24px
+      }
+
+      .nIcon svg {
+        width: 56px;
+        height: 56px
+      }
     }
 
     /* the three glyphs move once as the card arrives, and again on hover:
        the clock rewinds, the lens finds the asset hidden in the coarse
        block, the clusters drift further apart. All transforms are in the
        48-unit viewBox. */
-    .nIcon svg * { transform-box: view-box }
+    .nIcon svg * {
+      transform-box: view-box
+    }
+
     /* origin is from the viewBox corner: the clock's viewBox starts at -1.5 -2 */
-    .nIcon .hands { transform-origin: 25.5px 26px; transition: transform 1.1s var(--E) }
-    .nIcon .rew { stroke-dasharray: 52; stroke-dashoffset: 0 }
-    .nIcon .lens { transition: transform .9s var(--E) }
-    .nIcon .lensBg { fill: var(--b900); stroke: none }
-    .nIcon .pix { fill: currentColor; stroke: none }
-    .nIcon .grid { stroke: var(--b300); stroke-width: .6; opacity: .45 }
-    .nIcon .cl { transition: transform .9s var(--E) }
-    .nlist li.in .hands { animation: nRewind 1.6s .35s var(--E) backwards }
-    .nlist li.in .rew { animation: nDraw 1.1s .2s var(--E) backwards }
-    .nlist li.in .lens { animation: nScan 1.8s .3s var(--E) backwards }
-    .nlist li.in .cl1 { animation: nDrift1 1.4s .3s var(--E) backwards }
-    .nlist li.in .cl2 { animation: nDrift2 1.4s .3s var(--E) backwards }
-    .nlist li.in .cl3 { animation: nDrift3 1.4s .3s var(--E) backwards }
-    .nlist li.in:hover .hands { transform: rotate(-360deg) }
-    .nlist li.in:hover .lens { transform: translate(-3px, -3px) }
-    .nlist li.in:hover .cl1 { transform: translate(-1.6px, -1.2px) }
-    .nlist li.in:hover .cl2 { transform: translate(1.6px, -.6px) }
-    .nlist li.in:hover .cl3 { transform: translate(0, 1.8px) }
-    @keyframes nRewind { from { transform: rotate(300deg) } }
-    @keyframes nDraw { from { stroke-dashoffset: 52 } }
-    @keyframes nScan { 0% { transform: translate(-14px, -14px) } 55% { transform: translate(-1px, -9px) } }
-    @keyframes nDrift1 { from { transform: translate(4px, 4px) } }
-    @keyframes nDrift2 { from { transform: translate(-4px, 2px) } }
-    @keyframes nDrift3 { from { transform: translate(0, -5px) } }
+    .nIcon .hands {
+      transform-origin: 25.5px 26px;
+      transition: transform 1.1s var(--E)
+    }
+
+    .nIcon .rew {
+      stroke-dasharray: 52;
+      stroke-dashoffset: 0
+    }
+
+    .nIcon .lens {
+      transition: transform .9s var(--E)
+    }
+
+    .nIcon .lensBg {
+      fill: var(--b900);
+      stroke: none
+    }
+
+    .nIcon .pix {
+      fill: currentColor;
+      stroke: none
+    }
+
+    .nIcon .grid {
+      stroke: var(--b300);
+      stroke-width: .6;
+      opacity: .45
+    }
+
+    .nIcon .cl {
+      transition: transform .9s var(--E)
+    }
+
+    .nlist li.in .hands {
+      animation: nRewind 1.6s .35s var(--E) backwards
+    }
+
+    .nlist li.in .rew {
+      animation: nDraw 1.1s .2s var(--E) backwards
+    }
+
+    .nlist li.in .lens {
+      animation: nScan 1.8s .3s var(--E) backwards
+    }
+
+    .nlist li.in .cl1 {
+      animation: nDrift1 1.4s .3s var(--E) backwards
+    }
+
+    .nlist li.in .cl2 {
+      animation: nDrift2 1.4s .3s var(--E) backwards
+    }
+
+    .nlist li.in .cl3 {
+      animation: nDrift3 1.4s .3s var(--E) backwards
+    }
+
+    .nlist li.in:hover .hands {
+      transform: rotate(-360deg)
+    }
+
+    .nlist li.in:hover .lens {
+      transform: translate(-3px, -3px)
+    }
+
+    .nlist li.in:hover .cl1 {
+      transform: translate(-1.6px, -1.2px)
+    }
+
+    .nlist li.in:hover .cl2 {
+      transform: translate(1.6px, -.6px)
+    }
+
+    .nlist li.in:hover .cl3 {
+      transform: translate(0, 1.8px)
+    }
+
+    @keyframes nRewind {
+      from {
+        transform: rotate(300deg)
+      }
+    }
+
+    @keyframes nDraw {
+      from {
+        stroke-dashoffset: 52
+      }
+    }
+
+    @keyframes nScan {
+      0% {
+        transform: translate(-14px, -14px)
+      }
+
+      55% {
+        transform: translate(-1px, -9px)
+      }
+    }
+
+    @keyframes nDrift1 {
+      from {
+        transform: translate(4px, 4px)
+      }
+    }
+
+    @keyframes nDrift2 {
+      from {
+        transform: translate(-4px, 2px)
+      }
+    }
+
+    @keyframes nDrift3 {
+      from {
+        transform: translate(0, -5px)
+      }
+    }
+
     @media (prefers-reduced-motion:reduce) {
-      .nIcon svg * { animation: none !important; transition: none !important }
-      .nlist li.in:hover .nIcon svg * { transform: none }
+      .nIcon svg * {
+        animation: none !important;
+        transition: none !important
+      }
+
+      .nlist li.in:hover .nIcon svg * {
+        transform: none
+      }
     }
 
     .nlist h3 {
@@ -2750,8 +3215,17 @@
       gap: 1.7rem;
       align-items: start
     }
-    .fxData .fxList { gap: calc(var(--pitch) - var(--rowH)); padding-top: calc((var(--pitch) - var(--rowH)) / 2) }
-    .fxData .fxList li { height: var(--rowH); padding-block: 0; line-height: 1.2 }
+
+    .fxData .fxList {
+      gap: calc(var(--pitch) - var(--rowH));
+      padding-top: calc((var(--pitch) - var(--rowH)) / 2)
+    }
+
+    .fxData .fxList li {
+      height: var(--rowH);
+      padding-block: 0;
+      line-height: 1.2
+    }
 
     .fxList {
       list-style: none;
@@ -2806,8 +3280,21 @@
 
     /* 3D surfaces (assets/js/fx-surfaces.js): once WebGL is up, each tile's
        CSS diamond gives way to a Three.js canvas drawn into the same box. */
-    .fxGLc { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; display: block }
-    .fxGL .fxTile { background: none !important; box-shadow: none !important; transform: none !important; border-radius: 0 }
+    .fxGLc {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      display: block
+    }
+
+    .fxGL .fxTile {
+      background: none !important;
+      box-shadow: none !important;
+      transform: none !important;
+      border-radius: 0
+    }
 
     .t-rain {
       background:
@@ -2947,7 +3434,10 @@
     }
 
     @keyframes fxGlow {
-      50% { transform: scale(1.08); opacity: .7 }
+      50% {
+        transform: scale(1.08);
+        opacity: .7
+      }
     }
 
     /* 03 — intelligence: a layer and what it means */
@@ -3062,22 +3552,62 @@
 
     /* the flow, gently alive: one pulse down the dashed links */
     @media (prefers-reduced-motion: no-preference) {
-      .fxData .fxList li::after { animation: fxDash 1.4s linear infinite }
-      @keyframes fxDash { to { border-top-color: var(--b500) } }
+      .fxData .fxList li::after {
+        animation: fxDash 1.4s linear infinite
+      }
+
+      @keyframes fxDash {
+        to {
+          border-top-color: var(--b500)
+        }
+      }
     }
 
     @media (max-width: 1180px) {
-      .fx { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); --pitch: 88px; --ipitch: 132px; --body: calc(var(--pitch) * 6) }
-      .fxCol:nth-child(2)::after { display: none }
-      .fxIntelRows { height: calc(var(--ipitch) * 3) }
-      .fxCoreBody { height: auto }
-      .fxCoreBody .fxProc { height: auto }
-      .fxBox { position: relative; inset: auto; min-height: 200px; margin-top: 1.1rem }
-      .fxBox::before { top: -1.1rem; height: 1.1rem }
+      .fx {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        --pitch: 88px;
+        --ipitch: 132px;
+        --body: calc(var(--pitch) * 6)
+      }
+
+      .fxCol:nth-child(2)::after {
+        display: none
+      }
+
+      .fxIntelRows {
+        height: calc(var(--ipitch) * 3)
+      }
+
+      .fxCoreBody {
+        height: auto
+      }
+
+      .fxCoreBody .fxProc {
+        height: auto
+      }
+
+      .fxBox {
+        position: relative;
+        inset: auto;
+        min-height: 200px;
+        margin-top: 1.1rem
+      }
+
+      .fxBox::before {
+        top: -1.1rem;
+        height: 1.1rem
+      }
     }
 
     @media (max-width: 680px) {
-      .fx { grid-template-columns: 1fr; gap: 3rem; --pitch: 84px; --ipitch: 112px }
+      .fx {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        --pitch: 84px;
+        --ipitch: 112px
+      }
+
       .fxCol:not(:last-child)::after {
         top: auto;
         bottom: -2.05rem;
@@ -3086,25 +3616,68 @@
         transform: rotate(135deg);
         display: block !important
       }
-      .fxDataBody { grid-template-columns: minmax(0, 1fr) 128px; gap: .9rem }
-      .fxTile { width: 80px; height: 80px; margin-left: -40px; top: calc(var(--k) * var(--pitch) + var(--pitch) / 2 - 40px + var(--face)) }
-      .fxIntelRow { grid-template-columns: 116px minmax(0, 1fr) }
-      .fxIntelRow .fxTile { margin-left: 18px }
-      .fxBox { min-height: 170px }
+
+      .fxDataBody {
+        grid-template-columns: minmax(0, 1fr) 128px;
+        gap: .9rem
+      }
+
+      .fxTile {
+        width: 80px;
+        height: 80px;
+        margin-left: -40px;
+        top: calc(var(--k) * var(--pitch) + var(--pitch) / 2 - 40px + var(--face))
+      }
+
+      .fxIntelRow {
+        grid-template-columns: 116px minmax(0, 1fr)
+      }
+
+      .fxIntelRow .fxTile {
+        margin-left: 18px
+      }
+
+      .fxBox {
+        min-height: 170px
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .fxBox .glow { animation: none }
+      .fxBox .glow {
+        animation: none
+      }
     }
 
     /* the carousel (assets/carousel.css) takes over the layout of these three */
-    .nlist.carTrack > li { min-height: clamp(270px, 30svh, 320px) }
-    .secPanel .carPill { background: rgba(255, 255, 255, .14); box-shadow: none }
-    .secPanel .carTrack.secBriefs > * { flex-basis: calc((100% - 3 * 1.2rem) / 3.3) }
-    @media (max-width: 979px) { .secPanel .carTrack.secBriefs > * { flex-basis: min(78%, 320px) } }
+    .nlist.carTrack>li {
+      min-height: clamp(270px, 30svh, 320px)
+    }
+
+    .secPanel .carPill {
+      background: rgba(255, 255, 255, .14);
+      box-shadow: none
+    }
+
+    .secPanel .carTrack.secBriefs>* {
+      flex-basis: calc((100% - 3 * 1.2rem) / 3.3)
+    }
+
+    @media (max-width: 979px) {
+      .secPanel .carTrack.secBriefs>* {
+        flex-basis: min(78%, 320px)
+      }
+    }
+
     /* inside the panel the track bleeds out to the panel's own edge, not the screen's */
-    .secPanel { --pp: clamp(1.6rem, 4vw, 3.4rem) }
-    .secPanel .carTrack { margin-inline: calc(var(--pp) * -1); padding-inline: var(--pp); scroll-padding-inline: var(--pp) }
+    .secPanel {
+      --pp: clamp(1.6rem, 4vw, 3.4rem)
+    }
+
+    .secPanel .carTrack {
+      margin-inline: calc(var(--pp) * -1);
+      padding-inline: var(--pp);
+      scroll-padding-inline: var(--pp)
+    }
 
     /*── PRODUCTS on the homepage: the /products overview cards ──*/
     #products .pOver .foot .btn {
@@ -3125,7 +3698,7 @@
     }
 
     /*── hero: the explorer hints under the map ──*/
-    .hmicro li > span {
+    .hmicro li>span {
       display: flex;
       align-items: center;
       gap: .5rem;
@@ -3135,11 +3708,31 @@
       color: var(--ink2)
     }
 
-    .hmicro li > span svg { color: var(--brand) }
-    .hmicro { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem 1.2rem }
-    .hmicro li > span { align-items: flex-start; line-height: 1.35 }
-    .hmicro li > span svg { flex: none; margin-top: .1rem }
-    @media (max-width: 560px) { .hmicro { grid-template-columns: 1fr } }
+    .hmicro li>span svg {
+      color: var(--brand)
+    }
+
+    .hmicro {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .4rem 1.2rem
+    }
+
+    .hmicro li>span {
+      align-items: flex-start;
+      line-height: 1.35
+    }
+
+    .hmicro li>span svg {
+      flex: none;
+      margin-top: .1rem
+    }
+
+    @media (max-width: 560px) {
+      .hmicro {
+        grid-template-columns: 1fr
+      }
+    }
 
     .drop a.all {
       margin-top: .25rem;
@@ -3154,9 +3747,17 @@
     }
 
     /*── the shared closing CTA and footer contact lines (stamped by scripts/shell.mjs) ──*/
-    #get-started .wrap { max-width: var(--wrap, 1260px) }
-    #get-started .card { padding: clamp(1.5rem, 3.4vw, 2.4rem) }
-    #get-started .secHead h2 { font-family: var(--fD) }
+    #get-started .wrap {
+      max-width: var(--wrap, 1260px)
+    }
+
+    #get-started .card {
+      padding: clamp(1.5rem, 3.4vw, 2.4rem)
+    }
+
+    #get-started .secHead h2 {
+      font-family: var(--fD)
+    }
 
     .site-footer__contact {
       list-style: none;
@@ -3169,7 +3770,9 @@
       font-style: normal
     }
 
-    .site-footer address { font-style: normal }
+    .site-footer address {
+      font-style: normal
+    }
 
     .site-footer__contact li {
       display: flex;
@@ -3190,11 +3793,18 @@
       stroke-linejoin: round
     }
 
-    .site-footer__contact a { color: var(--ink2) }
-    .site-footer__contact a:hover { color: var(--brand) }
+    .site-footer__contact a {
+      color: var(--ink2)
+    }
+
+    .site-footer__contact a:hover {
+      color: var(--brand)
+    }
 
     @media (min-width:900px) {
-      .site-footer__nav { grid-template-columns: repeat(4, minmax(0, 1fr)) }
+      .site-footer__nav {
+        grid-template-columns: repeat(4, minmax(0, 1fr))
+      }
     }
 
     /*── PRODUCTS / SECTORS — home page briefs, full detail lives on their own pages ──*/
@@ -3857,21 +4467,22 @@
       stroke-width: 1.8;
       flex: none
     }
-/*── copy button ──*/
+
+    /*── copy button ──*/
     .copy {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  padding: .3rem .6rem;
-  border-radius: 999px;
-  border: 1px solid var(--line2);
-  font-size: var(--t-label);
-  letter-spacing: .1em;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: var(--ink2);
-  transition: background .25s, color .25s, border-color .25s
-}
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .3rem .6rem;
+      border-radius: 999px;
+      border: 1px solid var(--line2);
+      font-size: var(--t-label);
+      letter-spacing: .1em;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--ink2);
+      transition: background .25s, color .25s, border-color .25s
+    }
 
     .copy:hover {
       background: var(--dentBg);
@@ -4358,17 +4969,17 @@
     /*── time spine: historical → current → future ──*/
 
 
-/*── the flood problem ──*/
+    /*── the flood problem ──*/
 
     /*── product kickers, disclaimer, explorer band ──*/
     .pkick {
-  font-size: var(--t-label);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--brand);
-  margin-bottom: .75rem
-}
+      font-size: var(--t-label);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--brand);
+      margin-bottom: .75rem
+    }
 
     .disc {
       font-size: var(--t-xs);
@@ -4518,12 +5129,12 @@
         height: clamp(140px, 34vw, 190px)
       }
 
-    .tlx {
-      font-size: var(--t-micro);
-      font-family: var(--fM);
-      font-weight: 400;
-      letter-spacing: 0
-    }
+      .tlx {
+        font-size: var(--t-micro);
+        font-family: var(--fM);
+        font-weight: 400;
+        letter-spacing: 0
+      }
 
       .eye {
         flex-wrap: wrap;
@@ -4583,11 +5194,11 @@
         transform: none !important
       }
 
-    body {
-      height: auto !important;
-      overflow: visible !important;
-      font-weight: 400
-    }
+      body {
+        height: auto !important;
+        overflow: visible !important;
+        font-weight: 400
+      }
 
       section {
         padding-block: 0 !important;
@@ -4630,12 +5241,12 @@
         color: #555
       }
 
-    .site-footer__bottom {
-      border-top: 1px solid #999;
-      font-size: var(--t-label);
-      font-weight: 500;
-      letter-spacing: .1em
-    }
+      .site-footer__bottom {
+        border-top: 1px solid #999;
+        font-size: var(--t-label);
+        font-weight: 500;
+        letter-spacing: .1em
+      }
     }
 
     /*───────────────────────────────────────────────────────────────
@@ -4665,6 +5276,7 @@
         transition-duration: .01ms !important
       }
     }
+
     /* a menu jump lands on a finished section: no reveal motion (see revealNow) */
     .rvNow [data-rv],
     .rvNow [data-rv] *,
@@ -4680,7 +5292,8 @@
   Here the glass goes near-solid, the glows become plain gradients and
   nothing holds a layer it doesn't need. Desktop is untouched.
 ───────────────────────────────────────────────────────────────*/
-    @media (hover:none), (pointer:coarse) {
+    @media (hover:none),
+    (pointer:coarse) {
       :root {
         --glassA: rgba(248, 253, 253, .95);
         --glassB: rgba(240, 248, 249, .9)
@@ -4729,7 +5342,8 @@
     }
 
     @media (prefers-color-scheme:dark) {
-      @media (hover:none), (pointer:coarse) {
+      @media (hover:none),
+      (pointer:coarse) {
         :root:not([data-theme="light"]) {
           --glassA: rgba(10, 42, 52, .95);
           --glassB: rgba(6, 30, 38, .92)
@@ -4763,11 +5377,10 @@
       .pinsec {
         height: auto !important
       }
-
     </style>
   </noscript>
-<link rel="stylesheet" href="/assets/webinar.css">
-<link rel="stylesheet" href="/assets/carousel.css">
+  <link rel="stylesheet" href="/assets/webinar.css">
+  <link rel="stylesheet" href="/assets/carousel.css">
 </head>
 
 <body>
@@ -4785,18 +5398,112 @@
   <a id="skip" href="#hero">Skip to content</a>
 
   <div id="pre" role="status" aria-label="Loading FloodGuard">
-    <div class="preRain" aria-hidden="true"><i class="f" style="--x:-6.0%;--h:20px;--d:2.05s;--w:-0.72s"></i><i class="f" style="--x:75.7%;--h:30px;--d:1.82s;--w:-0.82s"></i><i class="f" style="--x:78.6%;--h:27px;--d:1.83s;--w:-1.71s"></i><i class="f" style="--x:85.5%;--h:29px;--d:1.65s;--w:-0.94s"></i><i class="f" style="--x:72.2%;--h:24px;--d:1.53s;--w:-1.71s"></i><i class="f" style="--x:97.3%;--h:25px;--d:1.98s;--w:-0.31s"></i><i class="f" style="--x:97.4%;--h:26px;--d:1.91s;--w:-1.61s"></i><i class="f" style="--x:96.1%;--h:22px;--d:2.05s;--w:-0.93s"></i><i class="f" style="--x:87.8%;--h:21px;--d:1.70s;--w:-0.38s"></i><i class="f" style="--x:42.0%;--h:26px;--d:1.68s;--w:-2.34s"></i><i class="f" style="--x:75.7%;--h:21px;--d:2.03s;--w:-0.15s"></i><i class="f" style="--x:56.8%;--h:19px;--d:1.81s;--w:-1.05s"></i><i class="f" style="--x:95.8%;--h:22px;--d:1.53s;--w:-0.91s"></i><i class="f" style="--x:68.4%;--h:19px;--d:2.05s;--w:-1.29s"></i><i class="f" style="--x:39.4%;--h:24px;--d:1.67s;--w:-0.91s"></i><i class="f" style="--x:31.2%;--h:20px;--d:1.82s;--w:-1.54s"></i><i class="f" style="--x:95.5%;--h:27px;--d:1.77s;--w:-2.16s"></i><i class="f" style="--x:65.0%;--h:28px;--d:1.81s;--w:-1.26s"></i><i class="f" style="--x:99.2%;--h:21px;--d:1.74s;--w:-1.77s"></i><i class="f" style="--x:59.7%;--h:23px;--d:1.71s;--w:-0.83s"></i><i class="f" style="--x:83.0%;--h:31px;--d:2.03s;--w:-0.28s"></i><i class="f" style="--x:2.7%;--h:17px;--d:1.74s;--w:-0.38s"></i><i class="f" style="--x:105.6%;--h:19px;--d:1.63s;--w:-1.58s"></i><i class="f" style="--x:45.2%;--h:33px;--d:1.86s;--w:-0.34s"></i><i class="f" style="--x:93.1%;--h:32px;--d:2.03s;--w:-2.21s"></i><i class="f" style="--x:79.2%;--h:20px;--d:1.67s;--w:-0.03s"></i><i class="f" style="--x:2.5%;--h:20px;--d:1.50s;--w:-1.54s"></i><i class="f" style="--x:77.0%;--h:20px;--d:1.79s;--w:-1.72s"></i><i class="f" style="--x:92.8%;--h:32px;--d:1.64s;--w:-0.93s"></i><i class="f" style="--x:7.3%;--h:32px;--d:1.79s;--w:-0.01s"></i><i class="f" style="--x:65.3%;--h:32px;--d:2.05s;--w:-0.05s"></i><i class="f" style="--x:15.1%;--h:28px;--d:2.08s;--w:-1.41s"></i><i class="f" style="--x:23.8%;--h:26px;--d:1.63s;--w:-0.52s"></i><i class="f" style="--x:-0.1%;--h:29px;--d:1.96s;--w:-1.75s"></i><i class="f" style="--x:49.8%;--h:33px;--d:1.52s;--w:-0.28s"></i><i class="f" style="--x:8.6%;--h:17px;--d:1.91s;--w:-2.23s"></i><i class="f" style="--x:92.9%;--h:33px;--d:2.02s;--w:-2.48s"></i><i class="f" style="--x:79.7%;--h:29px;--d:1.75s;--w:-0.62s"></i><i class="f" style="--x:92.8%;--h:23px;--d:1.74s;--w:-0.59s"></i><i class="f" style="--x:93.3%;--h:27px;--d:1.84s;--w:-0.88s"></i><i class="f" style="--x:76.3%;--h:24px;--d:1.70s;--w:-1.81s"></i><i class="f" style="--x:16.2%;--h:34px;--d:1.69s;--w:-2.46s"></i><i class="f" style="--x:64.8%;--h:20px;--d:2.02s;--w:-2.30s"></i><i class="f" style="--x:66.3%;--h:26px;--d:1.58s;--w:-1.24s"></i><i class="f" style="--x:80.4%;--h:19px;--d:2.07s;--w:-1.21s"></i><i class="f" style="--x:44.0%;--h:25px;--d:1.60s;--w:-1.66s"></i><i class="m" style="--x:56.9%;--h:41px;--d:1.20s;--w:-1.89s"></i><i class="m" style="--x:78.1%;--h:46px;--d:1.01s;--w:-0.75s"></i><i class="m" style="--x:16.7%;--h:37px;--d:1.29s;--w:-0.73s"></i><i class="m" style="--x:67.9%;--h:53px;--d:1.17s;--w:-0.19s"></i><i class="m" style="--x:86.2%;--h:50px;--d:1.37s;--w:-2.28s"></i><i class="m" style="--x:101.4%;--h:48px;--d:1.01s;--w:-1.90s"></i><i class="m" style="--x:75.1%;--h:34px;--d:1.36s;--w:-0.09s"></i><i class="m" style="--x:3.0%;--h:30px;--d:1.04s;--w:-0.21s"></i><i class="m" style="--x:61.8%;--h:34px;--d:1.38s;--w:-0.48s"></i><i class="m" style="--x:16.6%;--h:44px;--d:1.27s;--w:-0.61s"></i><i class="m" style="--x:105.3%;--h:53px;--d:1.17s;--w:-1.68s"></i><i class="m" style="--x:38.5%;--h:37px;--d:1.17s;--w:-0.15s"></i><i class="m" style="--x:84.5%;--h:58px;--d:1.39s;--w:-0.38s"></i><i class="m" style="--x:51.0%;--h:48px;--d:1.05s;--w:-0.53s"></i><i class="m" style="--x:13.1%;--h:49px;--d:1.03s;--w:-0.68s"></i><i class="m" style="--x:56.3%;--h:32px;--d:1.19s;--w:-2.48s"></i><i class="m" style="--x:40.3%;--h:30px;--d:1.13s;--w:-0.01s"></i><i class="m" style="--x:40.3%;--h:58px;--d:1.04s;--w:-0.59s"></i><i class="m" style="--x:81.1%;--h:56px;--d:1.31s;--w:-1.09s"></i><i class="m" style="--x:101.8%;--h:47px;--d:1.32s;--w:-1.65s"></i><i class="m" style="--x:33.0%;--h:45px;--d:1.16s;--w:-1.24s"></i><i class="m" style="--x:57.6%;--h:49px;--d:1.29s;--w:-1.66s"></i><i class="m" style="--x:75.6%;--h:60px;--d:1.35s;--w:-2.11s"></i><i class="m" style="--x:43.1%;--h:59px;--d:1.19s;--w:-2.39s"></i><i class="m" style="--x:34.1%;--h:56px;--d:1.03s;--w:-0.86s"></i><i class="m" style="--x:73.3%;--h:54px;--d:1.30s;--w:-2.39s"></i><i class="m" style="--x:17.2%;--h:33px;--d:1.10s;--w:-2.00s"></i><i class="m" style="--x:96.5%;--h:51px;--d:1.32s;--w:-1.59s"></i><i class="m" style="--x:54.0%;--h:47px;--d:1.18s;--w:-2.18s"></i><i class="m" style="--x:91.9%;--h:43px;--d:1.11s;--w:-1.72s"></i><i class="n" style="--x:38.2%;--h:62px;--d:0.75s;--w:-1.47s"></i><i class="n" style="--x:94.7%;--h:82px;--d:0.91s;--w:-0.84s"></i><i class="n" style="--x:92.3%;--h:93px;--d:0.73s;--w:-0.77s"></i><i class="n" style="--x:-5.9%;--h:53px;--d:0.73s;--w:-0.99s"></i><i class="n" style="--x:71.6%;--h:61px;--d:0.92s;--w:-0.43s"></i><i class="n" style="--x:100.1%;--h:57px;--d:0.87s;--w:-0.44s"></i><i class="n" style="--x:64.2%;--h:78px;--d:0.70s;--w:-2.03s"></i><i class="n" style="--x:78.1%;--h:83px;--d:0.73s;--w:-0.83s"></i><i class="n" style="--x:101.0%;--h:86px;--d:0.84s;--w:-1.47s"></i><i class="n" style="--x:72.7%;--h:56px;--d:0.88s;--w:-1.49s"></i><i class="n" style="--x:-0.9%;--h:78px;--d:0.85s;--w:-0.56s"></i><i class="n" style="--x:22.1%;--h:80px;--d:0.76s;--w:-1.55s"></i><i class="n" style="--x:85.0%;--h:54px;--d:0.76s;--w:-2.26s"></i><i class="n" style="--x:71.4%;--h:81px;--d:0.80s;--w:-1.98s"></i></div>
+    <div class="preRain" aria-hidden="true"><i class="f" style="--x:-6.0%;--h:20px;--d:2.05s;--w:-0.72s"></i><i
+        class="f" style="--x:75.7%;--h:30px;--d:1.82s;--w:-0.82s"></i><i class="f"
+        style="--x:78.6%;--h:27px;--d:1.83s;--w:-1.71s"></i><i class="f"
+        style="--x:85.5%;--h:29px;--d:1.65s;--w:-0.94s"></i><i class="f"
+        style="--x:72.2%;--h:24px;--d:1.53s;--w:-1.71s"></i><i class="f"
+        style="--x:97.3%;--h:25px;--d:1.98s;--w:-0.31s"></i><i class="f"
+        style="--x:97.4%;--h:26px;--d:1.91s;--w:-1.61s"></i><i class="f"
+        style="--x:96.1%;--h:22px;--d:2.05s;--w:-0.93s"></i><i class="f"
+        style="--x:87.8%;--h:21px;--d:1.70s;--w:-0.38s"></i><i class="f"
+        style="--x:42.0%;--h:26px;--d:1.68s;--w:-2.34s"></i><i class="f"
+        style="--x:75.7%;--h:21px;--d:2.03s;--w:-0.15s"></i><i class="f"
+        style="--x:56.8%;--h:19px;--d:1.81s;--w:-1.05s"></i><i class="f"
+        style="--x:95.8%;--h:22px;--d:1.53s;--w:-0.91s"></i><i class="f"
+        style="--x:68.4%;--h:19px;--d:2.05s;--w:-1.29s"></i><i class="f"
+        style="--x:39.4%;--h:24px;--d:1.67s;--w:-0.91s"></i><i class="f"
+        style="--x:31.2%;--h:20px;--d:1.82s;--w:-1.54s"></i><i class="f"
+        style="--x:95.5%;--h:27px;--d:1.77s;--w:-2.16s"></i><i class="f"
+        style="--x:65.0%;--h:28px;--d:1.81s;--w:-1.26s"></i><i class="f"
+        style="--x:99.2%;--h:21px;--d:1.74s;--w:-1.77s"></i><i class="f"
+        style="--x:59.7%;--h:23px;--d:1.71s;--w:-0.83s"></i><i class="f"
+        style="--x:83.0%;--h:31px;--d:2.03s;--w:-0.28s"></i><i class="f"
+        style="--x:2.7%;--h:17px;--d:1.74s;--w:-0.38s"></i><i class="f"
+        style="--x:105.6%;--h:19px;--d:1.63s;--w:-1.58s"></i><i class="f"
+        style="--x:45.2%;--h:33px;--d:1.86s;--w:-0.34s"></i><i class="f"
+        style="--x:93.1%;--h:32px;--d:2.03s;--w:-2.21s"></i><i class="f"
+        style="--x:79.2%;--h:20px;--d:1.67s;--w:-0.03s"></i><i class="f"
+        style="--x:2.5%;--h:20px;--d:1.50s;--w:-1.54s"></i><i class="f"
+        style="--x:77.0%;--h:20px;--d:1.79s;--w:-1.72s"></i><i class="f"
+        style="--x:92.8%;--h:32px;--d:1.64s;--w:-0.93s"></i><i class="f"
+        style="--x:7.3%;--h:32px;--d:1.79s;--w:-0.01s"></i><i class="f"
+        style="--x:65.3%;--h:32px;--d:2.05s;--w:-0.05s"></i><i class="f"
+        style="--x:15.1%;--h:28px;--d:2.08s;--w:-1.41s"></i><i class="f"
+        style="--x:23.8%;--h:26px;--d:1.63s;--w:-0.52s"></i><i class="f"
+        style="--x:-0.1%;--h:29px;--d:1.96s;--w:-1.75s"></i><i class="f"
+        style="--x:49.8%;--h:33px;--d:1.52s;--w:-0.28s"></i><i class="f"
+        style="--x:8.6%;--h:17px;--d:1.91s;--w:-2.23s"></i><i class="f"
+        style="--x:92.9%;--h:33px;--d:2.02s;--w:-2.48s"></i><i class="f"
+        style="--x:79.7%;--h:29px;--d:1.75s;--w:-0.62s"></i><i class="f"
+        style="--x:92.8%;--h:23px;--d:1.74s;--w:-0.59s"></i><i class="f"
+        style="--x:93.3%;--h:27px;--d:1.84s;--w:-0.88s"></i><i class="f"
+        style="--x:76.3%;--h:24px;--d:1.70s;--w:-1.81s"></i><i class="f"
+        style="--x:16.2%;--h:34px;--d:1.69s;--w:-2.46s"></i><i class="f"
+        style="--x:64.8%;--h:20px;--d:2.02s;--w:-2.30s"></i><i class="f"
+        style="--x:66.3%;--h:26px;--d:1.58s;--w:-1.24s"></i><i class="f"
+        style="--x:80.4%;--h:19px;--d:2.07s;--w:-1.21s"></i><i class="f"
+        style="--x:44.0%;--h:25px;--d:1.60s;--w:-1.66s"></i><i class="m"
+        style="--x:56.9%;--h:41px;--d:1.20s;--w:-1.89s"></i><i class="m"
+        style="--x:78.1%;--h:46px;--d:1.01s;--w:-0.75s"></i><i class="m"
+        style="--x:16.7%;--h:37px;--d:1.29s;--w:-0.73s"></i><i class="m"
+        style="--x:67.9%;--h:53px;--d:1.17s;--w:-0.19s"></i><i class="m"
+        style="--x:86.2%;--h:50px;--d:1.37s;--w:-2.28s"></i><i class="m"
+        style="--x:101.4%;--h:48px;--d:1.01s;--w:-1.90s"></i><i class="m"
+        style="--x:75.1%;--h:34px;--d:1.36s;--w:-0.09s"></i><i class="m"
+        style="--x:3.0%;--h:30px;--d:1.04s;--w:-0.21s"></i><i class="m"
+        style="--x:61.8%;--h:34px;--d:1.38s;--w:-0.48s"></i><i class="m"
+        style="--x:16.6%;--h:44px;--d:1.27s;--w:-0.61s"></i><i class="m"
+        style="--x:105.3%;--h:53px;--d:1.17s;--w:-1.68s"></i><i class="m"
+        style="--x:38.5%;--h:37px;--d:1.17s;--w:-0.15s"></i><i class="m"
+        style="--x:84.5%;--h:58px;--d:1.39s;--w:-0.38s"></i><i class="m"
+        style="--x:51.0%;--h:48px;--d:1.05s;--w:-0.53s"></i><i class="m"
+        style="--x:13.1%;--h:49px;--d:1.03s;--w:-0.68s"></i><i class="m"
+        style="--x:56.3%;--h:32px;--d:1.19s;--w:-2.48s"></i><i class="m"
+        style="--x:40.3%;--h:30px;--d:1.13s;--w:-0.01s"></i><i class="m"
+        style="--x:40.3%;--h:58px;--d:1.04s;--w:-0.59s"></i><i class="m"
+        style="--x:81.1%;--h:56px;--d:1.31s;--w:-1.09s"></i><i class="m"
+        style="--x:101.8%;--h:47px;--d:1.32s;--w:-1.65s"></i><i class="m"
+        style="--x:33.0%;--h:45px;--d:1.16s;--w:-1.24s"></i><i class="m"
+        style="--x:57.6%;--h:49px;--d:1.29s;--w:-1.66s"></i><i class="m"
+        style="--x:75.6%;--h:60px;--d:1.35s;--w:-2.11s"></i><i class="m"
+        style="--x:43.1%;--h:59px;--d:1.19s;--w:-2.39s"></i><i class="m"
+        style="--x:34.1%;--h:56px;--d:1.03s;--w:-0.86s"></i><i class="m"
+        style="--x:73.3%;--h:54px;--d:1.30s;--w:-2.39s"></i><i class="m"
+        style="--x:17.2%;--h:33px;--d:1.10s;--w:-2.00s"></i><i class="m"
+        style="--x:96.5%;--h:51px;--d:1.32s;--w:-1.59s"></i><i class="m"
+        style="--x:54.0%;--h:47px;--d:1.18s;--w:-2.18s"></i><i class="m"
+        style="--x:91.9%;--h:43px;--d:1.11s;--w:-1.72s"></i><i class="n"
+        style="--x:38.2%;--h:62px;--d:0.75s;--w:-1.47s"></i><i class="n"
+        style="--x:94.7%;--h:82px;--d:0.91s;--w:-0.84s"></i><i class="n"
+        style="--x:92.3%;--h:93px;--d:0.73s;--w:-0.77s"></i><i class="n"
+        style="--x:-5.9%;--h:53px;--d:0.73s;--w:-0.99s"></i><i class="n"
+        style="--x:71.6%;--h:61px;--d:0.92s;--w:-0.43s"></i><i class="n"
+        style="--x:100.1%;--h:57px;--d:0.87s;--w:-0.44s"></i><i class="n"
+        style="--x:64.2%;--h:78px;--d:0.70s;--w:-2.03s"></i><i class="n"
+        style="--x:78.1%;--h:83px;--d:0.73s;--w:-0.83s"></i><i class="n"
+        style="--x:101.0%;--h:86px;--d:0.84s;--w:-1.47s"></i><i class="n"
+        style="--x:72.7%;--h:56px;--d:0.88s;--w:-1.49s"></i><i class="n"
+        style="--x:-0.9%;--h:78px;--d:0.85s;--w:-0.56s"></i><i class="n"
+        style="--x:22.1%;--h:80px;--d:0.76s;--w:-1.55s"></i><i class="n"
+        style="--x:85.0%;--h:54px;--d:0.76s;--w:-2.26s"></i><i class="n"
+        style="--x:71.4%;--h:81px;--d:0.80s;--w:-1.98s"></i></div>
     <div class="in">
       <div class="preLogo">
         <i class="ring"></i><i class="ring"></i><i class="ring"></i>
-        <svg class="preArc" viewBox="0 0 120 120" aria-hidden="true"><circle class="tr" cx="60" cy="60" r="56"/><circle class="fl" cx="60" cy="60" r="56"/></svg>
-      <img
-        src="data:image/jpeg;base64,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UUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKACiiigD/9k="
-        alt="">
+        <svg class="preArc" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="tr" cx="60" cy="60" r="56" />
+          <circle class="fl" cx="60" cy="60" r="56" />
+        </svg>
+        <img
+          src="data:image/jpeg;base64,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UUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKAD8RR+IoooAPxFH4iiigA/EUfiKKKACiiigD/9k="
+          alt="">
       </div>
       <b class="preName">FLOODGUARD</b>
       <div id="preBar"><i></i></div>
-      <div class="preRow"><p class="caps" id="preMsg">Reading the observed record</p><span id="prePct" aria-hidden="true">0%</span></div>
+      <div class="preRow">
+        <p class="caps" id="preMsg">Reading the observed record</p><span id="prePct" aria-hidden="true">0%</span>
+      </div>
     </div>
   </div>
 
@@ -4900,13 +5607,17 @@
 
       <!-- ══ HERO ══ -->
       <section id="hero">
-      <aside class="wbBar" aria-label="Upcoming webinar">
-        <div class="wbIn">
-          <span class="wbTag"><i class="wbLive" aria-hidden="true"></i>Upcoming webinar<span class="wbSep"> · </span><span class="wbFor">For pilot partners</span></span>
-          <p class="wbTxt">Want to see what we're building? <b>Join our webinar.</b></p>
-          <a class="wbBtn" href="%WEBINAR_URL%" data-webinar>Save My Spot <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
-        </div>
-      </aside>
+        <aside class="wbBar" aria-label="Upcoming webinar">
+          <div class="wbIn">
+            <span class="wbTag"><i class="wbLive" aria-hidden="true"></i>Upcoming webinar<span class="wbSep"> ·
+              </span><span class="wbFor">For pilot partners</span></span>
+            <p class="wbTxt">Want to see what we're building? <b>Join our webinar.</b></p>
+            <a class="wbBtn" href="%WEBINAR_URL%" data-webinar>Save My Spot <svg class="ar" viewBox="0 0 14 14"
+                aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg></a>
+          </div>
+        </aside>
         <div class="wrap hgrid">
           <div class="hcopy">
             <p class="eye caps" data-rv><i></i>India's flood intelligence platform</p>
@@ -4919,15 +5630,22 @@
               risk scenarios together in one platform — helping you understand, assess and act on flood risk across
               India.</p>
             <div class="hcta" data-rv>
-              <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Free Data <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
+              <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Free Data <svg viewBox="0 0 14 14"
+                  aria-hidden="true">
+                  <path d="M2 7h10M8 3l4 4-4 4" />
+                </svg></a>
               <a class="btn bg2" href="/contact.html?intent=demo" data-utm data-lead="demo">Request a Demo</a>
             </div>
             <aside class="wbHero" aria-labelledby="wbHeroH" data-rv>
               <p class="wbEye"><i class="wbLive" aria-hidden="true"></i>Exclusive pilot webinar</p>
               <h2 id="wbHeroH">See how it works. Discover what's possible.</h2>
-              <p>Join our live webinar to explore what we're building, understand how our solution works in practice, and discover how you can get involved as a pilot.</p>
+              <p>Join our live webinar to explore what we're building, understand how our solution works in practice,
+                and discover how you can get involved as a pilot.</p>
               <div class="wbRow">
-                <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Reserve Your Spot <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
+                <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Reserve Your Spot <svg class="ar"
+                    viewBox="0 0 14 14" aria-hidden="true">
+                    <path d="M2 7h10M8 3l4 4-4 4" />
+                  </svg></a>
                 <small>Built for prospective pilot partners.</small>
               </div>
             </aside>
@@ -4950,7 +5668,9 @@
               <svg class="hmTop" aria-hidden="true"></svg>
               <div class="hmCallouts" aria-hidden="true"></div>
               <div class="hmTip" hidden><b></b><span class="s"></span><span class="r"></span><span class="go">Open
-                  district data <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></span></div>
+                  district data <svg viewBox="0 0 14 14" aria-hidden="true">
+                    <path d="M2 7h10M8 3l4 4-4 4" />
+                  </svg></span></div>
             </div>
             <div class="hmLayers" role="group" aria-label="Map layers">
               <p>Layers</p>
@@ -4961,7 +5681,10 @@
             </div>
             <div class="hmLegend">
               <p class="hmLgT"><span data-cap="history">Historical flood risk</span></p>
-              <div class="hmRamp" aria-hidden="true"><i style="background:#0f2b33"></i><i style="background:#133f4f"></i><i style="background:#175a73"></i><i style="background:#1f7d98"></i><i style="background:#36a6b8"></i><i style="background:#7cc4a0"></i><i style="background:#e0c062"></i><i style="background:#e38c4a"></i></div>
+              <div class="hmRamp" aria-hidden="true"><i style="background:#0f2b33"></i><i
+                  style="background:#133f4f"></i><i style="background:#175a73"></i><i style="background:#1f7d98"></i><i
+                  style="background:#36a6b8"></i><i style="background:#7cc4a0"></i><i style="background:#e0c062"></i><i
+                  style="background:#e38c4a"></i></div>
               <div class="hmRampL"><span>Low</span><span>High</span></div>
               <p class="hmLgX" data-cap="history"><i class="hmSwEv"></i>Major recorded flood</p>
             </div>
@@ -4970,23 +5693,37 @@
 
           <ul class="hmicro" data-rv aria-label="About this map">
             <li><span><svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" /><path d="M3 4v4h4M12 7.5V12l3 2" />
+                  <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" />
+                  <path d="M3 4v4h4M12 7.5V12l3 2" />
                 </svg>75 years of observed record</span></li>
             <li><span><svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M5 3l14 9-6 1.5L10 20z" />
                 </svg>Click any district to open its data</span></li>
             <li><span><svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" /><path d="m8.5 12 2.5 2.5L16 9.5" />
+                  <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z" />
+                  <path d="m8.5 12 2.5 2.5L16 9.5" />
                 </svg>Free · no sales conversation</span></li>
           </ul>
         </div>
 
         <div class="wrap">
           <dl class="proof" data-rv>
-            <div><dt><span class="roll" data-roll="75">75</span><small>Years</small></dt><dd>Observed flood &amp; climate record<span>1951–2025</span></dd></div>
-            <div><dt><span class="roll" data-roll="766" data-sfx="+">766+</span></dt><dd>Districts<span>Across India</span></dd></div>
-            <div><dt><span class="roll" data-roll="6500" data-sfx="+">6,500+</span></dt><dd>Talukas<span>Granular risk intelligence</span></dd></div>
-            <div><dt><span class="roll" data-roll="3">3</span></dt><dd>Climate scenarios</dd></div>
+            <div>
+              <dt><span class="roll" data-roll="75">75</span><small>Years</small></dt>
+              <dd>Observed flood &amp; climate record<span>1951–2025</span></dd>
+            </div>
+            <div>
+              <dt><span class="roll" data-roll="766" data-sfx="+">766+</span></dt>
+              <dd>Districts<span>Across India</span></dd>
+            </div>
+            <div>
+              <dt><span class="roll" data-roll="6500" data-sfx="+">6,500+</span></dt>
+              <dd>Talukas<span>Granular risk intelligence</span></dd>
+            </div>
+            <div>
+              <dt><span class="roll" data-roll="3">3</span></dt>
+              <dd>Climate scenarios</dd>
+            </div>
           </dl>
         </div>
       </section>
@@ -5008,7 +5745,10 @@
                 <svg viewBox="-1.5 -2 48 48">
                   <circle cx="24" cy="24" r="13" />
                   <path d="M24 12.6v2.4M35.4 24H33M24 35.4V33M12.6 24H15" stroke-width="2" />
-                  <g class="hands"><path d="M24 24v-8.2" /><path class="acc" d="M24 24l-5.6 3.2" /></g>
+                  <g class="hands">
+                    <path d="M24 24v-8.2" />
+                    <path class="acc" d="M24 24l-5.6 3.2" />
+                  </g>
                   <circle cx="24" cy="24" r="1.8" fill="currentColor" stroke="none" />
                   <path class="acc rew" d="M40.45 14.5A19 19 0 0 0 5 24" stroke-width="2.8" />
                   <path class="acc" d="M1.6 20.2 5 24.4l3.4-4.2" stroke-width="2.8" />
@@ -5022,14 +5762,29 @@
               <div class="nIcon" aria-hidden="true">
                 <!-- coarse pixel blocks; the lens shows the asset they hide -->
                 <svg viewBox="0 0 48 48">
-                  <defs><clipPath id="nLensClip"><circle cx="29" cy="29" r="9.5" /></clipPath></defs>
-                  <rect class="pix" x="3" y="3" width="10" height="10" rx="1.6" fill-opacity="0.55" /><rect class="pix" x="14.5" y="3" width="10" height="10" rx="1.6" fill-opacity="0.3" /><rect class="pix" x="26" y="3" width="10" height="10" rx="1.6" fill-opacity="0.45" /><rect class="pix" x="3" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.25" /><rect class="pix" x="14.5" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.5" /><rect class="pix" x="26" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.2" /><rect class="pix" x="3" y="26" width="10" height="10" rx="1.6" fill-opacity="0.4" /><rect class="pix" x="14.5" y="26" width="10" height="10" rx="1.6" fill-opacity="0.2" /><rect class="pix" x="26" y="26" width="10" height="10" rx="1.6" fill-opacity="0.35" />
+                  <defs>
+                    <clipPath id="nLensClip">
+                      <circle cx="29" cy="29" r="9.5" />
+                    </clipPath>
+                  </defs>
+                  <rect class="pix" x="3" y="3" width="10" height="10" rx="1.6" fill-opacity="0.55" />
+                  <rect class="pix" x="14.5" y="3" width="10" height="10" rx="1.6" fill-opacity="0.3" />
+                  <rect class="pix" x="26" y="3" width="10" height="10" rx="1.6" fill-opacity="0.45" />
+                  <rect class="pix" x="3" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.25" />
+                  <rect class="pix" x="14.5" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.5" />
+                  <rect class="pix" x="26" y="14.5" width="10" height="10" rx="1.6" fill-opacity="0.2" />
+                  <rect class="pix" x="3" y="26" width="10" height="10" rx="1.6" fill-opacity="0.4" />
+                  <rect class="pix" x="14.5" y="26" width="10" height="10" rx="1.6" fill-opacity="0.2" />
+                  <rect class="pix" x="26" y="26" width="10" height="10" rx="1.6" fill-opacity="0.35" />
                   <g class="lens">
                     <g clip-path="url(#nLensClip)">
                       <rect class="lensBg" x="19" y="19" width="20" height="20" />
-                      <path class="grid" d="M21 19v20M19 21h20M24 19v20M19 24h20M27 19v20M19 27h20M30 19v20M19 30h20M33 19v20M19 33h20M36 19v20M19 36h20" />
+                      <path class="grid"
+                        d="M21 19v20M19 21h20M24 19v20M19 24h20M27 19v20M19 27h20M30 19v20M19 30h20M33 19v20M19 33h20M36 19v20M19 36h20" />
                       <path class="acc" d="M25 33v-5l4-3.5 4 3.5v5z" stroke-width="1.8" />
-                      <path class="acc" d="M22 36.2c1.4 0 1.4.9 2.8.9s1.4-.9 2.8-.9 1.4.9 2.8.9 1.4-.9 2.8-.9 1.4.9 2.8.9" stroke-width="1.6" />
+                      <path class="acc"
+                        d="M22 36.2c1.4 0 1.4.9 2.8.9s1.4-.9 2.8-.9 1.4.9 2.8.9 1.4-.9 2.8-.9 1.4.9 2.8.9"
+                        stroke-width="1.6" />
                     </g>
                     <circle cx="29" cy="29" r="9.5" stroke-width="2.6" />
                     <path d="M35.9 35.9 43.5 43.5" stroke-width="4" />
@@ -5044,9 +5799,24 @@
               <div class="nIcon" aria-hidden="true">
                 <!-- three clusters of data whose links break before they meet -->
                 <svg viewBox="0 0 48 48">
-                  <g class="cl cl1"><circle cx="9" cy="11" r="3.4" /><circle cx="23" cy="7" r="3.4" /><circle cx="9" cy="28" r="3.4" /><path d="M12.9 9.9 19.1 8.1M9 15.1v8.8" /><path class="acc" d="M27 7.9 29.5 8.5M13.1 27.5 18.1 26.9M11.8 31 13.9 33.3" /></g>
-                  <g class="cl cl2"><circle cx="40" cy="11" r="3.4" /><circle cx="33" cy="25" r="3.4" /><circle cx="41" cy="39" r="3.4" /><path d="M38.2 14.7 34.8 21.3M35 28.6 39 35.4" /><path class="acc" d="M36 10.1 33.5 9.5M28.9 25.5 23.9 26.1M37 39.6 33.8 40.1" /></g>
-                  <g class="cl cl3"><circle class="fillAcc" cx="22" cy="42" r="3.4" /><path class="acc" d="M19.2 39 17.1 36.7M26 41.4 29.2 40.9" /></g>
+                  <g class="cl cl1">
+                    <circle cx="9" cy="11" r="3.4" />
+                    <circle cx="23" cy="7" r="3.4" />
+                    <circle cx="9" cy="28" r="3.4" />
+                    <path d="M12.9 9.9 19.1 8.1M9 15.1v8.8" />
+                    <path class="acc" d="M27 7.9 29.5 8.5M13.1 27.5 18.1 26.9M11.8 31 13.9 33.3" />
+                  </g>
+                  <g class="cl cl2">
+                    <circle cx="40" cy="11" r="3.4" />
+                    <circle cx="33" cy="25" r="3.4" />
+                    <circle cx="41" cy="39" r="3.4" />
+                    <path d="M38.2 14.7 34.8 21.3M35 28.6 39 35.4" />
+                    <path class="acc" d="M36 10.1 33.5 9.5M28.9 25.5 23.9 26.1M37 39.6 33.8 40.1" />
+                  </g>
+                  <g class="cl cl3">
+                    <circle class="fillAcc" cx="22" cy="42" r="3.4" />
+                    <path class="acc" d="M19.2 39 17.1 36.7M26 41.4 29.2 40.9" />
+                  </g>
                 </svg>
               </div>
               <h3>Fragmented</h3>
@@ -5111,7 +5881,8 @@
           <div class="sechead" data-rv>
             <span class="snum">03 — The FloodGuard approach</span>
             <h2>Data alone doesn't answer the decision.</h2>
-            <p class="shLead">FloodGuard brings the right data together, models it and turns it into actionable insight —
+            <p class="shLead">FloodGuard brings the right data together, models it and turns it into actionable insight
+              —
               helping organisations prepare, manage risk and build resilience.</p>
           </div>
 
@@ -5121,12 +5892,25 @@
               <div class="fxHead"><span class="fxN">01</span><b>Data</b><em>Bring the right data together.</em></div>
               <div class="fxDataBody">
                 <ul class="fxList" role="list">
-                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15.5a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17 7.8a3.6 3.6 0 0 1 .4 7.7H7zM9 18.5l-1 2M13 18.5l-1 2M17 18.5l-1 2" /></svg>Rainfall</li>
-                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3.5 2" /></svg>Flood history</li>
-                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19.5l6-10 4 6 3-4 6 8z" /></svg>Terrain &amp; elevation</li>
-                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3c0 5 4 6 7 9s3 6 3 9M12 12c2-2 5-3 7-3M8 7.5C6 9 4 9.5 3 9.5" /></svg>Drainage network</li>
-                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 6.5l3-3 4 4-3 3zM3.5 16.5l3-3 4 4-3 3zM8.5 15.5l7-7M15 20a5 5 0 0 0 5-5" /></svg>Satellite observations</li>
-                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0zM12 9v8" /></svg>Climate projections</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M7 15.5a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17 7.8a3.6 3.6 0 0 1 .4 7.7H7zM9 18.5l-1 2M13 18.5l-1 2M17 18.5l-1 2" />
+                    </svg>Rainfall</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3.5 2" />
+                    </svg>Flood history</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M2.5 19.5l6-10 4 6 3-4 6 8z" />
+                    </svg>Terrain &amp; elevation</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 3c0 5 4 6 7 9s3 6 3 9M12 12c2-2 5-3 7-3M8 7.5C6 9 4 9.5 3 9.5" />
+                    </svg>Drainage network</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M13.5 6.5l3-3 4 4-3 3zM3.5 16.5l3-3 4 4-3 3zM8.5 15.5l7-7M15 20a5 5 0 0 0 5-5" />
+                    </svg>Satellite observations</li>
+                  <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0zM12 9v8" />
+                    </svg>Climate projections</li>
                 </ul>
                 <div class="fxStack" aria-hidden="true">
                   <i class="fxTile t-rain" style="--k:0"></i>
@@ -5143,41 +5927,70 @@
             <div class="fxCol fxCore">
               <div class="fxHead"><span class="fxN">02</span><b>FloodGuard</b><em>Process, model and analyse.</em></div>
               <div class="fxCoreBody">
-              <div class="fxProc">
-                <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M3 12h18M12 3c3.2 3.4 3.2 14.6 0 18M12 3c-3.2 3.4-3.2 14.6 0 18" /></svg>Geospatial processing</span>
-                <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M7.5 7.5l3 3M16.5 7.5l-3 3M7.5 16.5l3-3M16.5 16.5l-3-3" /></svg>Risk modelling</span>
-                <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 20v-6M12 20V8M17 20V11" /></svg>Scenario analysis</span>
-              </div>
-              <div class="fxBox" aria-hidden="true">
-                <span class="glow"></span>
-                <svg viewBox="0 0 200 170">
-                  <defs>
-                    <linearGradient id="fxTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a6c93" /><stop offset="1" stop-color="#0a4f73" /></linearGradient>
-                  </defs>
-                  <!-- three slabs, bottom up -->
-                  <path d="M100 118 182 78v18l-82 40z" fill="#073a5a" /><path d="M100 118 18 78v18l82 40z" fill="#0a5273" />
-                  <path d="M100 96 182 56v18l-82 40z" fill="#0a4566" /><path d="M100 96 18 56v18l82 40z" fill="#0f5d80" />
-                  <path d="M100 74 182 34v18l-82 40z" fill="#0b4a6c" /><path d="M100 74 18 34v18l82 40z" fill="#126a8e" />
-                  <path d="M100 74 18 34l82-32 82 32z" fill="url(#fxTop)" stroke="rgba(255,255,255,.5)" stroke-width="1" />
-                  <!-- the FloodGuard logo, as a badge on the top face -->
-                  <circle cx="100" cy="36" r="27" fill="#fff" stroke="rgba(4,38,61,.18)" stroke-width="1" />
-                  <clipPath id="fxLogoClip"><circle cx="100" cy="36" r="25" /></clipPath>
-                  <image href="/assets/img/logo-mark.png" x="75" y="11" width="50" height="50" clip-path="url(#fxLogoClip)" />
-                </svg>
-              </div>
+                <div class="fxProc">
+                  <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M3 12h18M12 3c3.2 3.4 3.2 14.6 0 18M12 3c-3.2 3.4-3.2 14.6 0 18" />
+                    </svg>Geospatial processing</span>
+                  <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M10 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M16 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M7.5 7.5l3 3M16.5 7.5l-3 3M7.5 16.5l3-3M16.5 16.5l-3-3" />
+                    </svg>Risk modelling</span>
+                  <span><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 20h16M7 20v-6M12 20V8M17 20V11" />
+                    </svg>Scenario analysis</span>
+                </div>
+                <div class="fxBox" aria-hidden="true">
+                  <span class="glow"></span>
+                  <svg viewBox="0 0 200 170">
+                    <defs>
+                      <linearGradient id="fxTop" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#1a6c93" />
+                        <stop offset="1" stop-color="#0a4f73" />
+                      </linearGradient>
+                    </defs>
+                    <!-- three slabs, bottom up -->
+                    <path d="M100 118 182 78v18l-82 40z" fill="#073a5a" />
+                    <path d="M100 118 18 78v18l82 40z" fill="#0a5273" />
+                    <path d="M100 96 182 56v18l-82 40z" fill="#0a4566" />
+                    <path d="M100 96 18 56v18l82 40z" fill="#0f5d80" />
+                    <path d="M100 74 182 34v18l-82 40z" fill="#0b4a6c" />
+                    <path d="M100 74 18 34v18l82 40z" fill="#126a8e" />
+                    <path d="M100 74 18 34l82-32 82 32z" fill="url(#fxTop)" stroke="rgba(255,255,255,.5)"
+                      stroke-width="1" />
+                    <!-- the FloodGuard logo, as a badge on the top face -->
+                    <circle cx="100" cy="36" r="27" fill="#fff" stroke="rgba(4,38,61,.18)" stroke-width="1" />
+                    <clipPath id="fxLogoClip">
+                      <circle cx="100" cy="36" r="25" />
+                    </clipPath>
+                    <image href="/assets/img/logo-mark.png" x="75" y="11" width="50" height="50"
+                      clip-path="url(#fxLogoClip)" />
+                  </svg>
+                </div>
               </div>
             </div>
 
             <!-- 03 INTELLIGENCE -->
             <div class="fxCol fxIntel">
-              <div class="fxHead"><span class="fxN">03</span><b>Intelligence</b><em>Turn data into actionable insight.</em></div>
+              <div class="fxHead"><span class="fxN">03</span><b>Intelligence</b><em>Turn data into actionable
+                  insight.</em></div>
               <div class="fxIntelRows">
                 <div class="fxIntelRow"><i class="fxTile t-haz" aria-hidden="true"></i>
-                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 14c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 19c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" /></svg><b>Hazard</b><em>Where flooding may occur</em></div></div>
+                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M3 9c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 14c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 19c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" />
+                    </svg><b>Hazard</b><em>Where flooding may occur</em></div>
+                </div>
                 <div class="fxIntelRow"><i class="fxTile t-exp" aria-hidden="true"></i>
-                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l6-3v15M11 21V11h8v10M14 14h2M14 17h2M7 11.5h2M7 15h2" /></svg><b>Exposure</b><em>What may be affected</em></div></div>
+                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 21h18M5 21V9l6-3v15M11 21V11h8v10M14 14h2M14 17h2M7 11.5h2M7 15h2" />
+                    </svg><b>Exposure</b><em>What may be affected</em></div>
+                </div>
                 <div class="fxIntelRow"><i class="fxTile t-risk" aria-hidden="true"></i>
-                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M6 20v-4M10 20v-8M14 20v-6M18 20V6" /></svg><b>Risk &amp; scenarios</b><em>What it means for you</em></div></div>
+                  <div class="fxCard"><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 20h16M6 20v-4M10 20v-8M14 20v-6M18 20V6" />
+                    </svg><b>Risk &amp; scenarios</b><em>What it means for you</em></div>
+                </div>
               </div>
             </div>
 
@@ -5185,12 +5998,27 @@
             <div class="fxCol fxDec">
               <div class="fxHead"><span class="fxN">04</span><b>Decision</b><em>Support real-world action.</em></div>
               <ul class="fxList" role="list">
-                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6zM8.8 12l2.2 2.2 4.2-4.4" /></svg><b>Assess risk</b><em>Identify vulnerable areas and assets</em><i class="chev"></i></li>
-                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM15 3v4h4M9 11h7M9 15h7" /></svg><b>Plan and prepare</b><em>Strengthen preparedness and response</em><i class="chev"></i></li>
-                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4" /></svg><b>Monitor conditions</b><em>Track evolving risk in near real time</em><i class="chev"></i></li>
-                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-9z" /><path d="M14.5 2.8A9 9 0 0 1 21.2 9.5h-6.7z" /></svg><b>Underwrite and price</b><em>Inform risk selection and pricing</em><i class="chev"></i></li>
-                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0" /></svg><b>Prioritise investments</b><em>Focus on high-risk areas</em><i class="chev"></i></li>
-                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a3 3 0 1 0 6 0a3 3 0 1 0-6 0M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.3c2 .7 3.5 2.9 3.5 5.7" /></svg><b>Respond and build resilience</b><em>Support long-term planning</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6zM8.8 12l2.2 2.2 4.2-4.4" />
+                  </svg><b>Assess risk</b><em>Identify vulnerable areas and assets</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 3h9l4 4v14H6zM15 3v4h4M9 11h7M9 15h7" />
+                  </svg><b>Plan and prepare</b><em>Strengthen preparedness and response</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 12h4l3-7 4 14 3-7h4" />
+                  </svg><b>Monitor conditions</b><em>Track evolving risk in near real time</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3a9 9 0 1 0 9 9h-9z" />
+                    <path d="M14.5 2.8A9 9 0 0 1 21.2 9.5h-6.7z" />
+                  </svg><b>Underwrite and price</b><em>Inform risk selection and pricing</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0" />
+                  </svg><b>Prioritise investments</b><em>Focus on high-risk areas</em><i class="chev"></i></li>
+                <li><svg class="fxIco" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M6 8a3 3 0 1 0 6 0a3 3 0 1 0-6 0M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.3c2 .7 3.5 2.9 3.5 5.7" />
+                  </svg><b>Respond and build resilience</b><em>Support long-term planning</em><i class="chev"></i></li>
               </ul>
             </div>
           </div>
@@ -5208,39 +6036,64 @@
           </div>
           <div class="pOver" data-carousel data-label="Products">
             <article class="card" data-reveal>
-              <div class="vis"><div class="inst paper"><div class="instMap" data-fgmap="explorer-mini"></div></div></div>
+              <div class="vis">
+                <div class="inst paper">
+                  <div class="instMap" data-fgmap="explorer-mini"></div>
+                </div>
+              </div>
               <div class="txt">
                 <span class="hzChip"><i class="p"></i>Past</span>
                 <h3>Explorer — explore the past.</h3>
                 <p class="d">Explore district-level historical flood risk across India.</p>
-                <p class="s">Understand where floods have occurred and how historical flood risk varies across India's districts.</p>
-                <div class="foot"><span class="access">Free access</span><a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore more <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a></div>
+                <p class="s">Understand where floods have occurred and how historical flood risk varies across India's
+                  districts.</p>
+                <div class="foot"><span class="access">Free access</span><a class="btn bp" href="%WEBINAR_URL%"
+                    data-webinar>Explore more <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a></div>
               </div>
             </article>
             <article class="card" data-reveal>
-              <div class="vis"><div class="inst"><div class="instMap" data-fgmap="atlas-mini"></div></div></div>
+              <div class="vis">
+                <div class="inst">
+                  <div class="instMap" data-fgmap="atlas-mini"></div>
+                </div>
+              </div>
               <div class="txt">
                 <span class="hzChip"><i class="p"></i>Past + <i class="f"></i>Future</span>
                 <h3>Atlas — understand risk across time.</h3>
                 <p class="d">Assess historical flood risk and explore how risk could evolve under future scenarios.</p>
                 <p class="s">Deeper flood-risk intelligence for professional and enterprise users.</p>
-                <div class="foot"><span class="access">Enterprise</span><a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore more <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a></div>
+                <div class="foot"><span class="access">Enterprise</span><a class="btn bp" href="%WEBINAR_URL%"
+                    data-webinar>Explore more <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a></div>
               </div>
             </article>
             <article class="card" data-reveal>
-              <div class="vis"><div class="inst"><div class="instMap" data-fgmap="live-mini"></div></div></div>
+              <div class="vis">
+                <div class="inst">
+                  <div class="instMap" data-fgmap="live-mini"></div>
+                </div>
+              </div>
               <div class="txt">
                 <span class="hzChip"><i class="n"></i>Now</span>
                 <h3>Live — know what's happening now.</h3>
                 <p class="d">Monitor real-time rainfall, radar, flood-risk signals and alerts as conditions evolve.</p>
                 <p class="s">Built for operational monitoring and timely response.</p>
-                <div class="foot"><span class="access">Enterprise</span><a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore more <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a></div>
+                <div class="foot"><span class="access">Enterprise</span><a class="btn bp" href="%WEBINAR_URL%"
+                    data-webinar>Explore more <svg viewBox="0 0 14 14" aria-hidden="true">
+                      <path d="M2 7h10M8 3l4 4-4 4" />
+                    </svg></a></div>
               </div>
             </article>
           </div>
           <div class="homeAll" data-rv>
             <a class="btn bg2" href="/products.html#compare">Compare products</a>
-            <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Try Explorer free <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
+            <a class="btn bp" href="%WEBINAR_URL%" data-webinar>Try Explorer free <svg viewBox="0 0 14 14"
+                aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg></a>
           </div>
         </div>
       </section>
@@ -5324,106 +6177,131 @@
               observed record as the platform.</p>
           </div>
           <div class="postGrid" data-posts="3" data-carousel data-label="Latest insights">
-            <noscript><p><a href="/insights.html">Read our latest insights</a></p></noscript>
+            <noscript>
+              <p><a href="/insights.html">Read our latest insights</a></p>
+            </noscript>
           </div>
           <div class="homeAll" data-rv>
-            <a class="btn bg2" href="/insights.html">All insights <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" /></svg></a>
+            <a class="btn bg2" href="/insights.html">All insights <svg viewBox="0 0 14 14" aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg></a>
           </div>
         </div>
       </section>
 
       <!-- shell:cta -->
-<section class="sec getStarted" id="get-started">
-  <div class="wrap">
-    <div class="secHead">
-      <p class="eyebrow"><i></i>Get started</p>
-      <h2>Ready to explore FloodGuard?</h2>
-    </div>
-    <div class="paths">
-      <div class="card" data-reveal>
-        <span class="access">Explorer</span>
-        <h3>Explore for free.</h3>
-        <p>Access district-level historical flood risk and begin exploring India's flood record. No sales conversation required.</p>
-        <div class="ctaRow"><a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Explorer <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div>
-      </div>
-      <div class="card ent" data-reveal>
-        <span class="access">Atlas + Live</span>
-        <h3>Talk to the FloodGuard team.</h3>
-        <p>For professional and enterprise access, contact our team to discuss your geography, use case, data requirements and deployment needs.</p>
-        <div class="ctaRow">
-          <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live" data-lead="demo">Request a Demo <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-          <a class="btn bg2" href="/contact.html?intent=sales" data-lead="sales">Contact Sales <svg class="ar" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <section class="sec getStarted" id="get-started">
+        <div class="wrap">
+          <div class="secHead">
+            <p class="eyebrow"><i></i>Get started</p>
+            <h2>Ready to explore FloodGuard?</h2>
+          </div>
+          <div class="paths">
+            <div class="card" data-reveal>
+              <span class="access">Explorer</span>
+              <h3>Explore for free.</h3>
+              <p>Access district-level historical flood risk and begin exploring India's flood record. No sales
+                conversation required.</p>
+              <div class="ctaRow"><a class="btn bp" href="%WEBINAR_URL%" data-webinar>Explore Explorer <svg class="ar"
+                    viewBox="0 0 14 14" aria-hidden="true">
+                    <path d="M2 7h10M8 3l4 4-4 4" />
+                  </svg></a></div>
+            </div>
+            <div class="card ent" data-reveal>
+              <span class="access">Atlas + Live</span>
+              <h3>Talk to the FloodGuard team.</h3>
+              <p>For professional and enterprise access, contact our team to discuss your geography, use case, data
+                requirements and deployment needs.</p>
+              <div class="ctaRow">
+                <a class="btn bp" href="/contact.html?product=Atlas%20%2B%20Live" data-lead="demo">Request a Demo <svg
+                    class="ar" viewBox="0 0 14 14" aria-hidden="true">
+                    <path d="M2 7h10M8 3l4 4-4 4" />
+                  </svg></a>
+                <a class="btn bg2" href="/contact.html?intent=sales" data-lead="sales">Contact Sales <svg class="ar"
+                    viewBox="0 0 14 14" aria-hidden="true">
+                    <path d="M2 7h10M8 3l4 4-4 4" />
+                  </svg></a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- /shell:cta -->
+      </section>
+      <!-- /shell:cta -->
 
       <!-- shell:footer -->
-<footer class="site-footer">
-  <div class="wrap site-footer__top">
-    <div class="site-footer__brand">
-      <a class="site-footer__logo" href="/index.html" aria-label="FloodGuard home">
-        <img src="/assets/img/logo-mark.png" alt="">
-        <b class="site-footer__wordmark">FloodGuard</b>
-      </a>
-      <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated into decision-ready insight for organisations exposed to flood risk.</p>
-      <address>
-        <ul class="site-footer__contact" role="list">
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>COHORT Coworking, Kondapur, Hyderabad, Telangana</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><a href="tel:+919030762494">+91 90307 62494</a></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><a href="mailto:dhanyabulla@floodguard.in">dhanyabulla@floodguard.in</a></li>
-        </ul>
-      </address>
-    </div>
-    <nav class="site-footer__nav" aria-label="Footer">
-      <div class="site-footer__col">
-        <h2 class="site-footer__heading">Products</h2>
-        <ul role="list">
-          <li><a href="/products.html#explorer">Explorer</a></li>
-          <li><a href="/products.html#atlas">Atlas</a></li>
-          <li><a href="/products.html#live">Live</a></li>
-          <li><a href="/products.html#compare">Compare products</a></li>
-        </ul>
-      </div>
-      <div class="site-footer__col">
-        <h2 class="site-footer__heading">Solutions</h2>
-        <ul role="list">
-          <li><a href="/solutions.html">Overview</a></li>
-          <li><a href="/solutions.html#insurance">Insurance &amp; Reinsurance</a></li>
-          <li><a href="/solutions.html#banking">Banking &amp; Finance</a></li>
-          <li><a href="/solutions.html#agriculture">Agriculture</a></li>
-          <li><a href="/solutions.html#infrastructure">Infrastructure</a></li>
-          <li><a href="/solutions.html#government">Government</a></li>
-        </ul>
-      </div>
-      <div class="site-footer__col">
-        <h2 class="site-footer__heading">Platform</h2>
-        <ul role="list">
-          <li><a href="/platform.html#data">Data</a></li>
-          <li><a href="/platform.html#technology">Technology</a></li>
-          <li><a href="/platform.html#methodology">Methodology</a></li>
-          <li><a href="/platform.html#validation">Validation</a></li>
-          <li><a href="/platform.html#api">API</a></li>
-        </ul>
-      </div>
-      <div class="site-footer__col">
-        <h2 class="site-footer__heading">Company</h2>
-        <ul role="list">
-          <li><a href="/insights.html">Insights</a></li>
-          <li><a href="/about.html">About us</a></li>
-          <li><a href="/contact.html">Contact us</a></li>
-          <li><a href="/contact.html?intent=demo" data-lead="demo">Request a demo</a></li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <div class="wrap site-footer__bottom">
-    <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
-  </div>
-</footer>
-<!-- /shell:footer -->
+      <footer class="site-footer">
+        <div class="wrap site-footer__top">
+          <div class="site-footer__brand">
+            <a class="site-footer__logo" href="/index.html" aria-label="FloodGuard home">
+              <img src="/assets/img/logo-mark.png" alt="">
+              <b class="site-footer__wordmark">FloodGuard</b>
+            </a>
+            <p class="site-footer__desc">Flood intelligence across time — historical, current and future — translated
+              into decision-ready insight for organisations exposed to flood risk.</p>
+            <address>
+              <ul class="site-footer__contact" role="list">
+                <li><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z" />
+                    <circle cx="12" cy="9.5" r="2.5" />
+                  </svg><span>COHORT Coworking, Kondapur, Hyderabad, Telangana</span></li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+                  </svg><a href="tel:+919030762494">+91 90307 62494</a></li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="14" rx="2.5" />
+                    <path d="m3.5 7 8.5 6 8.5-6" />
+                  </svg><a href="mailto:dhanyabulla@floodguard.in">dhanyabulla@floodguard.in</a></li>
+              </ul>
+            </address>
+          </div>
+          <nav class="site-footer__nav" aria-label="Footer">
+            <div class="site-footer__col">
+              <h2 class="site-footer__heading">Products</h2>
+              <ul role="list">
+                <li><a href="/products.html#explorer">Explorer</a></li>
+                <li><a href="/products.html#atlas">Atlas</a></li>
+                <li><a href="/products.html#live">Live</a></li>
+                <li><a href="/products.html#compare">Compare products</a></li>
+              </ul>
+            </div>
+            <div class="site-footer__col">
+              <h2 class="site-footer__heading">Solutions</h2>
+              <ul role="list">
+                <li><a href="/solutions.html">Overview</a></li>
+                <li><a href="/solutions.html#insurance">Insurance &amp; Reinsurance</a></li>
+                <li><a href="/solutions.html#banking">Banking &amp; Finance</a></li>
+                <li><a href="/solutions.html#agriculture">Agriculture</a></li>
+                <li><a href="/solutions.html#infrastructure">Infrastructure</a></li>
+                <li><a href="/solutions.html#government">Government</a></li>
+              </ul>
+            </div>
+            <div class="site-footer__col">
+              <h2 class="site-footer__heading">Platform</h2>
+              <ul role="list">
+                <li><a href="/platform.html#data">Data</a></li>
+                <li><a href="/platform.html#technology">Technology</a></li>
+                <li><a href="/platform.html#methodology">Methodology</a></li>
+                <li><a href="/platform.html#validation">Validation</a></li>
+                <li><a href="/platform.html#api">API</a></li>
+              </ul>
+            </div>
+            <div class="site-footer__col">
+              <h2 class="site-footer__heading">Company</h2>
+              <ul role="list">
+                <li><a href="/insights.html">Insights</a></li>
+                <li><a href="/about.html">About us</a></li>
+                <li><a href="/contact.html">Contact us</a></li>
+                <li><a href="/contact.html?intent=demo" data-lead="demo">Request a demo</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div class="wrap site-footer__bottom">
+          <p>© <span id="fgYear">2026</span> FloodGuard Solutions Pvt. Ltd. · Hyderabad, India</p>
+        </div>
+      </footer>
+      <!-- /shell:footer -->
 
     </div>
   </div>
