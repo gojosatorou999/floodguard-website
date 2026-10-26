@@ -36,7 +36,7 @@ function joinStep(name) {
 function formStep(prev) {
   const v = k => esc(prev[k] || "");
   return `<h2 id="wrT">Reserve your spot</h2>
-    <p class="wrSub">Tell us a little about you first. Then you can join the webinar.</p>
+    <p class="wrSub">We are hosting a live webinar for pilot partners. Please share a few details below and we will reserve your spot.</p>
     <form novalidate class="wrForm">
       <div class="wrRow">
         <label class="wrF"><span>Name</span><input name="name" autocomplete="name" required value="${v("name")}"><em class="wrE">Enter your name</em></label>
